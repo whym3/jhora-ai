@@ -62,7 +62,7 @@ function DocTabs() {
 }
 import { setState as useStoreSet } from './state/store';
 
-const FIXED_TABLES: Record<string, string> = { 'Basics/Houses': 'basics.houses', 'Basics/KP': 'basics.kp' };
+const FIXED_TABLES: Record<string, string> = { 'Basics/Houses': 'basics.houses', 'Basics/Amsa rulers': 'basics.amsaRulers', 'Basics/KP': 'basics.kp' };
 
 function SubView({ top, sub, spec }: { top: TopTab; sub: string | null; spec: ChartSpec }) {
   if (top === 'Basics' && sub === 'Key Info') return <KeyInfoView spec={spec} />;

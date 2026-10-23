@@ -12,11 +12,20 @@ import type { NamedBody } from '../core/longitudes';
 import { bhavaArudha, grahaArudha, signArudha, type ArudhaOptions } from '../core/arudhas';
 import { sahamas } from '../core/sahamas';
 import { brahmaRudraMaheswara } from '../core/deities';
+import { amsaRuler } from '../core/amsaRulers';
 import { fromMrityuBhaga, fromPushkaraBhaga, inPushkaramsa, MRITYU_BHAGA, within } from '../core/pushkara';
 import type { VargaCtx } from '../core/signStrength';
 import type { Table } from './protocol';
 
 const yes = (b: boolean) => (b ? 'Yes' : '-');
+
+const AMSA_RULER_ROWS = [
+  'Lagna', ...GRAHAS, 'Bhava Lagna', 'Hora Lagna', 'Ghati Lagna', 'Vighati Lagna', 'Pranapada Lagna', 'Sree Lagna', 'Indu Lagna',
+  'Bhrigu Bindu', 'Kunda', 'Dhooma', 'Vyatipata', 'Parivesha', 'Indra Chapa', 'Upaketu', 'Kaala', 'Mrityu', 'Artha Prahara',
+  'Yama Ghantaka', 'Maandi', 'Gulika', 'Prana Sphuta', 'Deha Sphuta', 'Mrityu Sphuta', 'Sookshma TriSphuta', 'Tithi Sphuta',
+  'Yoga Sphuta (Sun-Moon)', 'Rahu Tithi Sphuta', 'Kshetra Sphuta', 'Beeja Sphuta', 'TriSphuta', 'ChatusSphuta', 'PanchaSphuta',
+  'Yoga Sphuta', 'Avayoga Sphuta', 'Varnada Lagna', ...Array.from({ length: 11 }, (_, i) => `V${i + 2}`),
+];
 
 /** Rows of the pushkara / mrityu bhaga / drekkana tables: grahas, Maandi, lagna and the 11 other cusps. */
 function bhagaBodies(chart: Chart): [string, number][] {
@@ -148,6 +157,19 @@ export const TABLES: Record<string, TableFn> = {
     const ak = charaKarakas(p)[0].planet;
     const d = brahmaRudraMaheswara(signOf(p.ascendant), ak, ctx);
     return { headers: ['Special Deity', 'Planet in this chart'], rows: [['Brahma', d.brahma], ['Rudra', d.rudra], ['Maheswara', d.maheswara]] };
+  },
+  // Basics > Amsa rulers (D-150 nadiamsas); JHora's row order differs from the Longitudes table
+  'basics.amsaRulers': (chart) => {
+    const labels = new Map(chart.longitudes.map((b, i) => [b.name, longitudeLabels(chart)[i].replace(/ - \w+$/, '')]));
+    const byName = new Map(chart.longitudes.map((b) => [b.name, b.lon]));
+    byName.set('Lagna', chart.positions.ascendant);
+    return {
+      headers: ['Body', 'Division', 'Index', 'In whose amsa in D-150'],
+      rows: AMSA_RULER_ROWS.map((name) => {
+        const r = amsaRuler(byName.get(name)!);
+        return [labels.get(name) ?? name, String(r.division + 1), String(r.index + 1), r.name];
+      }),
+    };
   },
   'basics.drekkanas': (chart) => ({
     headers: ['Body', 'Drekkana occupied'],

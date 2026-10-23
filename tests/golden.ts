@@ -1,4 +1,4 @@
-import { readFileSync, readdirSync } from 'node:fs';
+import { existsSync, readFileSync, readdirSync } from 'node:fs';
 import { parseJhd, type BirthData } from '../src/core/jhd';
 
 export interface GoldenView { tabs: string[]; control_id: number; mode: string | null; headers: string[]; rows: string[][] }
@@ -11,6 +11,26 @@ export function goldenCharts(): GoldenChart[] {
     const g = JSON.parse(readFileSync(`golden/jhora/${name}.json`, 'utf8'));
     return { name, birth: parseJhd(readFileSync(`golden/charts/${f}`, 'latin1')), views: g.views };
   });
+}
+
+export interface GoldenText { top: string; sub: string; mode: string | null; name: string; cmd: number; lines: string[] }
+export interface GoldenChartV2 extends GoldenChart { texts: GoldenText[] }
+
+/** Charts captured by harness v2 (golden/jhora-v2), with their copied texts. */
+export function goldenV2Charts(): GoldenChartV2[] {
+  if (!existsSync('golden/jhora-v2')) return [];
+  return readdirSync('golden/jhora-v2').filter((f) => f.endsWith('.json')).map((f) => {
+    const name = f.replace(/\.json$/, '');
+    const g = JSON.parse(readFileSync(`golden/jhora-v2/${f}`, 'utf8'));
+    return { name, birth: parseJhd(readFileSync(`golden/charts/${name}.jhd`, 'latin1')), views: g.views, texts: g.texts };
+  });
+}
+
+/** Parse a copied JHora text table (header, blank line, rows) into cells split on 2+ spaces. */
+export function textTable(t: GoldenText): { headers: string[]; rows: string[][] } {
+  const split = (l: string) => l.trimEnd().split(/\s{2,}/);
+  const [h, , ...rest] = t.lines;
+  return { headers: split(h), rows: rest.filter((l) => l.trim()).map(split) };
 }
 
 export function view(c: GoldenChart, mode: string): GoldenView {

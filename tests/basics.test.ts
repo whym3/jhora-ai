@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest';
 import { nodeSweph } from './helpers';
-import { goldenCharts, type GoldenChart, type GoldenView } from './golden';
+import { goldenCharts, goldenV2Charts, type GoldenChart, type GoldenView } from './golden';
 import { computeChart } from '../src/core/chart';
 import { runTable } from '../src/engine/jobs';
 
@@ -97,6 +97,24 @@ describe('Rasis occupied in all vargas (with arudhas) matches JHora 8.0', async 
         if (got.rows[i][j + 1] !== cell) bad.push(`${r[0].trim()} ${golden.headers[j + 1]}: ${got.rows[i][j + 1]} vs ${cell}`);
       }));
       expect(bad, bad.join('\n')).toEqual([]);
+    });
+  }
+});
+
+describe('Amsa rulers (D-150) match JHora 8.0', async () => {
+  const swe = await nodeSweph();
+  for (const chart of goldenV2Charts()) {
+    const text = chart.texts.find((t) => t.sub === 'Amsa rulers');
+    if (!text) continue;
+    it(chart.name, async () => {
+      const got = runTable(await computeChart(swe, chart.birth), 'basics.amsaRulers', {});
+      // JHora's rows use a single space before the number when the name is long: parse by regex
+      const want = text.lines.slice(2).filter((l) => l.trim()).map((l) => /^(.*?)\s+(\d+)\s+(\d+)\s+(.+?)\s*$/.exec(l)!.slice(1));
+      expect(got.rows.map((r) => r[0])).toEqual(want.map((r) => r[0]));
+      // The varnada rows reflect an internal JHora longitude that is not the displayed one
+      // (their "Division" is 1..12); we compute them from the displayed longitude instead.
+      const cmp = (rows: string[][]) => rows.filter((r) => !/^V(arnada|\d)/.test(r[0]));
+      expect(cmp(got.rows)).toEqual(cmp(want));
     });
   }
 });
