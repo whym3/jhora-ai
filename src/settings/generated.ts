@@ -2,7 +2,8 @@
 // JHora 8.0's complete settings: 353 keys in 7 sections.
 
 export type IniKind = 'int' | 'float' | 'str' | 'int[]' | 'float[]' | 'str[]';
-export interface IniKeySpec { section: string; key: string; kind: IniKind; length?: number }
+/** group: arrays with the same group are written interleaved slot by slot, as JHora does */
+export interface IniKeySpec { section: string; key: string; kind: IniKind; length?: number; group?: number }
 
 export interface JhoraIni {
   JHoraDirectory: string;
@@ -391,7 +392,7 @@ export const INI_SPEC: readonly IniKeySpec[] = [
   { section: "CalculationPreferences", key: "D150Preference", kind: 'int' },
   { section: "CalculationPreferences", key: "D150NamePreference", kind: 'int' },
   { section: "CalculationPreferences", key: "VyatipataMethod", kind: 'int' },
-  { section: "CalculationPreferences", key: "UpagrahaRiseMethod", kind: 'int[]', length: 6 },
+  { section: "CalculationPreferences", key: "UpagrahaRiseMethod", kind: 'int[]', length: 6, group: 1 },
   { section: "CalculationPreferences", key: "MandiInSaturnPortion", kind: 'int' },
   { section: "CalculationPreferences", key: "GulikaInSaturnPortion", kind: 'int' },
   { section: "CalculationPreferences", key: "TopocentricPositions", kind: 'int' },
@@ -412,10 +413,10 @@ export const INI_SPEC: readonly IniKeySpec[] = [
   { section: "CalculationPreferences", key: "BhavaChartVarga", kind: 'int' },
   { section: "CalculationPreferences", key: "BhavaChartRef", kind: 'int' },
   { section: "CalculationPreferences", key: "HousesFromNodesReversed", kind: 'int' },
-  { section: "CalculationPreferences", key: "UseDasaSeedFromNatalInTajaka", kind: 'int[]', length: 75 },
-  { section: "CalculationPreferences", key: "ProgressDasaSeedInTajaka", kind: 'int[]', length: 75 },
-  { section: "CalculationPreferences", key: "YearDefinition", kind: 'int[]', length: 75 },
-  { section: "CalculationPreferences", key: "YearLength", kind: 'float[]', length: 75 },
+  { section: "CalculationPreferences", key: "UseDasaSeedFromNatalInTajaka", kind: 'int[]', length: 75, group: 2 },
+  { section: "CalculationPreferences", key: "ProgressDasaSeedInTajaka", kind: 'int[]', length: 75, group: 2 },
+  { section: "CalculationPreferences", key: "YearDefinition", kind: 'int[]', length: 75, group: 3 },
+  { section: "CalculationPreferences", key: "YearLength", kind: 'float[]', length: 75, group: 3 },
   { section: "CalculationPreferences", key: "SpecialYearForTajaka", kind: 'int' },
   { section: "CalculationPreferences", key: "SpecialYearForTP", kind: 'int' },
   { section: "CalculationPreferences", key: "DasaSeshamInMundaneCharts", kind: 'int' },
@@ -435,7 +436,7 @@ export const INI_SPEC: readonly IniKeySpec[] = [
   { section: "CalculationPreferences", key: "TropicalTajaka", kind: 'int' },
   { section: "CalculationPreferences", key: "MunthaPreference", kind: 'int' },
   { section: "CalculationPreferences", key: "VimsottariStrenfthHelpHouses", kind: 'int' },
-  { section: "CalculationPreferences", key: "AshtakaVargaCalculation", kind: 'int[]', length: 6 },
+  { section: "CalculationPreferences", key: "AshtakaVargaCalculation", kind: 'int[]', length: 6, group: 4 },
   { section: "CalculationPreferences", key: "ShoolaDasaAntardasaStart", kind: 'int' },
   { section: "CalculationPreferences", key: "CharaKarakaDefinition", kind: 'int' },
   { section: "CalculationPreferences", key: "NaisargikaDasaNoADForMDLord", kind: 'int' },
@@ -524,7 +525,7 @@ export const INI_SPEC: readonly IniKeySpec[] = [
   { section: "CurrentState", key: "LagnamsakaDasaChart", kind: 'int' },
   { section: "CurrentState", key: "PadanathamsaDasaChart", kind: 'int' },
   { section: "CurrentState", key: "ParyaayaDasaChart", kind: 'int' },
-  { section: "CurrentState", key: "DisplayVarga", kind: 'int[]', length: 15 },
+  { section: "CurrentState", key: "DisplayVarga", kind: 'int[]', length: 15, group: 5 },
   { section: "CurrentState", key: "SCDasaVarga", kind: 'int' },
   { section: "CurrentState", key: "DasaSearchLevel", kind: 'int' },
   { section: "CurrentState", key: "BuddhiGatiDasaVarga", kind: 'int' },
@@ -550,10 +551,10 @@ export const INI_SPEC: readonly IniKeySpec[] = [
   { section: "CurrentState", key: "SpecialPointMin", kind: 'float' },
   { section: "CurrentState", key: "SpecialPointSec", kind: 'float' },
   { section: "CurrentState", key: "AmsaRulerVarga", kind: 'int' },
-  { section: "CurrentState", key: "NakshatraDasaStartPoint", kind: 'int[]', length: 25 },
-  { section: "CurrentState", key: "NaksDasaADMethodPreference", kind: 'int[]', length: 25 },
-  { section: "CurrentState", key: "NakshatraDasaShift", kind: 'int[]', length: 25 },
-  { section: "CurrentState", key: "AntiZodiacalDasa", kind: 'int[]', length: 25 },
+  { section: "CurrentState", key: "NakshatraDasaStartPoint", kind: 'int[]', length: 25, group: 6 },
+  { section: "CurrentState", key: "NaksDasaADMethodPreference", kind: 'int[]', length: 25, group: 7 },
+  { section: "CurrentState", key: "NakshatraDasaShift", kind: 'int[]', length: 25, group: 8 },
+  { section: "CurrentState", key: "AntiZodiacalDasa", kind: 'int[]', length: 25, group: 9 },
   { section: "CurrentState", key: "TimeAdjBase", kind: 'int' },
   { section: "CurrentState", key: "TranTimeAdjBase", kind: 'int' },
   { section: "CurrentState", key: "DmDnChartDm", kind: 'int' },

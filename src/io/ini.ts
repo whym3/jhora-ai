@@ -51,11 +51,10 @@ export function writeIni(ini: JhoraIni): string {
       lines.push(`${spec.key}=${fmt(spec, src[spec.key])}`);
       continue;
     }
-    // JHora writes consecutive arrays of the same length slot by slot:
+    // JHora writes grouped arrays slot by slot:
     // YearDefinition=0 .., YearLength=0 .., YearDefinition=1 .., ...
     const group = [spec];
-    while (i + 1 < INI_SPEC.length && INI_SPEC[i + 1].section === section
-      && INI_SPEC[i + 1].kind.endsWith('[]') && INI_SPEC[i + 1].length === spec.length) {
+    while (i + 1 < INI_SPEC.length && INI_SPEC[i + 1].group === spec.group) {
       group.push(INI_SPEC[++i]);
     }
     for (let slot = 0; slot < (spec.length ?? 0); slot++) {
