@@ -1,0 +1,23 @@
+{
+ "tabs": [
+  {
+   "top": "Dasas",
+   "sub": "Nakshatra dasas",
+   "copies": {
+    "dasa": 32972,
+    "dasa_dates": 33236
+   },
+   "modes": [
+    [
+     "Vimsottari",
+     32846
+    ],
+    [
+     "Yogini",
+     32848
+    ]
+   ],
+   "dasa_levels": true
+  }
+ ]
+}

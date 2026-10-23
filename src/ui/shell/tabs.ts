@@ -15,8 +15,8 @@ export const SUB_TABS: Partial<Record<TopTab, readonly string[]>> = {
 export const KEY_INFO_MODES: [string, number, string | null][] = [
   ['Longitudes & Basic Info', 32822, 'basics.longitudes'],
   ['Latitudes, speeds etc (co-ordinates)', 33071, 'basics.coordinates'],
-  ['All Divisional Longitudes', 33265, null],
-  ['Rasis occupied in all vargas', 32823, null],
+  ['All Divisional Longitudes', 33265, 'basics.allDivisionalLongitudes'],
+  ['Rasis occupied in all vargas', 32823, 'basics.rasisInVargas'],
   ['Nava Taras (from Moon)', 32902, 'basics.navaTarasMoon'],
   ['Nava Taras (from lagna)', 33197, 'basics.navaTarasLagna'],
   ['Special Taras/Nakshatras (from Moon)', 32903, 'basics.specialTarasMoon'],

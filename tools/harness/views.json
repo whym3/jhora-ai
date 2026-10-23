@@ -1,0 +1,390 @@
+{
+ "_comment": "What to capture on each JHora tab. copies: WM_COMMAND ids sent to the main window (routed to the active view). modes: (label, command) pairs that switch the view's table before reading it again. Ids are JHora's own menu command ids (scratchpad/res_menu.txt).",
+ "tabs": [
+  {
+   "top": "Chakras",
+   "sub": "Many Vargas",
+   "copies": {
+    "chart_text": 32985,
+    "chart_text_sne": 32992
+   }
+  },
+  {
+   "top": "Basics",
+   "sub": "Key Info",
+   "lists": true,
+   "copies": {
+    "key_info": 32974,
+    "table": 32975
+   },
+   "pane_copies": [
+    "key_info"
+   ],
+   "modes": [
+    [
+     "Longitudes & Basic Info",
+     32822
+    ],
+    [
+     "Coordinates",
+     33071
+    ],
+    [
+     "All Divisional Longitudes",
+     33265
+    ],
+    [
+     "Rasis occupied in all vargas",
+     32823
+    ],
+    [
+     "Nava Taras (from Moon)",
+     32902
+    ],
+    [
+     "Nava Taras (from lagna)",
+     33197
+    ],
+    [
+     "Special Taras (from Moon)",
+     32903
+    ],
+    [
+     "Special Taras (from lagna)",
+     33198
+    ],
+    [
+     "Nakshatra Aspects & Latta",
+     32824
+    ],
+    [
+     "Yogi, Sahayogi, Avayogi",
+     33286
+    ],
+    [
+     "Pushkaramsas",
+     33393
+    ],
+    [
+     "Special Tithis",
+     32893
+    ],
+    [
+     "Chara Karakas",
+     32825
+    ],
+    [
+     "Combustion",
+     33167
+    ],
+    [
+     "Graha Yuddha",
+     33168
+    ],
+    [
+     "Brahma Rudra Maheswara",
+     33039
+    ],
+    [
+     "Mrityu Bhaga",
+     33072
+    ],
+    [
+     "Planetary drekkanas",
+     33158
+    ],
+    [
+     "64th navamsa and 22nd drekkana",
+     33159
+    ],
+    [
+     "Sahamas",
+     32901
+    ],
+    [
+     "Natal Longitudes",
+     33115
+    ],
+    [
+     "Natal Sahamas",
+     33116
+    ]
+   ]
+  },
+  {
+   "top": "Basics",
+   "sub": "Houses",
+   "lists": true,
+   "copies": {
+    "table": 33010
+   }
+  },
+  {
+   "top": "Basics",
+   "sub": "Amsa rulers",
+   "lists": true,
+   "copies": {
+    "table": 32976
+   }
+  },
+  {
+   "top": "Basics",
+   "sub": "KP",
+   "lists": true,
+   "copies": {
+    "table": 33013
+   },
+   "modes": [
+    [
+     "Sub lords",
+     33011
+    ],
+    [
+     "Planets in nakshatra",
+     33012
+    ],
+    [
+     "Planets in sub",
+     33014
+    ],
+    [
+     "Planets in prati-sub",
+     33015
+    ],
+    [
+     "Planets in sookshma-sub",
+     33016
+    ],
+    [
+     "Planets in praana-sub",
+     33017
+    ],
+    [
+     "Planets in deha-sub",
+     33018
+    ]
+   ]
+  },
+  {
+   "top": "Strengths",
+   "sub": "Ashtakavarga",
+   "lists": true,
+   "copies": {}
+  },
+  {
+   "top": "Strengths",
+   "sub": "Other strengths",
+   "lists": true,
+   "copies": {
+    "shadbala": 32977,
+    "vimsopaka": 32978,
+    "yogas": 32975
+   },
+   "modes": [
+    [
+     "Shadbala Summary",
+     32904
+    ],
+    [
+     "Shadbala Break-up",
+     32913
+    ],
+    [
+     "Sthana Bala",
+     32907
+    ],
+    [
+     "Kaala Bala",
+     32908
+    ],
+    [
+     "DigBala",
+     32909
+    ],
+    [
+     "Cheshta Bala",
+     32910
+    ],
+    [
+     "DrigBala",
+     32911
+    ],
+    [
+     "Naisargika Bala",
+     32912
+    ],
+    [
+     "Bhava balas",
+     32905
+    ],
+    [
+     "Ishta-Kashta Phala",
+     32906
+    ],
+    [
+     "Rashmis",
+     33317
+    ],
+    [
+     "Vimsopaka Balas",
+     33062
+    ],
+    [
+     "Amsa Balas",
+     32844
+    ],
+    [
+     "Basic Avasthas",
+     32897
+    ],
+    [
+     "Sayanadi Avasthas",
+     32898
+    ],
+    [
+     "Pancha-vargeeya Bala",
+     32932
+    ],
+    [
+     "Dwadasa-vargeeya Bala",
+     32933
+    ],
+    [
+     "Harsha Bala",
+     32931
+    ],
+    [
+     "All yogas",
+     33027
+    ],
+    [
+     "Pancha maha purusha yogas",
+     33028
+    ],
+    [
+     "Solar yogas",
+     33029
+    ],
+    [
+     "Lunar yogas",
+     33030
+    ],
+    [
+     "Naabhasa yogas",
+     33031
+    ],
+    [
+     "Raja yogas",
+     33032
+    ],
+    [
+     "Raja sambandha yogas",
+     33033
+    ],
+    [
+     "Dhana yogas",
+     33036
+    ],
+    [
+     "Daridra yogas",
+     33034
+    ],
+    [
+     "Parivraja yogas",
+     33035
+    ],
+    [
+     "Other popular yogas",
+     33038
+    ]
+   ]
+  },
+  {
+   "top": "Dasas",
+   "sub": "Nakshatra dasas",
+   "copies": {
+    "dasa": 32972,
+    "dasa_dates": 33236
+   },
+   "modes": [
+    [
+     "Vimsottari",
+     32846
+    ],
+    [
+     "Ashtottari",
+     32854
+    ],
+    [
+     "Kalachakra",
+     32847
+    ],
+    [
+     "Yogini",
+     32848
+    ],
+    [
+     "Dwisaptati sama",
+     32855
+    ],
+    [
+     "Shattrimsa sama",
+     32856
+    ],
+    [
+     "Dwadasottari",
+     32857
+    ],
+    [
+     "Chaturaseeti sama",
+     32858
+    ],
+    [
+     "Sataabdika",
+     32859
+    ],
+    [
+     "Shodasottari",
+     32860
+    ],
+    [
+     "Panchottari",
+     32861
+    ],
+    [
+     "Shashtihayani",
+     32862
+    ],
+    [
+     "Saptarshi nakshatra",
+     33329
+    ]
+   ],
+   "dasa_levels": true
+  },
+  {
+   "top": "Dasas",
+   "sub": "Rasi dasas",
+   "copies": {
+    "dasa": 32972,
+    "dasa_dates": 33236
+   },
+   "dasa_levels": true
+  },
+  {
+   "top": "Dasas",
+   "sub": "Other dasas",
+   "copies": {
+    "dasa": 32972,
+    "dasa_dates": 33236
+   },
+   "dasa_levels": true
+  },
+  {
+   "top": "Tajaka",
+   "sub": null,
+   "lists": true,
+   "copies": {}
+  }
+ ]
+}

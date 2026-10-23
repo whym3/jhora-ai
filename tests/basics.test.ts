@@ -61,3 +61,21 @@ describe('All Divisional Longitudes table matches JHora 8.0', async () => {
     });
   }
 });
+
+describe('Rasis occupied in all vargas (with arudhas) matches JHora 8.0', async () => {
+  const swe = await nodeSweph();
+  for (const chart of goldenCharts()) {
+    it(chart.name, async () => {
+      const got = runTable(await computeChart(swe, chart.birth), 'basics.rasisInVargas', {});
+      const golden = chart.views.find((v) => v.mode === 'Rasis occupied in all vargas')!;
+      expect(got.headers).toEqual(golden.headers);
+      expect(got.rows.map((r) => r[0])).toEqual(golden.rows.map((r) => r[0].trim()));
+      const bad: string[] = [];
+      golden.rows.forEach((r, i) => r.slice(1).forEach((cell, j) => {
+        if (!cell) return;
+        if (got.rows[i][j + 1] !== cell) bad.push(`${r[0].trim()} ${golden.headers[j + 1]}: ${got.rows[i][j + 1]} vs ${cell}`);
+      }));
+      expect(bad, bad.join('\n')).toEqual([]);
+    });
+  }
+});

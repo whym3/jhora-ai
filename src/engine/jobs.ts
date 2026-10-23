@@ -7,11 +7,26 @@ import { ALL_VARGAS, vargaLongitude, type VargaName } from '../core/vargas';
 import { charaKarakas, equalHousesMiddle, grahaYuddha, isCombust, lordLabel, navaTaras, ORDINAL, SHORT, specialTaras, yogiPoints } from '../core/basics';
 import { kpLords } from '../core/kp';
 import { varnada } from '../core/bodies';
-import { norm360 } from '../core/positions';
+import { norm360, type Graha } from '../core/positions';
 import type { NamedBody } from '../core/longitudes';
+import { bhavaArudha, grahaArudha, signArudha, type ArudhaOptions } from '../core/arudhas';
+import type { VargaCtx } from '../core/signStrength';
 import type { Table } from './protocol';
 
 const yes = (b: boolean) => (b ? 'Yes' : '-');
+
+/** Columns of JHora's "Rasis occupied in all vargas" table. */
+const RASI_COLUMNS: [string, VargaName][] = [
+  ['D-1', 'D1'], ['D-9', 'D9'], ['D-2 (US)', 'D2'], ['D-3 (Trd)', 'D3'], ['D-4', 'D4'], ['D-5', 'D5'], ['D-6', 'D6'],
+  ['D-7 (Trd)', 'D7'], ['D-8', 'D8'], ['D-10 (Trd)', 'D10'], ['D-11', 'D11'], ['D-12 (Trd)', 'D12'], ['D-16 (Trd)', 'D16'],
+  ['D-20 (Trd)', 'D20'], ['D-24 (Trd)', 'D24'], ['D-27 (Trd)', 'D27'], ['D-30', 'D30'], ['D-40', 'D40'], ['D-45', 'D45'],
+  ['D-60 (Trd)', 'D60'], ['D-81', 'D81'], ['D-108', 'D108'], ['D-144', 'D144'],
+];
+/** The ten "P's S Arudha" rows in JHora's order. */
+const SIGN_ARUDHA_ROWS: [Graha, number][] = [
+  ['Mars', 0], ['Mercury', 2], ['Jupiter', 8], ['Venus', 1], ['Saturn', 9],
+  ['Mars', 7], ['Mercury', 5], ['Jupiter', 11], ['Venus', 6], ['Saturn', 10],
+];
 
 /** Columns of JHora's "All Divisional Longitudes" table (default varga variants; D-0 is an empty research slot). */
 const DIV_COLUMNS: [string, VargaName | null][] = [
@@ -77,6 +92,37 @@ export const TABLES: Record<string, TableFn> = {
         labels[i], ...DIV_COLUMNS.map(([, v]) => formatVargaLongitude(bodyInVarga(chart, b, v!))),
       ]),
     };
+  },
+  // Basics > Key Info > "Rasis occupied in all vargas" (32823): 56 bodies + arudhas, per varga
+  'basics.rasisInVargas': (chart) => {
+    const labels = longitudeLabels(chart).map((l) => l.replace(/ - \w+$/, ''));   // keeps "(R)", drops the karaka
+    const opt: ArudhaOptions = {
+      bhavaExceptions: chart.ini.ExceptionsInBhavaArudhas !== 0,
+      grahaExceptions: chart.ini.ExceptionsInGrahaArudhas !== 0,
+      nodesAsLords: chart.ini.NodesInArudhas !== 0,
+    };
+    const rows: string[][] = [];
+    const cols = RASI_COLUMNS.map(([, v]) => v);
+    const ctxFor = (v: VargaName): VargaCtx => {
+      const spec = ALL_VARGAS[v];
+      return {
+        sign: (g) => signOf(vargaLongitude(chart.positions.grahas[g].lon, spec)),
+        degree: (g) => chart.positions.grahas[g].lon % 30,
+      };
+    };
+    const ctxs = cols.map(ctxFor);
+    const lagnas = cols.map((v) => signOf(vargaLongitude(chart.positions.ascendant, ALL_VARGAS[v])));
+    const put = (name: string, f: (ctx: VargaCtx, i: number) => number) => rows.push([name, ...ctxs.map((c, i) => SIGNS[f(c, i)])]);
+    chart.longitudes.forEach((b, i) => {
+      if (b.name === 'V2') {
+        // the arudha block sits before the varnadas
+        for (let h = 1; h <= 12; h++) put(h === 1 ? 'AL' : h === 12 ? 'UL' : `A${h}`, (c, k) => bhavaArudha((lagnas[k] + h - 1) % 12, c, opt));
+        for (const g of GRAHAS) put(`${g}'s Arudha`, (c) => grahaArudha(g, c, opt));
+        for (const [g, s] of SIGN_ARUDHA_ROWS) put(`${g}'s ${SIGNS[s]} Arudha`, (c) => signArudha(s, g, c, opt));
+      }
+      rows.push([labels[i], ...cols.map((v) => SIGNS[signOf(bodyInVarga(chart, b, v))])]);
+    });
+    return { headers: ['Body', ...RASI_COLUMNS.map((c) => c[0])], rows };
   },
   // Basics > Key Info > "Coordinates" (33071)
   'basics.coordinates': (chart) => ({

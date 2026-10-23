@@ -67,7 +67,9 @@ class Tabs:
                 groups[-1][1] = x
             else:
                 groups.append([x, x, v])
-        return [((g[0] + g[1]) // 2, g[2], g[1] - g[0]) for g in groups]
+        # Click near each group's left edge: the last caption's group also covers the
+        # empty strip to its right, so its centre can miss the caption.
+        return [(g[0] + min(24, (g[1] - g[0]) // 2), g[2], g[1] - g[0]) for g in groups]
 
     @staticmethod
     def _trim(groups, wanted):
