@@ -27,6 +27,9 @@ export interface BodyPosition {
   retrograde: boolean;
 }
 
+export type OuterPlanet = 'Uranus' | 'Neptune' | 'Pluto';
+const OUTER_ID: Record<OuterPlanet, number> = { Uranus: SE.URANUS, Neptune: SE.NEPTUNE, Pluto: SE.PLUTO };
+
 export interface Positions {
   jdUt: number;
   jdEt: number;
@@ -36,6 +39,7 @@ export interface Positions {
   ayanamsaMean: number;
   ascendant: number;
   grahas: Record<Graha, BodyPosition>;
+  outer: Record<OuterPlanet, BodyPosition>;
 }
 
 export const norm360 = (x: number) => ((x % 360) + 360) % 360;
@@ -88,6 +92,12 @@ export function computePositions(
   grahas.Rahu = { lon: norm360(node.lon - ay.trueEq), lat: node.lat, speed: node.speedLon, retrograde: true };
   grahas.Ketu = { lon: norm360(node.lon - ay.trueEq + 180), lat: -node.lat, speed: node.speedLon, retrograde: true };
 
+  const outer = {} as Record<OuterPlanet, BodyPosition>;
+  for (const o of Object.keys(OUTER_ID) as OuterPlanet[]) {
+    const p = swe.calcEt(jdEt, OUTER_ID[o], flags);
+    outer[o] = { lon: norm360(p.lon - ay.trueEq), lat: p.lat, speed: p.speedLon, retrograde: p.speedLon < 0 };
+  }
+
   const houses = swe.houses(jdUt, 0, geo.lat, geo.lon, 'P');
   return {
     jdUt, jdEt,
@@ -95,5 +105,6 @@ export function computePositions(
     ayanamsaMean: ay.mean,
     ascendant: norm360(houses.ascmc[0] - ay.mean),
     grahas,
+    outer,
   };
 }

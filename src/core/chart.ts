@@ -2,13 +2,16 @@
 import type { Sweph } from '../sweph';
 import { birthJdUt, type BirthData } from './jhd';
 import { computePositions, GRAHAS, type Graha, type Positions } from './positions';
-import { DEFAULT_SETTINGS, type Settings } from './settings';
+import { calcSettingsFromIni } from './settings';
 import { ALL_VARGAS, vargaLongitude, type VargaName } from './vargas';
+import { DEFAULTS, type JhoraIni } from '../settings/generated';
 
 export interface ChartBody { id: Graha | 'Lagna'; label: string; lon: number; retrograde: boolean }
 
 export interface Chart {
   birth: BirthData;
+  /** complete settings in effect for this chart (JHora ini keys) */
+  ini: JhoraIni;
   positions: Positions;
   /** D-1 bodies: Lagna first, then the nine grahas */
   bodies: ChartBody[];
@@ -19,10 +22,11 @@ export const SHORT_LABEL: Record<Graha | 'Lagna', string> = {
   Venus: 'Ve', Saturn: 'Sa', Rahu: 'Ra', Ketu: 'Ke',
 };
 
-export async function computeChart(swe: Sweph, birth: BirthData, settings: Settings = DEFAULT_SETTINGS): Promise<Chart> {
+export async function computeChart(swe: Sweph, birth: BirthData, iniOverrides: Partial<JhoraIni> = {}): Promise<Chart> {
+  const ini: JhoraIni = { ...DEFAULTS, ...iniOverrides };
   const jd = birthJdUt(birth, (y, m, d, h) => swe.julday(y, m, d, h));
   await swe.ensureEphemeris(jd);
-  const positions = computePositions(swe, jd, { lat: birth.lat, lon: birth.lon, alt: birth.altitudeM }, settings);
+  const positions = computePositions(swe, jd, { lat: birth.lat, lon: birth.lon, alt: birth.altitudeM }, calcSettingsFromIni(ini));
   const bodies: ChartBody[] = [
     { id: 'Lagna', label: SHORT_LABEL.Lagna, lon: positions.ascendant, retrograde: false },
     ...GRAHAS.map((g) => ({
@@ -30,11 +34,11 @@ export async function computeChart(swe: Sweph, birth: BirthData, settings: Setti
       retrograde: positions.grahas[g].retrograde && g !== 'Rahu' && g !== 'Ketu',
     })),
   ];
-  return { birth, positions, bodies };
+  return { birth, ini, positions, bodies };
 }
 
 /** Bodies grouped by the sign they occupy in a varga (index 0 = Aries). */
-export function signsInVarga(chart: Chart, varga: VargaName): ChartBody[][] {
+export function signsInVarga(chart: Pick<Chart, 'bodies'>, varga: VargaName): ChartBody[][] {
   const out: ChartBody[][] = Array.from({ length: 12 }, () => []);
   for (const b of chart.bodies) {
     const lon = vargaLongitude(b.lon, ALL_VARGAS[varga]);

@@ -5,6 +5,12 @@ import { setView, useStore } from '../state/store';
 import { KEY_INFO_MODES } from './tabs';
 import { NotPorted } from './NotPorted';
 
+/** A sub-tab that is one fixed table (Houses, KP, ...). */
+export function TableSubView({ spec, table }: { spec: ChartSpec; table: string }) {
+  const job = useJob({ kind: 'table' as const, chart: spec, table });
+  return <div className="subview"><TableView job={job} /></div>;
+}
+
 export function KeyInfoView({ spec }: { spec: ChartSpec }) {
   const mode = useStore((s) => s.view.basicsMode);
   const entry = KEY_INFO_MODES.find((m) => m[1] === mode) ?? KEY_INFO_MODES[0];

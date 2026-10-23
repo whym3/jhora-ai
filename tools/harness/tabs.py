@@ -45,21 +45,41 @@ class Tabs:
     def _visible(strip):
         return tuple(c.handle for c in strip.descendants(depth=3) if c.class_name() in PAGE_CLASSES and c.is_visible())
 
+    def _settled_visible(self, strip):
+        """Visible page set once it stops changing (a click can land mid-repaint)."""
+        v = self._visible(strip)
+        for _ in range(6):
+            time.sleep(0.1)
+            w = self._visible(strip)
+            if w == v:
+                return v
+            v = w
+        return v
+
     def _scan(self, strip, y_off, x_max=None, step=20):
         r = strip.rectangle()
         groups = []
         for x in range(r.left + 8, (x_max or r.right) - 8, step):
             strip.click_input(coords=(x - r.left, y_off), absolute=False)
             time.sleep(0.12)
-            v = self._visible(strip)
+            v = self._settled_visible(strip)
             if groups and groups[-1][2] == v:
                 groups[-1][1] = x
             else:
                 groups.append([x, x, v])
-        return [((g[0] + g[1]) // 2, g[2]) for g in groups]
+        return [((g[0] + g[1]) // 2, g[2], g[1] - g[0]) for g in groups]
+
+    @staticmethod
+    def _trim(groups, wanted):
+        """Drop single-sample groups (transient states) when there are too many."""
+        if len(groups) > wanted:
+            wide = [g for g in groups if g[2] > 0]
+            if len(wide) == wanted:
+                groups = wide
+        return [(g[0], g[1]) for g in groups]
 
     def _calibrate_top(self):
-        groups = self._scan(self.top, self.top_y, x_max=1500)
+        groups = self._trim(self._scan(self.top, self.top_y, x_max=1500), len(TOP_TABS))
         if len(groups) != len(TOP_TABS):
             raise TabError(f"expected {len(TOP_TABS)} top tabs, found {len(groups)}")
         self.top_groups = groups
@@ -75,7 +95,7 @@ class Tabs:
         for strip in strips:
             h = strip.rectangle().height()
             for y_off in (14, h - 14):
-                groups = self._scan(strip, y_off)
+                groups = self._trim(self._scan(strip, y_off), len(wanted))
                 if len(groups) == len(wanted):
                     self.sub[top_name] = (strip, y_off, groups)
                     self.log(f"tabs: {top_name} sub strip calibrated ({len(groups)} tabs)")

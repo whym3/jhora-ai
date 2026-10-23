@@ -21,10 +21,9 @@ export function ChartPane({ chart }: { chart: ChartResult | null }) {
   const { leftVargas, chartStyle } = useStore((s) => s.view);
   const charts = useMemo(() => {
     if (!chart) return null;
-    const full = { birth: null as never, positions: chart.positions, bodies: chart.bodies };
     return leftVargas.map((v) => ({
       varga: v,
-      signs: signsInVarga(full, v),
+      signs: signsInVarga(chart, v),
       lagna: signOf(vargaLongitude(chart.positions.ascendant, ALL_VARGAS[v])),
     }));
   }, [chart, leftVargas]);

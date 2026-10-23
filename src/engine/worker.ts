@@ -2,7 +2,6 @@
 import { loadEngine } from '../core/engine';
 import type { Sweph } from '../sweph';
 import { computeChart, type Chart } from '../core/chart';
-import { calcSettingsFromIni } from '../core/settings';
 import { stableStringify } from './hash';
 import type { ChartSpec, FromWorker, JobRequest, Table, ToWorker } from './protocol';
 import { runTable, runText } from './jobs';
@@ -41,7 +40,7 @@ function memo<T>(key: string, fn: () => Promise<T>): Promise<T> {
 }
 
 export function chartFor(spec: ChartSpec): Promise<Chart> {
-  return memo(`chart:${stableStringify(spec)}`, async () => computeChart(await engine, spec.birth, calcSettingsFromIni(spec.ini)));
+  return memo(`chart:${stableStringify(spec)}`, async () => computeChart(await engine, spec.birth, spec.ini));
 }
 
 const cancelled = new Set<number>();
