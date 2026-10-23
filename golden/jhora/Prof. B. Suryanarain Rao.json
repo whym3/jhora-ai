@@ -1,0 +1,10612 @@
+{
+ "chart": "Prof. B. Suryanarain Rao.jhd",
+ "window": "Jagannatha Hora - Prof. B. Suryanarain Rao.jhd",
+ "views": [
+  {
+   "tabs": [
+    "Many Vargas",
+    "Key Info",
+    "Key Info",
+    "Key Info"
+   ],
+   "control_id": 59648,
+   "mode": null,
+   "headers": [
+    "Body",
+    "Longitude",
+    "Nakshatra",
+    "Pada",
+    "Rasi",
+    "Navamsa"
+   ],
+   "rows": [
+    [
+     "Lagna ",
+     "14 Ta 06' 41.84\"",
+     "Rohi",
+     "2",
+     "Ta",
+     "Ta"
+    ],
+    [
+     "Sun - DK",
+     " 0 Aq 58' 29.02\"",
+     "Dhan",
+     "3",
+     "Aq",
+     "Li"
+    ],
+    [
+     "Moon - MK",
+     "20 Ar 45' 53.27\"",
+     "Bhar",
+     "3",
+     "Ar",
+     "Li"
+    ],
+    [
+     "Mars - AK",
+     "29 Vi 00' 14.43\"",
+     "Chit",
+     "2",
+     "Vi",
+     "Vi"
+    ],
+    [
+     "Mercury (R) - PK",
+     "11 Aq 27' 15.85\"",
+     "Sata",
+     "2",
+     "Aq",
+     "Cp"
+    ],
+    [
+     "Jupiter - PiK",
+     "18 Aq 11' 20.18\"",
+     "Sata",
+     "4",
+     "Aq",
+     "Pi"
+    ],
+    [
+     "Venus - BK",
+     "21 Sg 40' 53.88\"",
+     "PSha",
+     "3",
+     "Sg",
+     "Li"
+    ],
+    [
+     "Saturn (R) - GK",
+     " 1 Ge 22' 09.42\"",
+     "Mrig",
+     "3",
+     "Ge",
+     "Li"
+    ],
+    [
+     "Rahu - AmK",
+     " 6 Ar 06' 21.19\"",
+     "Aswi",
+     "2",
+     "Ar",
+     "Ta"
+    ],
+    [
+     "Ketu ",
+     " 6 Li 06' 21.19\"",
+     "Chit",
+     "4",
+     "Li",
+     "Sc"
+    ],
+    [
+     "Maandi ",
+     "23 Ta 06' 39.70\"",
+     "Rohi",
+     "4",
+     "Ta",
+     "Cn"
+    ],
+    [
+     "Gulika ",
+     "12 Ta 30' 10.84\"",
+     "Rohi",
+     "1",
+     "Ta",
+     "Ar"
+    ],
+    [
+     "Bhava Lagna ",
+     "27 Ar 41' 24.32\"",
+     "Krit",
+     "1",
+     "Ar",
+     "Sg"
+    ],
+    [
+     "Hora Lagna ",
+     "24 Cn 38' 58.64\"",
+     "Asre",
+     "3",
+     "Cn",
+     "Aq"
+    ],
+    [
+     "Ghati Lagna ",
+     "15 Ar 31' 41.59\"",
+     "Bhar",
+     "1",
+     "Ar",
+     "Le"
+    ],
+    [
+     "Vighati Lagna ",
+     "29 Sc 55' 16.37\"",
+     "Jye",
+     "4",
+     "Sc",
+     "Pi"
+    ],
+    [
+     "Varnada Lagna ",
+     "14 Le 06' 41.84\"",
+     "PPha",
+     "1",
+     "Le",
+     "Ar"
+    ],
+    [
+     "Sree Lagna ",
+     " 4 Sg 45' 40.05\"",
+     "Mool",
+     "2",
+     "Sg",
+     "Ta"
+    ],
+    [
+     "Pranapada Lagna ",
+     " 0 Le 09' 55.39\"",
+     "Magh",
+     "1",
+     "Le",
+     "Ar"
+    ],
+    [
+     "Indu Lagna ",
+     "20 Aq 45' 53.27\"",
+     "PBha",
+     "1",
+     "Aq",
+     "Ar"
+    ],
+    [
+     "Bhrigu Bindu ",
+     "13 Ar 26' 07.23\"",
+     "Bhar",
+     "1",
+     "Ar",
+     "Le"
+    ],
+    [
+     "Dhooma ",
+     "14 Ge 18' 29.02\"",
+     "Ardr",
+     "3",
+     "Ge",
+     "Aq"
+    ],
+    [
+     "Vyatipata ",
+     "15 Cp 41' 30.98\"",
+     "Srav",
+     "2",
+     "Cp",
+     "Ta"
+    ],
+    [
+     "Parivesha ",
+     "15 Cn 41' 30.98\"",
+     "Push",
+     "4",
+     "Cn",
+     "Sc"
+    ],
+    [
+     "Indra Chapa ",
+     "14 Sg 18' 29.02\"",
+     "PSha",
+     "1",
+     "Sg",
+     "Le"
+    ],
+    [
+     "Upaketu ",
+     " 0 Cp 58' 29.02\"",
+     "USha",
+     "2",
+     "Cp",
+     "Cp"
+    ],
+    [
+     "Kaala ",
+     " 2 Cn 14' 28.20\"",
+     "Puna",
+     "4",
+     "Cn",
+     "Cn"
+    ],
+    [
+     "Mrityu ",
+     "13 Aq 28' 22.78\"",
+     "Sata",
+     "3",
+     "Aq",
+     "Aq"
+    ],
+    [
+     "Artha Prahara ",
+     "10 Pi 17' 25.60\"",
+     "UBha",
+     "3",
+     "Pi",
+     "Li"
+    ],
+    [
+     "Yama Ghantaka ",
+     " 6 Ar 54' 41.91\"",
+     "Aswi",
+     "3",
+     "Ar",
+     "Ge"
+    ],
+    [
+     "Prana Sphuta ",
+     "23 Sg 03' 40.05\"",
+     "PSha",
+     "3",
+     "Sg",
+     "Li"
+    ],
+    [
+     "Deha Sphuta ",
+     "28 Li 37' 16.98\"",
+     "Visa",
+     "3",
+     "Li",
+     "Ge"
+    ],
+    [
+     "Mrityu Sphuta ",
+     "28 Sc 29' 44.91\"",
+     "Jye",
+     "4",
+     "Sc",
+     "Pi"
+    ],
+    [
+     "Sookshma TriSphuta ",
+     "20 Pi 10' 41.95\"",
+     "Reva",
+     "2",
+     "Pi",
+     "Cp"
+    ],
+    [
+     "Tithi Sphuta ",
+     "19 Ge 47' 24.24\"",
+     "Ardr",
+     "4",
+     "Ge",
+     "Pi"
+    ],
+    [
+     "Yoga Sphuta (Sun-Moon) ",
+     "21 Aq 44' 22.29\"",
+     "PBha",
+     "1",
+     "Aq",
+     "Ar"
+    ],
+    [
+     "Rahu Tithi Sphuta ",
+     " 5 Ge 07' 52.16\"",
+     "Mrig",
+     "4",
+     "Ge",
+     "Sc"
+    ],
+    [
+     "Kshetra Sphuta ",
+     " 7 Vi 57' 27.88\"",
+     "UPha",
+     "4",
+     "Vi",
+     "Pi"
+    ],
+    [
+     "Beeja Sphuta ",
+     "10 Vi 50' 43.09\"",
+     "Hast",
+     "1",
+     "Vi",
+     "Ar"
+    ],
+    [
+     "TriSphuta ",
+     "17 Cn 22' 45.95\"",
+     "Asre",
+     "1",
+     "Cn",
+     "Sg"
+    ],
+    [
+     "ChatusSphuta ",
+     "18 Ta 21' 14.97\"",
+     "Rohi",
+     "3",
+     "Ta",
+     "Ge"
+    ],
+    [
+     "PanchaSphuta ",
+     "24 Ta 27' 36.16\"",
+     "Mrig",
+     "1",
+     "Ta",
+     "Le"
+    ],
+    [
+     "V2 ",
+     "14 Sc 06' 41.84\"",
+     "Anu",
+     "4",
+     "Sc",
+     "Ta"
+    ],
+    [
+     "V3 ",
+     "14 Sg 06' 41.84\"",
+     "PSha",
+     "1",
+     "Sg",
+     "Le"
+    ],
+    [
+     "V4 ",
+     "14 Pi 06' 41.84\"",
+     "UBha",
+     "4",
+     "Pi",
+     "Vi"
+    ],
+    [
+     "V5 ",
+     "14 Ar 06' 41.84\"",
+     "Bhar",
+     "1",
+     "Ar",
+     "Sg"
+    ],
+    [
+     "V6 ",
+     "14 Cn 06' 41.84\"",
+     "Push",
+     "4",
+     "Cn",
+     "Ta"
+    ],
+    [
+     "V7 ",
+     "14 Le 06' 41.84\"",
+     "PPha",
+     "1",
+     "Le",
+     "Ar"
+    ],
+    [
+     "V8 ",
+     "14 Sc 06' 41.84\"",
+     "Anu",
+     "4",
+     "Sc",
+     "Ta"
+    ],
+    [
+     "V9 ",
+     "14 Sg 06' 41.84\"",
+     "PSha",
+     "1",
+     "Sg",
+     "Sg"
+    ],
+    [
+     "V10 ",
+     "14 Pi 06' 41.84\"",
+     "UBha",
+     "4",
+     "Pi",
+     "Vi"
+    ],
+    [
+     "V11 ",
+     "14 Ar 06' 41.84\"",
+     "Bhar",
+     "1",
+     "Ar",
+     "Le"
+    ],
+    [
+     "V12 ",
+     "14 Cn 06' 41.84\"",
+     "Push",
+     "4",
+     "Cn",
+     "Ta"
+    ],
+    [
+     "Kunda ",
+     " 3 Pi 02' 29.25\"",
+     "PBha",
+     "4",
+     "Pi",
+     "Cn"
+    ],
+    [
+     "Yoga Sphuta ",
+     "25 Ta 04' 22.29\"",
+     "Mrig",
+     "1",
+     "Ta",
+     "Le"
+    ],
+    [
+     "Avayoga Sphuta ",
+     " 1 Sg 44' 22.29\"",
+     "Mool",
+     "1",
+     "Sg",
+     "Ar"
+    ]
+   ]
+  },
+  {
+   "tabs": [
+    "Many Vargas",
+    "Key Info",
+    "Key Info",
+    "Houses"
+   ],
+   "control_id": 13577,
+   "mode": null,
+   "headers": [
+    "House",
+    "Start",
+    "Cusp",
+    "End",
+    "Planets in it"
+   ],
+   "rows": [
+    [
+     "1st",
+     "29 Ar 06' 41.84\"",
+     "14 Ta 06' 41.84\"",
+     "29 Ta 06' 41.84\"",
+     "As"
+    ],
+    [
+     "2nd",
+     "29 Ta 06' 41.84\"",
+     "14 Ge 06' 41.84\"",
+     "29 Ge 06' 41.84\"",
+     "Sa"
+    ],
+    [
+     "3rd",
+     "29 Ge 06' 41.84\"",
+     "14 Cn 06' 41.84\"",
+     "29 Cn 06' 41.84\"",
+     ""
+    ],
+    [
+     "4th",
+     "29 Cn 06' 41.84\"",
+     "14 Le 06' 41.84\"",
+     "29 Le 06' 41.84\"",
+     ""
+    ],
+    [
+     "5th",
+     "29 Le 06' 41.84\"",
+     "14 Vi 06' 41.84\"",
+     "29 Vi 06' 41.84\"",
+     "Ma"
+    ],
+    [
+     "6th",
+     "29 Vi 06' 41.84\"",
+     "14 Li 06' 41.84\"",
+     "29 Li 06' 41.84\"",
+     "Ke"
+    ],
+    [
+     "7th",
+     "29 Li 06' 41.84\"",
+     "14 Sc 06' 41.84\"",
+     "29 Sc 06' 41.84\"",
+     ""
+    ],
+    [
+     "8th",
+     "29 Sc 06' 41.84\"",
+     "14 Sg 06' 41.84\"",
+     "29 Sg 06' 41.84\"",
+     "Ve"
+    ],
+    [
+     "9th",
+     "29 Sg 06' 41.84\"",
+     "14 Cp 06' 41.84\"",
+     "29 Cp 06' 41.84\"",
+     ""
+    ],
+    [
+     "10th",
+     "29 Cp 06' 41.84\"",
+     "14 Aq 06' 41.84\"",
+     "29 Aq 06' 41.84\"",
+     "Su, Me, Ju, Ne"
+    ],
+    [
+     "11th",
+     "29 Aq 06' 41.84\"",
+     "14 Pi 06' 41.84\"",
+     "29 Pi 06' 41.84\"",
+     ""
+    ],
+    [
+     "12th",
+     "29 Pi 06' 41.84\"",
+     "14 Ar 06' 41.84\"",
+     "29 Ar 06' 41.84\"",
+     "Mo, Ra, Ur, Pl"
+    ]
+   ]
+  },
+  {
+   "tabs": [
+    "Many Vargas",
+    "Key Info",
+    "Key Info",
+    "Amsa rulers"
+   ],
+   "control_id": 13578,
+   "mode": null,
+   "headers": [
+    "Body",
+    "Division",
+    "Index",
+    "In whose amsa in D-150"
+   ],
+   "rows": [
+    [
+     "Lagna",
+     "71",
+     "80",
+     "Sobhaa"
+    ],
+    [
+     "Sun",
+     "4",
+     "147",
+     "Sragvi"
+    ],
+    [
+     "Moon",
+     "104",
+     "104",
+     "Saamadaa"
+    ],
+    [
+     "Mars",
+     "147",
+     "72",
+     "Kaali"
+    ],
+    [
+     "Mercury (R)",
+     "58",
+     "93",
+     "Mudrikaa"
+    ],
+    [
+     "Jupiter",
+     "92",
+     "59",
+     "Manaadha (Maanaghna)"
+    ],
+    [
+     "Venus",
+     "110",
+     "35",
+     "Durdharaa"
+    ],
+    [
+     "Saturn (R)",
+     "8",
+     "83",
+     "Sivaa"
+    ],
+    [
+     "Rahu",
+     "31",
+     "31",
+     "Kaantaa"
+    ],
+    [
+     "Ketu",
+     "31",
+     "31",
+     "Kaantaa"
+    ],
+    [
+     "Bhava Lagna",
+     "138",
+     "138",
+     "Basita"
+    ],
+    [
+     "Hora Lagna",
+     "124",
+     "124",
+     "Dhanakari"
+    ],
+    [
+     "Ghati Lagna",
+     "78",
+     "78",
+     "Sukhadaa"
+    ],
+    [
+     "Vighati Lagna",
+     "150",
+     "1",
+     "Vasudha"
+    ],
+    [
+     "Pranapada Lagna",
+     "1",
+     "150",
+     "Parameswari"
+    ],
+    [
+     "Sree Lagna",
+     "24",
+     "99",
+     "Nisaachari"
+    ],
+    [
+     "Indu Lagna",
+     "104",
+     "47",
+     "Kaalaa/Karaalaa"
+    ],
+    [
+     "Bhrigu Bindu",
+     "68",
+     "68",
+     "Nirmalaa"
+    ],
+    [
+     "Kunda",
+     "16",
+     "91",
+     "Somalataa"
+    ],
+    [
+     "Dhooma",
+     "72",
+     "147",
+     "Sragvi"
+    ],
+    [
+     "Vyatipata",
+     "79",
+     "79",
+     "Suprabhaa"
+    ],
+    [
+     "Parivesha",
+     "79",
+     "79",
+     "Suprabhaa"
+    ],
+    [
+     "Indra Chapa",
+     "72",
+     "147",
+     "Sragvi"
+    ],
+    [
+     "Upaketu",
+     "4",
+     "4",
+     "Kaalakoota"
+    ],
+    [
+     "Kaala",
+     "12",
+     "12",
+     "Manjuswana"
+    ],
+    [
+     "Mrityu",
+     "68",
+     "83",
+     "Sivaa"
+    ],
+    [
+     "Artha Prahara",
+     "52",
+     "127",
+     "Ambujaa"
+    ],
+    [
+     "Yama Ghantaka",
+     "35",
+     "35",
+     "Durdharaa"
+    ],
+    [
+     "Maandi",
+     "116",
+     "35",
+     "Durdharaa"
+    ],
+    [
+     "Gulika",
+     "62",
+     "89",
+     "Sumanoharaa"
+    ],
+    [
+     "Prana Sphuta",
+     "116",
+     "41",
+     "Bheema"
+    ],
+    [
+     "Deha Sphuta",
+     "143",
+     "143",
+     "Viraprasoo"
+    ],
+    [
+     "Mrityu Sphuta",
+     "142",
+     "9",
+     "Maayaa"
+    ],
+    [
+     "Sookshma TriSphuta",
+     "100",
+     "25",
+     "Paasaa"
+    ],
+    [
+     "Tithi Sphuta",
+     "99",
+     "24",
+     "Mudgala"
+    ],
+    [
+     "Yoga Sphuta (Sun-Moon)",
+     "110",
+     "41",
+     "Bheema"
+    ],
+    [
+     "Rahu Tithi Sphuta",
+     "25",
+     "100",
+     "Nivriti"
+    ],
+    [
+     "Kshetra Sphuta",
+     "39",
+     "114",
+     "Peetha"
+    ],
+    [
+     "Beeja Sphuta",
+     "54",
+     "129",
+     "Soolini"
+    ],
+    [
+     "TriSphuta",
+     "89",
+     "89",
+     "Sumanoharaa"
+    ],
+    [
+     "ChatusSphuta",
+     "92",
+     "59",
+     "Manaadha (Maanaghna)"
+    ],
+    [
+     "PanchaSphuta",
+     "123",
+     "28",
+     "Mahi"
+    ],
+    [
+     "Yoga Sphuta",
+     "127",
+     "24",
+     "Mudgala"
+    ],
+    [
+     "Avayoga Sphuta",
+     "9",
+     "84",
+     "Balaa"
+    ],
+    [
+     "Varnada Lagna",
+     "2",
+     "149",
+     "Naagapankaja"
+    ],
+    [
+     "V2",
+     "9",
+     "142",
+     "Kalasodbhava"
+    ],
+    [
+     "V3",
+     "6",
+     "81",
+     "Sobhana"
+    ],
+    [
+     "V4",
+     "9",
+     "84",
+     "Balaa"
+    ],
+    [
+     "V5",
+     "2",
+     "2",
+     "Vaishnavi"
+    ],
+    [
+     "V6",
+     "1",
+     "1",
+     "Vasudha"
+    ],
+    [
+     "V7",
+     "2",
+     "149",
+     "Naagapankaja"
+    ],
+    [
+     "V8",
+     "9",
+     "142",
+     "Kalasodbhava"
+    ],
+    [
+     "V9",
+     "6",
+     "81",
+     "Sobhana"
+    ],
+    [
+     "V10",
+     "9",
+     "84",
+     "Balaa"
+    ],
+    [
+     "V11",
+     "2",
+     "2",
+     "Vaishnavi"
+    ],
+    [
+     "V12",
+     "1",
+     "1",
+     "Vasudha"
+    ]
+   ]
+  },
+  {
+   "tabs": [
+    "Many Vargas",
+    "Key Info",
+    "Key Info",
+    "KP"
+   ],
+   "control_id": 13579,
+   "mode": null,
+   "headers": [
+    "Body/Cusp",
+    "Nakshatra lord",
+    "Sub lord",
+    "Prati-sub",
+    "Sookshma-sub",
+    "Praana-sub",
+    "Deha-sub"
+   ],
+   "rows": [
+    [
+     "As",
+     "Mo",
+     "Ju",
+     "Ju",
+     "Ra",
+     "Ke",
+     "Su"
+    ],
+    [
+     "Su",
+     "Ma",
+     "Me",
+     "Ma",
+     "Ju",
+     "Ve",
+     "Ve"
+    ],
+    [
+     "Mo",
+     "Ve",
+     "Ju",
+     "Me",
+     "Ma",
+     "Me",
+     "Sa"
+    ],
+    [
+     "Ma",
+     "Ma",
+     "Sa",
+     "Su",
+     "Mo",
+     "Ra",
+     "Ju"
+    ],
+    [
+     "Me",
+     "Ra",
+     "Sa",
+     "Ve",
+     "Sa",
+     "Ve",
+     "Me"
+    ],
+    [
+     "Ju",
+     "Ra",
+     "Mo",
+     "Mo",
+     "Ve",
+     "Ma",
+     "Ve"
+    ],
+    [
+     "Ve",
+     "Ve",
+     "Ju",
+     "Ra",
+     "Ju",
+     "Ve",
+     "Ma"
+    ],
+    [
+     "Sa",
+     "Ma",
+     "Me",
+     "Ju",
+     "Ju",
+     "Ra",
+     "Me"
+    ],
+    [
+     "Ra",
+     "Ke",
+     "Ra",
+     "Ju",
+     "Ra",
+     "Ke",
+     "Ve"
+    ],
+    [
+     "Ke",
+     "Ma",
+     "Mo",
+     "Sa",
+     "Ve",
+     "Ju",
+     "Ju"
+    ],
+    [
+     "Ur",
+     "Ve",
+     "Me",
+     "Ra",
+     "Sa",
+     "Ve",
+     "Ve"
+    ],
+    [
+     "Ne",
+     "Ju",
+     "Me",
+     "Ra",
+     "Ke",
+     "Me",
+     "Ju"
+    ],
+    [
+     "Pl",
+     "Ke",
+     "Sa",
+     "Ra",
+     "Me",
+     "Ra",
+     "Me"
+    ],
+    [
+     "1st house",
+     "Mo",
+     "Ju",
+     "Ju",
+     "Ra",
+     "Ke",
+     "Su"
+    ],
+    [
+     "2nd house",
+     "Ra",
+     "Me",
+     "Ju",
+     "Ra",
+     "Ra",
+     "Ve"
+    ],
+    [
+     "3rd house",
+     "Sa",
+     "Ra",
+     "Ke",
+     "Ra",
+     "Sa",
+     "Ju"
+    ],
+    [
+     "4th house",
+     "Ve",
+     "Ve",
+     "Ma",
+     "Ve",
+     "Ke",
+     "Ra"
+    ],
+    [
+     "5th house",
+     "Mo",
+     "Ju",
+     "Ju",
+     "Ra",
+     "Ke",
+     "Su"
+    ],
+    [
+     "6th house",
+     "Ra",
+     "Me",
+     "Ju",
+     "Ra",
+     "Ra",
+     "Ve"
+    ],
+    [
+     "7th house",
+     "Sa",
+     "Ra",
+     "Ke",
+     "Ra",
+     "Sa",
+     "Ju"
+    ],
+    [
+     "8th house",
+     "Ve",
+     "Ve",
+     "Ma",
+     "Ve",
+     "Ke",
+     "Ra"
+    ],
+    [
+     "9th house",
+     "Mo",
+     "Ju",
+     "Ju",
+     "Ra",
+     "Ke",
+     "Su"
+    ],
+    [
+     "10th house",
+     "Ra",
+     "Me",
+     "Ju",
+     "Ra",
+     "Ra",
+     "Ve"
+    ],
+    [
+     "11th house",
+     "Sa",
+     "Ra",
+     "Ke",
+     "Ra",
+     "Sa",
+     "Ju"
+    ],
+    [
+     "12th house",
+     "Ve",
+     "Ve",
+     "Ma",
+     "Ve",
+     "Ke",
+     "Ra"
+    ]
+   ]
+  },
+  {
+   "tabs": [
+    "Many Vargas",
+    "Ashtakavarga",
+    "Ashtakavarga",
+    "Other strengths"
+   ],
+   "control_id": 59648,
+   "mode": null,
+   "headers": [
+    "Planet",
+    "Shadbala",
+    "In rupas",
+    "% Strength",
+    "IshtaPhala",
+    "KashtaPhala"
+   ],
+   "rows": [
+    [
+     "Sun",
+     "446.47",
+     "7.44",
+     "148.82",
+     "25.80",
+     "31.09"
+    ],
+    [
+     "Moon",
+     "308.88",
+     "5.15",
+     "85.80",
+     "38.57",
+     "11.67"
+    ],
+    [
+     "Mars",
+     "265.40",
+     "4.42",
+     "88.47",
+     "20.76",
+     "39.23"
+    ],
+    [
+     "Mercury",
+     "400.65",
+     "6.68",
+     "95.39",
+     "12.09",
+     "47.87"
+    ],
+    [
+     "Jupiter",
+     "361.48",
+     "6.02",
+     "92.69",
+     "11.99",
+     "47.76"
+    ],
+    [
+     "Venus",
+     "356.77",
+     "5.95",
+     "108.11",
+     "32.33",
+     "27.01"
+    ],
+    [
+     "Saturn",
+     "290.26",
+     "4.84",
+     "96.75",
+     "26.00",
+     "22.52"
+    ]
+   ]
+  },
+  {
+   "tabs": [
+    "Many Vargas",
+    "Ashtakavarga",
+    "Ashtakavarga",
+    "Other strengths"
+   ],
+   "control_id": 59664,
+   "mode": null,
+   "headers": [
+    "Vimsopaka",
+    "Dasa Varga (10)",
+    "Shodasa Varga (16)",
+    "Sapta Varga (7)",
+    "Shad Varga (6)"
+   ],
+   "rows": [
+    [
+     "Sun",
+     "10.73  (53.63%)",
+     "10.80  (54.00%)",
+     "6.80  (34.00%)",
+     "6.55  (32.75%)"
+    ],
+    [
+     "Moon",
+     "12.00  (60.00%)",
+     "11.35  (56.75%)",
+     "9.25  (46.25%)",
+     "7.95  (39.75%)"
+    ],
+    [
+     "Mars",
+     "11.78  (58.88%)",
+     "11.38  (56.88%)",
+     "9.32  (46.63%)",
+     "8.45  (42.25%)"
+    ],
+    [
+     "Mercury",
+     "13.58  (67.88%)",
+     "13.10  (65.50%)",
+     "13.67  (68.38%)",
+     "13.70  (68.50%)"
+    ],
+    [
+     "Jupiter",
+     "8.20  (41.00%)",
+     "9.60  (48.00%)",
+     "8.95  (44.75%)",
+     "10.05  (50.25%)"
+    ],
+    [
+     "Venus",
+     "11.88  (59.38%)",
+     "12.92  (64.63%)",
+     "11.93  (59.63%)",
+     "13.30  (66.50%)"
+    ],
+    [
+     "Saturn",
+     "8.97  (44.88%)",
+     "9.13  (45.63%)",
+     "9.40  (47.00%)",
+     "9.25  (46.25%)"
+    ],
+    [
+     "Rahu",
+     "9.63  (48.13%)",
+     "9.32  (46.63%)",
+     "8.88  (44.38%)",
+     "8.60  (43.00%)"
+    ],
+    [
+     "Ketu",
+     "14.18  (70.88%)",
+     "13.60  (68.00%)",
+     "15.13  (75.63%)",
+     "14.90  (74.50%)"
+    ]
+   ]
+  },
+  {
+   "tabs": [
+    "Many Vargas",
+    "Ashtakavarga",
+    "Ashtakavarga",
+    "Other strengths"
+   ],
+   "control_id": 59680,
+   "mode": null,
+   "headers": [
+    "Yoga",
+    "Varga",
+    "Yoga givers",
+    "Results ascribed to yoga",
+    "Brief definition of yoga"
+   ],
+   "rows": [
+    [
+     "Nipuna (Budha-Aditya)",
+     "D-1",
+     "Su, Me",
+     "Skillful, expert, well-known and respected",
+     "Sun and Mercury together or in mutual 7ths"
+    ],
+    [
+     "Paasa",
+     "D-1",
+     "Naabhasa yoga - throughout life",
+     "Talkative, characterless, may be imprisoned",
+     "Seven planets in 5 rasis"
+    ],
+    [
+     "Asubha",
+     "D-1",
+     "Sa, Ra",
+     "Desirous, sinful and enjoying the wealth of others",
+     "Malefics in 2nd and 12th houses"
+    ],
+    [
+     "Kaahala",
+     "D-1",
+     "Su, Ju",
+     "Strong, bold, cunning, leads a large army",
+     "Jupiter and 4th lord in mutual kendras, strong lagna lord"
+    ],
+    [
+     "Chaamara",
+     "D-1",
+     "Me, Ju",
+     "Long-lived, scholarly, eloquent, learned in many arts",
+     "Two benefics in 7th, 9th and 10th"
+    ],
+    [
+     "Yogakaraka",
+     "D-1",
+     "Sa",
+     "Success and achievements",
+     "Same planet owns a kendra and a kona"
+    ],
+    [
+     "Raja/Lakshmi",
+     "D-1",
+     "Ve, Sa",
+     "Fortunate and high achiever",
+     "Conjunction, aspect or exchange of 1st/9th lords"
+    ],
+    [
+     "Rajayoga",
+     "D-1",
+     "Sa, Me",
+     "Successful and high achievements",
+     "Conjunction, aspect or exchange of kendra/kona lords"
+    ],
+    [
+     "Rajayoga",
+     "D-1",
+     "Su, Me",
+     "Successful and high achievements",
+     "Conjunction, aspect or exchange of kendra/kona lords"
+    ],
+    [
+     "Viparita Raja Yoga",
+     "D-1",
+     "Ve",
+     "Success after pressures or someone else's losses",
+     "6th lord in 8th or 12th"
+    ],
+    [
+     "Raja Sambandha",
+     "D-1",
+     "Ve, Sa",
+     "Important person in a king's court",
+     "Dispositor of amatya karaka conjoining/aspecting 10th lord"
+    ]
+   ]
+  },
+  {
+   "tabs": [
+    "Many Vargas",
+    "Use the data below",
+    "Use the data below",
+    "Use the data below"
+   ],
+   "control_id": 59664,
+   "mode": null,
+   "headers": [
+    "Planet",
+    "Tara",
+    "Murthi",
+    "House",
+    "Under vedha from",
+    "Causing vedha to"
+   ],
+   "rows": [
+    [
+     "Sun",
+     "Kshema (Well-being)",
+     "Swarna - golden",
+     "11th (Good)",
+     "-",
+     "Venus"
+    ],
+    [
+     "Moon",
+     "Janma (Birth)",
+     "-",
+     "1st (Good)",
+     "-",
+     "-"
+    ],
+    [
+     "Mars",
+     "Kshema (Well-being)",
+     "Loha - iron",
+     "6th (Good)",
+     "Venus",
+     "-"
+    ],
+    [
+     "Mercury",
+     "Pratyak (Obstacles)",
+     "Swarna - golden",
+     "11th (Good)",
+     "-",
+     "Venus"
+    ],
+    [
+     "Jupiter",
+     "Pratyak (Obstacles)",
+     "Rajata - silver",
+     "11th (Good)",
+     "-",
+     "Venus"
+    ],
+    [
+     "Venus",
+     "Janma (Birth)",
+     "Rajata - silver",
+     "9th (Good)",
+     "Sun, Mercury, Jupiter",
+     "Mars"
+    ],
+    [
+     "Saturn",
+     "Kshema (Well-being)",
+     "Rajata - silver",
+     "3rd (Good)",
+     "-",
+     "-"
+    ],
+    [
+     "Rahu",
+     "Parama Mitra (Good friend)",
+     "Taamra - copper",
+     "1st",
+     "-",
+     "-"
+    ],
+    [
+     "Ketu",
+     "Kshema (Well-being)",
+     "Taamra - copper",
+     "7th",
+     "-",
+     "-"
+    ],
+    [
+     "  ",
+     "",
+     "",
+     "",
+     "",
+     ""
+    ],
+    [
+     "Reference:",
+     "Moon of natal D-1",
+     "",
+     "",
+     "",
+     ""
+    ]
+   ]
+  },
+  {
+   "tabs": [
+    "Many Vargas",
+    "Use the data below",
+    "Use the data below",
+    "Use the data below"
+   ],
+   "control_id": 59649,
+   "mode": null,
+   "headers": [
+    "Body",
+    "Longitude",
+    "Nakshatra",
+    "Pada",
+    "Rasi",
+    "Navamsa"
+   ],
+   "rows": [
+    [
+     "Lagna ",
+     "14 Ta 06' 41.84\"",
+     "Rohi",
+     "2",
+     "Ta",
+     "Ta"
+    ],
+    [
+     "Sun - DK",
+     " 0 Aq 58' 29.02\"",
+     "Dhan",
+     "3",
+     "Aq",
+     "Li"
+    ],
+    [
+     "Moon - MK",
+     "20 Ar 45' 53.27\"",
+     "Bhar",
+     "3",
+     "Ar",
+     "Li"
+    ],
+    [
+     "Mars - AK",
+     "29 Vi 00' 14.43\"",
+     "Chit",
+     "2",
+     "Vi",
+     "Vi"
+    ],
+    [
+     "Mercury (R) - PK",
+     "11 Aq 27' 15.85\"",
+     "Sata",
+     "2",
+     "Aq",
+     "Cp"
+    ],
+    [
+     "Jupiter - PiK",
+     "18 Aq 11' 20.18\"",
+     "Sata",
+     "4",
+     "Aq",
+     "Pi"
+    ],
+    [
+     "Venus - BK",
+     "21 Sg 40' 53.88\"",
+     "PSha",
+     "3",
+     "Sg",
+     "Li"
+    ],
+    [
+     "Saturn (R) - GK",
+     " 1 Ge 22' 09.42\"",
+     "Mrig",
+     "3",
+     "Ge",
+     "Li"
+    ],
+    [
+     "Rahu - AmK",
+     " 6 Ar 06' 21.19\"",
+     "Aswi",
+     "2",
+     "Ar",
+     "Ta"
+    ],
+    [
+     "Ketu ",
+     " 6 Li 06' 21.19\"",
+     "Chit",
+     "4",
+     "Li",
+     "Sc"
+    ],
+    [
+     "Maandi ",
+     "23 Ta 06' 39.70\"",
+     "Rohi",
+     "4",
+     "Ta",
+     "Cn"
+    ],
+    [
+     "Gulika ",
+     "12 Ta 30' 10.84\"",
+     "Rohi",
+     "1",
+     "Ta",
+     "Ar"
+    ],
+    [
+     "Bhava Lagna ",
+     "27 Ar 41' 24.32\"",
+     "Krit",
+     "1",
+     "Ar",
+     "Sg"
+    ],
+    [
+     "Hora Lagna ",
+     "24 Cn 38' 58.64\"",
+     "Asre",
+     "3",
+     "Cn",
+     "Aq"
+    ],
+    [
+     "Ghati Lagna ",
+     "15 Ar 31' 41.59\"",
+     "Bhar",
+     "1",
+     "Ar",
+     "Le"
+    ],
+    [
+     "Vighati Lagna ",
+     "29 Sc 55' 16.37\"",
+     "Jye",
+     "4",
+     "Sc",
+     "Pi"
+    ],
+    [
+     "Varnada Lagna ",
+     "14 Le 06' 41.84\"",
+     "PPha",
+     "1",
+     "Le",
+     "Ar"
+    ],
+    [
+     "Sree Lagna ",
+     " 4 Sg 45' 40.05\"",
+     "Mool",
+     "2",
+     "Sg",
+     "Ta"
+    ],
+    [
+     "Pranapada Lagna ",
+     " 0 Le 09' 55.39\"",
+     "Magh",
+     "1",
+     "Le",
+     "Ar"
+    ],
+    [
+     "Indu Lagna ",
+     "20 Aq 45' 53.27\"",
+     "PBha",
+     "1",
+     "Aq",
+     "Ar"
+    ],
+    [
+     "Bhrigu Bindu ",
+     "13 Ar 26' 07.23\"",
+     "Bhar",
+     "1",
+     "Ar",
+     "Le"
+    ],
+    [
+     "Dhooma ",
+     "14 Ge 18' 29.02\"",
+     "Ardr",
+     "3",
+     "Ge",
+     "Aq"
+    ],
+    [
+     "Vyatipata ",
+     "15 Cp 41' 30.98\"",
+     "Srav",
+     "2",
+     "Cp",
+     "Ta"
+    ],
+    [
+     "Parivesha ",
+     "15 Cn 41' 30.98\"",
+     "Push",
+     "4",
+     "Cn",
+     "Sc"
+    ],
+    [
+     "Indra Chapa ",
+     "14 Sg 18' 29.02\"",
+     "PSha",
+     "1",
+     "Sg",
+     "Le"
+    ],
+    [
+     "Upaketu ",
+     " 0 Cp 58' 29.02\"",
+     "USha",
+     "2",
+     "Cp",
+     "Cp"
+    ],
+    [
+     "Kaala ",
+     " 2 Cn 14' 28.20\"",
+     "Puna",
+     "4",
+     "Cn",
+     "Cn"
+    ],
+    [
+     "Mrityu ",
+     "13 Aq 28' 22.78\"",
+     "Sata",
+     "3",
+     "Aq",
+     "Aq"
+    ],
+    [
+     "Artha Prahara ",
+     "10 Pi 17' 25.60\"",
+     "UBha",
+     "3",
+     "Pi",
+     "Li"
+    ],
+    [
+     "Yama Ghantaka ",
+     " 6 Ar 54' 41.91\"",
+     "Aswi",
+     "3",
+     "Ar",
+     "Ge"
+    ],
+    [
+     "Prana Sphuta ",
+     "23 Sg 03' 40.05\"",
+     "PSha",
+     "3",
+     "Sg",
+     "Li"
+    ],
+    [
+     "Deha Sphuta ",
+     "28 Li 37' 16.98\"",
+     "Visa",
+     "3",
+     "Li",
+     "Ge"
+    ],
+    [
+     "Mrityu Sphuta ",
+     "28 Sc 29' 44.91\"",
+     "Jye",
+     "4",
+     "Sc",
+     "Pi"
+    ],
+    [
+     "Sookshma TriSphuta ",
+     "20 Pi 10' 41.95\"",
+     "Reva",
+     "2",
+     "Pi",
+     "Cp"
+    ],
+    [
+     "Tithi Sphuta ",
+     "19 Ge 47' 24.24\"",
+     "Ardr",
+     "4",
+     "Ge",
+     "Pi"
+    ],
+    [
+     "Yoga Sphuta (Sun-Moon) ",
+     "21 Aq 44' 22.29\"",
+     "PBha",
+     "1",
+     "Aq",
+     "Ar"
+    ],
+    [
+     "Rahu Tithi Sphuta ",
+     " 5 Ge 07' 52.16\"",
+     "Mrig",
+     "4",
+     "Ge",
+     "Sc"
+    ],
+    [
+     "Kshetra Sphuta ",
+     " 7 Vi 57' 27.88\"",
+     "UPha",
+     "4",
+     "Vi",
+     "Pi"
+    ],
+    [
+     "Beeja Sphuta ",
+     "10 Vi 50' 43.09\"",
+     "Hast",
+     "1",
+     "Vi",
+     "Ar"
+    ],
+    [
+     "TriSphuta ",
+     "17 Cn 22' 45.95\"",
+     "Asre",
+     "1",
+     "Cn",
+     "Sg"
+    ],
+    [
+     "ChatusSphuta ",
+     "18 Ta 21' 14.97\"",
+     "Rohi",
+     "3",
+     "Ta",
+     "Ge"
+    ],
+    [
+     "PanchaSphuta ",
+     "24 Ta 27' 36.16\"",
+     "Mrig",
+     "1",
+     "Ta",
+     "Le"
+    ],
+    [
+     "V2 ",
+     "14 Sc 06' 41.84\"",
+     "Anu",
+     "4",
+     "Sc",
+     "Ta"
+    ],
+    [
+     "V3 ",
+     "14 Sg 06' 41.84\"",
+     "PSha",
+     "1",
+     "Sg",
+     "Le"
+    ],
+    [
+     "V4 ",
+     "14 Pi 06' 41.84\"",
+     "UBha",
+     "4",
+     "Pi",
+     "Vi"
+    ],
+    [
+     "V5 ",
+     "14 Ar 06' 41.84\"",
+     "Bhar",
+     "1",
+     "Ar",
+     "Sg"
+    ],
+    [
+     "V6 ",
+     "14 Cn 06' 41.84\"",
+     "Push",
+     "4",
+     "Cn",
+     "Ta"
+    ],
+    [
+     "V7 ",
+     "14 Le 06' 41.84\"",
+     "PPha",
+     "1",
+     "Le",
+     "Ar"
+    ],
+    [
+     "V8 ",
+     "14 Sc 06' 41.84\"",
+     "Anu",
+     "4",
+     "Sc",
+     "Ta"
+    ],
+    [
+     "V9 ",
+     "14 Sg 06' 41.84\"",
+     "PSha",
+     "1",
+     "Sg",
+     "Sg"
+    ],
+    [
+     "V10 ",
+     "14 Pi 06' 41.84\"",
+     "UBha",
+     "4",
+     "Pi",
+     "Vi"
+    ],
+    [
+     "V11 ",
+     "14 Ar 06' 41.84\"",
+     "Bhar",
+     "1",
+     "Ar",
+     "Le"
+    ],
+    [
+     "V12 ",
+     "14 Cn 06' 41.84\"",
+     "Push",
+     "4",
+     "Cn",
+     "Ta"
+    ],
+    [
+     "Kunda ",
+     " 3 Pi 02' 29.25\"",
+     "PBha",
+     "4",
+     "Pi",
+     "Cn"
+    ],
+    [
+     "Yoga Sphuta ",
+     "25 Ta 04' 22.29\"",
+     "Mrig",
+     "1",
+     "Ta",
+     "Le"
+    ],
+    [
+     "Avayoga Sphuta ",
+     " 1 Sg 44' 22.29\"",
+     "Mool",
+     "1",
+     "Sg",
+     "Ar"
+    ]
+   ]
+  },
+  {
+   "tabs": [
+    "Many Vargas",
+    "Use the data below",
+    "Use the data below",
+    "Date:"
+   ],
+   "control_id": 59649,
+   "mode": null,
+   "headers": [
+    "Body",
+    "Longitude",
+    "Nakshatra",
+    "Pada",
+    "Rasi",
+    "Navamsa"
+   ],
+   "rows": [
+    [
+     "Lagna ",
+     "14 Ta 06' 41.84\"",
+     "Rohi",
+     "2",
+     "Ta",
+     "Ta"
+    ],
+    [
+     "Sun - DK",
+     " 0 Aq 58' 29.02\"",
+     "Dhan",
+     "3",
+     "Aq",
+     "Li"
+    ],
+    [
+     "Moon - MK",
+     "20 Ar 45' 53.27\"",
+     "Bhar",
+     "3",
+     "Ar",
+     "Li"
+    ],
+    [
+     "Mars - AK",
+     "29 Vi 00' 14.43\"",
+     "Chit",
+     "2",
+     "Vi",
+     "Vi"
+    ],
+    [
+     "Mercury (R) - PK",
+     "11 Aq 27' 15.85\"",
+     "Sata",
+     "2",
+     "Aq",
+     "Cp"
+    ],
+    [
+     "Jupiter - PiK",
+     "18 Aq 11' 20.18\"",
+     "Sata",
+     "4",
+     "Aq",
+     "Pi"
+    ],
+    [
+     "Venus - BK",
+     "21 Sg 40' 53.88\"",
+     "PSha",
+     "3",
+     "Sg",
+     "Li"
+    ],
+    [
+     "Saturn (R) - GK",
+     " 1 Ge 22' 09.42\"",
+     "Mrig",
+     "3",
+     "Ge",
+     "Li"
+    ],
+    [
+     "Rahu - AmK",
+     " 6 Ar 06' 21.19\"",
+     "Aswi",
+     "2",
+     "Ar",
+     "Ta"
+    ],
+    [
+     "Ketu ",
+     " 6 Li 06' 21.19\"",
+     "Chit",
+     "4",
+     "Li",
+     "Sc"
+    ],
+    [
+     "Maandi ",
+     "23 Ta 06' 39.70\"",
+     "Rohi",
+     "4",
+     "Ta",
+     "Cn"
+    ],
+    [
+     "Gulika ",
+     "12 Ta 30' 10.84\"",
+     "Rohi",
+     "1",
+     "Ta",
+     "Ar"
+    ],
+    [
+     "Bhava Lagna ",
+     "27 Ar 41' 24.32\"",
+     "Krit",
+     "1",
+     "Ar",
+     "Sg"
+    ],
+    [
+     "Hora Lagna ",
+     "24 Cn 38' 58.64\"",
+     "Asre",
+     "3",
+     "Cn",
+     "Aq"
+    ],
+    [
+     "Ghati Lagna ",
+     "15 Ar 31' 41.59\"",
+     "Bhar",
+     "1",
+     "Ar",
+     "Le"
+    ],
+    [
+     "Vighati Lagna ",
+     "29 Sc 55' 16.37\"",
+     "Jye",
+     "4",
+     "Sc",
+     "Pi"
+    ],
+    [
+     "Varnada Lagna ",
+     "14 Le 06' 41.84\"",
+     "PPha",
+     "1",
+     "Le",
+     "Ar"
+    ],
+    [
+     "Sree Lagna ",
+     " 4 Sg 45' 40.05\"",
+     "Mool",
+     "2",
+     "Sg",
+     "Ta"
+    ],
+    [
+     "Pranapada Lagna ",
+     " 0 Le 09' 55.39\"",
+     "Magh",
+     "1",
+     "Le",
+     "Ar"
+    ],
+    [
+     "Indu Lagna ",
+     "20 Aq 45' 53.27\"",
+     "PBha",
+     "1",
+     "Aq",
+     "Ar"
+    ],
+    [
+     "Bhrigu Bindu ",
+     "13 Ar 26' 07.23\"",
+     "Bhar",
+     "1",
+     "Ar",
+     "Le"
+    ],
+    [
+     "Dhooma ",
+     "14 Ge 18' 29.02\"",
+     "Ardr",
+     "3",
+     "Ge",
+     "Aq"
+    ],
+    [
+     "Vyatipata ",
+     "15 Cp 41' 30.98\"",
+     "Srav",
+     "2",
+     "Cp",
+     "Ta"
+    ],
+    [
+     "Parivesha ",
+     "15 Cn 41' 30.98\"",
+     "Push",
+     "4",
+     "Cn",
+     "Sc"
+    ],
+    [
+     "Indra Chapa ",
+     "14 Sg 18' 29.02\"",
+     "PSha",
+     "1",
+     "Sg",
+     "Le"
+    ],
+    [
+     "Upaketu ",
+     " 0 Cp 58' 29.02\"",
+     "USha",
+     "2",
+     "Cp",
+     "Cp"
+    ],
+    [
+     "Kaala ",
+     " 2 Cn 14' 28.20\"",
+     "Puna",
+     "4",
+     "Cn",
+     "Cn"
+    ],
+    [
+     "Mrityu ",
+     "13 Aq 28' 22.78\"",
+     "Sata",
+     "3",
+     "Aq",
+     "Aq"
+    ],
+    [
+     "Artha Prahara ",
+     "10 Pi 17' 25.60\"",
+     "UBha",
+     "3",
+     "Pi",
+     "Li"
+    ],
+    [
+     "Yama Ghantaka ",
+     " 6 Ar 54' 41.91\"",
+     "Aswi",
+     "3",
+     "Ar",
+     "Ge"
+    ],
+    [
+     "Prana Sphuta ",
+     "23 Sg 03' 40.05\"",
+     "PSha",
+     "3",
+     "Sg",
+     "Li"
+    ],
+    [
+     "Deha Sphuta ",
+     "28 Li 37' 16.98\"",
+     "Visa",
+     "3",
+     "Li",
+     "Ge"
+    ],
+    [
+     "Mrityu Sphuta ",
+     "28 Sc 29' 44.91\"",
+     "Jye",
+     "4",
+     "Sc",
+     "Pi"
+    ],
+    [
+     "Sookshma TriSphuta ",
+     "20 Pi 10' 41.95\"",
+     "Reva",
+     "2",
+     "Pi",
+     "Cp"
+    ],
+    [
+     "Tithi Sphuta ",
+     "19 Ge 47' 24.24\"",
+     "Ardr",
+     "4",
+     "Ge",
+     "Pi"
+    ],
+    [
+     "Yoga Sphuta (Sun-Moon) ",
+     "21 Aq 44' 22.29\"",
+     "PBha",
+     "1",
+     "Aq",
+     "Ar"
+    ],
+    [
+     "Rahu Tithi Sphuta ",
+     " 5 Ge 07' 52.16\"",
+     "Mrig",
+     "4",
+     "Ge",
+     "Sc"
+    ],
+    [
+     "Kshetra Sphuta ",
+     " 7 Vi 57' 27.88\"",
+     "UPha",
+     "4",
+     "Vi",
+     "Pi"
+    ],
+    [
+     "Beeja Sphuta ",
+     "10 Vi 50' 43.09\"",
+     "Hast",
+     "1",
+     "Vi",
+     "Ar"
+    ],
+    [
+     "TriSphuta ",
+     "17 Cn 22' 45.95\"",
+     "Asre",
+     "1",
+     "Cn",
+     "Sg"
+    ],
+    [
+     "ChatusSphuta ",
+     "18 Ta 21' 14.97\"",
+     "Rohi",
+     "3",
+     "Ta",
+     "Ge"
+    ],
+    [
+     "PanchaSphuta ",
+     "24 Ta 27' 36.16\"",
+     "Mrig",
+     "1",
+     "Ta",
+     "Le"
+    ],
+    [
+     "V2 ",
+     "14 Sc 06' 41.84\"",
+     "Anu",
+     "4",
+     "Sc",
+     "Ta"
+    ],
+    [
+     "V3 ",
+     "14 Sg 06' 41.84\"",
+     "PSha",
+     "1",
+     "Sg",
+     "Le"
+    ],
+    [
+     "V4 ",
+     "14 Pi 06' 41.84\"",
+     "UBha",
+     "4",
+     "Pi",
+     "Vi"
+    ],
+    [
+     "V5 ",
+     "14 Ar 06' 41.84\"",
+     "Bhar",
+     "1",
+     "Ar",
+     "Sg"
+    ],
+    [
+     "V6 ",
+     "14 Cn 06' 41.84\"",
+     "Push",
+     "4",
+     "Cn",
+     "Ta"
+    ],
+    [
+     "V7 ",
+     "14 Le 06' 41.84\"",
+     "PPha",
+     "1",
+     "Le",
+     "Ar"
+    ],
+    [
+     "V8 ",
+     "14 Sc 06' 41.84\"",
+     "Anu",
+     "4",
+     "Sc",
+     "Ta"
+    ],
+    [
+     "V9 ",
+     "14 Sg 06' 41.84\"",
+     "PSha",
+     "1",
+     "Sg",
+     "Sg"
+    ],
+    [
+     "V10 ",
+     "14 Pi 06' 41.84\"",
+     "UBha",
+     "4",
+     "Pi",
+     "Vi"
+    ],
+    [
+     "V11 ",
+     "14 Ar 06' 41.84\"",
+     "Bhar",
+     "1",
+     "Ar",
+     "Le"
+    ],
+    [
+     "V12 ",
+     "14 Cn 06' 41.84\"",
+     "Push",
+     "4",
+     "Cn",
+     "Ta"
+    ],
+    [
+     "Kunda ",
+     " 3 Pi 02' 29.25\"",
+     "PBha",
+     "4",
+     "Pi",
+     "Cn"
+    ],
+    [
+     "Yoga Sphuta ",
+     "25 Ta 04' 22.29\"",
+     "Mrig",
+     "1",
+     "Ta",
+     "Le"
+    ],
+    [
+     "Avayoga Sphuta ",
+     " 1 Sg 44' 22.29\"",
+     "Mool",
+     "1",
+     "Sg",
+     "Ar"
+    ]
+   ]
+  },
+  {
+   "tabs": [
+    "Many Vargas",
+    "Use the data below",
+    "Use the data below",
+    "Date:"
+   ],
+   "control_id": 59665,
+   "mode": null,
+   "headers": [
+    "Planet",
+    "Tara",
+    "Murthi",
+    "House",
+    "Under vedha from",
+    "Causing vedha to"
+   ],
+   "rows": [
+    [
+     "Sun",
+     "Kshema (Well-being)",
+     "Swarna - golden",
+     "11th (Good)",
+     "-",
+     "Venus"
+    ],
+    [
+     "Moon",
+     "Janma (Birth)",
+     "-",
+     "1st (Good)",
+     "-",
+     "-"
+    ],
+    [
+     "Mars",
+     "Kshema (Well-being)",
+     "Loha - iron",
+     "6th (Good)",
+     "Venus",
+     "-"
+    ],
+    [
+     "Mercury",
+     "Pratyak (Obstacles)",
+     "Swarna - golden",
+     "11th (Good)",
+     "-",
+     "Venus"
+    ],
+    [
+     "Jupiter",
+     "Pratyak (Obstacles)",
+     "Rajata - silver",
+     "11th (Good)",
+     "-",
+     "Venus"
+    ],
+    [
+     "Venus",
+     "Janma (Birth)",
+     "Rajata - silver",
+     "9th (Good)",
+     "Sun, Mercury, Jupiter",
+     "Mars"
+    ],
+    [
+     "Saturn",
+     "Kshema (Well-being)",
+     "Rajata - silver",
+     "3rd (Good)",
+     "-",
+     "-"
+    ],
+    [
+     "Rahu",
+     "Parama Mitra (Good friend)",
+     "Taamra - copper",
+     "1st",
+     "-",
+     "-"
+    ],
+    [
+     "Ketu",
+     "Kshema (Well-being)",
+     "Taamra - copper",
+     "7th",
+     "-",
+     "-"
+    ],
+    [
+     "  ",
+     "",
+     "",
+     "",
+     "",
+     ""
+    ],
+    [
+     "Reference:",
+     "Moon of natal D-1",
+     "",
+     "",
+     "",
+     ""
+    ]
+   ]
+  },
+  {
+   "tabs": [
+    "Many Vargas",
+    "Use the data below",
+    "Use the data below",
+    "Enter data below and click this button.",
+    "Enter data below and click this button."
+   ],
+   "control_id": 59664,
+   "mode": null,
+   "headers": [],
+   "rows": []
+  },
+  {
+   "tabs": [
+    "Many Vargas",
+    "Year: ",
+    "Year: "
+   ],
+   "control_id": 59665,
+   "mode": null,
+   "headers": [
+    "Body",
+    "Longitude",
+    "Nakshatra",
+    "Pada",
+    "Rasi",
+    "Navamsa"
+   ],
+   "rows": [
+    [
+     "Lagna ",
+     "14 Ta 06' 41.84\"",
+     "Rohi",
+     "2",
+     "Ta",
+     "Ta"
+    ],
+    [
+     "Sun - DK",
+     " 0 Aq 58' 29.02\"",
+     "Dhan",
+     "3",
+     "Aq",
+     "Li"
+    ],
+    [
+     "Moon - MK",
+     "20 Ar 45' 53.27\"",
+     "Bhar",
+     "3",
+     "Ar",
+     "Li"
+    ],
+    [
+     "Mars - AK",
+     "29 Vi 00' 14.43\"",
+     "Chit",
+     "2",
+     "Vi",
+     "Vi"
+    ],
+    [
+     "Mercury (R) - PK",
+     "11 Aq 27' 15.85\"",
+     "Sata",
+     "2",
+     "Aq",
+     "Cp"
+    ],
+    [
+     "Jupiter - PiK",
+     "18 Aq 11' 20.18\"",
+     "Sata",
+     "4",
+     "Aq",
+     "Pi"
+    ],
+    [
+     "Venus - BK",
+     "21 Sg 40' 53.88\"",
+     "PSha",
+     "3",
+     "Sg",
+     "Li"
+    ],
+    [
+     "Saturn (R) - GK",
+     " 1 Ge 22' 09.42\"",
+     "Mrig",
+     "3",
+     "Ge",
+     "Li"
+    ],
+    [
+     "Rahu - AmK",
+     " 6 Ar 06' 21.19\"",
+     "Aswi",
+     "2",
+     "Ar",
+     "Ta"
+    ],
+    [
+     "Ketu ",
+     " 6 Li 06' 21.19\"",
+     "Chit",
+     "4",
+     "Li",
+     "Sc"
+    ],
+    [
+     "Maandi ",
+     "23 Ta 06' 39.70\"",
+     "Rohi",
+     "4",
+     "Ta",
+     "Cn"
+    ],
+    [
+     "Gulika ",
+     "12 Ta 30' 10.84\"",
+     "Rohi",
+     "1",
+     "Ta",
+     "Ar"
+    ],
+    [
+     "Bhava Lagna ",
+     "27 Ar 41' 24.32\"",
+     "Krit",
+     "1",
+     "Ar",
+     "Sg"
+    ],
+    [
+     "Hora Lagna ",
+     "24 Cn 38' 58.64\"",
+     "Asre",
+     "3",
+     "Cn",
+     "Aq"
+    ],
+    [
+     "Ghati Lagna ",
+     "15 Ar 31' 41.59\"",
+     "Bhar",
+     "1",
+     "Ar",
+     "Le"
+    ],
+    [
+     "Vighati Lagna ",
+     "29 Sc 55' 16.37\"",
+     "Jye",
+     "4",
+     "Sc",
+     "Pi"
+    ],
+    [
+     "Varnada Lagna ",
+     "14 Le 06' 41.84\"",
+     "PPha",
+     "1",
+     "Le",
+     "Ar"
+    ],
+    [
+     "Sree Lagna ",
+     " 4 Sg 45' 40.05\"",
+     "Mool",
+     "2",
+     "Sg",
+     "Ta"
+    ],
+    [
+     "Pranapada Lagna ",
+     " 0 Le 09' 55.39\"",
+     "Magh",
+     "1",
+     "Le",
+     "Ar"
+    ],
+    [
+     "Indu Lagna ",
+     "20 Aq 45' 53.27\"",
+     "PBha",
+     "1",
+     "Aq",
+     "Ar"
+    ],
+    [
+     "Bhrigu Bindu ",
+     "13 Ar 26' 07.23\"",
+     "Bhar",
+     "1",
+     "Ar",
+     "Le"
+    ],
+    [
+     "Dhooma ",
+     "14 Ge 18' 29.02\"",
+     "Ardr",
+     "3",
+     "Ge",
+     "Aq"
+    ],
+    [
+     "Vyatipata ",
+     "15 Cp 41' 30.98\"",
+     "Srav",
+     "2",
+     "Cp",
+     "Ta"
+    ],
+    [
+     "Parivesha ",
+     "15 Cn 41' 30.98\"",
+     "Push",
+     "4",
+     "Cn",
+     "Sc"
+    ],
+    [
+     "Indra Chapa ",
+     "14 Sg 18' 29.02\"",
+     "PSha",
+     "1",
+     "Sg",
+     "Le"
+    ],
+    [
+     "Upaketu ",
+     " 0 Cp 58' 29.02\"",
+     "USha",
+     "2",
+     "Cp",
+     "Cp"
+    ],
+    [
+     "Kaala ",
+     " 2 Cn 14' 28.20\"",
+     "Puna",
+     "4",
+     "Cn",
+     "Cn"
+    ],
+    [
+     "Mrityu ",
+     "13 Aq 28' 22.78\"",
+     "Sata",
+     "3",
+     "Aq",
+     "Aq"
+    ],
+    [
+     "Artha Prahara ",
+     "10 Pi 17' 25.60\"",
+     "UBha",
+     "3",
+     "Pi",
+     "Li"
+    ],
+    [
+     "Yama Ghantaka ",
+     " 6 Ar 54' 41.91\"",
+     "Aswi",
+     "3",
+     "Ar",
+     "Ge"
+    ],
+    [
+     "Prana Sphuta ",
+     "23 Sg 03' 40.05\"",
+     "PSha",
+     "3",
+     "Sg",
+     "Li"
+    ],
+    [
+     "Deha Sphuta ",
+     "28 Li 37' 16.98\"",
+     "Visa",
+     "3",
+     "Li",
+     "Ge"
+    ],
+    [
+     "Mrityu Sphuta ",
+     "28 Sc 29' 44.91\"",
+     "Jye",
+     "4",
+     "Sc",
+     "Pi"
+    ],
+    [
+     "Sookshma TriSphuta ",
+     "20 Pi 10' 41.95\"",
+     "Reva",
+     "2",
+     "Pi",
+     "Cp"
+    ],
+    [
+     "Tithi Sphuta ",
+     "19 Ge 47' 24.24\"",
+     "Ardr",
+     "4",
+     "Ge",
+     "Pi"
+    ],
+    [
+     "Yoga Sphuta (Sun-Moon) ",
+     "21 Aq 44' 22.29\"",
+     "PBha",
+     "1",
+     "Aq",
+     "Ar"
+    ],
+    [
+     "Rahu Tithi Sphuta ",
+     " 5 Ge 07' 52.16\"",
+     "Mrig",
+     "4",
+     "Ge",
+     "Sc"
+    ],
+    [
+     "Kshetra Sphuta ",
+     " 7 Vi 57' 27.88\"",
+     "UPha",
+     "4",
+     "Vi",
+     "Pi"
+    ],
+    [
+     "Beeja Sphuta ",
+     "10 Vi 50' 43.09\"",
+     "Hast",
+     "1",
+     "Vi",
+     "Ar"
+    ],
+    [
+     "TriSphuta ",
+     "17 Cn 22' 45.95\"",
+     "Asre",
+     "1",
+     "Cn",
+     "Sg"
+    ],
+    [
+     "ChatusSphuta ",
+     "18 Ta 21' 14.97\"",
+     "Rohi",
+     "3",
+     "Ta",
+     "Ge"
+    ],
+    [
+     "PanchaSphuta ",
+     "24 Ta 27' 36.16\"",
+     "Mrig",
+     "1",
+     "Ta",
+     "Le"
+    ],
+    [
+     "V2 ",
+     "14 Sc 06' 41.84\"",
+     "Anu",
+     "4",
+     "Sc",
+     "Ta"
+    ],
+    [
+     "V3 ",
+     "14 Sg 06' 41.84\"",
+     "PSha",
+     "1",
+     "Sg",
+     "Le"
+    ],
+    [
+     "V4 ",
+     "14 Pi 06' 41.84\"",
+     "UBha",
+     "4",
+     "Pi",
+     "Vi"
+    ],
+    [
+     "V5 ",
+     "14 Ar 06' 41.84\"",
+     "Bhar",
+     "1",
+     "Ar",
+     "Sg"
+    ],
+    [
+     "V6 ",
+     "14 Cn 06' 41.84\"",
+     "Push",
+     "4",
+     "Cn",
+     "Ta"
+    ],
+    [
+     "V7 ",
+     "14 Le 06' 41.84\"",
+     "PPha",
+     "1",
+     "Le",
+     "Ar"
+    ],
+    [
+     "V8 ",
+     "14 Sc 06' 41.84\"",
+     "Anu",
+     "4",
+     "Sc",
+     "Ta"
+    ],
+    [
+     "V9 ",
+     "14 Sg 06' 41.84\"",
+     "PSha",
+     "1",
+     "Sg",
+     "Sg"
+    ],
+    [
+     "V10 ",
+     "14 Pi 06' 41.84\"",
+     "UBha",
+     "4",
+     "Pi",
+     "Vi"
+    ],
+    [
+     "V11 ",
+     "14 Ar 06' 41.84\"",
+     "Bhar",
+     "1",
+     "Ar",
+     "Le"
+    ],
+    [
+     "V12 ",
+     "14 Cn 06' 41.84\"",
+     "Push",
+     "4",
+     "Cn",
+     "Ta"
+    ],
+    [
+     "Kunda ",
+     " 3 Pi 02' 29.25\"",
+     "PBha",
+     "4",
+     "Pi",
+     "Cn"
+    ],
+    [
+     "Yoga Sphuta ",
+     "25 Ta 04' 22.29\"",
+     "Mrig",
+     "1",
+     "Ta",
+     "Le"
+    ],
+    [
+     "Avayoga Sphuta ",
+     " 1 Sg 44' 22.29\"",
+     "Mool",
+     "1",
+     "Sg",
+     "Ar"
+    ]
+   ]
+  },
+  {
+   "tabs": [
+    "Many Vargas",
+    "Must click this at the end",
+    "Must click this at the end"
+   ],
+   "control_id": 59649,
+   "mode": null,
+   "headers": [
+    "Body",
+    "Longitude",
+    "Nakshatra",
+    "Pada",
+    "Rasi",
+    "Navamsa"
+   ],
+   "rows": [
+    [
+     "Lagna ",
+     "14 Ta 06' 41.84\"",
+     "Rohi",
+     "2",
+     "Ta",
+     "Ta"
+    ],
+    [
+     "Sun - DK",
+     " 0 Aq 58' 29.02\"",
+     "Dhan",
+     "3",
+     "Aq",
+     "Li"
+    ],
+    [
+     "Moon - MK",
+     "20 Ar 45' 53.27\"",
+     "Bhar",
+     "3",
+     "Ar",
+     "Li"
+    ],
+    [
+     "Mars - AK",
+     "29 Vi 00' 14.43\"",
+     "Chit",
+     "2",
+     "Vi",
+     "Vi"
+    ],
+    [
+     "Mercury (R) - PK",
+     "11 Aq 27' 15.85\"",
+     "Sata",
+     "2",
+     "Aq",
+     "Cp"
+    ],
+    [
+     "Jupiter - PiK",
+     "18 Aq 11' 20.18\"",
+     "Sata",
+     "4",
+     "Aq",
+     "Pi"
+    ],
+    [
+     "Venus - BK",
+     "21 Sg 40' 53.88\"",
+     "PSha",
+     "3",
+     "Sg",
+     "Li"
+    ],
+    [
+     "Saturn (R) - GK",
+     " 1 Ge 22' 09.42\"",
+     "Mrig",
+     "3",
+     "Ge",
+     "Li"
+    ],
+    [
+     "Rahu - AmK",
+     " 6 Ar 06' 21.19\"",
+     "Aswi",
+     "2",
+     "Ar",
+     "Ta"
+    ],
+    [
+     "Ketu ",
+     " 6 Li 06' 21.19\"",
+     "Chit",
+     "4",
+     "Li",
+     "Sc"
+    ],
+    [
+     "Maandi ",
+     "23 Ta 06' 39.70\"",
+     "Rohi",
+     "4",
+     "Ta",
+     "Cn"
+    ],
+    [
+     "Gulika ",
+     "12 Ta 30' 10.84\"",
+     "Rohi",
+     "1",
+     "Ta",
+     "Ar"
+    ],
+    [
+     "Bhava Lagna ",
+     "27 Ar 41' 24.32\"",
+     "Krit",
+     "1",
+     "Ar",
+     "Sg"
+    ],
+    [
+     "Hora Lagna ",
+     "24 Cn 38' 58.64\"",
+     "Asre",
+     "3",
+     "Cn",
+     "Aq"
+    ],
+    [
+     "Ghati Lagna ",
+     "15 Ar 31' 41.59\"",
+     "Bhar",
+     "1",
+     "Ar",
+     "Le"
+    ],
+    [
+     "Vighati Lagna ",
+     "29 Sc 55' 16.37\"",
+     "Jye",
+     "4",
+     "Sc",
+     "Pi"
+    ],
+    [
+     "Varnada Lagna ",
+     "14 Le 06' 41.84\"",
+     "PPha",
+     "1",
+     "Le",
+     "Ar"
+    ],
+    [
+     "Sree Lagna ",
+     " 4 Sg 45' 40.05\"",
+     "Mool",
+     "2",
+     "Sg",
+     "Ta"
+    ],
+    [
+     "Pranapada Lagna ",
+     " 0 Le 09' 55.39\"",
+     "Magh",
+     "1",
+     "Le",
+     "Ar"
+    ],
+    [
+     "Indu Lagna ",
+     "20 Aq 45' 53.27\"",
+     "PBha",
+     "1",
+     "Aq",
+     "Ar"
+    ],
+    [
+     "Bhrigu Bindu ",
+     "13 Ar 26' 07.23\"",
+     "Bhar",
+     "1",
+     "Ar",
+     "Le"
+    ],
+    [
+     "Dhooma ",
+     "14 Ge 18' 29.02\"",
+     "Ardr",
+     "3",
+     "Ge",
+     "Aq"
+    ],
+    [
+     "Vyatipata ",
+     "15 Cp 41' 30.98\"",
+     "Srav",
+     "2",
+     "Cp",
+     "Ta"
+    ],
+    [
+     "Parivesha ",
+     "15 Cn 41' 30.98\"",
+     "Push",
+     "4",
+     "Cn",
+     "Sc"
+    ],
+    [
+     "Indra Chapa ",
+     "14 Sg 18' 29.02\"",
+     "PSha",
+     "1",
+     "Sg",
+     "Le"
+    ],
+    [
+     "Upaketu ",
+     " 0 Cp 58' 29.02\"",
+     "USha",
+     "2",
+     "Cp",
+     "Cp"
+    ],
+    [
+     "Kaala ",
+     " 2 Cn 14' 28.20\"",
+     "Puna",
+     "4",
+     "Cn",
+     "Cn"
+    ],
+    [
+     "Mrityu ",
+     "13 Aq 28' 22.78\"",
+     "Sata",
+     "3",
+     "Aq",
+     "Aq"
+    ],
+    [
+     "Artha Prahara ",
+     "10 Pi 17' 25.60\"",
+     "UBha",
+     "3",
+     "Pi",
+     "Li"
+    ],
+    [
+     "Yama Ghantaka ",
+     " 6 Ar 54' 41.91\"",
+     "Aswi",
+     "3",
+     "Ar",
+     "Ge"
+    ],
+    [
+     "Prana Sphuta ",
+     "23 Sg 03' 40.05\"",
+     "PSha",
+     "3",
+     "Sg",
+     "Li"
+    ],
+    [
+     "Deha Sphuta ",
+     "28 Li 37' 16.98\"",
+     "Visa",
+     "3",
+     "Li",
+     "Ge"
+    ],
+    [
+     "Mrityu Sphuta ",
+     "28 Sc 29' 44.91\"",
+     "Jye",
+     "4",
+     "Sc",
+     "Pi"
+    ],
+    [
+     "Sookshma TriSphuta ",
+     "20 Pi 10' 41.95\"",
+     "Reva",
+     "2",
+     "Pi",
+     "Cp"
+    ],
+    [
+     "Tithi Sphuta ",
+     "19 Ge 47' 24.24\"",
+     "Ardr",
+     "4",
+     "Ge",
+     "Pi"
+    ],
+    [
+     "Yoga Sphuta (Sun-Moon) ",
+     "21 Aq 44' 22.29\"",
+     "PBha",
+     "1",
+     "Aq",
+     "Ar"
+    ],
+    [
+     "Rahu Tithi Sphuta ",
+     " 5 Ge 07' 52.16\"",
+     "Mrig",
+     "4",
+     "Ge",
+     "Sc"
+    ],
+    [
+     "Kshetra Sphuta ",
+     " 7 Vi 57' 27.88\"",
+     "UPha",
+     "4",
+     "Vi",
+     "Pi"
+    ],
+    [
+     "Beeja Sphuta ",
+     "10 Vi 50' 43.09\"",
+     "Hast",
+     "1",
+     "Vi",
+     "Ar"
+    ],
+    [
+     "TriSphuta ",
+     "17 Cn 22' 45.95\"",
+     "Asre",
+     "1",
+     "Cn",
+     "Sg"
+    ],
+    [
+     "ChatusSphuta ",
+     "18 Ta 21' 14.97\"",
+     "Rohi",
+     "3",
+     "Ta",
+     "Ge"
+    ],
+    [
+     "PanchaSphuta ",
+     "24 Ta 27' 36.16\"",
+     "Mrig",
+     "1",
+     "Ta",
+     "Le"
+    ],
+    [
+     "V2 ",
+     "14 Sc 06' 41.84\"",
+     "Anu",
+     "4",
+     "Sc",
+     "Ta"
+    ],
+    [
+     "V3 ",
+     "14 Sg 06' 41.84\"",
+     "PSha",
+     "1",
+     "Sg",
+     "Le"
+    ],
+    [
+     "V4 ",
+     "14 Pi 06' 41.84\"",
+     "UBha",
+     "4",
+     "Pi",
+     "Vi"
+    ],
+    [
+     "V5 ",
+     "14 Ar 06' 41.84\"",
+     "Bhar",
+     "1",
+     "Ar",
+     "Sg"
+    ],
+    [
+     "V6 ",
+     "14 Cn 06' 41.84\"",
+     "Push",
+     "4",
+     "Cn",
+     "Ta"
+    ],
+    [
+     "V7 ",
+     "14 Le 06' 41.84\"",
+     "PPha",
+     "1",
+     "Le",
+     "Ar"
+    ],
+    [
+     "V8 ",
+     "14 Sc 06' 41.84\"",
+     "Anu",
+     "4",
+     "Sc",
+     "Ta"
+    ],
+    [
+     "V9 ",
+     "14 Sg 06' 41.84\"",
+     "PSha",
+     "1",
+     "Sg",
+     "Sg"
+    ],
+    [
+     "V10 ",
+     "14 Pi 06' 41.84\"",
+     "UBha",
+     "4",
+     "Pi",
+     "Vi"
+    ],
+    [
+     "V11 ",
+     "14 Ar 06' 41.84\"",
+     "Bhar",
+     "1",
+     "Ar",
+     "Le"
+    ],
+    [
+     "V12 ",
+     "14 Cn 06' 41.84\"",
+     "Push",
+     "4",
+     "Cn",
+     "Ta"
+    ],
+    [
+     "Kunda ",
+     " 3 Pi 02' 29.25\"",
+     "PBha",
+     "4",
+     "Pi",
+     "Cn"
+    ],
+    [
+     "Yoga Sphuta ",
+     "25 Ta 04' 22.29\"",
+     "Mrig",
+     "1",
+     "Ta",
+     "Le"
+    ],
+    [
+     "Avayoga Sphuta ",
+     " 1 Sg 44' 22.29\"",
+     "Mool",
+     "1",
+     "Sg",
+     "Ar"
+    ]
+   ]
+  },
+  {
+   "tabs": [
+    "Many Vargas",
+    "Must click this at the end",
+    "Must click this at the end",
+    "Must click this at the end"
+   ],
+   "control_id": 59665,
+   "mode": null,
+   "headers": [
+    "Body",
+    "Longitude",
+    "Nakshatra",
+    "Pada",
+    "Rasi",
+    "Navamsa"
+   ],
+   "rows": [
+    [
+     "Lagna ",
+     "14 Ta 06' 41.84\"",
+     "Rohi",
+     "2",
+     "Ta",
+     "Ta"
+    ],
+    [
+     "Sun - DK",
+     " 0 Aq 58' 29.02\"",
+     "Dhan",
+     "3",
+     "Aq",
+     "Li"
+    ],
+    [
+     "Moon - MK",
+     "20 Ar 45' 53.27\"",
+     "Bhar",
+     "3",
+     "Ar",
+     "Li"
+    ],
+    [
+     "Mars - AK",
+     "29 Vi 00' 14.43\"",
+     "Chit",
+     "2",
+     "Vi",
+     "Vi"
+    ],
+    [
+     "Mercury (R) - PK",
+     "11 Aq 27' 15.85\"",
+     "Sata",
+     "2",
+     "Aq",
+     "Cp"
+    ],
+    [
+     "Jupiter - PiK",
+     "18 Aq 11' 20.18\"",
+     "Sata",
+     "4",
+     "Aq",
+     "Pi"
+    ],
+    [
+     "Venus - BK",
+     "21 Sg 40' 53.88\"",
+     "PSha",
+     "3",
+     "Sg",
+     "Li"
+    ],
+    [
+     "Saturn (R) - GK",
+     " 1 Ge 22' 09.42\"",
+     "Mrig",
+     "3",
+     "Ge",
+     "Li"
+    ],
+    [
+     "Rahu - AmK",
+     " 6 Ar 06' 21.19\"",
+     "Aswi",
+     "2",
+     "Ar",
+     "Ta"
+    ],
+    [
+     "Ketu ",
+     " 6 Li 06' 21.19\"",
+     "Chit",
+     "4",
+     "Li",
+     "Sc"
+    ],
+    [
+     "Maandi ",
+     "23 Ta 06' 39.70\"",
+     "Rohi",
+     "4",
+     "Ta",
+     "Cn"
+    ],
+    [
+     "Gulika ",
+     "12 Ta 30' 10.84\"",
+     "Rohi",
+     "1",
+     "Ta",
+     "Ar"
+    ],
+    [
+     "Bhava Lagna ",
+     "27 Ar 41' 24.32\"",
+     "Krit",
+     "1",
+     "Ar",
+     "Sg"
+    ],
+    [
+     "Hora Lagna ",
+     "24 Cn 38' 58.64\"",
+     "Asre",
+     "3",
+     "Cn",
+     "Aq"
+    ],
+    [
+     "Ghati Lagna ",
+     "15 Ar 31' 41.59\"",
+     "Bhar",
+     "1",
+     "Ar",
+     "Le"
+    ],
+    [
+     "Vighati Lagna ",
+     "29 Sc 55' 16.37\"",
+     "Jye",
+     "4",
+     "Sc",
+     "Pi"
+    ],
+    [
+     "Varnada Lagna ",
+     "14 Le 06' 41.84\"",
+     "PPha",
+     "1",
+     "Le",
+     "Ar"
+    ],
+    [
+     "Sree Lagna ",
+     " 4 Sg 45' 40.05\"",
+     "Mool",
+     "2",
+     "Sg",
+     "Ta"
+    ],
+    [
+     "Pranapada Lagna ",
+     " 0 Le 09' 55.39\"",
+     "Magh",
+     "1",
+     "Le",
+     "Ar"
+    ],
+    [
+     "Indu Lagna ",
+     "20 Aq 45' 53.27\"",
+     "PBha",
+     "1",
+     "Aq",
+     "Ar"
+    ],
+    [
+     "Bhrigu Bindu ",
+     "13 Ar 26' 07.23\"",
+     "Bhar",
+     "1",
+     "Ar",
+     "Le"
+    ],
+    [
+     "Dhooma ",
+     "14 Ge 18' 29.02\"",
+     "Ardr",
+     "3",
+     "Ge",
+     "Aq"
+    ],
+    [
+     "Vyatipata ",
+     "15 Cp 41' 30.98\"",
+     "Srav",
+     "2",
+     "Cp",
+     "Ta"
+    ],
+    [
+     "Parivesha ",
+     "15 Cn 41' 30.98\"",
+     "Push",
+     "4",
+     "Cn",
+     "Sc"
+    ],
+    [
+     "Indra Chapa ",
+     "14 Sg 18' 29.02\"",
+     "PSha",
+     "1",
+     "Sg",
+     "Le"
+    ],
+    [
+     "Upaketu ",
+     " 0 Cp 58' 29.02\"",
+     "USha",
+     "2",
+     "Cp",
+     "Cp"
+    ],
+    [
+     "Kaala ",
+     " 2 Cn 14' 28.20\"",
+     "Puna",
+     "4",
+     "Cn",
+     "Cn"
+    ],
+    [
+     "Mrityu ",
+     "13 Aq 28' 22.78\"",
+     "Sata",
+     "3",
+     "Aq",
+     "Aq"
+    ],
+    [
+     "Artha Prahara ",
+     "10 Pi 17' 25.60\"",
+     "UBha",
+     "3",
+     "Pi",
+     "Li"
+    ],
+    [
+     "Yama Ghantaka ",
+     " 6 Ar 54' 41.91\"",
+     "Aswi",
+     "3",
+     "Ar",
+     "Ge"
+    ],
+    [
+     "Prana Sphuta ",
+     "23 Sg 03' 40.05\"",
+     "PSha",
+     "3",
+     "Sg",
+     "Li"
+    ],
+    [
+     "Deha Sphuta ",
+     "28 Li 37' 16.98\"",
+     "Visa",
+     "3",
+     "Li",
+     "Ge"
+    ],
+    [
+     "Mrityu Sphuta ",
+     "28 Sc 29' 44.91\"",
+     "Jye",
+     "4",
+     "Sc",
+     "Pi"
+    ],
+    [
+     "Sookshma TriSphuta ",
+     "20 Pi 10' 41.95\"",
+     "Reva",
+     "2",
+     "Pi",
+     "Cp"
+    ],
+    [
+     "Tithi Sphuta ",
+     "19 Ge 47' 24.24\"",
+     "Ardr",
+     "4",
+     "Ge",
+     "Pi"
+    ],
+    [
+     "Yoga Sphuta (Sun-Moon) ",
+     "21 Aq 44' 22.29\"",
+     "PBha",
+     "1",
+     "Aq",
+     "Ar"
+    ],
+    [
+     "Rahu Tithi Sphuta ",
+     " 5 Ge 07' 52.16\"",
+     "Mrig",
+     "4",
+     "Ge",
+     "Sc"
+    ],
+    [
+     "Kshetra Sphuta ",
+     " 7 Vi 57' 27.88\"",
+     "UPha",
+     "4",
+     "Vi",
+     "Pi"
+    ],
+    [
+     "Beeja Sphuta ",
+     "10 Vi 50' 43.09\"",
+     "Hast",
+     "1",
+     "Vi",
+     "Ar"
+    ],
+    [
+     "TriSphuta ",
+     "17 Cn 22' 45.95\"",
+     "Asre",
+     "1",
+     "Cn",
+     "Sg"
+    ],
+    [
+     "ChatusSphuta ",
+     "18 Ta 21' 14.97\"",
+     "Rohi",
+     "3",
+     "Ta",
+     "Ge"
+    ],
+    [
+     "PanchaSphuta ",
+     "24 Ta 27' 36.16\"",
+     "Mrig",
+     "1",
+     "Ta",
+     "Le"
+    ],
+    [
+     "V2 ",
+     "14 Sc 06' 41.84\"",
+     "Anu",
+     "4",
+     "Sc",
+     "Ta"
+    ],
+    [
+     "V3 ",
+     "14 Sg 06' 41.84\"",
+     "PSha",
+     "1",
+     "Sg",
+     "Le"
+    ],
+    [
+     "V4 ",
+     "14 Pi 06' 41.84\"",
+     "UBha",
+     "4",
+     "Pi",
+     "Vi"
+    ],
+    [
+     "V5 ",
+     "14 Ar 06' 41.84\"",
+     "Bhar",
+     "1",
+     "Ar",
+     "Sg"
+    ],
+    [
+     "V6 ",
+     "14 Cn 06' 41.84\"",
+     "Push",
+     "4",
+     "Cn",
+     "Ta"
+    ],
+    [
+     "V7 ",
+     "14 Le 06' 41.84\"",
+     "PPha",
+     "1",
+     "Le",
+     "Ar"
+    ],
+    [
+     "V8 ",
+     "14 Sc 06' 41.84\"",
+     "Anu",
+     "4",
+     "Sc",
+     "Ta"
+    ],
+    [
+     "V9 ",
+     "14 Sg 06' 41.84\"",
+     "PSha",
+     "1",
+     "Sg",
+     "Sg"
+    ],
+    [
+     "V10 ",
+     "14 Pi 06' 41.84\"",
+     "UBha",
+     "4",
+     "Pi",
+     "Vi"
+    ],
+    [
+     "V11 ",
+     "14 Ar 06' 41.84\"",
+     "Bhar",
+     "1",
+     "Ar",
+     "Le"
+    ],
+    [
+     "V12 ",
+     "14 Cn 06' 41.84\"",
+     "Push",
+     "4",
+     "Cn",
+     "Ta"
+    ],
+    [
+     "Kunda ",
+     " 3 Pi 02' 29.25\"",
+     "PBha",
+     "4",
+     "Pi",
+     "Cn"
+    ],
+    [
+     "Yoga Sphuta ",
+     "25 Ta 04' 22.29\"",
+     "Mrig",
+     "1",
+     "Ta",
+     "Le"
+    ],
+    [
+     "Avayoga Sphuta ",
+     " 1 Sg 44' 22.29\"",
+     "Mool",
+     "1",
+     "Sg",
+     "Ar"
+    ]
+   ]
+  },
+  {
+   "tabs": [
+    "Many Vargas",
+    "Must click this at the end",
+    "Must click this at the end",
+    "Must click this at the end"
+   ],
+   "control_id": 59649,
+   "mode": null,
+   "headers": [
+    "Body",
+    "Longitude",
+    "Nakshatra",
+    "Pada",
+    "Rasi",
+    "Navamsa"
+   ],
+   "rows": [
+    [
+     "Lagna ",
+     "14 Ta 06' 41.84\"",
+     "Rohi",
+     "2",
+     "Ta",
+     "Ta"
+    ],
+    [
+     "Sun - DK",
+     " 0 Aq 58' 29.02\"",
+     "Dhan",
+     "3",
+     "Aq",
+     "Li"
+    ],
+    [
+     "Moon - MK",
+     "20 Ar 45' 53.27\"",
+     "Bhar",
+     "3",
+     "Ar",
+     "Li"
+    ],
+    [
+     "Mars - AK",
+     "29 Vi 00' 14.43\"",
+     "Chit",
+     "2",
+     "Vi",
+     "Vi"
+    ],
+    [
+     "Mercury (R) - PK",
+     "11 Aq 27' 15.85\"",
+     "Sata",
+     "2",
+     "Aq",
+     "Cp"
+    ],
+    [
+     "Jupiter - PiK",
+     "18 Aq 11' 20.18\"",
+     "Sata",
+     "4",
+     "Aq",
+     "Pi"
+    ],
+    [
+     "Venus - BK",
+     "21 Sg 40' 53.88\"",
+     "PSha",
+     "3",
+     "Sg",
+     "Li"
+    ],
+    [
+     "Saturn (R) - GK",
+     " 1 Ge 22' 09.42\"",
+     "Mrig",
+     "3",
+     "Ge",
+     "Li"
+    ],
+    [
+     "Rahu - AmK",
+     " 6 Ar 06' 21.19\"",
+     "Aswi",
+     "2",
+     "Ar",
+     "Ta"
+    ],
+    [
+     "Ketu ",
+     " 6 Li 06' 21.19\"",
+     "Chit",
+     "4",
+     "Li",
+     "Sc"
+    ],
+    [
+     "Maandi ",
+     "23 Ta 06' 39.70\"",
+     "Rohi",
+     "4",
+     "Ta",
+     "Cn"
+    ],
+    [
+     "Gulika ",
+     "12 Ta 30' 10.84\"",
+     "Rohi",
+     "1",
+     "Ta",
+     "Ar"
+    ],
+    [
+     "Bhava Lagna ",
+     "27 Ar 41' 24.32\"",
+     "Krit",
+     "1",
+     "Ar",
+     "Sg"
+    ],
+    [
+     "Hora Lagna ",
+     "24 Cn 38' 58.64\"",
+     "Asre",
+     "3",
+     "Cn",
+     "Aq"
+    ],
+    [
+     "Ghati Lagna ",
+     "15 Ar 31' 41.59\"",
+     "Bhar",
+     "1",
+     "Ar",
+     "Le"
+    ],
+    [
+     "Vighati Lagna ",
+     "29 Sc 55' 16.37\"",
+     "Jye",
+     "4",
+     "Sc",
+     "Pi"
+    ],
+    [
+     "Varnada Lagna ",
+     "14 Le 06' 41.84\"",
+     "PPha",
+     "1",
+     "Le",
+     "Ar"
+    ],
+    [
+     "Sree Lagna ",
+     " 4 Sg 45' 40.05\"",
+     "Mool",
+     "2",
+     "Sg",
+     "Ta"
+    ],
+    [
+     "Pranapada Lagna ",
+     " 0 Le 09' 55.39\"",
+     "Magh",
+     "1",
+     "Le",
+     "Ar"
+    ],
+    [
+     "Indu Lagna ",
+     "20 Aq 45' 53.27\"",
+     "PBha",
+     "1",
+     "Aq",
+     "Ar"
+    ],
+    [
+     "Bhrigu Bindu ",
+     "13 Ar 26' 07.23\"",
+     "Bhar",
+     "1",
+     "Ar",
+     "Le"
+    ],
+    [
+     "Dhooma ",
+     "14 Ge 18' 29.02\"",
+     "Ardr",
+     "3",
+     "Ge",
+     "Aq"
+    ],
+    [
+     "Vyatipata ",
+     "15 Cp 41' 30.98\"",
+     "Srav",
+     "2",
+     "Cp",
+     "Ta"
+    ],
+    [
+     "Parivesha ",
+     "15 Cn 41' 30.98\"",
+     "Push",
+     "4",
+     "Cn",
+     "Sc"
+    ],
+    [
+     "Indra Chapa ",
+     "14 Sg 18' 29.02\"",
+     "PSha",
+     "1",
+     "Sg",
+     "Le"
+    ],
+    [
+     "Upaketu ",
+     " 0 Cp 58' 29.02\"",
+     "USha",
+     "2",
+     "Cp",
+     "Cp"
+    ],
+    [
+     "Kaala ",
+     " 2 Cn 14' 28.20\"",
+     "Puna",
+     "4",
+     "Cn",
+     "Cn"
+    ],
+    [
+     "Mrityu ",
+     "13 Aq 28' 22.78\"",
+     "Sata",
+     "3",
+     "Aq",
+     "Aq"
+    ],
+    [
+     "Artha Prahara ",
+     "10 Pi 17' 25.60\"",
+     "UBha",
+     "3",
+     "Pi",
+     "Li"
+    ],
+    [
+     "Yama Ghantaka ",
+     " 6 Ar 54' 41.91\"",
+     "Aswi",
+     "3",
+     "Ar",
+     "Ge"
+    ],
+    [
+     "Prana Sphuta ",
+     "23 Sg 03' 40.05\"",
+     "PSha",
+     "3",
+     "Sg",
+     "Li"
+    ],
+    [
+     "Deha Sphuta ",
+     "28 Li 37' 16.98\"",
+     "Visa",
+     "3",
+     "Li",
+     "Ge"
+    ],
+    [
+     "Mrityu Sphuta ",
+     "28 Sc 29' 44.91\"",
+     "Jye",
+     "4",
+     "Sc",
+     "Pi"
+    ],
+    [
+     "Sookshma TriSphuta ",
+     "20 Pi 10' 41.95\"",
+     "Reva",
+     "2",
+     "Pi",
+     "Cp"
+    ],
+    [
+     "Tithi Sphuta ",
+     "19 Ge 47' 24.24\"",
+     "Ardr",
+     "4",
+     "Ge",
+     "Pi"
+    ],
+    [
+     "Yoga Sphuta (Sun-Moon) ",
+     "21 Aq 44' 22.29\"",
+     "PBha",
+     "1",
+     "Aq",
+     "Ar"
+    ],
+    [
+     "Rahu Tithi Sphuta ",
+     " 5 Ge 07' 52.16\"",
+     "Mrig",
+     "4",
+     "Ge",
+     "Sc"
+    ],
+    [
+     "Kshetra Sphuta ",
+     " 7 Vi 57' 27.88\"",
+     "UPha",
+     "4",
+     "Vi",
+     "Pi"
+    ],
+    [
+     "Beeja Sphuta ",
+     "10 Vi 50' 43.09\"",
+     "Hast",
+     "1",
+     "Vi",
+     "Ar"
+    ],
+    [
+     "TriSphuta ",
+     "17 Cn 22' 45.95\"",
+     "Asre",
+     "1",
+     "Cn",
+     "Sg"
+    ],
+    [
+     "ChatusSphuta ",
+     "18 Ta 21' 14.97\"",
+     "Rohi",
+     "3",
+     "Ta",
+     "Ge"
+    ],
+    [
+     "PanchaSphuta ",
+     "24 Ta 27' 36.16\"",
+     "Mrig",
+     "1",
+     "Ta",
+     "Le"
+    ],
+    [
+     "V2 ",
+     "14 Sc 06' 41.84\"",
+     "Anu",
+     "4",
+     "Sc",
+     "Ta"
+    ],
+    [
+     "V3 ",
+     "14 Sg 06' 41.84\"",
+     "PSha",
+     "1",
+     "Sg",
+     "Le"
+    ],
+    [
+     "V4 ",
+     "14 Pi 06' 41.84\"",
+     "UBha",
+     "4",
+     "Pi",
+     "Vi"
+    ],
+    [
+     "V5 ",
+     "14 Ar 06' 41.84\"",
+     "Bhar",
+     "1",
+     "Ar",
+     "Sg"
+    ],
+    [
+     "V6 ",
+     "14 Cn 06' 41.84\"",
+     "Push",
+     "4",
+     "Cn",
+     "Ta"
+    ],
+    [
+     "V7 ",
+     "14 Le 06' 41.84\"",
+     "PPha",
+     "1",
+     "Le",
+     "Ar"
+    ],
+    [
+     "V8 ",
+     "14 Sc 06' 41.84\"",
+     "Anu",
+     "4",
+     "Sc",
+     "Ta"
+    ],
+    [
+     "V9 ",
+     "14 Sg 06' 41.84\"",
+     "PSha",
+     "1",
+     "Sg",
+     "Sg"
+    ],
+    [
+     "V10 ",
+     "14 Pi 06' 41.84\"",
+     "UBha",
+     "4",
+     "Pi",
+     "Vi"
+    ],
+    [
+     "V11 ",
+     "14 Ar 06' 41.84\"",
+     "Bhar",
+     "1",
+     "Ar",
+     "Le"
+    ],
+    [
+     "V12 ",
+     "14 Cn 06' 41.84\"",
+     "Push",
+     "4",
+     "Cn",
+     "Ta"
+    ],
+    [
+     "Kunda ",
+     " 3 Pi 02' 29.25\"",
+     "PBha",
+     "4",
+     "Pi",
+     "Cn"
+    ],
+    [
+     "Yoga Sphuta ",
+     "25 Ta 04' 22.29\"",
+     "Mrig",
+     "1",
+     "Ta",
+     "Le"
+    ],
+    [
+     "Avayoga Sphuta ",
+     " 1 Sg 44' 22.29\"",
+     "Mool",
+     "1",
+     "Sg",
+     "Ar"
+    ]
+   ]
+  },
+  {
+   "tabs": [
+    "Many Vargas",
+    "Must click this at the end",
+    "Must click this at the end",
+    "Laghu Parasari"
+   ],
+   "control_id": 13580,
+   "mode": null,
+   "headers": [
+    "D-1 (Rasi)",
+    "Date 1 (age)",
+    "Date 2 (age)",
+    "Date 3 (age)",
+    "Date 4 (age)"
+   ],
+   "rows": [
+    [
+     "Asc-Sun",
+     "1871-03-15  (15.09)",
+     "1901-03-16  (45.09)",
+     "1931-03-16  (75.09)",
+     "1961-03-16  (105.09)"
+    ],
+    [
+     "Asc-Moon",
+     "1860-12-30  (4.88)",
+     "1890-12-30  (34.88)",
+     "1920-12-31  (64.88)",
+     "1951-01-01  (94.88)"
+    ],
+    [
+     "Asc-Mars",
+     "1869-03-25  (13.12)",
+     "1899-03-26  (43.12)",
+     "1929-03-26  (73.12)",
+     "1959-03-27  (103.12)"
+    ],
+    [
+     "Asc-Merc",
+     "1881-09-09  (25.57)",
+     "1911-09-11  (55.57)",
+     "1941-09-11  (85.57)",
+     "1971-09-11  (115.57)"
+    ],
+    [
+     "Asc-Jup",
+     "1858-06-02  (2.30)",
+     "1888-06-01  (32.30)",
+     "1918-06-03  (62.30)",
+     "1948-06-03  (92.30)"
+    ],
+    [
+     "Asc-Ven",
+     "1861-11-30  (5.79)",
+     "1891-12-01  (35.79)",
+     "1921-12-02  (65.79)",
+     "1951-12-02  (95.79)"
+    ],
+    [
+     "Asc-Sat",
+     "1871-08-09  (15.48)",
+     "1901-08-10  (45.48)",
+     "1931-08-10  (75.48)",
+     "1961-08-10  (105.48)"
+    ],
+    [
+     "Asc-Rah",
+     "1876-05-01  (20.22)",
+     "1906-05-03  (50.22)",
+     "1936-05-03  (80.22)",
+     "1966-05-03  (110.22)"
+    ],
+    [
+     "Asc-Ket",
+     "1876-05-01  (20.22)",
+     "1906-05-03  (50.22)",
+     "1936-05-03  (80.22)",
+     "1966-05-03  (110.22)"
+    ],
+    [
+     "Asc-Dhu",
+     "1884-07-16  (28.42)",
+     "1914-07-18  (58.42)",
+     "1944-07-18  (88.42)",
+     "1974-07-18  (118.42)"
+    ],
+    [
+     "Asc-Vya",
+     "1885-12-04  (29.80)",
+     "1915-12-06  (59.80)",
+     "1945-12-06  (89.80)",
+     "1975-12-06  (119.80)"
+    ],
+    [
+     "Asc-PaV",
+     "1885-12-04  (29.80)",
+     "1915-12-06  (59.80)",
+     "1945-12-06  (89.80)",
+     "1975-12-06  (119.80)"
+    ],
+    [
+     "Asc-ICh",
+     "1884-07-16  (28.42)",
+     "1914-07-18  (58.42)",
+     "1944-07-18  (88.42)",
+     "1974-07-18  (118.42)"
+    ],
+    [
+     "Asc-UpK",
+     "1871-03-15  (15.09)",
+     "1901-03-16  (45.09)",
+     "1931-03-16  (75.09)",
+     "1961-03-16  (105.09)"
+    ],
+    [
+     "Asc-Kal",
+     "1872-06-21  (16.35)",
+     "1902-06-23  (46.35)",
+     "1932-06-22  (76.35)",
+     "1962-06-23  (106.35)"
+    ],
+    [
+     "Asc-Mri",
+     "1883-09-17  (27.58)",
+     "1913-09-17  (57.58)",
+     "1943-09-18  (87.58)",
+     "1973-09-18  (117.58)"
+    ],
+    [
+     "Asc-APr",
+     "1880-07-10  (24.40)",
+     "1910-07-11  (54.40)",
+     "1940-07-11  (84.40)",
+     "1970-07-12  (114.40)"
+    ],
+    [
+     "Asc-YGh",
+     "1877-02-20  (21.02)",
+     "1907-02-21  (51.02)",
+     "1937-02-21  (81.02)",
+     "1967-02-22  (111.02)"
+    ],
+    [
+     "Asc-Mnd",
+     "1863-05-04  (7.22)",
+     "1893-05-03  (37.22)",
+     "1923-05-05  (67.22)",
+     "1953-05-05  (97.22)"
+    ],
+    [
+     "Asc-Glk",
+     "1882-09-27  (26.61)",
+     "1912-09-28  (56.61)",
+     "1942-09-29  (86.61)",
+     "1972-09-28  (116.61)"
+    ]
+   ]
+  },
+  {
+   "tabs": [
+    "Many Vargas",
+    "Key Info",
+    "Key Info",
+    "Key Info"
+   ],
+   "control_id": 59648,
+   "mode": "Longitudes & Basic Info",
+   "headers": [
+    "Body",
+    "Longitude",
+    "Nakshatra",
+    "Pada",
+    "Rasi",
+    "Navamsa"
+   ],
+   "rows": [
+    [
+     "Lagna ",
+     "14 Ta 06' 41.84\"",
+     "Rohi",
+     "2",
+     "Ta",
+     "Ta"
+    ],
+    [
+     "Sun - DK",
+     " 0 Aq 58' 29.02\"",
+     "Dhan",
+     "3",
+     "Aq",
+     "Li"
+    ],
+    [
+     "Moon - MK",
+     "20 Ar 45' 53.27\"",
+     "Bhar",
+     "3",
+     "Ar",
+     "Li"
+    ],
+    [
+     "Mars - AK",
+     "29 Vi 00' 14.43\"",
+     "Chit",
+     "2",
+     "Vi",
+     "Vi"
+    ],
+    [
+     "Mercury (R) - PK",
+     "11 Aq 27' 15.85\"",
+     "Sata",
+     "2",
+     "Aq",
+     "Cp"
+    ],
+    [
+     "Jupiter - PiK",
+     "18 Aq 11' 20.18\"",
+     "Sata",
+     "4",
+     "Aq",
+     "Pi"
+    ],
+    [
+     "Venus - BK",
+     "21 Sg 40' 53.88\"",
+     "PSha",
+     "3",
+     "Sg",
+     "Li"
+    ],
+    [
+     "Saturn (R) - GK",
+     " 1 Ge 22' 09.42\"",
+     "Mrig",
+     "3",
+     "Ge",
+     "Li"
+    ],
+    [
+     "Rahu - AmK",
+     " 6 Ar 06' 21.19\"",
+     "Aswi",
+     "2",
+     "Ar",
+     "Ta"
+    ],
+    [
+     "Ketu ",
+     " 6 Li 06' 21.19\"",
+     "Chit",
+     "4",
+     "Li",
+     "Sc"
+    ],
+    [
+     "Maandi ",
+     "23 Ta 06' 39.70\"",
+     "Rohi",
+     "4",
+     "Ta",
+     "Cn"
+    ],
+    [
+     "Gulika ",
+     "12 Ta 30' 10.84\"",
+     "Rohi",
+     "1",
+     "Ta",
+     "Ar"
+    ],
+    [
+     "Bhava Lagna ",
+     "27 Ar 41' 24.32\"",
+     "Krit",
+     "1",
+     "Ar",
+     "Sg"
+    ],
+    [
+     "Hora Lagna ",
+     "24 Cn 38' 58.64\"",
+     "Asre",
+     "3",
+     "Cn",
+     "Aq"
+    ],
+    [
+     "Ghati Lagna ",
+     "15 Ar 31' 41.59\"",
+     "Bhar",
+     "1",
+     "Ar",
+     "Le"
+    ],
+    [
+     "Vighati Lagna ",
+     "29 Sc 55' 16.37\"",
+     "Jye",
+     "4",
+     "Sc",
+     "Pi"
+    ],
+    [
+     "Varnada Lagna ",
+     "14 Le 06' 41.84\"",
+     "PPha",
+     "1",
+     "Le",
+     "Ar"
+    ],
+    [
+     "Sree Lagna ",
+     " 4 Sg 45' 40.05\"",
+     "Mool",
+     "2",
+     "Sg",
+     "Ta"
+    ],
+    [
+     "Pranapada Lagna ",
+     " 0 Le 09' 55.39\"",
+     "Magh",
+     "1",
+     "Le",
+     "Ar"
+    ],
+    [
+     "Indu Lagna ",
+     "20 Aq 45' 53.27\"",
+     "PBha",
+     "1",
+     "Aq",
+     "Ar"
+    ],
+    [
+     "Bhrigu Bindu ",
+     "13 Ar 26' 07.23\"",
+     "Bhar",
+     "1",
+     "Ar",
+     "Le"
+    ],
+    [
+     "Dhooma ",
+     "14 Ge 18' 29.02\"",
+     "Ardr",
+     "3",
+     "Ge",
+     "Aq"
+    ],
+    [
+     "Vyatipata ",
+     "15 Cp 41' 30.98\"",
+     "Srav",
+     "2",
+     "Cp",
+     "Ta"
+    ],
+    [
+     "Parivesha ",
+     "15 Cn 41' 30.98\"",
+     "Push",
+     "4",
+     "Cn",
+     "Sc"
+    ],
+    [
+     "Indra Chapa ",
+     "14 Sg 18' 29.02\"",
+     "PSha",
+     "1",
+     "Sg",
+     "Le"
+    ],
+    [
+     "Upaketu ",
+     " 0 Cp 58' 29.02\"",
+     "USha",
+     "2",
+     "Cp",
+     "Cp"
+    ],
+    [
+     "Kaala ",
+     " 2 Cn 14' 28.20\"",
+     "Puna",
+     "4",
+     "Cn",
+     "Cn"
+    ],
+    [
+     "Mrityu ",
+     "13 Aq 28' 22.78\"",
+     "Sata",
+     "3",
+     "Aq",
+     "Aq"
+    ],
+    [
+     "Artha Prahara ",
+     "10 Pi 17' 25.60\"",
+     "UBha",
+     "3",
+     "Pi",
+     "Li"
+    ],
+    [
+     "Yama Ghantaka ",
+     " 6 Ar 54' 41.91\"",
+     "Aswi",
+     "3",
+     "Ar",
+     "Ge"
+    ],
+    [
+     "Prana Sphuta ",
+     "23 Sg 03' 40.05\"",
+     "PSha",
+     "3",
+     "Sg",
+     "Li"
+    ],
+    [
+     "Deha Sphuta ",
+     "28 Li 37' 16.98\"",
+     "Visa",
+     "3",
+     "Li",
+     "Ge"
+    ],
+    [
+     "Mrityu Sphuta ",
+     "28 Sc 29' 44.91\"",
+     "Jye",
+     "4",
+     "Sc",
+     "Pi"
+    ],
+    [
+     "Sookshma TriSphuta ",
+     "20 Pi 10' 41.95\"",
+     "Reva",
+     "2",
+     "Pi",
+     "Cp"
+    ],
+    [
+     "Tithi Sphuta ",
+     "19 Ge 47' 24.24\"",
+     "Ardr",
+     "4",
+     "Ge",
+     "Pi"
+    ],
+    [
+     "Yoga Sphuta (Sun-Moon) ",
+     "21 Aq 44' 22.29\"",
+     "PBha",
+     "1",
+     "Aq",
+     "Ar"
+    ],
+    [
+     "Rahu Tithi Sphuta ",
+     " 5 Ge 07' 52.16\"",
+     "Mrig",
+     "4",
+     "Ge",
+     "Sc"
+    ],
+    [
+     "Kshetra Sphuta ",
+     " 7 Vi 57' 27.88\"",
+     "UPha",
+     "4",
+     "Vi",
+     "Pi"
+    ],
+    [
+     "Beeja Sphuta ",
+     "10 Vi 50' 43.09\"",
+     "Hast",
+     "1",
+     "Vi",
+     "Ar"
+    ],
+    [
+     "TriSphuta ",
+     "17 Cn 22' 45.95\"",
+     "Asre",
+     "1",
+     "Cn",
+     "Sg"
+    ],
+    [
+     "ChatusSphuta ",
+     "18 Ta 21' 14.97\"",
+     "Rohi",
+     "3",
+     "Ta",
+     "Ge"
+    ],
+    [
+     "PanchaSphuta ",
+     "24 Ta 27' 36.16\"",
+     "Mrig",
+     "1",
+     "Ta",
+     "Le"
+    ],
+    [
+     "V2 ",
+     "14 Sc 06' 41.84\"",
+     "Anu",
+     "4",
+     "Sc",
+     "Ta"
+    ],
+    [
+     "V3 ",
+     "14 Sg 06' 41.84\"",
+     "PSha",
+     "1",
+     "Sg",
+     "Le"
+    ],
+    [
+     "V4 ",
+     "14 Pi 06' 41.84\"",
+     "UBha",
+     "4",
+     "Pi",
+     "Vi"
+    ],
+    [
+     "V5 ",
+     "14 Ar 06' 41.84\"",
+     "Bhar",
+     "1",
+     "Ar",
+     "Sg"
+    ],
+    [
+     "V6 ",
+     "14 Cn 06' 41.84\"",
+     "Push",
+     "4",
+     "Cn",
+     "Ta"
+    ],
+    [
+     "V7 ",
+     "14 Le 06' 41.84\"",
+     "PPha",
+     "1",
+     "Le",
+     "Ar"
+    ],
+    [
+     "V8 ",
+     "14 Sc 06' 41.84\"",
+     "Anu",
+     "4",
+     "Sc",
+     "Ta"
+    ],
+    [
+     "V9 ",
+     "14 Sg 06' 41.84\"",
+     "PSha",
+     "1",
+     "Sg",
+     "Sg"
+    ],
+    [
+     "V10 ",
+     "14 Pi 06' 41.84\"",
+     "UBha",
+     "4",
+     "Pi",
+     "Vi"
+    ],
+    [
+     "V11 ",
+     "14 Ar 06' 41.84\"",
+     "Bhar",
+     "1",
+     "Ar",
+     "Le"
+    ],
+    [
+     "V12 ",
+     "14 Cn 06' 41.84\"",
+     "Push",
+     "4",
+     "Cn",
+     "Ta"
+    ],
+    [
+     "Kunda ",
+     " 3 Pi 02' 29.25\"",
+     "PBha",
+     "4",
+     "Pi",
+     "Cn"
+    ],
+    [
+     "Yoga Sphuta ",
+     "25 Ta 04' 22.29\"",
+     "Mrig",
+     "1",
+     "Ta",
+     "Le"
+    ],
+    [
+     "Avayoga Sphuta ",
+     " 1 Sg 44' 22.29\"",
+     "Mool",
+     "1",
+     "Sg",
+     "Ar"
+    ]
+   ]
+  },
+  {
+   "tabs": [
+    "Many Vargas",
+    "Key Info",
+    "Key Info",
+    "Key Info"
+   ],
+   "control_id": 59648,
+   "mode": "Coordinates",
+   "headers": [
+    "Planet",
+    "Longitude",
+    "Lon Speed",
+    "Latitude",
+    "Lat Speed",
+    "Distance",
+    "Dist Speed"
+   ],
+   "rows": [
+    [
+     "Sun",
+     "300.975 deg",
+     "1.011 deg/day",
+     "0.000 deg",
+     "0.000 deg/day",
+     "0.9875 AU",
+     "0.000187 AU/day"
+    ],
+    [
+     "Moon",
+     "20.765 deg",
+     "13.751 deg/day",
+     "1.396 deg",
+     "1.176 deg/day",
+     "0.0025 AU",
+     "0.000034 AU/day"
+    ],
+    [
+     "Mars",
+     "179.004 deg",
+     "0.134 deg/day",
+     "2.864 deg",
+     "0.013 deg/day",
+     "0.9086 AU",
+     "-0.008760 AU/day"
+    ],
+    [
+     "Mercury",
+     "311.454 deg",
+     "-0.616 deg/day",
+     "3.054 deg",
+     "0.211 deg/day",
+     "0.7061 AU",
+     "-0.017884 AU/day"
+    ],
+    [
+     "Jupiter",
+     "318.189 deg",
+     "0.237 deg/day",
+     "-0.996 deg",
+     "0.000 deg/day",
+     "5.9150 AU",
+     "0.004698 AU/day"
+    ],
+    [
+     "Venus",
+     "261.682 deg",
+     "1.199 deg/day",
+     "1.145 deg",
+     "-0.058 deg/day",
+     "1.1279 AU",
+     "0.006634 AU/day"
+    ],
+    [
+     "Saturn",
+     "61.369 deg",
+     "-0.021 deg/day",
+     "-1.072 deg",
+     "0.003 deg/day",
+     "8.4712 AU",
+     "0.014364 AU/day"
+    ],
+    [
+     "Rahu",
+     "6.106 deg",
+     "-0.053 deg/day",
+     "0.000 deg",
+     "0.000 deg/day",
+     "0.0026 AU",
+     "-0.000000 AU/day"
+    ]
+   ]
+  },
+  {
+   "tabs": [
+    "Many Vargas",
+    "Key Info",
+    "Key Info",
+    "Key Info"
+   ],
+   "control_id": 59648,
+   "mode": "All Divisional Longitudes",
+   "headers": [
+    "Body",
+    "D-1",
+    "D-9",
+    "D-10 (Trd)",
+    "D-2 (US)",
+    "D-3 (Trd)",
+    "D-4",
+    "D-7 (Trd)",
+    "D-12 (Trd)",
+    "D-16 (Trd)",
+    "D-20 (Trd)",
+    "D-24 (Trd)",
+    "D-27 (Trd)",
+    "D-30",
+    "D-40",
+    "D-45",
+    "D-60 (Trd)",
+    "D-10 x D-9",
+    "D-0",
+    "D-5",
+    "D-6",
+    "D-8",
+    "D-11",
+    "D-81",
+    "D-108",
+    "D-144"
+   ],
+   "rows": [
+    [
+     "Lagna",
+     "14Ta07",
+     " 7Ta00",
+     "21Ta07",
+     " 1Cn47",
+     "12Vi20",
+     "26Le27",
+     " 8Aq47",
+     "19Li20",
+     "15Pi47",
+     "12Vi14",
+     " 8Ge41",
+     "21Cn01",
+     " 3Pi21",
+     "24Ar28",
+     " 5Ta01",
+     " 6Vi42",
+     "10Cn03",
+     " 0Ar00",
+     "10Pi33",
+     "24Sg40",
+     "22Pi54",
+     " 5Le14",
+     " 3Pi02",
+     "24Cn03",
+     "22Ta04"
+    ],
+    [
+     "Sun",
+     " 0Aq58",
+     " 8Li46",
+     " 9Aq45",
+     " 1Sg57",
+     " 2Aq55",
+     " 3Aq54",
+     " 6Aq49",
+     "11Aq42",
+     "15Le36",
+     "19Sg30",
+     "23Le24",
+     "26Li19",
+     "29Ar15",
+     " 8Ta59",
+     "13Vi52",
+     "28Pi29",
+     "27Sg44",
+     " 0Ar00",
+     " 4Ar52",
+     " 5Ar51",
+     " 7Sg48",
+     "10Ge43",
+     "18Sg57",
+     "15Cp16",
+     "20Ge22"
+    ],
+    [
+     "Moon",
+     "20Ar46",
+     " 6Li53",
+     "27Li39",
+     "11Ta32",
+     " 2Sg18",
+     "23Li04",
+     "25Le21",
+     " 9Sg11",
+     " 2Pi14",
+     "25Ta18",
+     "18Sg21",
+     "20Li39",
+     "22Ge57",
+     "20Cn36",
+     " 4Sc25",
+     "15Vi53",
+     " 8Ge50",
+     " 0Ar00",
+     "13Ge49",
+     " 4Le35",
+     "16Vi07",
+     "18Sc25",
+     " 1Sg57",
+     "22Sg36",
+     "20Pi08"
+    ],
+    [
+     "Mars",
+     "29Vi00",
+     "21Vi02",
+     "20Aq02",
+     " 1Aq60",
+     "27Ta01",
+     "26Ge01",
+     "23Vi02",
+     "18Le03",
+     "14Pi04",
+     "10Pi05",
+     " 6Ge06",
+     " 3Vi06",
+     " 0Sc07",
+     "20Sg10",
+     "15Cn11",
+     " 0Cn14",
+     " 0Ar22",
+     " 0Ar00",
+     "25Sc01",
+     "24Pi01",
+     "22Pi02",
+     "19Vi03",
+     " 9Cn19",
+     "12Ta26",
+     " 6Pi35"
+    ],
+    [
+     "Mercury",
+     "11Aq27",
+     "13Cp05",
+     "24Ta33",
+     "22Sg55",
+     " 4Ge22",
+     "15Ta49",
+     "20Ar11",
+     "17Ge27",
+     " 3Aq16",
+     "19Cn05",
+     " 4Ta54",
+     " 9Le16",
+     "13Sg38",
+     " 8Cn11",
+     " 5Cp27",
+     "27Sg16",
+     "10Le54",
+     " 0Ar00",
+     "27Aq16",
+     " 8Ge44",
+     " 1Pi38",
+     " 5Li60",
+     "27Ar48",
+     " 7Ge05",
+     "29Sg26"
+    ],
+    [
+     "Jupiter",
+     "18Aq11",
+     "13Pi42",
+     " 1Le53",
+     " 6Cp23",
+     "24Ge34",
+     "12Le45",
+     " 7Ge19",
+     " 8Vi16",
+     "21Ta01",
+     " 3Sg47",
+     "16Li32",
+     "11Aq06",
+     " 5Ge40",
+     " 7Ar33",
+     " 8Sc30",
+     "11Aq20",
+     "17Ar00",
+     " 0Ar00",
+     " 0Ge57",
+     "19Cn08",
+     "25Ar31",
+     "20Sg05",
+     " 3Sc18",
+     "14Le24",
+     " 9Sg12"
+    ],
+    [
+     "Venus",
+     "21Sg41",
+     "15Li08",
+     " 6Cn49",
+     "13Vi22",
+     " 5Le03",
+     "26Ge44",
+     " 1Ta46",
+     "20Le11",
+     "16Sc54",
+     "13Li38",
+     "10Cp22",
+     "15Sc24",
+     "20Ge27",
+     "27Le16",
+     "15Le40",
+     "10Cn54",
+     " 1Vi21",
+     " 0Ar00",
+     "18Ge24",
+     "10Le05",
+     "23Cp27",
+     "28Pi30",
+     "16Aq13",
+     " 1Ar37",
+     " 2Ar09"
+    ],
+    [
+     "Saturn",
+     " 1Ge22",
+     "12Li19",
+     "13Ge42",
+     " 2Le44",
+     " 4Ge06",
+     " 5Ge29",
+     " 9Ge35",
+     "16Ge26",
+     "21Sg55",
+     "27Le23",
+     " 2Vi52",
+     " 6Sc58",
+     "11Ar05",
+     "24Ta46",
+     " 1Aq37",
+     "22Le09",
+     " 3Aq14",
+     " 0Ar00",
+     " 6Ar51",
+     " 8Ar13",
+     "10Le57",
+     "15Aq04",
+     "20Cp55",
+     "27Aq53",
+     "17Sg11"
+    ],
+    [
+     "Rahu",
+     " 6Ar06",
+     "24Ta57",
+     " 1Ge04",
+     "12Ar13",
+     "18Ar19",
+     "24Ar25",
+     "12Ta44",
+     "13Ge16",
+     " 7Cn42",
+     " 2Le07",
+     "26Sg32",
+     "14Vi52",
+     " 3Aq11",
+     " 4Sg14",
+     " 4Cp46",
+     " 6Ar21",
+     " 9Li32",
+     " 0Ar00",
+     " 0Aq32",
+     " 6Ta38",
+     "18Ta51",
+     " 7Ge10",
+     "14Le35",
+     "29Aq26",
+     " 9Sc15"
+    ],
+    [
+     "Ketu",
+     " 6Li06",
+     "24Sc57",
+     " 1Sg04",
+     "12Ar13",
+     "18Li19",
+     "24Li25",
+     "12Sc44",
+     "13Sg16",
+     " 7Cn42",
+     " 2Le07",
+     "26Sg32",
+     "14Pi52",
+     " 3Aq11",
+     " 4Sg14",
+     " 4Cp46",
+     " 6Li21",
+     " 9Ar32",
+     " 0Ar00",
+     " 0Aq32",
+     " 6Ta38",
+     "18Ta51",
+     " 7Sg10",
+     "14Aq35",
+     "29Le26",
+     " 9Ta15"
+    ],
+    [
+     "Maandi",
+     "23Ta07",
+     "27Cn60",
+     "21Le07",
+     "13Ge47",
+     " 9Cp20",
+     " 2Aq27",
+     "11Ar47",
+     " 7Aq20",
+     " 9Le47",
+     "12Pi13",
+     "14Cp40",
+     "23Pi60",
+     " 3Cp20",
+     "24Ar26",
+     "19Ge60",
+     " 6Pi40",
+     " 9Li60",
+     " 0Ar00",
+     "25Cp33",
+     "18Aq40",
+     " 4Ge53",
+     "14Sc13",
+     "11Pi60",
+     " 5Ge59",
+     "27Ar59"
+    ],
+    [
+     "Gulika",
+     "12Ta30",
+     "22Ar32",
+     " 5Ta02",
+     " 4Cn60",
+     " 7Vi31",
+     "20Le01",
+     "27Cp31",
+     " 0Li02",
+     "20Aq03",
+     "10Le04",
+     " 0Ta04",
+     " 7Ge35",
+     "15Pi05",
+     "20Aq07",
+     "22Aq38",
+     " 0Ge11",
+     "15Aq16",
+     " 0Ar00",
+     " 2Pi31",
+     "15Sg01",
+     "10Pi01",
+     "17Cn32",
+     "22Li45",
+     " 0Cp20",
+     " 0Li26"
+    ],
+    [
+     "Bhava Lagna",
+     "27Ar41",
+     " 9Sg13",
+     " 6Cp54",
+     "25Ta23",
+     "23Sg04",
+     "20Cp46",
+     "13Li50",
+     " 2Pi17",
+     "23Ge02",
+     "13Li48",
+     " 4Ge34",
+     "27Ar38",
+     "20Li42",
+     "27Ar36",
+     "16Vi03",
+     "11Sc24",
+     " 2Pi06",
+     " 0Ar00",
+     "18Li27",
+     "16Vi08",
+     "11Sc31",
+     " 4Aq35",
+     "22Ge54",
+     "20Pi32",
+     "27Pi22"
+    ],
+    [
+     "Hora Lagna",
+     "24Cn39",
+     "11Aq51",
+     " 6Sc30",
+     "10Li42",
+     "13Pi57",
+     " 8Ar36",
+     "22Ge33",
+     "25Ar48",
+     " 4Ta24",
+     "12Le60",
+     "21Aq35",
+     " 5Sc32",
+     "19Cp29",
+     "25Ge59",
+     "29Ar14",
+     " 8Le59",
+     "28Le28",
+     " 0Ar00",
+     " 3Sc15",
+     "27Aq54",
+     "17Li12",
+     " 1Li09",
+     "16Cp37",
+     "22Ge10",
+     " 9Aq33"
+    ],
+    [
+     "Ghati Lagna",
+     "15Ar32",
+     "19Le45",
+     " 5Vi17",
+     " 1Ta03",
+     "16Le35",
+     " 2Li07",
+     "18Cn42",
+     " 6Li20",
+     " 8Sg27",
+     "10Aq34",
+     "12Le41",
+     "29Ta16",
+     "15Sg51",
+     "21Sg08",
+     " 8Pi46",
+     " 1Sc42",
+     "17Aq32",
+     " 0Ar00",
+     "17Sg38",
+     " 3Cn10",
+     " 4Le14",
+     "20Vi49",
+     "27Vi47",
+     "27Pi03",
+     "16Sg04"
+    ],
+    [
+     "Vighati Lagna",
+     "29Sc55",
+     "29Pi17",
+     "29Ar13",
+     " 0Ge09",
+     "29Cn46",
+     "29Le41",
+     "29Sc27",
+     "29Li03",
+     "28Sc44",
+     "28Cn25",
+     "28Ge07",
+     "27Pi52",
+     "27Sc38",
+     "26Cp51",
+     "26Ar27",
+     "25Li16",
+     "22Sg55",
+     " 0Ar00",
+     "29Sc36",
+     "29Pi32",
+     "29Cn22",
+     "29Cn08",
+     "23Pi37",
+     "21Aq29",
+     "18Vi39"
+    ],
+    [
+     "Varnada Lagna",
+     "14Le07",
+     " 7Ar00",
+     "21Sg07",
+     "28Aq13",
+     "12Le20",
+     "26Vi27",
+     " 8Ta47",
+     "19Sc20",
+     "15Ar47",
+     "12Aq14",
+     " 8Ta41",
+     "21Aq01",
+     " 3Sg21",
+     "24Cn28",
+     " 5Ge01",
+     " 6Aq42",
+     " 0Ar00",
+     " 0Ta00",
+     "10Li33",
+     "24Sc40",
+     "22Li54",
+     " 5Pi14",
+     " 3Sg02",
+     "24Li03",
+     "22Ar04"
+    ],
+    [
+     "Sree Lagna",
+     " 4Sg46",
+     "12Ta51",
+     "17Cp37",
+     " 9Le31",
+     "14Sg17",
+     "19Sg03",
+     " 3Cp20",
+     "27Cp08",
+     "16Aq11",
+     " 5Sc13",
+     "24Sc16",
+     " 8Le33",
+     "22Ar50",
+     "10Li27",
+     " 4Cn15",
+     "15Vi40",
+     " 8Ge30",
+     " 0Ar00",
+     "23Ar48",
+     "28Ar34",
+     " 8Vi05",
+     "22Vi22",
+     "25Ar39",
+     " 4Li12",
+     "25Sc36"
+    ],
+    [
+     "Pranapada Lagna",
+     " 0Le10",
+     " 1Ar29",
+     " 1Le39",
+     " 0Sg20",
+     " 0Le30",
+     " 0Le40",
+     " 1Le09",
+     " 1Le59",
+     " 2Le39",
+     " 3Sg18",
+     " 3Le58",
+     " 4Ar28",
+     " 4Ar58",
+     " 6Ar37",
+     " 7Le27",
+     " 9Le55",
+     "14Ar53",
+     " 0Ar00",
+     " 0Ar50",
+     " 0Ar60",
+     " 1Sg19",
+     " 1Sg49",
+     "13Ar24",
+     "17Ar52",
+     "23Le49"
+    ],
+    [
+     "Indu Lagna",
+     "20Aq46",
+     " 6Ar53",
+     "27Le39",
+     "11Cp32",
+     " 2Li18",
+     "23Le04",
+     "25Ge21",
+     " 9Li11",
+     " 2Cn14",
+     "25Cp18",
+     "18Sg21",
+     "20Ar39",
+     "22Ge57",
+     "20Cn36",
+     " 4Pi25",
+     "15Cn53",
+     " 8Sg50",
+     " 0Ar00",
+     "13Ge49",
+     " 4Le35",
+     "16Ta07",
+     "18Cp25",
+     " 1Ge57",
+     "22Ge36",
+     "20Cp08"
+    ],
+    [
+     "Bhrigu Bindu",
+     "13Ar26",
+     " 0Le55",
+     "14Le21",
+     "26Ar52",
+     "10Le18",
+     "23Cn44",
+     " 4Cn03",
+     "11Vi13",
+     " 4Sc58",
+     "28Sg42",
+     "22Ge27",
+     " 2Ar45",
+     "13Sg04",
+     "27Vi25",
+     " 4Sg35",
+     "26Ge07",
+     " 9Le11",
+     " 0Ar00",
+     " 7Sg11",
+     "20Ge37",
+     "17Cn29",
+     "27Le47",
+     " 8Ar16",
+     "11Le01",
+     "14Cp41"
+    ],
+    [
+     "Dhooma",
+     "14Ge18",
+     " 8Aq46",
+     "23Li05",
+     "28Le37",
+     "12Li55",
+     "27Vi14",
+     "10Vi09",
+     "21Sc42",
+     "18Cn56",
+     "16Ta10",
+     "13Cn24",
+     "26Li19",
+     " 9Sg15",
+     " 2Sc19",
+     "13Vi52",
+     "18Li29",
+     "27Ar44",
+     " 0Ar00",
+     "11Sg32",
+     "25Ge51",
+     "24Sc28",
+     " 7Cn23",
+     "18Sg57",
+     "15Ta16",
+     "20Cn22"
+    ],
+    [
+     "Vyatipata",
+     "15Cp42",
+     "21Ta14",
+     " 6Aq55",
+     "28Li37",
+     "17Ta05",
+     " 2Cn46",
+     "19Li51",
+     " 8Cn18",
+     "11Sg04",
+     "13Aq50",
+     "16Cn36",
+     " 3Vi41",
+     "20Pi45",
+     "27Ge41",
+     "16Pi08",
+     "11Le31",
+     " 2Sg16",
+     " 0Ar00",
+     "18Pi28",
+     " 4Cp09",
+     " 5Le32",
+     "22Sg37",
+     "11Cn03",
+     "14Cp44",
+     " 9Li38"
+    ],
+    [
+     "Parivesha",
+     "15Cn42",
+     "21Sc14",
+     " 6Le55",
+     "28Li37",
+     "17Sc05",
+     " 2Cp46",
+     "19Ar51",
+     " 8Cp18",
+     "11Sg04",
+     "13Aq50",
+     "16Cn36",
+     " 3Pi41",
+     "20Pi45",
+     "27Ge41",
+     "16Pi08",
+     "11Aq31",
+     " 2Ge16",
+     " 0Ar00",
+     "18Pi28",
+     " 4Cp09",
+     " 5Le32",
+     "22Ge37",
+     "11Cp03",
+     "14Cn44",
+     " 9Ar38"
+    ],
+    [
+     "Indra Chapa",
+     "14Sg18",
+     " 8Le46",
+     "23Ar05",
+     "28Le37",
+     "12Ar55",
+     "27Pi14",
+     "10Pi09",
+     "21Ta42",
+     "18Cn56",
+     "16Ta10",
+     "13Cn24",
+     "26Ar19",
+     " 9Sg15",
+     " 2Sc19",
+     "13Vi52",
+     "18Ar29",
+     "27Li44",
+     " 0Ar00",
+     "11Sg32",
+     "25Ge51",
+     "24Sc28",
+     " 7Cp23",
+     "18Ge57",
+     "15Sc16",
+     "20Cp22"
+    ],
+    [
+     "Upaketu",
+     " 0Cp58",
+     " 8Cp46",
+     " 9Vi45",
+     "28Sc03",
+     " 2Cp55",
+     " 3Cp54",
+     " 6Cn49",
+     "11Cp42",
+     "15Ar36",
+     "19Ar30",
+     "23Cn24",
+     "26Cn19",
+     "29Ta15",
+     " 8Sc59",
+     "13Ta52",
+     "28Aq29",
+     "27Pi44",
+     " 0Ar00",
+     " 4Ta52",
+     " 5Li51",
+     " 7Ar48",
+     "10Cn43",
+     "18Pi57",
+     "15Ar16",
+     "20Ta22"
+    ],
+    [
+     "Kaala",
+     " 2Cn14",
+     "20Cn10",
+     "22Pi25",
+     "25Sc31",
+     " 6Cn43",
+     " 8Cn58",
+     "15Cp41",
+     "26Cn54",
+     " 5Ta52",
+     "14Ta49",
+     "23Le47",
+     " 0Pi31",
+     " 7Ta14",
+     "29Sg39",
+     "10Cn51",
+     "14Sc28",
+     "21Cp42",
+     " 0Ar00",
+     "11Ta12",
+     "13Li27",
+     "17Ar56",
+     "24Cp39",
+     " 1Cp32",
+     " 2Pi03",
+     "22Ta44"
+    ],
+    [
+     "Mrityu",
+     "13Aq28",
+     " 1Aq15",
+     "14Ge44",
+     "26Sg57",
+     "10Ge25",
+     "23Ta54",
+     " 4Ta19",
+     "11Cn41",
+     " 5Pi34",
+     "29Le28",
+     "23Ge21",
+     " 3Li46",
+     "14Sg11",
+     "28Vi55",
+     " 6Ar17",
+     "28Ar23",
+     "12Aq34",
+     " 0Ar00",
+     " 7Sg22",
+     "20Ge50",
+     "17Pi47",
+     "28Li12",
+     "11Li19",
+     "15Aq05",
+     "20Sc07"
+    ],
+    [
+     "Artha Prahara",
+     "10Pi17",
+     " 2Li37",
+     "12Aq54",
+     " 9Pi25",
+     " 0Cn52",
+     "11Ge10",
+     "12Sc02",
+     " 3Cn29",
+     "14Ta39",
+     "25Aq49",
+     " 6Pi58",
+     " 7Li51",
+     " 8Vi43",
+     "21Sc37",
+     "13Pi04",
+     "17Sc26",
+     "26Cp08",
+     " 0Ar00",
+     "21Vi27",
+     " 1Sg45",
+     "22Li19",
+     "23Le12",
+     "23Li32",
+     " 1Sc22",
+     "11Le49"
+    ],
+    [
+     "Yama Ghantaka",
+     " 6Ar55",
+     " 2Ge12",
+     " 9Ge07",
+     "13Ar49",
+     "20Ar44",
+     "27Ar39",
+     "18Ta23",
+     "22Ge56",
+     "20Cn35",
+     "18Le14",
+     "15Cp53",
+     " 6Li37",
+     "27Aq21",
+     " 6Cp28",
+     "11Aq01",
+     "24Ta42",
+     "22Sg03",
+     " 0Ar00",
+     " 4Aq33",
+     "11Ta28",
+     "25Ta18",
+     "16Ge02",
+     "19Li51",
+     "26Ge27",
+     " 5Pi17"
+    ],
+    [
+     "Prana Sphuta",
+     "23Sg04",
+     "27Li33",
+     "20Cn37",
+     "16Vi07",
+     " 9Le11",
+     " 2Vi15",
+     "11Ta26",
+     " 6Vi44",
+     " 8Sg59",
+     "11Sc13",
+     "13Aq28",
+     "22Sg39",
+     " 1Ge50",
+     "22Li27",
+     "17Li45",
+     " 3Li40",
+     " 5Cp30",
+     " 0Ar00",
+     "25Ge18",
+     "18Le22",
+     " 4Aq29",
+     "13Ar40",
+     " 7Ge57",
+     " 0Vi36",
+     "20Sc48"
+    ],
+    [
+     "Deha Sphuta",
+     "28Li37",
+     "17Ge36",
+     "16Cn13",
+     "27Ta15",
+     "25Ge52",
+     "24Cn29",
+     "20Ar21",
+     "13Vi27",
+     " 7Cn57",
+     " 2Sc26",
+     "26Ge55",
+     "22Sc47",
+     "18Li38",
+     " 4Ge51",
+     "27Li58",
+     " 7Cn17",
+     "25Sc55",
+     " 0Ar00",
+     "23Li06",
+     "21Vi44",
+     "18Sc58",
+     "14Le50",
+     " 8Pi20",
+     " 1Cp07",
+     "11Aq29"
+    ],
+    [
+     "Mrityu Sphuta",
+     "28Sc30",
+     "16Pi28",
+     "14Ar57",
+     " 3Ge01",
+     "25Cn29",
+     "23Le59",
+     "19Sc28",
+     "11Li57",
+     " 5Sc56",
+     "29Ge55",
+     "23Ta54",
+     "19Aq23",
+     "14Sc52",
+     "29Sc50",
+     "22Aq19",
+     "29Cn45",
+     "14Le37",
+     " 0Ar00",
+     "22Sc29",
+     "20Pi58",
+     "17Cn58",
+     "13Cn27",
+     "28Sc10",
+     "17Vi33",
+     "23Aq24"
+    ],
+    [
+     "Sookshma TriSphuta",
+     "20Pi11",
+     " 1Cp36",
+     "21Ta47",
+     "19Aq39",
+     " 0Sc32",
+     "20Vi43",
+     "21Cp15",
+     " 2Sc08",
+     "22Li51",
+     "13Vi34",
+     " 4Sc17",
+     " 4Cn49",
+     " 5Cp21",
+     "27Sg08",
+     " 8Ge01",
+     "10Cn42",
+     "16Cn03",
+     " 0Ar00",
+     "10Cp53",
+     " 1Aq04",
+     "11Cp26",
+     "11Sg58",
+     "14Cp27",
+     "19Cp16",
+     "25Sc41"
+    ],
+    [
+     "Tithi Sphuta",
+     "19Ge47",
+     "28Pi07",
+     "17Sg54",
+     " 9Vi35",
+     "29Li22",
+     "19Sg10",
+     "18Li32",
+     "27Cp29",
+     "16Li38",
+     " 5Vi48",
+     "24Sc58",
+     "24Pi20",
+     "23Ge42",
+     "11Ge36",
+     "20Ta33",
+     "17Vi24",
+     "11Vi06",
+     " 0Ar00",
+     " 8Ge57",
+     "28Cn44",
+     " 8Cp19",
+     " 7Vi41",
+     "12Pi60",
+     " 7Aq20",
+     "29Sc46"
+    ],
+    [
+     "Yoga Sphuta (Sun-Moon)",
+     "21Aq44",
+     "15Ar39",
+     " 7Vi24",
+     "13Cp29",
+     " 5Li13",
+     "26Le57",
+     " 2Cn11",
+     "20Li52",
+     "17Cn50",
+     "14Aq47",
+     "11Cp45",
+     "16Ta58",
+     "22Ge11",
+     "29Le35",
+     "18Ar17",
+     "14Vi22",
+     " 6Pi33",
+     " 0Ar00",
+     "18Ge42",
+     "10Le26",
+     "23Ta55",
+     "29Cp08",
+     "20Le54",
+     " 7Li52",
+     "10Ge29"
+    ],
+    [
+     "Rahu Tithi Sphuta",
+     " 5Ge08",
+     "16Sc11",
+     "21Cn19",
+     "10Le16",
+     "15Ge24",
+     "20Ge31",
+     " 5Cn55",
+     " 1Le34",
+     "22Aq06",
+     "12Sc37",
+     " 3Sg09",
+     "18Aq32",
+     " 3Aq56",
+     "25Li15",
+     "20Cn54",
+     " 7Ar52",
+     "11Cp48",
+     " 0Ar00",
+     "25Ar39",
+     " 0Ta47",
+     "11Vi03",
+     "26Pi27",
+     "25Sc37",
+     "14Ta10",
+     "18Le53"
+    ],
+    [
+     "Kshetra Sphuta",
+     " 7Vi57",
+     "11Pi37",
+     "19Cn35",
+     "14Pi05",
+     "23Vi52",
+     " 1Sg50",
+     "25Ar42",
+     " 5Sg30",
+     " 7Ar19",
+     " 9Cp09",
+     "10Cp59",
+     " 4Aq52",
+     "28Vi44",
+     "18Le19",
+     "28Sc06",
+     "27Sg28",
+     "26Sg12",
+     " 0Ar00",
+     " 9Vi47",
+     "17Sc45",
+     " 3Li40",
+     "27Cp32",
+     "14Li35",
+     "19Cn26",
+     " 5Aq55"
+    ],
+    [
+     "Beeja Sphuta",
+     "10Vi51",
+     " 7Ar36",
+     "18Le27",
+     " 8Pi19",
+     " 2Cp32",
+     "13Sg23",
+     "15Ta55",
+     "10Cp09",
+     "23Ta31",
+     " 6Pi54",
+     "20Pi17",
+     "22Ar49",
+     "25Vi22",
+     "13Sg49",
+     " 8Ar02",
+     "20Ge43",
+     "16Vi05",
+     " 0Ar00",
+     "24Vi14",
+     " 5Sg04",
+     "26Li46",
+     "29Aq18",
+     " 8Ge28",
+     " 1Cn18",
+     " 1Ta43"
+    ],
+    [
+     "TriSphuta",
+     "17Cn23",
+     " 6Sg25",
+     "23Le48",
+     "25Li14",
+     "22Sc08",
+     " 9Cp31",
+     " 1Ta39",
+     "28Cp33",
+     " 8Cp04",
+     "17Pi35",
+     "27Le06",
+     "19Ar15",
+     "11Pi23",
+     " 5Vi11",
+     " 2Ge04",
+     "22Ta46",
+     " 4Sc09",
+     " 0Ar00",
+     "26Pi54",
+     "14Cp17",
+     "19Le02",
+     "11Cn10",
+     "27Ta44",
+     "16Aq59",
+     "12Sg38"
+    ],
+    [
+     "ChatusSphuta",
+     "18Ta21",
+     "15Ge11",
+     " 3Cn32",
+     "23Ge18",
+     "25Vi04",
+     "13Sc25",
+     " 8Pi29",
+     "10Sg15",
+     "23Ta40",
+     " 7Sg05",
+     "20Vi30",
+     "15Sc34",
+     "10Pi37",
+     "14Li10",
+     "15Sc56",
+     "21Ta15",
+     " 1Le52",
+     " 0Ar00",
+     " 1Cp46",
+     "20Cp07",
+     "26Ar50",
+     "21Vi54",
+     "16Aq41",
+     " 2Sg15",
+     " 2Ar60"
+    ],
+    [
+     "PanchaSphuta",
+     "24Ta28",
+     "10Le08",
+     " 4Vi36",
+     "11Ge05",
+     "13Cp23",
+     " 7Aq50",
+     "21Ar13",
+     "23Aq31",
+     " 1Vi22",
+     " 9Ar12",
+     "17Aq02",
+     " 0Ta25",
+     "13Cp48",
+     "18Ge24",
+     "20Le42",
+     "27Ta36",
+     "11Aq24",
+     " 0Ar00",
+     " 2Sc18",
+     "26Aq46",
+     "15Ge41",
+     "29Sc04",
+     " 1Cn16",
+     " 1Sg41",
+     "12Sc15"
+    ],
+    [
+     "V2",
+     "14Sc07",
+     " 7Ta00",
+     "21Pi07",
+     " 1Pi47",
+     "12Sc20",
+     "26Li27",
+     " 8Ge47",
+     "19Sg20",
+     "15Cn47",
+     "12Pi14",
+     " 8Ge41",
+     "21Ta01",
+     " 3Pi21",
+     "24Le28",
+     " 5Sc01",
+     " 6Pi42",
+     " 0Ar00",
+     " 0Ge00",
+     "10Cp33",
+     "24Sg40",
+     "22Cn54",
+     " 5Ar14",
+     " 3Pi02",
+     "24Cn03",
+     "22Ta04"
+    ],
+    [
+     "V3",
+     "14Sg07",
+     " 7Le00",
+     "21Ar07",
+     "28Aq13",
+     "12Sg20",
+     "26Cp27",
+     " 8Vi47",
+     "19Pi20",
+     "15Le47",
+     "12Aq14",
+     " 8Vi41",
+     "21Ge01",
+     " 3Ar21",
+     "24Sc28",
+     " 5Li01",
+     " 6Aq42",
+     " 0Ar00",
+     " 0Vi00",
+     "10Aq33",
+     "24Pi40",
+     "22Aq54",
+     " 5Cn14",
+     " 3Ar02",
+     "24Aq03",
+     "22Le04"
+    ],
+    [
+     "V4",
+     "14Pi07",
+     " 7Vi00",
+     "21Cn07",
+     " 1Cn47",
+     "12Pi20",
+     "26Aq27",
+     " 8Li47",
+     "19Ar20",
+     "15Sc47",
+     "12Cn14",
+     " 8Li41",
+     "21Vi01",
+     " 3Cn21",
+     "24Sg28",
+     " 5Cn01",
+     " 6Cn42",
+     " 0Ar00",
+     " 0Li00",
+     "10Ta33",
+     "24Ar40",
+     "22Pi54",
+     " 5Le14",
+     " 3Cn02",
+     "24Pi03",
+     "22Vi04"
+    ],
+    [
+     "V5",
+     "14Ar07",
+     " 7Sg00",
+     "21Le07",
+     "28Li13",
+     "12Ar20",
+     "26Ta27",
+     " 8Cp47",
+     "19Cn20",
+     "15Sg47",
+     "12Li14",
+     " 8Cp41",
+     "21Li01",
+     " 3Le21",
+     "24Pi28",
+     " 5Aq01",
+     " 6Li42",
+     " 0Ar00",
+     " 0Cp00",
+     "10Ge33",
+     "24Cn40",
+     "22Aq54",
+     " 5Sc14",
+     " 3Le02",
+     "24Aq03",
+     "22Sg04"
+    ],
+    [
+     "V6",
+     "14Cn07",
+     " 7Ta00",
+     "21Sc07",
+     " 1Sc47",
+     "12Cn20",
+     "26Ge27",
+     " 8Aq47",
+     "19Le20",
+     "15Pi47",
+     "12Sc14",
+     " 8Aq41",
+     "21Cp01",
+     " 3Sc21",
+     "24Ar28",
+     " 5Pi01",
+     " 6Sc42",
+     " 0Ar00",
+     " 0Aq00",
+     "10Vi33",
+     "24Le40",
+     "22Cn54",
+     " 5Sg14",
+     " 3Sc02",
+     "24Cn03",
+     "22Ta04"
+    ],
+    [
+     "V7",
+     "14Le07",
+     " 7Ar00",
+     "21Sg07",
+     "28Aq13",
+     "12Le20",
+     "26Vi27",
+     " 8Ta47",
+     "19Sc20",
+     "15Ar47",
+     "12Ge14",
+     " 8Ta41",
+     "21Aq01",
+     " 3Sg21",
+     "24Cn28",
+     " 5Aq01",
+     " 6Ge42",
+     " 0Ar00",
+     " 0Ta00",
+     "10Li33",
+     "24Sc40",
+     "22Li54",
+     " 5Pi14",
+     " 3Sg02",
+     "24Li03",
+     "22Ar04"
+    ],
+    [
+     "V8",
+     "14Sc07",
+     " 7Ta00",
+     "21Pi07",
+     " 1Pi47",
+     "12Sc20",
+     "26Li27",
+     " 8Ge47",
+     "19Sg20",
+     "15Cn47",
+     "12Pi14",
+     " 8Ge41",
+     "21Ta01",
+     " 3Pi21",
+     "24Le28",
+     " 5Cn01",
+     " 6Pi42",
+     " 0Ar00",
+     " 0Ge00",
+     "10Cp33",
+     "24Sg40",
+     "22Cn54",
+     " 5Ar14",
+     " 3Pi02",
+     "24Sc03",
+     "22Ta04"
+    ],
+    [
+     "V9",
+     "14Sg07",
+     " 7Sg00",
+     "21Ar07",
+     "28Aq13",
+     "12Sg20",
+     "26Cp27",
+     " 8Vi47",
+     "19Pi20",
+     "15Le47",
+     "12Ge14",
+     " 8Vi41",
+     "21Ge01",
+     " 3Ar21",
+     "24Sc28",
+     " 5Li01",
+     " 6Ge42",
+     " 0Ar00",
+     " 0Vi00",
+     "10Aq33",
+     "24Pi40",
+     "22Aq54",
+     " 5Cn14",
+     " 3Ar02",
+     "24Ge03",
+     "22Sg04"
+    ],
+    [
+     "V10",
+     "14Pi07",
+     " 7Vi00",
+     "21Cn07",
+     " 1Sc47",
+     "12Pi20",
+     "26Aq27",
+     " 8Li47",
+     "19Ar20",
+     "15Sc47",
+     "12Sc14",
+     " 8Li41",
+     "21Vi01",
+     " 3Cn21",
+     "24Sg28",
+     " 5Sc01",
+     " 6Sc42",
+     " 0Ar00",
+     " 0Li00",
+     "10Ta33",
+     "24Ar40",
+     "22Pi54",
+     " 5Le14",
+     " 3Cn02",
+     "24Pi03",
+     "22Vi04"
+    ],
+    [
+     "V11",
+     "14Ar07",
+     " 7Le00",
+     "21Le07",
+     "28Li13",
+     "12Ar20",
+     "26Ta27",
+     " 8Cp47",
+     "19Cn20",
+     "15Sg47",
+     "12Li14",
+     " 8Cp41",
+     "21Li01",
+     " 3Le21",
+     "24Pi28",
+     " 5Ge01",
+     " 6Li42",
+     " 0Ar00",
+     " 0Cp00",
+     "10Ge33",
+     "24Cn40",
+     "22Aq54",
+     " 5Sc14",
+     " 3Le02",
+     "24Ge03",
+     "22Le04"
+    ],
+    [
+     "V12",
+     "14Cn07",
+     " 7Ta00",
+     "21Sc07",
+     " 1Cn47",
+     "12Cn20",
+     "26Ge27",
+     " 8Aq47",
+     "19Le20",
+     "15Pi47",
+     "12Cn14",
+     " 8Aq41",
+     "21Cp01",
+     " 3Sc21",
+     "24Ar28",
+     " 5Pi01",
+     " 6Cn42",
+     " 0Ar00",
+     " 0Aq00",
+     "10Vi33",
+     "24Le40",
+     "22Cn54",
+     " 5Sg14",
+     " 3Sc02",
+     "24Sc03",
+     "22Ta04"
+    ],
+    [
+     "Kunda",
+     " 3Pi02",
+     "27Cn22",
+     " 0Sg25",
+     "23Pi55",
+     " 9Pi07",
+     "12Pi10",
+     "21Vi17",
+     " 6Ar30",
+     "18Cp40",
+     " 0Li50",
+     "12Vi60",
+     "22Pi07",
+     " 1Ta15",
+     " 1Aq39",
+     "16Ar52",
+     " 2Vi29",
+     " 3Ar44",
+     " 0Ar00",
+     "15Ta12",
+     "18Li15",
+     "24Le20",
+     " 3Ge27",
+     " 6Pi21",
+     "28Ta29",
+     "17Ge58"
+    ],
+    [
+     "Yoga Sphuta",
+     "25Ta04",
+     "15Le39",
+     "10Vi44",
+     " 9Ge51",
+     "15Cp13",
+     "10Aq17",
+     "25Ar31",
+     " 0Pi52",
+     "11Vi10",
+     "21Ar27",
+     " 1Pi45",
+     "16Ta58",
+     " 2Sc11",
+     "12Cn55",
+     "18Vi17",
+     " 4Cn22",
+     " 6Ar33",
+     " 0Ar00",
+     " 5Sc22",
+     " 0Pi26",
+     "20Ge35",
+     " 5Sg48",
+     "20Le54",
+     " 7Aq52",
+     "10Pi29"
+    ],
+    [
+     "Avayoga Sphuta",
+     " 1Sg44",
+     "15Ar39",
+     "17Sg24",
+     " 3Le29",
+     " 5Sg13",
+     " 6Sg57",
+     "12Sg11",
+     "20Sg52",
+     "27Sg50",
+     " 4Vi47",
+     "11Vi45",
+     "16Ta58",
+     "22Ar11",
+     " 9Ge35",
+     "18Aq17",
+     "14Pi22",
+     " 6Vi33",
+     " 0Ar00",
+     " 8Ar42",
+     "10Ar26",
+     "13Le55",
+     "19Le08",
+     "20Le54",
+     " 7Li52",
+     "10Le29"
+    ]
+   ]
+  },
+  {
+   "tabs": [
+    "Many Vargas",
+    "Key Info",
+    "Key Info",
+    "Key Info"
+   ],
+   "control_id": 59648,
+   "mode": "Rasis occupied in all vargas",
+   "headers": [
+    "Body",
+    "D-1",
+    "D-9",
+    "D-2 (US)",
+    "D-3 (Trd)",
+    "D-4",
+    "D-5",
+    "D-6",
+    "D-7 (Trd)",
+    "D-8",
+    "D-10 (Trd)",
+    "D-11",
+    "D-12 (Trd)",
+    "D-16 (Trd)",
+    "D-20 (Trd)",
+    "D-24 (Trd)",
+    "D-27 (Trd)",
+    "D-30",
+    "D-40",
+    "D-45",
+    "D-60 (Trd)",
+    "D-81",
+    "D-108",
+    "D-144"
+   ],
+   "rows": [
+    [
+     "Lagna",
+     "Ta",
+     "Ta",
+     "Cn",
+     "Vi",
+     "Le",
+     "Pi",
+     "Sg",
+     "Aq",
+     "Pi",
+     "Ta",
+     "Le",
+     "Li",
+     "Pi",
+     "Vi",
+     "Ge",
+     "Cn",
+     "Pi",
+     "Ar",
+     "Ta",
+     "Vi",
+     "Pi",
+     "Cn",
+     ""
+    ],
+    [
+     "Sun",
+     "Aq",
+     "Li",
+     "Sg",
+     "Aq",
+     "Aq",
+     "Ar",
+     "Ar",
+     "Aq",
+     "Sg",
+     "Aq",
+     "Ge",
+     "Aq",
+     "Le",
+     "Sg",
+     "Le",
+     "Li",
+     "Ar",
+     "Ta",
+     "Vi",
+     "Pi",
+     "Sg",
+     "Cp",
+     ""
+    ],
+    [
+     "Moon",
+     "Ar",
+     "Li",
+     "Ta",
+     "Sg",
+     "Li",
+     "Ge",
+     "Le",
+     "Le",
+     "Vi",
+     "Li",
+     "Sc",
+     "Sg",
+     "Pi",
+     "Ta",
+     "Sg",
+     "Li",
+     "Ge",
+     "Cn",
+     "Sc",
+     "Vi",
+     "Sg",
+     "Sg",
+     ""
+    ],
+    [
+     "Mars",
+     "Vi",
+     "Vi",
+     "Aq",
+     "Ta",
+     "Ge",
+     "Sc",
+     "Pi",
+     "Vi",
+     "Pi",
+     "Aq",
+     "Vi",
+     "Le",
+     "Pi",
+     "Pi",
+     "Ge",
+     "Vi",
+     "Sc",
+     "Sg",
+     "Cn",
+     "Cn",
+     "Cn",
+     "Ta",
+     ""
+    ],
+    [
+     "Mercury (R)",
+     "Aq",
+     "Cp",
+     "Sg",
+     "Ge",
+     "Ta",
+     "Aq",
+     "Ge",
+     "Ar",
+     "Pi",
+     "Ta",
+     "Li",
+     "Ge",
+     "Aq",
+     "Cn",
+     "Ta",
+     "Le",
+     "Sg",
+     "Cn",
+     "Cp",
+     "Sg",
+     "Ar",
+     "Ge",
+     ""
+    ],
+    [
+     "Jupiter",
+     "Aq",
+     "Pi",
+     "Cp",
+     "Ge",
+     "Le",
+     "Ge",
+     "Cn",
+     "Ge",
+     "Ar",
+     "Le",
+     "Sg",
+     "Vi",
+     "Ta",
+     "Sg",
+     "Li",
+     "Aq",
+     "Ge",
+     "Ar",
+     "Sc",
+     "Aq",
+     "Sc",
+     "Le",
+     ""
+    ],
+    [
+     "Venus",
+     "Sg",
+     "Li",
+     "Vi",
+     "Le",
+     "Ge",
+     "Ge",
+     "Le",
+     "Ta",
+     "Cp",
+     "Cn",
+     "Pi",
+     "Le",
+     "Sc",
+     "Li",
+     "Cp",
+     "Sc",
+     "Ge",
+     "Le",
+     "Le",
+     "Cn",
+     "Aq",
+     "Ar",
+     ""
+    ],
+    [
+     "Saturn (R)",
+     "Ge",
+     "Li",
+     "Le",
+     "Ge",
+     "Ge",
+     "Ar",
+     "Ar",
+     "Ge",
+     "Le",
+     "Ge",
+     "Aq",
+     "Ge",
+     "Sg",
+     "Le",
+     "Vi",
+     "Sc",
+     "Ar",
+     "Ta",
+     "Aq",
+     "Le",
+     "Cp",
+     "Aq",
+     ""
+    ],
+    [
+     "Rahu",
+     "Ar",
+     "Ta",
+     "Ar",
+     "Ar",
+     "Ar",
+     "Aq",
+     "Ta",
+     "Ta",
+     "Ta",
+     "Ge",
+     "Ge",
+     "Ge",
+     "Cn",
+     "Le",
+     "Sg",
+     "Vi",
+     "Aq",
+     "Sg",
+     "Cp",
+     "Ar",
+     "Le",
+     "Aq",
+     ""
+    ],
+    [
+     "Ketu",
+     "Li",
+     "Sc",
+     "Ar",
+     "Li",
+     "Li",
+     "Aq",
+     "Ta",
+     "Sc",
+     "Ta",
+     "Sg",
+     "Sg",
+     "Sg",
+     "Cn",
+     "Le",
+     "Sg",
+     "Pi",
+     "Aq",
+     "Sg",
+     "Cp",
+     "Li",
+     "Aq",
+     "Le",
+     ""
+    ],
+    [
+     "Maandi",
+     "Ta",
+     "Cn",
+     "Ge",
+     "Cp",
+     "Aq",
+     "Cp",
+     "Aq",
+     "Ar",
+     "Ge",
+     "Le",
+     "Sc",
+     "Aq",
+     "Le",
+     "Pi",
+     "Cp",
+     "Pi",
+     "Cp",
+     "Ar",
+     "Ge",
+     "Pi",
+     "Pi",
+     "Ge",
+     ""
+    ],
+    [
+     "Gulika",
+     "Ta",
+     "Ar",
+     "Cn",
+     "Vi",
+     "Le",
+     "Pi",
+     "Sg",
+     "Cp",
+     "Pi",
+     "Ta",
+     "Cn",
+     "Li",
+     "Aq",
+     "Le",
+     "Ta",
+     "Ge",
+     "Pi",
+     "Aq",
+     "Aq",
+     "Ge",
+     "Li",
+     "Cp",
+     ""
+    ],
+    [
+     "Bhava Lagna",
+     "Ar",
+     "Sg",
+     "Ta",
+     "Sg",
+     "Cp",
+     "Li",
+     "Vi",
+     "Li",
+     "Sc",
+     "Cp",
+     "Aq",
+     "Pi",
+     "Ge",
+     "Li",
+     "Ge",
+     "Ar",
+     "Li",
+     "Ar",
+     "Vi",
+     "Sc",
+     "Ge",
+     "Pi",
+     ""
+    ],
+    [
+     "Hora Lagna",
+     "Cn",
+     "Aq",
+     "Li",
+     "Pi",
+     "Ar",
+     "Sc",
+     "Aq",
+     "Ge",
+     "Li",
+     "Sc",
+     "Li",
+     "Ar",
+     "Ta",
+     "Le",
+     "Aq",
+     "Sc",
+     "Cp",
+     "Ge",
+     "Ar",
+     "Le",
+     "Cp",
+     "Ge",
+     ""
+    ],
+    [
+     "Ghati Lagna",
+     "Ar",
+     "Le",
+     "Ta",
+     "Le",
+     "Li",
+     "Sg",
+     "Cn",
+     "Cn",
+     "Le",
+     "Vi",
+     "Vi",
+     "Li",
+     "Sg",
+     "Aq",
+     "Le",
+     "Ta",
+     "Sg",
+     "Sg",
+     "Pi",
+     "Sc",
+     "Vi",
+     "Pi",
+     ""
+    ],
+    [
+     "Vighati Lagna",
+     "Sc",
+     "Pi",
+     "Ge",
+     "Cn",
+     "Le",
+     "Sc",
+     "Pi",
+     "Sc",
+     "Cn",
+     "Ar",
+     "Cn",
+     "Li",
+     "Sc",
+     "Cn",
+     "Ge",
+     "Pi",
+     "Sc",
+     "Cp",
+     "Ar",
+     "Li",
+     "Pi",
+     "Aq",
+     ""
+    ],
+    [
+     "Varnada Lagna",
+     "Le",
+     "Ar",
+     "Aq",
+     "Le",
+     "Vi",
+     "Li",
+     "Sc",
+     "Ta",
+     "Li",
+     "Sg",
+     "Pi",
+     "Sc",
+     "Ar",
+     "Aq",
+     "Ta",
+     "Aq",
+     "Sg",
+     "Cn",
+     "Ge",
+     "Aq",
+     "Sg",
+     "Li",
+     ""
+    ],
+    [
+     "Sree Lagna",
+     "Sg",
+     "Ta",
+     "Le",
+     "Sg",
+     "Sg",
+     "Ar",
+     "Ar",
+     "Cp",
+     "Vi",
+     "Cp",
+     "Vi",
+     "Cp",
+     "Aq",
+     "Sc",
+     "Sc",
+     "Le",
+     "Ar",
+     "Li",
+     "Cn",
+     "Vi",
+     "Ar",
+     "Li",
+     ""
+    ],
+    [
+     "Pranapada Lagna",
+     "Le",
+     "Ar",
+     "Sg",
+     "Le",
+     "Le",
+     "Ar",
+     "Ar",
+     "Le",
+     "Sg",
+     "Le",
+     "Sg",
+     "Le",
+     "Le",
+     "Sg",
+     "Le",
+     "Ar",
+     "Ar",
+     "Ar",
+     "Le",
+     "Le",
+     "Ar",
+     "Ar",
+     ""
+    ],
+    [
+     "Indu Lagna",
+     "Aq",
+     "Ar",
+     "Cp",
+     "Li",
+     "Le",
+     "Ge",
+     "Le",
+     "Ge",
+     "Ta",
+     "Le",
+     "Cp",
+     "Li",
+     "Cn",
+     "Cp",
+     "Sg",
+     "Ar",
+     "Ge",
+     "Cn",
+     "Pi",
+     "Cn",
+     "Ge",
+     "Ge",
+     ""
+    ],
+    [
+     "Bhrigu Bindu",
+     "Ar",
+     "Le",
+     "Ar",
+     "Le",
+     "Cn",
+     "Sg",
+     "Ge",
+     "Cn",
+     "Cn",
+     "Le",
+     "Le",
+     "Vi",
+     "Sc",
+     "Sg",
+     "Ge",
+     "Ar",
+     "Sg",
+     "Vi",
+     "Sg",
+     "Ge",
+     "Ar",
+     "Le",
+     ""
+    ],
+    [
+     "Dhooma",
+     "Ge",
+     "Aq",
+     "Le",
+     "Li",
+     "Vi",
+     "Sg",
+     "Ge",
+     "Vi",
+     "Sc",
+     "Li",
+     "Cn",
+     "Sc",
+     "Cn",
+     "Ta",
+     "Cn",
+     "Li",
+     "Sg",
+     "Sc",
+     "Vi",
+     "Li",
+     "Sg",
+     "Ta",
+     ""
+    ],
+    [
+     "Vyatipata",
+     "Cp",
+     "Ta",
+     "Li",
+     "Ta",
+     "Cn",
+     "Pi",
+     "Cp",
+     "Li",
+     "Le",
+     "Aq",
+     "Sg",
+     "Cn",
+     "Sg",
+     "Aq",
+     "Cn",
+     "Vi",
+     "Pi",
+     "Ge",
+     "Pi",
+     "Le",
+     "Cn",
+     "Cp",
+     ""
+    ],
+    [
+     "Parivesha",
+     "Cn",
+     "Sc",
+     "Li",
+     "Sc",
+     "Cp",
+     "Pi",
+     "Cp",
+     "Ar",
+     "Le",
+     "Le",
+     "Ge",
+     "Cp",
+     "Sg",
+     "Aq",
+     "Cn",
+     "Pi",
+     "Pi",
+     "Ge",
+     "Pi",
+     "Aq",
+     "Cp",
+     "Cn",
+     ""
+    ],
+    [
+     "Indra Chapa",
+     "Sg",
+     "Le",
+     "Le",
+     "Ar",
+     "Pi",
+     "Sg",
+     "Ge",
+     "Pi",
+     "Sc",
+     "Ar",
+     "Cp",
+     "Ta",
+     "Cn",
+     "Ta",
+     "Cn",
+     "Ar",
+     "Sg",
+     "Sc",
+     "Vi",
+     "Ar",
+     "Ge",
+     "Sc",
+     ""
+    ],
+    [
+     "Upaketu",
+     "Cp",
+     "Cp",
+     "Sc",
+     "Cp",
+     "Cp",
+     "Ta",
+     "Li",
+     "Cn",
+     "Ar",
+     "Vi",
+     "Cn",
+     "Cp",
+     "Ar",
+     "Ar",
+     "Cn",
+     "Cn",
+     "Ta",
+     "Sc",
+     "Ta",
+     "Aq",
+     "Pi",
+     "Ar",
+     ""
+    ],
+    [
+     "Kaala",
+     "Cn",
+     "Cn",
+     "Sc",
+     "Cn",
+     "Cn",
+     "Ta",
+     "Li",
+     "Cp",
+     "Ar",
+     "Pi",
+     "Cp",
+     "Cn",
+     "Ta",
+     "Ta",
+     "Le",
+     "Pi",
+     "Ta",
+     "Sg",
+     "Cn",
+     "Sc",
+     "Cp",
+     "Pi",
+     ""
+    ],
+    [
+     "Mrityu",
+     "Aq",
+     "Aq",
+     "Sg",
+     "Ge",
+     "Ta",
+     "Sg",
+     "Ge",
+     "Ta",
+     "Pi",
+     "Ge",
+     "Li",
+     "Cn",
+     "Pi",
+     "Le",
+     "Ge",
+     "Li",
+     "Sg",
+     "Vi",
+     "Ar",
+     "Ar",
+     "Li",
+     "Aq",
+     ""
+    ],
+    [
+     "Artha Prahara",
+     "Pi",
+     "Li",
+     "Pi",
+     "Cn",
+     "Ge",
+     "Vi",
+     "Sg",
+     "Sc",
+     "Li",
+     "Aq",
+     "Le",
+     "Cn",
+     "Ta",
+     "Aq",
+     "Pi",
+     "Li",
+     "Vi",
+     "Sc",
+     "Pi",
+     "Sc",
+     "Li",
+     "Sc",
+     ""
+    ],
+    [
+     "Yama Ghantaka",
+     "Ar",
+     "Ge",
+     "Ar",
+     "Ar",
+     "Ar",
+     "Aq",
+     "Ta",
+     "Ta",
+     "Ta",
+     "Ge",
+     "Ge",
+     "Ge",
+     "Cn",
+     "Le",
+     "Cp",
+     "Li",
+     "Aq",
+     "Cp",
+     "Aq",
+     "Ta",
+     "Li",
+     "Ge",
+     ""
+    ],
+    [
+     "Prana Sphuta",
+     "Sg",
+     "Li",
+     "Vi",
+     "Le",
+     "Vi",
+     "Ge",
+     "Le",
+     "Ta",
+     "Aq",
+     "Cn",
+     "Ar",
+     "Vi",
+     "Sg",
+     "Sc",
+     "Aq",
+     "Sg",
+     "Ge",
+     "Li",
+     "Li",
+     "Li",
+     "Ge",
+     "Vi",
+     ""
+    ],
+    [
+     "Deha Sphuta",
+     "Li",
+     "Ge",
+     "Ta",
+     "Ge",
+     "Cn",
+     "Li",
+     "Vi",
+     "Ar",
+     "Sc",
+     "Cn",
+     "Le",
+     "Vi",
+     "Cn",
+     "Sc",
+     "Ge",
+     "Sc",
+     "Li",
+     "Ge",
+     "Li",
+     "Cn",
+     "Pi",
+     "Cp",
+     ""
+    ],
+    [
+     "Mrityu Sphuta",
+     "Sc",
+     "Pi",
+     "Ge",
+     "Cn",
+     "Le",
+     "Sc",
+     "Pi",
+     "Sc",
+     "Cn",
+     "Ar",
+     "Cn",
+     "Li",
+     "Sc",
+     "Ge",
+     "Ta",
+     "Aq",
+     "Sc",
+     "Sc",
+     "Aq",
+     "Cn",
+     "Sc",
+     "Vi",
+     ""
+    ],
+    [
+     "Sookshma TriSphuta",
+     "Pi",
+     "Cp",
+     "Aq",
+     "Sc",
+     "Vi",
+     "Cp",
+     "Aq",
+     "Cp",
+     "Cp",
+     "Ta",
+     "Sg",
+     "Sc",
+     "Li",
+     "Vi",
+     "Sc",
+     "Cn",
+     "Cp",
+     "Sg",
+     "Ge",
+     "Cn",
+     "Cp",
+     "Cp",
+     ""
+    ],
+    [
+     "Tithi Sphuta",
+     "Ge",
+     "Pi",
+     "Vi",
+     "Li",
+     "Sg",
+     "Ge",
+     "Cn",
+     "Li",
+     "Cp",
+     "Sg",
+     "Vi",
+     "Cp",
+     "Li",
+     "Vi",
+     "Sc",
+     "Pi",
+     "Ge",
+     "Ge",
+     "Ta",
+     "Vi",
+     "Pi",
+     "Aq",
+     ""
+    ],
+    [
+     "Yoga Sphuta (Sun-Moon)",
+     "Aq",
+     "Ar",
+     "Cp",
+     "Li",
+     "Le",
+     "Ge",
+     "Le",
+     "Cn",
+     "Ta",
+     "Vi",
+     "Cp",
+     "Li",
+     "Cn",
+     "Aq",
+     "Cp",
+     "Ta",
+     "Ge",
+     "Le",
+     "Ar",
+     "Vi",
+     "Le",
+     "Li",
+     ""
+    ],
+    [
+     "Rahu Tithi Sphuta",
+     "Ge",
+     "Sc",
+     "Le",
+     "Ge",
+     "Ge",
+     "Ar",
+     "Ta",
+     "Cn",
+     "Vi",
+     "Cn",
+     "Pi",
+     "Le",
+     "Aq",
+     "Sc",
+     "Sg",
+     "Aq",
+     "Aq",
+     "Li",
+     "Cn",
+     "Ar",
+     "Sc",
+     "Ta",
+     ""
+    ],
+    [
+     "Kshetra Sphuta",
+     "Vi",
+     "Pi",
+     "Pi",
+     "Vi",
+     "Sg",
+     "Vi",
+     "Sc",
+     "Ar",
+     "Li",
+     "Cn",
+     "Cp",
+     "Sg",
+     "Ar",
+     "Cp",
+     "Cp",
+     "Aq",
+     "Vi",
+     "Le",
+     "Sc",
+     "Sg",
+     "Li",
+     "Cn",
+     ""
+    ],
+    [
+     "Beeja Sphuta",
+     "Vi",
+     "Ar",
+     "Pi",
+     "Cp",
+     "Sg",
+     "Vi",
+     "Sg",
+     "Ta",
+     "Li",
+     "Le",
+     "Aq",
+     "Cp",
+     "Ta",
+     "Pi",
+     "Pi",
+     "Ar",
+     "Vi",
+     "Sg",
+     "Ar",
+     "Ge",
+     "Ge",
+     "Cn",
+     ""
+    ],
+    [
+     "TriSphuta",
+     "Cn",
+     "Sg",
+     "Li",
+     "Sc",
+     "Cp",
+     "Pi",
+     "Cp",
+     "Ta",
+     "Le",
+     "Le",
+     "Cn",
+     "Cp",
+     "Cp",
+     "Pi",
+     "Le",
+     "Ar",
+     "Pi",
+     "Vi",
+     "Ge",
+     "Ta",
+     "Ta",
+     "Aq",
+     ""
+    ],
+    [
+     "ChatusSphuta",
+     "Ta",
+     "Ge",
+     "Ge",
+     "Vi",
+     "Sc",
+     "Cp",
+     "Cp",
+     "Pi",
+     "Ar",
+     "Cn",
+     "Vi",
+     "Sg",
+     "Ta",
+     "Sg",
+     "Vi",
+     "Sc",
+     "Pi",
+     "Li",
+     "Sc",
+     "Ta",
+     "Aq",
+     "Sg",
+     ""
+    ],
+    [
+     "PanchaSphuta",
+     "Ta",
+     "Le",
+     "Ge",
+     "Cp",
+     "Aq",
+     "Sc",
+     "Aq",
+     "Ar",
+     "Ge",
+     "Vi",
+     "Sc",
+     "Aq",
+     "Vi",
+     "Ar",
+     "Aq",
+     "Ta",
+     "Cp",
+     "Ge",
+     "Le",
+     "Ta",
+     "Cn",
+     "Sg",
+     ""
+    ],
+    [
+     "AL",
+     "Cn",
+     "Pi",
+     "Pi",
+     "Sg",
+     "Ta",
+     "Ge",
+     "Aq",
+     "Li",
+     "Ta",
+     "Vi",
+     "Ar",
+     "Ge",
+     "Cn",
+     "Ta",
+     "Ar",
+     "Li",
+     "Ge",
+     "Le",
+     "Le",
+     "Sg",
+     "Cn",
+     "Ta",
+     ""
+    ],
+    [
+     "A2",
+     "Li",
+     "Le",
+     "Ar",
+     "Ge",
+     "Cp",
+     "Ge",
+     "Ar",
+     "Ge",
+     "Aq",
+     "Ar",
+     "Sc",
+     "Cp",
+     "Aq",
+     "Cn",
+     "Ta",
+     "Sg",
+     "Ge",
+     "Le",
+     "Le",
+     "Cp",
+     "Cn",
+     "Ge",
+     ""
+    ],
+    [
+     "A3",
+     "Li",
+     "Li",
+     "Sg",
+     "Vi",
+     "Aq",
+     "Cn",
+     "Ta",
+     "Aq",
+     "Vi",
+     "Li",
+     "Le",
+     "Pi",
+     "Aq",
+     "Aq",
+     "Ta",
+     "Cn",
+     "Cn",
+     "Le",
+     "Pi",
+     "Pi",
+     "Le",
+     "Sg",
+     ""
+    ],
+    [
+     "A4",
+     "Ta",
+     "Sg",
+     "Le",
+     "Vi",
+     "Cp",
+     "Li",
+     "Sc",
+     "Aq",
+     "Vi",
+     "Ta",
+     "Cp",
+     "Sc",
+     "Li",
+     "Vi",
+     "Cp",
+     "Sg",
+     "Pi",
+     "Ar",
+     "Li",
+     "Ar",
+     "Aq",
+     "Cn",
+     ""
+    ],
+    [
+     "A5",
+     "Cn",
+     "Ta",
+     "Vi",
+     "Sc",
+     "Ar",
+     "Ta",
+     "Aq",
+     "Aq",
+     "Sc",
+     "Cp",
+     "Vi",
+     "Li",
+     "Sc",
+     "Pi",
+     "Cp",
+     "Cn",
+     "Ta",
+     "Sc",
+     "Ta",
+     "Pi",
+     "Ta",
+     "Aq",
+     ""
+    ],
+    [
+     "A6",
+     "Aq",
+     "Cn",
+     "Aq",
+     "Li",
+     "Sc",
+     "Sg",
+     "Le",
+     "Vi",
+     "Ar",
+     "Cp",
+     "Pi",
+     "Sg",
+     "Ta",
+     "Sc",
+     "Cp",
+     "Ar",
+     "Sg",
+     "Ta",
+     "Ge",
+     "Ge",
+     "Ar",
+     "Ar",
+     ""
+    ],
+    [
+     "A7",
+     "Vi",
+     "Cn",
+     "Pi",
+     "Ge",
+     "Li",
+     "Cn",
+     "Pi",
+     "Ta",
+     "Ge",
+     "Aq",
+     "Li",
+     "Sg",
+     "Cn",
+     "Ge",
+     "Le",
+     "Vi",
+     "Sg",
+     "Ge",
+     "Pi",
+     "Cp",
+     "Sc",
+     "Pi",
+     ""
+    ],
+    [
+     "A8",
+     "Ar",
+     "Pi",
+     "Ge",
+     "Ge",
+     "Cp",
+     "Aq",
+     "Vi",
+     "Sc",
+     "Cp",
+     "Ar",
+     "Ge",
+     "Le",
+     "Sg",
+     "Aq",
+     "Ta",
+     "Ar",
+     "Aq",
+     "Cp",
+     "Li",
+     "Cn",
+     "Ge",
+     "Sc",
+     ""
+    ],
+    [
+     "A9",
+     "Sc",
+     "Ar",
+     "Sc",
+     "Le",
+     "Le",
+     "Aq",
+     "Sg",
+     "Sg",
+     "Cn",
+     "Sc",
+     "Aq",
+     "Pi",
+     "Pi",
+     "Pi",
+     "Li",
+     "Cp",
+     "Aq",
+     "Le",
+     "Pi",
+     "Vi",
+     "Aq",
+     "Cp",
+     ""
+    ],
+    [
+     "A10",
+     "Ge",
+     "Ge",
+     "Sg",
+     "Pi",
+     "Cn",
+     "Vi",
+     "Sg",
+     "Cn",
+     "Le",
+     "Li",
+     "Cp",
+     "Ta",
+     "Li",
+     "Le",
+     "Ta",
+     "Aq",
+     "Vi",
+     "Vi",
+     "Sg",
+     "Pi",
+     "Li",
+     "Ge",
+     ""
+    ],
+    [
+     "A11",
+     "Cp",
+     "Sg",
+     "Cp",
+     "Ta",
+     "Ar",
+     "Ar",
+     "Ge",
+     "Vi",
+     "Pi",
+     "Cp",
+     "Aq",
+     "Ta",
+     "Sc",
+     "Pi",
+     "Le",
+     "Aq",
+     "Ar",
+     "Li",
+     "Cn",
+     "Sc",
+     "Li",
+     "Pi",
+     ""
+    ],
+    [
+     "UL",
+     "Aq",
+     "Aq",
+     "Pi",
+     "Ta",
+     "Li",
+     "Ge",
+     "Le",
+     "Sc",
+     "Ta",
+     "Sg",
+     "Pi",
+     "Sg",
+     "Sg",
+     "Ar",
+     "Vi",
+     "Li",
+     "Ge",
+     "Ta",
+     "Cn",
+     "Li",
+     "Sg",
+     "Pi",
+     ""
+    ],
+    [
+     "Sun's Arudha",
+     "Sc",
+     "Ge",
+     "Ar",
+     "Sc",
+     "Sc",
+     "Sg",
+     "Sg",
+     "Sc",
+     "Ar",
+     "Sc",
+     "Li",
+     "Sc",
+     "Ta",
+     "Ar",
+     "Ta",
+     "Ge",
+     "Sg",
+     "Le",
+     "Cn",
+     "Cp",
+     "Ar",
+     "Pi",
+     ""
+    ],
+    [
+     "Moon's Arudha",
+     "Cn",
+     "Cp",
+     "Vi",
+     "Aq",
+     "Cp",
+     "Le",
+     "Ge",
+     "Ge",
+     "Ta",
+     "Cp",
+     "Pi",
+     "Aq",
+     "Sc",
+     "Vi",
+     "Aq",
+     "Cp",
+     "Le",
+     "Ar",
+     "Pi",
+     "Ta",
+     "Aq",
+     "Aq",
+     ""
+    ],
+    [
+     "Mars's Arudha",
+     "Sc",
+     "Cp",
+     "Ge",
+     "Pi",
+     "Aq",
+     "Vi",
+     "Ta",
+     "Cp",
+     "Ta",
+     "Ge",
+     "Cp",
+     "Sg",
+     "Cn",
+     "Cn",
+     "Ar",
+     "Cp",
+     "Vi",
+     "Le",
+     "Pi",
+     "Li",
+     "Pi",
+     "Pi",
+     ""
+    ],
+    [
+     "Mercury's Arudha",
+     "Ar",
+     "Ta",
+     "Pi",
+     "Pi",
+     "Cn",
+     "Li",
+     "Pi",
+     "Le",
+     "Sg",
+     "Cn",
+     "Aq",
+     "Pi",
+     "Ar",
+     "Ta",
+     "Cn",
+     "Li",
+     "Vi",
+     "Ta",
+     "Ta",
+     "Pi",
+     "Aq",
+     "Pi",
+     ""
+    ],
+    [
+     "Jupiter's Arudha",
+     "Li",
+     "Sg",
+     "Sc",
+     "Pi",
+     "Li",
+     "Vi",
+     "Sc",
+     "Vi",
+     "Aq",
+     "Ar",
+     "Vi",
+     "Sg",
+     "Cp",
+     "Vi",
+     "Aq",
+     "Ar",
+     "Pi",
+     "Le",
+     "Cp",
+     "Ar",
+     "Cp",
+     "Ar",
+     ""
+    ],
+    [
+     "Venus's Arudha",
+     "Le",
+     "Cn",
+     "Cp",
+     "Sg",
+     "Aq",
+     "Aq",
+     "Sc",
+     "Aq",
+     "Vi",
+     "Li",
+     "Ta",
+     "Sg",
+     "Le",
+     "Sg",
+     "Vi",
+     "Vi",
+     "Ar",
+     "Sc",
+     "Sc",
+     "Li",
+     "Ge",
+     "Ge",
+     ""
+    ],
+    [
+     "Saturn's Arudha",
+     "Li",
+     "Cp",
+     "Ge",
+     "Li",
+     "Li",
+     "Sg",
+     "Sg",
+     "Li",
+     "Ge",
+     "Li",
+     "Sc",
+     "Li",
+     "Ar",
+     "Ge",
+     "Ta",
+     "Aq",
+     "Sg",
+     "Le",
+     "Sg",
+     "Ta",
+     "Pi",
+     "Sc",
+     ""
+    ],
+    [
+     "Rahu's Arudha",
+     "Sg",
+     "Le",
+     "Sg",
+     "Sg",
+     "Sg",
+     "Sc",
+     "Le",
+     "Le",
+     "Le",
+     "Li",
+     "Li",
+     "Li",
+     "Vi",
+     "Ta",
+     "Ar",
+     "Cn",
+     "Sc",
+     "Ar",
+     "Pi",
+     "Sg",
+     "Ta",
+     "Sc",
+     ""
+    ],
+    [
+     "Ketu's Arudha",
+     "Sg",
+     "Le",
+     "Ge",
+     "Sg",
+     "Sg",
+     "Ta",
+     "Aq",
+     "Le",
+     "Aq",
+     "Li",
+     "Li",
+     "Li",
+     "Pi",
+     "Sc",
+     "Li",
+     "Cn",
+     "Ta",
+     "Li",
+     "Vi",
+     "Sg",
+     "Ta",
+     "Sc",
+     ""
+    ],
+    [
+     "Mars's Ar Arudha",
+     "Sc",
+     "Sc",
+     "Ge",
+     "Pi",
+     "Aq",
+     "Vi",
+     "Ta",
+     "Sc",
+     "Ta",
+     "Ge",
+     "Sc",
+     "Sg",
+     "Ta",
+     "Ta",
+     "Aq",
+     "Sc",
+     "Vi",
+     "Le",
+     "Li",
+     "Li",
+     "Li",
+     "Pi",
+     ""
+    ],
+    [
+     "Mercury's Ge Arudha",
+     "Li",
+     "Sc",
+     "Vi",
+     "Pi",
+     "Cn",
+     "Li",
+     "Pi",
+     "Le",
+     "Ge",
+     "Cn",
+     "Aq",
+     "Pi",
+     "Li",
+     "Ta",
+     "Cn",
+     "Ar",
+     "Vi",
+     "Ta",
+     "Sc",
+     "Vi",
+     "Le",
+     "Pi",
+     ""
+    ],
+    [
+     "Jupiter's Sg Arudha",
+     "Li",
+     "Ge",
+     "Sc",
+     "Pi",
+     "Ar",
+     "Pi",
+     "Ta",
+     "Pi",
+     "Le",
+     "Ar",
+     "Vi",
+     "Sg",
+     "Cn",
+     "Vi",
+     "Aq",
+     "Li",
+     "Pi",
+     "Le",
+     "Cp",
+     "Li",
+     "Cp",
+     "Ar",
+     ""
+    ],
+    [
+     "Venus's Ta Arudha",
+     "Li",
+     "Sg",
+     "Cp",
+     "Sc",
+     "Ar",
+     "Ar",
+     "Sc",
+     "Aq",
+     "Vi",
+     "Pi",
+     "Cn",
+     "Sc",
+     "Le",
+     "Sg",
+     "Vi",
+     "Le",
+     "Ar",
+     "Sc",
+     "Sc",
+     "Pi",
+     "Ta",
+     "Ge",
+     ""
+    ],
+    [
+     "Saturn's Cp Arudha",
+     "Le",
+     "Cp",
+     "Ge",
+     "Le",
+     "Le",
+     "Cn",
+     "Cn",
+     "Le",
+     "Ge",
+     "Le",
+     "Sg",
+     "Le",
+     "Aq",
+     "Ge",
+     "Ta",
+     "Pi",
+     "Cn",
+     "Vi",
+     "Sg",
+     "Ge",
+     "Li",
+     "Sg",
+     ""
+    ],
+    [
+     "Mars's Sc Arudha",
+     "Cp",
+     "Cp",
+     "Ta",
+     "Aq",
+     "Ar",
+     "Le",
+     "Cn",
+     "Cp",
+     "Cn",
+     "Ta",
+     "Cp",
+     "Sc",
+     "Cn",
+     "Cn",
+     "Ar",
+     "Cp",
+     "Le",
+     "Li",
+     "Pi",
+     "Pi",
+     "Pi",
+     "Aq",
+     ""
+    ],
+    [
+     "Mercury's Vi Arudha",
+     "Ar",
+     "Ta",
+     "Pi",
+     "Vi",
+     "Cp",
+     "Ar",
+     "Vi",
+     "Aq",
+     "Sg",
+     "Cp",
+     "Le",
+     "Vi",
+     "Ar",
+     "Sc",
+     "Cp",
+     "Li",
+     "Pi",
+     "Sc",
+     "Ta",
+     "Pi",
+     "Aq",
+     "Vi",
+     ""
+    ],
+    [
+     "Jupiter's Pi Arudha",
+     "Ar",
+     "Sg",
+     "Ta",
+     "Vi",
+     "Li",
+     "Vi",
+     "Sc",
+     "Vi",
+     "Aq",
+     "Li",
+     "Pi",
+     "Ge",
+     "Cp",
+     "Pi",
+     "Le",
+     "Ar",
+     "Vi",
+     "Aq",
+     "Cn",
+     "Ar",
+     "Cn",
+     "Li",
+     ""
+    ],
+    [
+     "Venus's Li Arudha",
+     "Le",
+     "Cn",
+     "Sc",
+     "Sg",
+     "Aq",
+     "Aq",
+     "Sg",
+     "Pi",
+     "Ar",
+     "Li",
+     "Ta",
+     "Sg",
+     "Vi",
+     "Cn",
+     "Ar",
+     "Vi",
+     "Aq",
+     "Sg",
+     "Sg",
+     "Li",
+     "Ge",
+     "Cp",
+     ""
+    ],
+    [
+     "Saturn's Aq Arudha",
+     "Li",
+     "Ge",
+     "Ta",
+     "Li",
+     "Li",
+     "Sg",
+     "Sg",
+     "Li",
+     "Ta",
+     "Li",
+     "Sc",
+     "Li",
+     "Ar",
+     "Ta",
+     "Cn",
+     "Aq",
+     "Sg",
+     "Le",
+     "Sc",
+     "Ta",
+     "Pi",
+     "Sc",
+     ""
+    ],
+    [
+     "V2",
+     "Sc",
+     "Ta",
+     "Pi",
+     "Sc",
+     "Li",
+     "Cp",
+     "Sg",
+     "Ge",
+     "Cn",
+     "Pi",
+     "Ar",
+     "Sg",
+     "Cn",
+     "Pi",
+     "Ge",
+     "Ta",
+     "Pi",
+     "Le",
+     "Sc",
+     "Pi",
+     "Pi",
+     "Cn",
+     ""
+    ],
+    [
+     "V3",
+     "Sg",
+     "Le",
+     "Aq",
+     "Sg",
+     "Cp",
+     "Aq",
+     "Pi",
+     "Vi",
+     "Aq",
+     "Ar",
+     "Cn",
+     "Pi",
+     "Le",
+     "Aq",
+     "Vi",
+     "Ge",
+     "Ar",
+     "Sc",
+     "Li",
+     "Aq",
+     "Ar",
+     "Aq",
+     ""
+    ],
+    [
+     "V4",
+     "Pi",
+     "Vi",
+     "Cn",
+     "Pi",
+     "Aq",
+     "Ta",
+     "Ar",
+     "Li",
+     "Pi",
+     "Cn",
+     "Le",
+     "Ar",
+     "Sc",
+     "Cn",
+     "Li",
+     "Vi",
+     "Cn",
+     "Sg",
+     "Cn",
+     "Cn",
+     "Cn",
+     "Pi",
+     ""
+    ],
+    [
+     "V5",
+     "Ar",
+     "Sg",
+     "Li",
+     "Ar",
+     "Ta",
+     "Ge",
+     "Cn",
+     "Cp",
+     "Aq",
+     "Le",
+     "Sc",
+     "Cn",
+     "Sg",
+     "Li",
+     "Cp",
+     "Li",
+     "Le",
+     "Pi",
+     "Aq",
+     "Li",
+     "Le",
+     "Aq",
+     ""
+    ],
+    [
+     "V6",
+     "Cn",
+     "Ta",
+     "Sc",
+     "Cn",
+     "Ge",
+     "Vi",
+     "Le",
+     "Aq",
+     "Cn",
+     "Sc",
+     "Sg",
+     "Le",
+     "Pi",
+     "Sc",
+     "Aq",
+     "Cp",
+     "Sc",
+     "Ar",
+     "Pi",
+     "Sc",
+     "Sc",
+     "Cn",
+     ""
+    ],
+    [
+     "V7",
+     "Le",
+     "Ar",
+     "Aq",
+     "Le",
+     "Vi",
+     "Li",
+     "Sc",
+     "Ta",
+     "Li",
+     "Sg",
+     "Pi",
+     "Sc",
+     "Ar",
+     "Ge",
+     "Ta",
+     "Aq",
+     "Sg",
+     "Cn",
+     "Aq",
+     "Ge",
+     "Sg",
+     "Li",
+     ""
+    ],
+    [
+     "V8",
+     "Sc",
+     "Ta",
+     "Pi",
+     "Sc",
+     "Li",
+     "Cp",
+     "Sg",
+     "Ge",
+     "Cn",
+     "Pi",
+     "Ar",
+     "Sg",
+     "Cn",
+     "Pi",
+     "Ge",
+     "Ta",
+     "Pi",
+     "Le",
+     "Cn",
+     "Pi",
+     "Pi",
+     "Sc",
+     ""
+    ],
+    [
+     "V9",
+     "Sg",
+     "Sg",
+     "Aq",
+     "Sg",
+     "Cp",
+     "Aq",
+     "Pi",
+     "Vi",
+     "Aq",
+     "Ar",
+     "Cn",
+     "Pi",
+     "Le",
+     "Ge",
+     "Vi",
+     "Ge",
+     "Ar",
+     "Sc",
+     "Li",
+     "Ge",
+     "Ar",
+     "Ge",
+     ""
+    ],
+    [
+     "V10",
+     "Pi",
+     "Vi",
+     "Sc",
+     "Pi",
+     "Aq",
+     "Ta",
+     "Ar",
+     "Li",
+     "Pi",
+     "Cn",
+     "Le",
+     "Ar",
+     "Sc",
+     "Sc",
+     "Li",
+     "Vi",
+     "Cn",
+     "Sg",
+     "Sc",
+     "Sc",
+     "Cn",
+     "Pi",
+     ""
+    ],
+    [
+     "V11",
+     "Ar",
+     "Le",
+     "Li",
+     "Ar",
+     "Ta",
+     "Ge",
+     "Cn",
+     "Cp",
+     "Aq",
+     "Le",
+     "Sc",
+     "Cn",
+     "Sg",
+     "Li",
+     "Cp",
+     "Li",
+     "Le",
+     "Pi",
+     "Ge",
+     "Li",
+     "Le",
+     "Ge",
+     ""
+    ],
+    [
+     "V12",
+     "Cn",
+     "Ta",
+     "Cn",
+     "Cn",
+     "Ge",
+     "Vi",
+     "Le",
+     "Aq",
+     "Cn",
+     "Sc",
+     "Sg",
+     "Le",
+     "Pi",
+     "Cn",
+     "Aq",
+     "Cp",
+     "Sc",
+     "Ar",
+     "Pi",
+     "Cn",
+     "Sc",
+     "Sc",
+     ""
+    ],
+    [
+     "Kunda",
+     "Pi",
+     "Cn",
+     "Pi",
+     "Pi",
+     "Pi",
+     "Ta",
+     "Li",
+     "Vi",
+     "Le",
+     "Sg",
+     "Ge",
+     "Ar",
+     "Cp",
+     "Li",
+     "Vi",
+     "Pi",
+     "Ta",
+     "Aq",
+     "Ar",
+     "Vi",
+     "Pi",
+     "Ta",
+     ""
+    ],
+    [
+     "Yoga Sphuta",
+     "Ta",
+     "Le",
+     "Ge",
+     "Cp",
+     "Aq",
+     "Sc",
+     "Pi",
+     "Ar",
+     "Ge",
+     "Vi",
+     "Sg",
+     "Pi",
+     "Vi",
+     "Ar",
+     "Pi",
+     "Ta",
+     "Sc",
+     "Cn",
+     "Vi",
+     "Cn",
+     "Le",
+     "Aq",
+     ""
+    ],
+    [
+     "Avayoga Sphuta",
+     "Sg",
+     "Ar",
+     "Le",
+     "Sg",
+     "Sg",
+     "Ar",
+     "Ar",
+     "Sg",
+     "Le",
+     "Sg",
+     "Le",
+     "Sg",
+     "Sg",
+     "Vi",
+     "Vi",
+     "Ta",
+     "Ar",
+     "Ge",
+     "Aq",
+     "Pi",
+     "Le",
+     "Li",
+     ""
+    ]
+   ]
+  },
+  {
+   "tabs": [
+    "Many Vargas",
+    "Key Info",
+    "Key Info",
+    "Key Info"
+   ],
+   "control_id": 59648,
+   "mode": "Nava Taras (from Moon)",
+   "headers": [
+    "Tara (Moon)",
+    "Meaning",
+    "Lord",
+    "Nakshatra 1",
+    "Nakshatra 2",
+    "Nakshatra 3"
+   ],
+   "rows": [
+    [
+     "Janma",
+     "Birth",
+     "Venus",
+     "Bhar",
+     "PPha",
+     "PSha"
+    ],
+    [
+     "Sampat",
+     "Wealth",
+     "Sun",
+     "Krit",
+     "UPha",
+     "USha"
+    ],
+    [
+     "Vipat",
+     "Danger",
+     "Moon",
+     "Rohi",
+     "Hast",
+     "Srav"
+    ],
+    [
+     "Kshema",
+     "Well-being",
+     "Mars",
+     "Mrig",
+     "Chit",
+     "Dhan"
+    ],
+    [
+     "Pratyak",
+     "Obstacles",
+     "Rahu",
+     "Ardr",
+     "Swat",
+     "Sata"
+    ],
+    [
+     "Saadhana",
+     "Achievement",
+     "Jupiter",
+     "Puna",
+     "Visa",
+     "PBha"
+    ],
+    [
+     "Naidhana",
+     "Death",
+     "Saturn",
+     "Push",
+     "Anu",
+     "UBha"
+    ],
+    [
+     "Mitra",
+     "Friend",
+     "Mercury",
+     "Asre",
+     "Jye",
+     "Reva"
+    ],
+    [
+     "Parama Mitra",
+     "Good friend",
+     "Ketu",
+     "Magh",
+     "Mool",
+     "Aswi"
+    ]
+   ]
+  },
+  {
+   "tabs": [
+    "Many Vargas",
+    "Key Info",
+    "Key Info",
+    "Key Info"
+   ],
+   "control_id": 59648,
+   "mode": "Special Taras (from Moon)",
+   "headers": [
+    "Special tara (Moon)",
+    "Meaning",
+    "Nakshatra",
+    "Lord"
+   ],
+   "rows": [
+    [
+     "Janma",
+     "Existence",
+     "Bhar",
+     "Venus"
+    ],
+    [
+     "Karma",
+     "Work",
+     "PPha",
+     "Venus"
+    ],
+    [
+     "Samudayika",
+     "Collective",
+     "Mool",
+     "Ketu"
+    ],
+    [
+     "Sanghatika",
+     "Social",
+     "Anu",
+     "Saturn"
+    ],
+    [
+     "Jaati",
+     "Family",
+     "Mrig",
+     "Mars"
+    ],
+    [
+     "Naidhana",
+     "Death",
+     "Push",
+     "Saturn"
+    ],
+    [
+     "Desa",
+     "Nation",
+     "Hast",
+     "Moon"
+    ],
+    [
+     "Abhisheka",
+     "Coronation",
+     "Aswi",
+     "Ketu"
+    ],
+    [
+     "Aadhaana",
+     "Kindling",
+     "PSha",
+     "Venus"
+    ],
+    [
+     "Vainasika",
+     "Destructive",
+     "Srav",
+     "Moon"
+    ],
+    [
+     "Maanasa",
+     "Mental",
+     "PBha",
+     "Jupiter"
+    ]
+   ]
+  },
+  {
+   "tabs": [
+    "Many Vargas",
+    "Key Info",
+    "Key Info",
+    "Key Info"
+   ],
+   "control_id": 59648,
+   "mode": "Nakshatra Aspects & Latta",
+   "headers": [
+    "Planet",
+    "Latta on",
+    "Occupied Star",
+    "Aspected Stars"
+   ],
+   "rows": [
+    [
+     "Sun",
+     "Puna",
+     "Dhan",
+     "Asre    Magh    "
+    ],
+    [
+     "Moon",
+     "Asre",
+     "Bhar",
+     "Swat    Visa    "
+    ],
+    [
+     "Mars",
+     "Visa",
+     "Chit",
+     "Chit    Visa    PSha    USha    Reva    "
+    ],
+    [
+     "Mercury",
+     "Mool",
+     "Sata",
+     "Sata    PPha    "
+    ],
+    [
+     "Jupiter",
+     "Bhar",
+     "Sata",
+     "Ardr    PPha    Swat    "
+    ],
+    [
+     "Venus",
+     "Visa",
+     "PSha",
+     "PSha    Ardr    "
+    ],
+    [
+     "Saturn",
+     "UPha",
+     "Mrig",
+     "Puna    Asre    Mool    Srav    "
+    ],
+    [
+     "Rahu",
+     "USha",
+     "Aswi",
+     ""
+    ]
+   ]
+  },
+  {
+   "tabs": [
+    "Many Vargas",
+    "Key Info",
+    "Key Info",
+    "Key Info"
+   ],
+   "control_id": 59648,
+   "mode": "Yogi, Sahayogi, Avayogi",
+   "headers": [
+    "Title",
+    "Planet in this chart",
+    "Longitude"
+   ],
+   "rows": [
+    [
+     "Yogi",
+     "Mars",
+     "25 Ta 04' 22.29\""
+    ],
+    [
+     "Sahayogi",
+     "Venus",
+     "-"
+    ],
+    [
+     "Avayogi",
+     "Ketu",
+     " 1 Sg 44' 22.29\""
+    ]
+   ]
+  },
+  {
+   "tabs": [
+    "Many Vargas",
+    "Key Info",
+    "Key Info",
+    "Key Info"
+   ],
+   "control_id": 59648,
+   "mode": "Pushkaramsas",
+   "headers": [
+    "Body",
+    "In Pushkaramsa?",
+    "In Pushkara Bhaga?",
+    "From Pushkara Bhaga Center"
+   ],
+   "rows": [
+    [
+     "Sun",
+     "-",
+     "-",
+     "17.5253 deg"
+    ],
+    [
+     "Moon",
+     "Yes",
+     "Yes",
+     "0.2648 deg"
+    ],
+    [
+     "Mars",
+     "-",
+     "-",
+     "20.5040 deg"
+    ],
+    [
+     "Mercury",
+     "-",
+     "-",
+     "7.0456 deg"
+    ],
+    [
+     "Jupiter",
+     "Yes",
+     "Yes",
+     "0.3111 deg"
+    ],
+    [
+     "Venus",
+     "Yes",
+     "-",
+     "0.8184 deg"
+    ],
+    [
+     "Saturn",
+     "-",
+     "-",
+     "16.1307 deg"
+    ],
+    [
+     "Rahu",
+     "-",
+     "-",
+     "14.3941 deg"
+    ],
+    [
+     "Ketu",
+     "-",
+     "-",
+     "17.3941 deg"
+    ],
+    [
+     "Maandi",
+     "-",
+     "-",
+     "9.6110 deg"
+    ],
+    [
+     "Lagna",
+     "Yes",
+     "-",
+     "0.6116 deg"
+    ],
+    [
+     "2nd house",
+     "-",
+     "-",
+     "3.3884 deg"
+    ],
+    [
+     "3rd house",
+     "-",
+     "-",
+     "6.6116 deg"
+    ],
+    [
+     "4th house",
+     "-",
+     "-",
+     "4.3884 deg"
+    ],
+    [
+     "5th house",
+     "Yes",
+     "-",
+     "5.6116 deg"
+    ],
+    [
+     "6th house",
+     "-",
+     "-",
+     "9.3884 deg"
+    ],
+    [
+     "7th house",
+     "-",
+     "-",
+     "3.6116 deg"
+    ],
+    [
+     "8th house",
+     "-",
+     "-",
+     "8.3884 deg"
+    ],
+    [
+     "9th house",
+     "Yes",
+     "-",
+     "0.6116 deg"
+    ],
+    [
+     "10th house",
+     "-",
+     "-",
+     "4.3884 deg"
+    ],
+    [
+     "11th house",
+     "-",
+     "-",
+     "5.6116 deg"
+    ],
+    [
+     "12th house",
+     "-",
+     "-",
+     "6.3884 deg"
+    ]
+   ]
+  },
+  {
+   "tabs": [
+    "Many Vargas",
+    "Key Info",
+    "Key Info",
+    "Key Info"
+   ],
+   "control_id": 59648,
+   "mode": "Special Tithis",
+   "headers": [
+    "Special Tithi",
+    "Seed",
+    "Name",
+    "% left",
+    "Lord",
+    "Deity",
+    "Index",
+    "Index in paksha"
+   ],
+   "rows": [
+    [
+     "Janma tithi",
+     "1",
+     "Sukla Sapthami",
+     "35%",
+     "Saturn",
+     "Siva Dooti",
+     "7th",
+     "7th in Brighter half"
+    ],
+    [
+     "Dhana tithi",
+     "2",
+     "Sukla Chaturdasi",
+     "70%",
+     "Venus",
+     "Jwaalaa Maalini",
+     "14th",
+     "14th in Brighter half"
+    ],
+    [
+     "Bhratri tithi",
+     "3",
+     "Krishna Panchami",
+     "5%",
+     "Jupiter",
+     "Vahni Vaasini",
+     "20th",
+     "5th in Darker half"
+    ],
+    [
+     "Matri tithi",
+     "4",
+     "Krishna Dwadasi",
+     "40%",
+     "Mercury",
+     "Vijaya",
+     "27th",
+     "12th in Darker half"
+    ],
+    [
+     "Putra tithi",
+     "5",
+     "Sukla Chaturthi",
+     "75%",
+     "Mercury",
+     "Bherunda",
+     "4th",
+     "4th in Brighter half"
+    ],
+    [
+     "Satru tithi",
+     "6",
+     "Sukla Dasami",
+     "10%",
+     "Moon",
+     "Nitya",
+     "10th",
+     "10th in Brighter half"
+    ],
+    [
+     "Kalatra tithi",
+     "7",
+     "Krishna Dwitiya",
+     "46%",
+     "Moon",
+     "Bhaga Maalini",
+     "17th",
+     "2th in Darker half"
+    ],
+    [
+     "Mrityu tithi",
+     "8",
+     "Krishna Navami",
+     "81%",
+     "Sun",
+     "Kula Sundari",
+     "24th",
+     "9th in Darker half"
+    ],
+    [
+     "Bhagya tithi",
+     "9",
+     "Amavasya",
+     "16%",
+     "Rahu",
+     "Chitra",
+     "30th",
+     "15th in Darker half"
+    ],
+    [
+     "Karma tithi",
+     "10",
+     "Sukla Sapthami",
+     "51%",
+     "Saturn",
+     "Siva Dooti",
+     "7th",
+     "7th in Brighter half"
+    ],
+    [
+     "Laabha tithi",
+     "11",
+     "Sukla Chaturdasi",
+     "86%",
+     "Venus",
+     "Jwaalaa Maalini",
+     "14th",
+     "14th in Brighter half"
+    ],
+    [
+     "Vyaya tithi",
+     "12",
+     "Krishna Panchami",
+     "21%",
+     "Jupiter",
+     "Vahni Vaasini",
+     "20th",
+     "5th in Darker half"
+    ],
+    [
+     "Janma tithi (cycle 2)",
+     "13",
+     "Krishna Dwadasi",
+     "56%",
+     "Mercury",
+     "Vijaya",
+     "27th",
+     "12th in Darker half"
+    ],
+    [
+     "Dhana tithi (cycle 2)",
+     "14",
+     "Sukla Chaturthi",
+     "91%",
+     "Mercury",
+     "Bherunda",
+     "4th",
+     "4th in Brighter half"
+    ],
+    [
+     "Bhratri tithi (cycle 2)",
+     "15",
+     "Sukla Dasami",
+     "26%",
+     "Moon",
+     "Nitya",
+     "10th",
+     "10th in Brighter half"
+    ],
+    [
+     "Matri tithi (cycle 2)",
+     "16",
+     "Krishna Dwitiya",
+     "61%",
+     "Moon",
+     "Bhaga Maalini",
+     "17th",
+     "2th in Darker half"
+    ],
+    [
+     "Putra tithi (cycle 2)",
+     "17",
+     "Krishna Navami",
+     "96%",
+     "Sun",
+     "Kula Sundari",
+     "24th",
+     "9th in Darker half"
+    ],
+    [
+     "Satru tithi (cycle 2)",
+     "18",
+     "Amavasya",
+     "31%",
+     "Rahu",
+     "Chitra",
+     "30th",
+     "15th in Darker half"
+    ],
+    [
+     "Kalatra tithi (cycle 2)",
+     "19",
+     "Sukla Sapthami",
+     "67%",
+     "Saturn",
+     "Siva Dooti",
+     "7th",
+     "7th in Brighter half"
+    ],
+    [
+     "Mrityu tithi (cycle 2)",
+     "20",
+     "Sukla Trayodasi",
+     "2%",
+     "Jupiter",
+     "Sarva Mangala",
+     "13th",
+     "13th in Brighter half"
+    ],
+    [
+     "Bhagya tithi (cycle 2)",
+     "21",
+     "Krishna Panchami",
+     "37%",
+     "Jupiter",
+     "Vahni Vaasini",
+     "20th",
+     "5th in Darker half"
+    ],
+    [
+     "Karma tithi (cycle 2)",
+     "22",
+     "Krishna Dwadasi",
+     "72%",
+     "Mercury",
+     "Vijaya",
+     "27th",
+     "12th in Darker half"
+    ],
+    [
+     "Laabha tithi (cycle 2)",
+     "23",
+     "Sukla Tritiya",
+     "7%",
+     "Mars",
+     "Nitya Klinna",
+     "3th",
+     "3th in Brighter half"
+    ],
+    [
+     "Vyaya tithi (cycle 2)",
+     "24",
+     "Sukla Dasami",
+     "42%",
+     "Moon",
+     "Nitya",
+     "10th",
+     "10th in Brighter half"
+    ],
+    [
+     "Janma tithi (cycle 3)",
+     "25",
+     "Krishna Dwitiya",
+     "77%",
+     "Moon",
+     "Bhaga Maalini",
+     "17th",
+     "2th in Darker half"
+    ],
+    [
+     "Dhana tithi (cycle 3)",
+     "26",
+     "Krishna Ashtami",
+     "12%",
+     "Rahu",
+     "Tvarita",
+     "23th",
+     "8th in Darker half"
+    ],
+    [
+     "Bhratri tithi (cycle 3)",
+     "27",
+     "Amavasya",
+     "47%",
+     "Rahu",
+     "Chitra",
+     "30th",
+     "15th in Darker half"
+    ],
+    [
+     "Matri tithi (cycle 3)",
+     "28",
+     "Sukla Sapthami",
+     "82%",
+     "Saturn",
+     "Siva Dooti",
+     "7th",
+     "7th in Brighter half"
+    ],
+    [
+     "Putra tithi (cycle 3)",
+     "29",
+     "Sukla Trayodasi",
+     "17%",
+     "Jupiter",
+     "Sarva Mangala",
+     "13th",
+     "13th in Brighter half"
+    ],
+    [
+     "Satru tithi (cycle 3)",
+     "30",
+     "Krishna Panchami",
+     "52%",
+     "Jupiter",
+     "Vahni Vaasini",
+     "20th",
+     "5th in Darker half"
+    ],
+    [
+     "Kalatra tithi (cycle 3)",
+     "3",
+     "Krishna Dwadasi",
+     "88%",
+     "Mercury",
+     "Vijaya",
+     "27th",
+     "12th in Darker half"
+    ],
+    [
+     "Mrityu tithi (cycle 3)",
+     "6",
+     "Sukla Tritiya",
+     "23%",
+     "Mars",
+     "Nitya Klinna",
+     "3th",
+     "3th in Brighter half"
+    ],
+    [
+     "Bhagya tithi (cycle 3)",
+     "4",
+     "Sukla Dasami",
+     "58%",
+     "Moon",
+     "Nitya",
+     "10th",
+     "10th in Brighter half"
+    ],
+    [
+     "Karma tithi (cycle 3)",
+     "2",
+     "Krishna Dwitiya",
+     "93%",
+     "Moon",
+     "Bhaga Maalini",
+     "17th",
+     "2th in Darker half"
+    ],
+    [
+     "Laabha tithi (cycle 3)",
+     "1",
+     "Krishna Ashtami",
+     "28%",
+     "Rahu",
+     "Tvarita",
+     "23th",
+     "8th in Darker half"
+    ],
+    [
+     "Vyaya tithi (cycle 3)",
+     "4",
+     "Amavasya",
+     "63%",
+     "Rahu",
+     "Chitra",
+     "30th",
+     "15th in Darker half"
+    ]
+   ]
+  },
+  {
+   "tabs": [
+    "Many Vargas",
+    "Key Info",
+    "Key Info",
+    "Key Info"
+   ],
+   "control_id": 59648,
+   "mode": "Chara Karakas",
+   "headers": [
+    "Chara karaka",
+    "Planet",
+    "Meaning of portfolio"
+   ],
+   "rows": [
+    [
+     "AK",
+     "Mars",
+     "Self"
+    ],
+    [
+     "AmK",
+     "Rahu",
+     "Minister (advisor)"
+    ],
+    [
+     "BK",
+     "Venus",
+     "Brother (associate)"
+    ],
+    [
+     "MK",
+     "Moon",
+     "Mother (nourisher)"
+    ],
+    [
+     "PiK",
+     "Jupiter",
+     "Father (authority)"
+    ],
+    [
+     "PK",
+     "Mercury",
+     "Son (follower)"
+    ],
+    [
+     "GK",
+     "Saturn",
+     "Cousin (rival)"
+    ],
+    [
+     "DK",
+     "Sun",
+     "Spouse (partner)"
+    ]
+   ]
+  },
+  {
+   "tabs": [
+    "Many Vargas",
+    "Key Info",
+    "Key Info",
+    "Key Info"
+   ],
+   "control_id": 59648,
+   "mode": "Combustion",
+   "headers": [
+    "Planet",
+    "Combust?"
+   ],
+   "rows": [
+    [
+     "Mars",
+     "-"
+    ],
+    [
+     "Mercury",
+     "-"
+    ],
+    [
+     "Jupiter",
+     "-"
+    ],
+    [
+     "Venus",
+     "-"
+    ],
+    [
+     "Saturn",
+     "-"
+    ]
+   ]
+  },
+  {
+   "tabs": [
+    "Many Vargas",
+    "Key Info",
+    "Key Info",
+    "Key Info"
+   ],
+   "control_id": 59648,
+   "mode": "Graha Yuddha",
+   "headers": [
+    "Planet",
+    "Wins?",
+    "Loses?"
+   ],
+   "rows": [
+    [
+     "Sun",
+     "-",
+     "-"
+    ],
+    [
+     "Moon",
+     "-",
+     "-"
+    ],
+    [
+     "Mars",
+     "-",
+     "-"
+    ],
+    [
+     "Mercury",
+     "-",
+     "-"
+    ],
+    [
+     "Jupiter",
+     "-",
+     "-"
+    ],
+    [
+     "Venus",
+     "-",
+     "-"
+    ],
+    [
+     "Saturn",
+     "-",
+     "-"
+    ],
+    [
+     "Rahu",
+     "-",
+     "-"
+    ],
+    [
+     "Ketu",
+     "-",
+     "-"
+    ]
+   ]
+  },
+  {
+   "tabs": [
+    "Many Vargas",
+    "Key Info",
+    "Key Info",
+    "Key Info"
+   ],
+   "control_id": 59648,
+   "mode": "Brahma Rudra Maheswara",
+   "headers": [
+    "Special Deity",
+    "Planet in this chart"
+   ],
+   "rows": [
+    [
+     "Brahma",
+     "Venus"
+    ],
+    [
+     "Rudra",
+     "Jupiter"
+    ],
+    [
+     "Maheswara",
+     "Rahu"
+    ]
+   ]
+  },
+  {
+   "tabs": [
+    "Many Vargas",
+    "Key Info",
+    "Key Info",
+    "Key Info"
+   ],
+   "control_id": 59648,
+   "mode": "Mrityu Bhaga",
+   "headers": [
+    "Body",
+    "From Mrityu Bhaga Center",
+    "Within the Trimsamsa (degree)?"
+   ],
+   "rows": [
+    [
+     "Sun",
+     "1.5253 deg",
+     "-"
+    ],
+    [
+     "Moon",
+     "13.2648 deg",
+     "-"
+    ],
+    [
+     "Mars",
+     "1.5040 deg",
+     "-"
+    ],
+    [
+     "Mercury",
+     "4.9544 deg",
+     "-"
+    ],
+    [
+     "Jupiter",
+     "3.6889 deg",
+     "-"
+    ],
+    [
+     "Venus",
+     "4.8184 deg",
+     "-"
+    ],
+    [
+     "Saturn",
+     "5.1307 deg",
+     "-"
+    ],
+    [
+     "Rahu",
+     "7.3941 deg",
+     "-"
+    ],
+    [
+     "Ketu",
+     "16.3941 deg",
+     "-"
+    ],
+    [
+     "Maandi",
+     "0.3890 deg",
+     "Yes"
+    ],
+    [
+     "Lagna",
+     "5.6116 deg",
+     "-"
+    ],
+    [
+     "2nd house",
+     "7.3884 deg",
+     "-"
+    ],
+    [
+     "3rd house",
+     "7.3884 deg",
+     "-"
+    ],
+    [
+     "4th house",
+     "10.3884 deg",
+     "-"
+    ],
+    [
+     "5th house",
+     "12.6116 deg",
+     "-"
+    ],
+    [
+     "6th house",
+     "10.6116 deg",
+     "-"
+    ],
+    [
+     "7th house",
+     "8.3884 deg",
+     "-"
+    ],
+    [
+     "8th house",
+     "3.3884 deg",
+     "-"
+    ],
+    [
+     "9th house",
+     "5.3884 deg",
+     "-"
+    ],
+    [
+     "10th house",
+     "9.3884 deg",
+     "-"
+    ],
+    [
+     "11th house",
+     "4.6116 deg",
+     "-"
+    ],
+    [
+     "12th house",
+     "13.6116 deg",
+     "-"
+    ]
+   ]
+  },
+  {
+   "tabs": [
+    "Many Vargas",
+    "Key Info",
+    "Key Info",
+    "Key Info"
+   ],
+   "control_id": 59648,
+   "mode": "Planetary drekkanas",
+   "headers": [
+    "Body",
+    "Drekkana occupied"
+   ],
+   "rows": [
+    [
+     "Sun",
+     "Pakshi (bird), Kroora (cruel)"
+    ],
+    [
+     "Moon",
+     "Ayudha (weapon), Misra (mixed)"
+    ],
+    [
+     "Mars",
+     "-"
+    ],
+    [
+     "Mercury",
+     "Agni (fire)"
+    ],
+    [
+     "Jupiter",
+     "Agni (fire)"
+    ],
+    [
+     "Venus",
+     "Ayudha (weapon)"
+    ],
+    [
+     "Saturn",
+     "-"
+    ],
+    [
+     "Rahu",
+     "Ayudha (weapon), Kroora (cruel)"
+    ],
+    [
+     "Ketu",
+     "-"
+    ],
+    [
+     "Maandi",
+     "-"
+    ],
+    [
+     "Lagna",
+     "Mriga (animal)"
+    ],
+    [
+     "2nd house",
+     "Pakshi (bird)"
+    ],
+    [
+     "3rd house",
+     "Sarpa (snake)"
+    ],
+    [
+     "4th house",
+     "Ayudha (weapon)"
+    ],
+    [
+     "5th house",
+     "-"
+    ],
+    [
+     "6th house",
+     "Pakshi (bird)"
+    ],
+    [
+     "7th house",
+     "Sarpa (snake), Kroora (cruel)"
+    ],
+    [
+     "8th house",
+     "-"
+    ],
+    [
+     "9th house",
+     "-"
+    ],
+    [
+     "10th house",
+     "Agni (fire)"
+    ],
+    [
+     "11th house",
+     "-"
+    ],
+    [
+     "12th house",
+     "Mriga (animal), Subha (auspicious)"
+    ]
+   ]
+  },
+  {
+   "tabs": [
+    "Many Vargas",
+    "Key Info",
+    "Key Info",
+    "Key Info"
+   ],
+   "control_id": 59648,
+   "mode": "64th navamsa and 22nd drekkana",
+   "headers": [
+    "Malicious Division",
+    "Lord"
+   ],
+   "rows": [
+    [
+     "The 64th navamsa",
+     "Sun"
+    ],
+    [
+     "The 22nd Pararsara drekkana",
+     "Mars"
+    ],
+    [
+     "The 22nd Parivritti traya drekkana",
+     "Venus"
+    ],
+    [
+     "The 22nd Somanatha drekkana",
+     "Venus"
+    ],
+    [
+     "The 22nd Uma-Shambhu drekkana",
+     "Venus"
+    ],
+    [
+     "The 64th navamsa from Moon",
+     "Saturn"
+    ],
+    [
+     "The 22nd Parasara drekkana from Moon",
+     "Moon"
+    ],
+    [
+     "The 22nd Parivritti traya drekkana from Moon",
+     "Jupiter"
+    ],
+    [
+     "The 22nd Somanatha drekkana from Moon",
+     "Mars"
+    ],
+    [
+     "The 22nd Uma-Shambhu drekkana from Moon",
+     "Saturn"
+    ],
+    [
+     "The 22nd Jagannatha drekkana from Moon",
+     "Jupiter"
+    ],
+    [
+     "The 22nd Jagannatha drekkana",
+     "Sun"
+    ]
+   ]
+  },
+  {
+   "tabs": [
+    "Many Vargas",
+    "Key Info",
+    "Key Info",
+    "Key Info"
+   ],
+   "control_id": 59648,
+   "mode": "Sahamas",
+   "headers": [
+    "Sahama name",
+    "Position",
+    "Nakshatra",
+    "Meaning of sahama"
+   ],
+   "rows": [
+    [
+     "Punya Sahama",
+     " 3 Vi 54' 06.09\"",
+     "UPha",
+     "Fortune, good deeds"
+    ],
+    [
+     "Vidya Sahama",
+     "24 Aq 19' 17.60\"",
+     "PBha",
+     "Learning"
+    ],
+    [
+     "Yasas Sahama",
+     "28 Sc 23' 55.94\"",
+     "Jye",
+     "Fame"
+    ],
+    [
+     "Mitra Sahama",
+     " 5 Cn 58' 07.98\"",
+     "Push",
+     "Friend"
+    ],
+    [
+     "Mahatmya Sahama",
+     "19 Ar 00' 33.50\"",
+     "Bhar",
+     "Greatness"
+    ],
+    [
+     "Asha Sahama",
+     "16 Cp 28' 36.83\"",
+     "Srav",
+     "Hopes, desires"
+    ],
+    [
+     "Samartha Sahama",
+     "21 Aq 26' 02.39\"",
+     "PBha",
+     "Enterprise"
+    ],
+    [
+     "Bhratru Sahama",
+     " 0 Pi 55' 52.60\"",
+     "PBha",
+     "Brother"
+    ],
+    [
+     "Gaurava Sahama",
+     "28 Sc 23' 55.94\"",
+     "Jye",
+     "Respect"
+    ],
+    [
+     "Pitru Sahama",
+     "14 Vi 30' 22.24\"",
+     "Hast",
+     "Father"
+    ],
+    [
+     "Rajya Sahama",
+     "14 Vi 30' 22.24\"",
+     "Hast",
+     "Kingdom"
+    ],
+    [
+     "Matru Sahama",
+     "13 Li 11' 41.23\"",
+     "Swat",
+     "Mother"
+    ],
+    [
+     "Putra Sahama",
+     "11 Pi 32' 08.76\"",
+     "UBha",
+     "Children"
+    ],
+    [
+     "Jeeva Sahama",
+     "27 Le 17' 31.08\"",
+     "UPha",
+     "Life"
+    ],
+    [
+     "Karma Sahama",
+     " 1 Cp 39' 40.42\"",
+     "USha",
+     "Activities (profession)"
+    ],
+    [
+     "Roga Sahama",
+     " 7 Ge 27' 30.42\"",
+     "Ardr",
+     "Diseases"
+    ],
+    [
+     "Kali Sahama",
+     " 3 Sc 17' 47.59\"",
+     "Visa",
+     "Misfortune"
+    ],
+    [
+     "Sastra Sahama",
+     "28 Sc 16' 26.61\"",
+     "Jye",
+     "Sciences"
+    ],
+    [
+     "Bandhu Sahama",
+     " 4 Pi 48' 04.42\"",
+     "UBha",
+     "Relatives"
+    ],
+    [
+     "Mrityu Sahama",
+     " 7 Cp 27' 30.42\"",
+     "Abhi",
+     "Death"
+    ],
+    [
+     "Paradesa Sahama",
+     "26 Cp 51' 14.26\"",
+     "Dhan",
+     "Foreign countries"
+    ],
+    [
+     "Artha Sahama",
+     "16 Vi 46' 07.84\"",
+     "Hast",
+     "Wealth"
+    ],
+    [
+     "Paradara Sahama",
+     " 4 Ar 49' 06.70\"",
+     "Aswi",
+     "Adultery"
+    ],
+    [
+     "Vanik Sahama",
+     "23 Le 25' 19.26\"",
+     "PPha",
+     "Trade"
+    ],
+    [
+     "Karyasiddhi Sahama",
+     " 1 Li 45' 49.82\"",
+     "Chit",
+     "Fructification of projects"
+    ],
+    [
+     "Vivaha Sahama",
+     " 4 Cp 25' 26.30\"",
+     "USha",
+     "Marriage"
+    ],
+    [
+     "Santapa Sahama",
+     "24 Sc 42' 58.00\"",
+     "Jye",
+     "Sadness"
+    ],
+    [
+     "Sraddha Sahama",
+     " 6 Vi 47' 21.29\"",
+     "UPha",
+     "Dedication"
+    ],
+    [
+     "Preeti Sahama",
+     " 8 Vi 29' 02.37\"",
+     "UPha",
+     "Love, affection"
+    ],
+    [
+     "Jadya Sahama",
+     " 9 Cn 05' 20.86\"",
+     "Push",
+     "Sluggishness"
+    ],
+    [
+     "Vyapara Sahama",
+     "11 Li 44' 46.85\"",
+     "Swat",
+     "Business"
+    ],
+    [
+     "Satru Sahama",
+     "11 Li 44' 46.85\"",
+     "Swat",
+     "Enemies"
+    ],
+    [
+     "Jalapatana Sahama",
+     "27 Cn 44' 32.42\"",
+     "Asre",
+     "Crossing ocean"
+    ],
+    [
+     "Bandhana Sahama",
+     "16 Vi 38' 38.51\"",
+     "Hast",
+     "Imprisonment"
+    ],
+    [
+     "Apamrityu Sahama",
+     "29 Le 13' 09.25\"",
+     "UPha",
+     "Untimely death (bad death)"
+    ],
+    [
+     "Labha Sahama",
+     "10 Cn 02' 03.50\"",
+     "Push",
+     "Gains"
+    ]
+   ]
+  }
+ ]
+}
