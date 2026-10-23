@@ -16,13 +16,13 @@ fi
 mkdir -p "$OUT"
 
 FUNCS='["_malloc","_free",
-"_swe_version","_swe_set_ephe_path","_swe_close",
+"_swe_version","_swe_set_ephe_path","_swe_close","_swe_set_astro_models","_swe_set_tid_acc","_swe_get_tid_acc","_swe_deltat",
 "_swe_julday","_swe_revjul","_swe_utc_to_jd","_swe_deltat_ex","_swe_set_delta_t_userdef",
 "_swe_calc","_swe_calc_ut","_swe_get_planet_name",
 "_swe_set_sid_mode","_swe_get_ayanamsa_ex_ut","_swe_get_ayanamsa_ex",
 "_swe_set_topo","_swe_houses_ex2","_swe_house_pos","_swe_sidtime",
 "_swe_rise_trans","_swe_rise_trans_true_hor","_swe_azalt","_swe_refrac_extended",
-"_swe_fixstar2_ut","_swe_solcross_ut","_swe_mooncross_ut",
+"_swe_fixstar2_ut","_swe_fixstar2","_swe_solcross_ut","_swe_mooncross_ut",
 "_swe_sol_eclipse_when_glob","_swe_sol_eclipse_when_loc","_swe_lun_eclipse_when"]'
 
 MSYS_NO_PATHCONV=1 docker run --rm -v "$SRC:/src" -v "$OUT:/out" -w /src "$EMSDK_IMAGE" \

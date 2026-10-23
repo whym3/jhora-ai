@@ -7,5 +7,5 @@ ROOT="$(cd "$(dirname "$0")/.." && pwd)"
 JH="${JHORA_DIR:-/c/Program Files (x86)/Jagannatha Hora}"
 mkdir -p "$ROOT/public/ephe"
 cp "$JH/jhcore/ephe/"*.se1 "$ROOT/public/ephe/"
-cp "$ROOT/.cache/swisseph/ephe/sefstars.txt" "$ROOT/public/ephe/"
+cp "$JH/jhcore/ephe/fixstars.cat" "$ROOT/public/ephe/"  # JHora's star catalogue (old format)
 echo "copied $(ls "$ROOT/public/ephe" | wc -l) files"

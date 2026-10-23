@@ -51,6 +51,14 @@ export class Sweph {
     this.withString(EPHE_DIR, (p) => module._swe_set_ephe_path(p));
   }
 
+  /**
+   * Emulate the delta-T, precession and nutation models of an older Swiss
+   * Ephemeris release, e.g. "SE2.02.01" (the DLL bundled with JHora 8.0).
+   */
+  setAstroModels(spec: string): void {
+    this.withString(spec, (p) => this.m._swe_set_astro_models(p, 0));
+  }
+
   version(): string {
     this.m._swe_version(this.serr);
     return this.m.UTF8ToString(this.serr);
@@ -95,13 +103,32 @@ export class Sweph {
     }
   }
 
+  /**
+   * Load the fixed-star catalogue. JHora ships the older `fixstars.cat`
+   * format, which Swiss Ephemeris reads when `sefstars.txt` is absent.
+   */
+  async ensureStars(name = 'fixstars.cat'): Promise<void> {
+    if (this.loaded.has(name)) return;
+    const data = await this.fetcher(name);
+    if (!data) throw new Error(`star catalogue ${name} not available`);
+    this.addFile(name, data);
+  }
+
   private calcRaw(jdUt: number, body: number, flags: number): number {
     return this.m._swe_calc_ut(jdUt, body, flags, this.buf, this.serr);
   }
 
   calcUt(jdUt: number, body: number, flags: number): Position {
-    const ret = this.calcRaw(jdUt, body, flags | SE.FLG_SPEED);
-    if (ret < 0) throw new Error(`swe_calc_ut(${body}): ${this.err()}`);
+    return this.readPosition(this.calcRaw(jdUt, body, flags | SE.FLG_SPEED), body);
+  }
+
+  /** Position at an ET (TT) moment. JHora calls swe_calc with jd_ut + swe_deltat(jd_ut). */
+  calcEt(jdEt: number, body: number, flags: number): Position {
+    return this.readPosition(this.m._swe_calc(jdEt, body, flags | SE.FLG_SPEED, this.buf, this.serr), body);
+  }
+
+  private readPosition(ret: number, body: number): Position {
+    if (ret < 0) throw new Error(`swe_calc(${body}): ${this.err()}`);
     return {
       lon: this.f64(0), lat: this.f64(1), dist: this.f64(2),
       speedLon: this.f64(3), speedLat: this.f64(4), speedDist: this.f64(5),
@@ -166,12 +193,22 @@ export class Sweph {
     } finally { this.m._free(g); }
   }
 
-  /** Fixed star position by name (e.g. "Spica"). Needs sefstars.txt in the file system. */
+  /** Fixed star position by name (e.g. "Spica") at a UT moment. Call ensureStars() first. */
   fixstarUt(name: string, jdUt: number, flags: number): Position & { name: string } {
+    return this.fixstar(name, jdUt, flags, true);
+  }
+
+  /** Fixed star position at an ET (TT) moment, like JHora's swe_fixstar call. */
+  fixstarEt(name: string, jdEt: number, flags: number): Position & { name: string } {
+    return this.fixstar(name, jdEt, flags, false);
+  }
+
+  private fixstar(name: string, jd: number, flags: number, ut: boolean): Position & { name: string } {
     const p = this.m._malloc(64);
     this.m.stringToUTF8(name, p, 64);
     try {
-      const ret = this.m._swe_fixstar2_ut(p, jdUt, flags | SE.FLG_SPEED, this.buf, this.serr);
+      const fn = ut ? this.m._swe_fixstar2_ut : this.m._swe_fixstar2;
+      const ret = fn(p, jd, flags | SE.FLG_SPEED, this.buf, this.serr);
       if (ret < 0) throw new Error(`swe_fixstar2_ut(${name}): ${this.err()}`);
       return {
         name: this.m.UTF8ToString(p), lon: this.f64(0), lat: this.f64(1), dist: this.f64(2),
