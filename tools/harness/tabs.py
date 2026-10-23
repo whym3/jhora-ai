@@ -105,15 +105,29 @@ class Tabs:
         raise TabError(f"{top_name}: no sub-tab strip found")
 
     # -- activation --------------------------------------------------------
+    def _click_and_check(self, strip, x, y_off, expect, label):
+        """Click a tab caption. The page set may legitimately differ from calibration
+        (form dialogs are created lazily), so we only insist that the click took
+        effect: the set must equal the expected one or at least differ from before."""
+        before = self._visible(strip)
+        r = strip.rectangle()
+        strip.click_input(coords=(x - r.left, y_off), absolute=False)
+        time.sleep(0.3)
+        after = self._settled_visible(strip)
+        if after == expect or after != before:
+            return
+        # a second click sometimes lands after a repaint; try once more
+        strip.click_input(coords=(x - r.left, y_off), absolute=False)
+        time.sleep(0.3)
+        after = self._settled_visible(strip)
+        if after != expect and after == before:
+            raise TabError(f"activating {label}: tab did not change the page set")
+
     def activate(self, top_name, sub_name=None):
         ti = TOP_TABS.index(top_name)
         x, expect = self.top_groups[ti]
         if self.current[0] != top_name:
-            r = self.top.rectangle()
-            self.top.click_input(coords=(x - r.left, self.top_y), absolute=False)
-            time.sleep(0.3)
-            if self._visible(self.top) != expect:
-                raise TabError(f"activating {top_name}: unexpected page set")
+            self._click_and_check(self.top, x, self.top_y, expect, top_name)
             self.current = (top_name, None)
         if sub_name is None:
             return
@@ -125,9 +139,6 @@ class Tabs:
         strip, y_off, groups = entry
         si = SUB_TABS[top_name].index(sub_name)
         sx, sexpect = groups[si]
-        r = strip.rectangle()
-        strip.click_input(coords=(sx - r.left, y_off), absolute=False)
-        time.sleep(0.3)
-        if self._visible(strip) != sexpect:
-            raise TabError(f"activating {top_name}/{sub_name}: unexpected page set")
+        if self.current[1] != sub_name:
+            self._click_and_check(strip, sx, y_off, sexpect, f"{top_name}/{sub_name}")
         self.current = (top_name, sub_name)

@@ -8,6 +8,7 @@
 // JHora's menus can be added as further VargaSpec entries.
 
 export type VargaSpec =
+  | { kind: 'zero' }                                    // JHora's empty "D-0" research slot: everything at 0 Aries
   | { kind: 'cyclic'; n: number; evenReverse?: boolean } // parivritti: (sign * n + part) mod 12
   | { kind: 'start'; n: number; start: (sign: number) => number; evenReverse?: boolean }
   | { kind: 'parasara-d30' }
@@ -46,6 +47,9 @@ const D12 = VARGAS.D12 as VargaSpec;
 export const COMPOSITE_VARGAS = {
   D108: { kind: 'compose', inner: VARGAS.D9, outer: D12 },   // D-12 of D-9 (JHora default)
   D144: { kind: 'compose', inner: D12, outer: D12 },          // dwadasa-dwadasamsa
+  /** JHora's default sub-divisional research chart "D-10 x D-9": the D-9 of the D-10 */
+  D10xD9: { kind: 'compose', inner: VARGAS.D10, outer: VARGAS.D9 as VargaSpec },
+  D0: { kind: 'zero' },
 } satisfies Record<string, VargaSpec>;
 
 export type VargaName = keyof typeof VARGAS | keyof typeof COMPOSITE_VARGAS;
@@ -69,6 +73,8 @@ export function vargaLongitude(lon: number, spec: VargaSpec): number {
   const sign = Math.floor(lon / 30) % 12;
   const inSign = lon - sign * 30;
   switch (spec.kind) {
+    case 'zero':
+      return 0;
     case 'cyclic': {
       if (!spec.evenReverse || odd(sign)) return (lon * spec.n) % 360;
       // even signs: divisions counted backwards from the end of the sign

@@ -2,16 +2,47 @@
 // matches a JHora view (the tab/mode it appears in) and its headers match JHora's.
 import type { Chart } from '../core/chart';
 import { GRAHAS } from '../core/positions';
-import { formatLongitude, nakshatraOf, NAKSHATRAS, padaOf, signOf, SIGNS } from '../core/zodiac';
-import { ALL_VARGAS, vargaLongitude } from '../core/vargas';
+import { formatLongitude, formatVargaLongitude, nakshatraOf, NAKSHATRAS, padaOf, signOf, SIGNS } from '../core/zodiac';
+import { ALL_VARGAS, vargaLongitude, type VargaName } from '../core/vargas';
 import { charaKarakas, equalHousesMiddle, grahaYuddha, isCombust, lordLabel, navaTaras, ORDINAL, SHORT, specialTaras, yogiPoints } from '../core/basics';
 import { kpLords } from '../core/kp';
+import { varnada } from '../core/bodies';
+import { norm360 } from '../core/positions';
+import type { NamedBody } from '../core/longitudes';
 import type { Table } from './protocol';
 
 const yes = (b: boolean) => (b ? 'Yes' : '-');
 
+/** Columns of JHora's "All Divisional Longitudes" table (default varga variants; D-0 is an empty research slot). */
+const DIV_COLUMNS: [string, VargaName | null][] = [
+  ['D-1', 'D1'], ['D-9', 'D9'], ['D-10 (Trd)', 'D10'], ['D-2 (US)', 'D2'], ['D-3 (Trd)', 'D3'], ['D-4', 'D4'],
+  ['D-7 (Trd)', 'D7'], ['D-12 (Trd)', 'D12'], ['D-16 (Trd)', 'D16'], ['D-20 (Trd)', 'D20'], ['D-24 (Trd)', 'D24'],
+  ['D-27 (Trd)', 'D27'], ['D-30', 'D30'], ['D-40', 'D40'], ['D-45', 'D45'], ['D-60 (Trd)', 'D60'],
+  ['D-10 x D-9', 'D10xD9'], ['D-0', 'D0'], ['D-5', 'D5'], ['D-6', 'D6'], ['D-8', 'D8'], ['D-11', 'D11'],
+  ['D-81', 'D81'], ['D-108', 'D108'], ['D-144', 'D144'],
+];
+
 type TableFn = (chart: Chart, params: Record<string, unknown>) => Table;
 type TextFn = (chart: Chart, params: Record<string, unknown>) => string;
+
+/**
+ * A body's longitude in a varga. Varnadas are recomputed inside the varga (from the
+ * varga's lagna and hora lagna) rather than mapped from D-1, as JHora does.
+ */
+function bodyInVarga(chart: Chart, body: NamedBody, v: VargaName): number {
+  const spec = ALL_VARGAS[v];
+  const house = body.name === 'Varnada Lagna' ? 1 : /^V(\d+)$/.test(body.name) ? Number(body.name.slice(1)) : 0;
+  if (house) {
+    if (v === 'D10xD9') return 0;   // JHora leaves varnadas blank (0 Ar 00) in the sub-divisional chart
+    // sign: varnada counting on the varga's lagna and hora lagna; degrees: the D-1
+    // varnada mapped through the varga (so even-sign reversal shows up, as in JHora)
+    const lagna = vargaLongitude(chart.positions.ascendant, spec);
+    const hl = vargaLongitude(chart.longitudes.find((b) => b.name === 'Hora Lagna')!.lon, spec);
+    const sign = signOf(varnada(norm360(lagna + 30 * (house - 1)), norm360(hl + 30 * (house - 1))));
+    return sign * 30 + (vargaLongitude(body.lon, spec) % 30);
+  }
+  return vargaLongitude(body.lon, spec);
+}
 
 /** Row labels of the Longitudes table: planets carry "(R)" and their chara karaka, like "Saturn (R) - AmK". */
 function longitudeLabels(chart: Chart): string[] {
@@ -34,6 +65,16 @@ export const TABLES: Record<string, TableFn> = {
       rows: chart.longitudes.map((b, i) => [
         labels[i], formatLongitude(b.lon), NAKSHATRAS[nakshatraOf(b.lon)], String(padaOf(b.lon)),
         SIGNS[signOf(b.lon)], SIGNS[signOf(vargaLongitude(b.lon, ALL_VARGAS.D9))],
+      ]),
+    };
+  },
+  // Basics > Key Info > "All Divisional Longitudes" (33265)
+  'basics.allDivisionalLongitudes': (chart) => {
+    const labels = longitudeLabels(chart).map((l) => l.replace(/ - \w+$/, '').replace(' (R)', ''));
+    return {
+      headers: ['Body', ...DIV_COLUMNS.map((c) => c[0])],
+      rows: chart.longitudes.map((b, i) => [
+        labels[i], ...DIV_COLUMNS.map(([, v]) => formatVargaLongitude(bodyInVarga(chart, b, v!))),
       ]),
     };
   },

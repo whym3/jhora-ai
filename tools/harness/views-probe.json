@@ -1,0 +1,1578 @@
+[
+ {
+  "top": "Chakras",
+  "sub": "Many Vargas",
+  "listviews": [],
+  "dialogs": [],
+  "copies": {
+   "32985": {
+    "len": 1278,
+    "head": "+-----------------------------------------------+\r\n|           |Ma         |Ke         |           |\r\n|           |           |           |           |\r\n|           |           |           |           |\r\n|           |           |           |           |\r\n|           |           |           |        ",
+    "dialogs": []
+   },
+   "32992": {
+    "len": 3885,
+    "head": "+-----------------------------------------------+\r\n|           |Ma         |Ke         |           |\r\n|           |           |           |           |\r\n|           |           |           |           |\r\n|           |           |           |           |\r\n|           |           |           |        ",
+    "dialogs": []
+   }
+  }
+ },
+ {
+  "top": "Chakras",
+  "sub": "Mixed 2-Vargas",
+  "listviews": [],
+  "dialogs": [],
+  "copies": {
+   "32985": {
+    "len": 1278,
+    "head": "+-----------------------------------------------+\r\n|           |Ma         |Ke         |           |\r\n|           |           |           |           |\r\n|           |           |           |           |\r\n|           |           |           |           |\r\n|           |           |           |        ",
+    "dialogs": []
+   },
+   "32992": {
+    "len": 3885,
+    "head": "+-----------------------------------------------+\r\n|           |Ma         |Ke         |           |\r\n|           |           |           |           |\r\n|           |           |           |           |\r\n|           |           |           |           |\r\n|           |           |           |        ",
+    "dialogs": []
+   }
+  }
+ },
+ {
+  "top": "Chakras",
+  "sub": "Kalachakra",
+  "listviews": [],
+  "dialogs": [],
+  "copies": {}
+ },
+ {
+  "top": "Chakras",
+  "sub": "Sarvatobhadra",
+  "listviews": [],
+  "dialogs": [],
+  "copies": {}
+ },
+ {
+  "top": "Chakras",
+  "sub": "Kota Chakra",
+  "listviews": [],
+  "dialogs": [],
+  "copies": {}
+ },
+ {
+  "top": "Chakras",
+  "sub": "Surya Kalanala",
+  "listviews": [],
+  "dialogs": [],
+  "copies": {}
+ },
+ {
+  "top": "Chakras",
+  "sub": "Chandra Kalanala",
+  "listviews": [],
+  "dialogs": [],
+  "copies": {}
+ },
+ {
+  "top": "Chakras",
+  "sub": "Sudarsana",
+  "listviews": [],
+  "dialogs": [],
+  "copies": {}
+ },
+ {
+  "top": "Chakras",
+  "sub": "Shoola",
+  "listviews": [],
+  "dialogs": [],
+  "copies": {}
+ },
+ {
+  "top": "Chakras",
+  "sub": "Tripataki",
+  "listviews": [],
+  "dialogs": [],
+  "copies": {}
+ },
+ {
+  "top": "Basics",
+  "sub": "Key Info",
+  "listviews": [
+   {
+    "id": 59648,
+    "headers": [
+     "Body",
+     "Longitude",
+     "Nakshatra",
+     "Pada",
+     "Rasi",
+     "Navamsa"
+    ],
+    "rows": 56,
+    "first": [
+     [
+      "Lagna ",
+      "26 Sg 00' 01.51\"",
+      "PSha",
+      "4",
+      "Sg",
+      "Sc"
+     ],
+     [
+      "Sun - AK",
+      "29 Sg 26' 33.44\"",
+      "USha",
+      "1",
+      "Sg",
+      "Sg"
+     ]
+    ]
+   }
+  ],
+  "dialogs": [],
+  "copies": {
+   "32975": {
+    "len": 3655,
+    "head": "Body                    Longitude        Nakshatra Pada Rasi Navamsa\n\nLagna                   26 Sg 00' 01.51\" PSha      4    Sg   Sc\nSun - AK                29 Sg 26' 33.44\" USha      1    Sg   Sg\nMoon - AmK              17 Vi 27' 20.91\" Hast      3    Vi   Ge\nMars - GK                6 Ar 20' 25.6",
+    "dialogs": []
+   }
+  }
+ },
+ {
+  "top": "Basics",
+  "sub": "Houses",
+  "listviews": [
+   {
+    "id": 13577,
+    "headers": [
+     "House",
+     "Start",
+     "Cusp",
+     "End",
+     "Planets in it"
+    ],
+    "rows": 12,
+    "first": [
+     [
+      "1st",
+      "11 Sg 00' 01.51\"",
+      "26 Sg 00' 01.51\"",
+      "11 Cp 00' 01.51\"",
+      "As, Su, Ve"
+     ],
+     [
+      "2nd",
+      "11 Cp 00' 01.51\"",
+      "26 Cp 00' 01.51\"",
+      "11 Aq 00' 01.51\"",
+      "Me"
+     ]
+    ]
+   }
+  ],
+  "dialogs": [],
+  "copies": {
+   "33010": {
+    "len": 805,
+    "head": "House Start            Cusp             End              Planets in it\n\n1st   11 Sg 00' 01.51\" 26 Sg 00' 01.51\" 11 Cp 00' 01.51\" As, Su, Ve\n2nd   11 Cp 00' 01.51\" 26 Cp 00' 01.51\" 11 Aq 00' 01.51\" Me\n3rd   11 Aq 00' 01.51\" 26 Aq 00' 01.51\" 11 Pi 00' 01.51\" Ne\n4th   11 Pi 00' 01.51\" 26 Pi 00' 01.51\" ",
+    "dialogs": []
+   }
+  }
+ },
+ {
+  "top": "Basics",
+  "sub": "Amsa rulers",
+  "listviews": [
+   {
+    "id": 13578,
+    "headers": [
+     "Body",
+     "Division",
+     "Index",
+     "In whose amsa in D-150"
+    ],
+    "rows": 56,
+    "first": [
+     [
+      "Lagna",
+      "132",
+      "57",
+      "Preeta"
+     ],
+     [
+      "Sun",
+      "149",
+      "74",
+      "Kalushaankuraa"
+     ]
+    ]
+   }
+  ],
+  "dialogs": [],
+  "copies": {
+   "32976": {
+    "len": 2741,
+    "head": "Body                   Division Index In whose amsa in D-150\n\nLagna                  132      57    Preeta\nSun                    149      74    Kalushaankuraa\nMoon                   89       14    Kumbhini\nMars                   32       32    Kaalaa\nMercury                59       59    Manaadha (",
+    "dialogs": []
+   }
+  }
+ },
+ {
+  "top": "Basics",
+  "sub": "KP",
+  "error": "activating Basics/KP: unexpected page set"
+ },
+ {
+  "top": "Strengths",
+  "sub": "Ashtakavarga",
+  "listviews": [],
+  "dialogs": [],
+  "copies": {}
+ },
+ {
+  "top": "Strengths",
+  "sub": "Other strengths",
+  "listviews": [
+   {
+    "id": 59648,
+    "headers": [
+     "Planet",
+     "Shadbala",
+     "In rupas",
+     "% Strength",
+     "IshtaPhala",
+     "KashtaPhala"
+    ],
+    "rows": 7,
+    "first": [
+     [
+      "Sun",
+      "436.43",
+      "7.27",
+      "145.48",
+      "14.07",
+      "41.96"
+     ],
+     [
+      "Moon",
+      "349.97",
+      "5.83",
+      "97.21",
+      "22.72",
+      "34.14"
+     ]
+    ]
+   },
+   {
+    "id": 59664,
+    "headers": [
+     "Vimsopaka",
+     "Dasa Varga (10)",
+     "Shodasa Varga (16)",
+     "Sapta Varga (7)",
+     "Shad Varga (6)"
+    ],
+    "rows": 9,
+    "first": [
+     [
+      "Sun",
+      "13.03  (65.13%)",
+      "14.30  (71.50%)",
+      "15.25  (76.25%)",
+      "16.90  (84.50%)"
+     ],
+     [
+      "Moon",
+      "15.13  (75.63%)",
+      "15.07  (75.38%)",
+      "11.38  (56.88%)",
+      "11.85  (59.25%)"
+     ]
+    ]
+   },
+   {
+    "id": 59680,
+    "headers": [
+     "Yoga",
+     "Varga",
+     "Yoga givers",
+     "Results ascribed to yoga",
+     "Brief definition of yoga"
+    ],
+    "rows": 14,
+    "first": [
+     [
+      "Vesi",
+      "D-1",
+      "Me, Ve",
+      "Balanced, truthful and happy",
+      "Planets other than Moon in 2nd from Sun"
+     ],
+     [
+      "Sunaphaa",
+      "D-1",
+      "Ju",
+      "Intelligent, wealthy and famous",
+      "Planets other than Sun in 2nd from Moon"
+     ]
+    ]
+   }
+  ],
+  "dialogs": [],
+  "copies": {
+   "32977": {
+    "len": 440,
+    "head": "Planet  Shadbala In rupas % Strength IshtaPhala KashtaPhala\n\nSun     436.43   7.27     145.48     14.07      41.96\nMoon    349.97   5.83     97.21      22.72      34.14\nMars    473.95   7.90     157.98     39.74      20.00\nMercury 529.61   8.83     126.10     20.27      39.71\nJupiter 354.30   5.91  ",
+    "dialogs": []
+   }
+  }
+ },
+ {
+  "top": "Strengths",
+  "sub": "Bar graphs",
+  "error": "activating Strengths/Bar graphs: unexpected page set"
+ },
+ {
+  "top": "Dasas",
+  "sub": "Nakshatra dasas",
+  "listviews": [],
+  "dialogs": [],
+  "copies": {
+   "32972": {
+    "len": 499,
+    "head": "Vimsottari Dasa:\n\n Maha Dasas:\n\n Moon: 1857-06-09 (10:11:53) - 1867-06-09 (23:30:41)\n Mars: 1867-06-09 (23:30:41) - 1874-06-09 (18:53:22)\n Rah: 1874-06-09 (18:53:22) - 1892-06-09 (9:19:45)\n Jup: 1892-06-09 (9:19:45) - 1908-06-10 (11:48:46)\n Sat: 1908-06-10 (11:48:46) - 1927-06-11 (8:33:09)\n Merc: 19",
+    "dialogs": []
+   },
+   "33236": {
+    "len": 333,
+    "head": "Vimsottari Dasa:\n\n Maha Dasas:\n\n Moon:  1857-06-09  -  1867-06-09\n Mars:  1867-06-09  -  1874-06-09\n Rah:  1874-06-09  -  1892-06-09\n Jup:  1892-06-09  -  1908-06-10\n Sat:  1908-06-10  -  1927-06-11\n Merc:  1927-06-11  -  1944-06-10\n Ket:  1944-06-10  -  1951-06-11\n Ven:  1951-06-11  -  1971-06-11\n ",
+    "dialogs": []
+   }
+  }
+ },
+ {
+  "top": "Dasas",
+  "sub": "Rasi dasas",
+  "listviews": [],
+  "dialogs": [],
+  "copies": {
+   "32972": {
+    "len": 1274,
+    "head": "Narayana Dasa of D-1 chart (a versatile phalita rasi dasa):\n\n Maha Dasas:\n\n Sg: 1863-01-12 (6:33:00) - 1873-01-11 (20:03:45)\n Le: 1873-01-11 (20:03:45) - 1881-01-11 (21:20:01)\n Ar: 1881-01-11 (21:20:01) - 1893-01-11 (23:14:45)\n Pi: 1893-01-11 (23:14:45) - 1898-01-12 (5:55:01)\n Sc: 1898-01-12 (5:55:0",
+    "dialogs": []
+   },
+   "33236": {
+    "len": 844,
+    "head": "Narayana Dasa of D-1 chart (a versatile phalita rasi dasa):\n\n Maha Dasas:\n\n Sg:  1863-01-12  -  1873-01-11\n Le:  1873-01-11  -  1881-01-11\n Ar:  1881-01-11  -  1893-01-11\n Pi:  1893-01-11  -  1898-01-12\n Sc:  1898-01-12  -  1904-01-13\n Cn:  1904-01-13  -  1914-01-13\n Ge:  1914-01-13  -  1921-01-13\n ",
+    "dialogs": []
+   }
+  }
+ },
+ {
+  "top": "Dasas",
+  "sub": "Other dasas",
+  "error": "activating Dasas/Other dasas: unexpected page set"
+ },
+ {
+  "top": "Transits",
+  "sub": "Basic Transit Results",
+  "listviews": [
+   {
+    "id": 59664,
+    "headers": [
+     "Planet",
+     "Tara",
+     "Murthi",
+     "House",
+     "Under vedha from",
+     "Causing vedha to"
+    ],
+    "rows": 11,
+    "first": [
+     [
+      "Sun",
+      "Parama Mitra (Good friend)",
+      "Loha - iron",
+      "4th",
+      "-",
+      "-"
+     ],
+     [
+      "Moon",
+      "Janma (Birth)",
+      "-",
+      "1st (Good)",
+      "Venus",
+      "-"
+     ]
+    ]
+   },
+   {
+    "id": 59649,
+    "headers": [
+     "Body",
+     "Longitude",
+     "Nakshatra",
+     "Pada",
+     "Rasi",
+     "Navamsa"
+    ],
+    "rows": 56,
+    "first": [
+     [
+      "Lagna ",
+      "26 Sg 00' 01.51\"",
+      "PSha",
+      "4",
+      "Sg",
+      "Sc"
+     ],
+     [
+      "Sun - AK",
+      "29 Sg 26' 33.44\"",
+      "USha",
+      "1",
+      "Sg",
+      "Sg"
+     ]
+    ]
+   }
+  ],
+  "dialogs": [
+   {
+    "id": 59648,
+    "controls": [
+     [
+      "Button",
+      1000,
+      "Back to Natal Chart"
+     ],
+     [
+      "Button",
+      1001,
+      "Show Transit Calculations"
+     ],
+     [
+      "ComboBox",
+      1003,
+      "October"
+     ],
+     [
+      "Edit",
+      100,
+      "23"
+     ],
+     [
+      "Edit",
+      101,
+      "2026"
+     ],
+     [
+      "Edit",
+      1004,
+      "17"
+     ],
+     [
+      "Edit",
+      1005,
+      "33"
+     ],
+     [
+      "Edit",
+      1006,
+      "37.0000166"
+     ],
+     [
+      "Edit",
+      1020,
+      "5"
+     ],
+     [
+      "Edit",
+      1021,
+      "54"
+     ],
+     [
+      "ComboBox",
+      1079,
+      "East of GMT"
+     ],
+     [
+      "Static",
+      -1,
+      "Use the data below"
+     ],
+     [
+      "Static",
+      -1,
+      "Must click this at the end"
+     ],
+     [
+      "Static",
+      -1,
+      "Date:"
+     ],
+     [
+      "Static",
+      -1,
+      "Month"
+     ],
+     [
+      "Static",
+      -1,
+      "Date"
+     ],
+     [
+      "Static",
+      -1,
+      ","
+     ],
+     [
+      "Static",
+      -1,
+      "Year"
+     ],
+     [
+      "Static",
+      -1,
+      "Time:"
+     ],
+     [
+      "Static",
+      -1,
+      "Hours"
+     ],
+     [
+      "Static",
+      -1,
+      ":"
+     ],
+     [
+      "Static",
+      -1,
+      "Minutes"
+     ],
+     [
+      "Static",
+      -1,
+      ":"
+     ],
+     [
+      "Static",
+      -1,
+      "Seconds"
+     ],
+     [
+      "Static",
+      -1,
+      "Time Zone:"
+     ],
+     [
+      "Static",
+      -1,
+      "Hour"
+     ],
+     [
+      "Static",
+      -1,
+      ":"
+     ],
+     [
+      "Static",
+      -1,
+      "Min"
+     ]
+    ]
+   }
+  ],
+  "copies": {}
+ },
+ {
+  "top": "Transits",
+  "sub": "Transit Calendar",
+  "listviews": [],
+  "dialogs": [
+   {
+    "id": 13577,
+    "controls": [
+     [
+      "Button",
+      1000,
+      "Show Transit Calendar"
+     ],
+     [
+      "ComboBox",
+      1003,
+      "October"
+     ],
+     [
+      "Edit",
+      100,
+      "23"
+     ],
+     [
+      "Edit",
+      101,
+      "2026"
+     ],
+     [
+      "Edit",
+      1004,
+      "17"
+     ],
+     [
+      "Edit",
+      1005,
+      "33"
+     ],
+     [
+      "Edit",
+      1006,
+      "37.0000166"
+     ],
+     [
+      "Edit",
+      1020,
+      "5"
+     ],
+     [
+      "Edit",
+      1021,
+      "54"
+     ],
+     [
+      "ComboBox",
+      1079,
+      "East of GMT"
+     ],
+     [
+      "Static",
+      -1,
+      "Enter all relevant data below and click "
+     ],
+     [
+      "Static",
+      -1,
+      "Date:"
+     ],
+     [
+      "Static",
+      -1,
+      "Month"
+     ],
+     [
+      "Static",
+      -1,
+      "Date"
+     ],
+     [
+      "Static",
+      -1,
+      ","
+     ],
+     [
+      "Static",
+      -1,
+      "Year"
+     ],
+     [
+      "Static",
+      -1,
+      "Time:"
+     ],
+     [
+      "Static",
+      -1,
+      "Hours"
+     ],
+     [
+      "Static",
+      -1,
+      ":"
+     ],
+     [
+      "Static",
+      -1,
+      "Minutes"
+     ],
+     [
+      "Static",
+      -1,
+      ":"
+     ],
+     [
+      "Static",
+      -1,
+      "Seconds"
+     ],
+     [
+      "Static",
+      -1,
+      "Time Zone:"
+     ],
+     [
+      "Static",
+      -1,
+      "Hour"
+     ],
+     [
+      "Static",
+      -1,
+      ":"
+     ],
+     [
+      "Static",
+      -1,
+      "Min"
+     ],
+     [
+      "Static",
+      -1,
+      "Calculate transits from the following da"
+     ],
+     [
+      "Static",
+      -1,
+      "Starting from the above date and time, c"
+     ],
+     [
+      "Edit",
+      1007,
+      "1"
+     ],
+     [
+      "Static",
+      -1,
+      "days (e.g. 1, 10, 0.5 etc)."
+     ],
+     [
+      "Static",
+      -1,
+      "The number of days in the calendar:"
+     ],
+     [
+      "Edit",
+      1011,
+      "15"
+     ],
+     [
+      "Static",
+      -1,
+      "(e.g. maximum 100)"
+     ],
+     [
+      "ComboBox",
+      1009,
+      "Rasi (D-1)"
+     ],
+     [
+      "Static",
+      -1,
+      "Natal chart to be used"
+     ],
+     [
+      "ComboBox",
+      1012,
+      "Rasi (D-1)"
+     ],
+     [
+      "Static",
+      -1,
+      "Transit chart to be used"
+     ],
+     [
+      "Button",
+      1040,
+      "Houses from natal Moon and vedhas"
+     ],
+     [
+      "Static",
+      -1,
+      "Choose which items you want to see in th"
+     ],
+     [
+      "Button",
+      1043,
+      "Murthis (idol/form)"
+     ],
+     [
+      "Button",
+      1041,
+      "Houses from natal lagna and vedhas"
+     ],
+     [
+      "Button",
+      1044,
+      "Ashtakavarga scores"
+     ],
+     [
+      "Button",
+      1042,
+      "Transit taras (stars)"
+     ],
+     [
+      "Button",
+      1045,
+      "Kakshya details"
+     ],
+     [
+      "Button",
+      -1,
+      "Item Selection"
+     ]
+    ]
+   }
+  ],
+  "copies": {}
+ },
+ {
+  "top": "Transits",
+  "sub": "Special Search",
+  "listviews": [
+   {
+    "id": 59649,
+    "headers": [
+     "Body",
+     "Longitude",
+     "Nakshatra",
+     "Pada",
+     "Rasi",
+     "Navamsa"
+    ],
+    "rows": 56,
+    "first": [
+     [
+      "Lagna ",
+      "26 Sg 00' 01.51\"",
+      "PSha",
+      "4",
+      "Sg",
+      "Sc"
+     ],
+     [
+      "Sun - AK",
+      "29 Sg 26' 33.44\"",
+      "USha",
+      "1",
+      "Sg",
+      "Sg"
+     ]
+    ]
+   },
+   {
+    "id": 59665,
+    "headers": [
+     "Planet",
+     "Tara",
+     "Murthi",
+     "House",
+     "Under vedha from",
+     "Causing vedha to"
+    ],
+    "rows": 11,
+    "first": [
+     [
+      "Sun",
+      "Parama Mitra (Good friend)",
+      "Loha - iron",
+      "4th",
+      "-",
+      "-"
+     ],
+     [
+      "Moon",
+      "Janma (Birth)",
+      "-",
+      "1st (Good)",
+      "Venus",
+      "-"
+     ]
+    ]
+   }
+  ],
+  "dialogs": [
+   {
+    "id": 59648,
+    "controls": [
+     [
+      "ComboBox",
+      1007,
+      "Jupiter"
+     ],
+     [
+      "Edit",
+      102,
+      "0"
+     ],
+     [
+      "Edit",
+      103,
+      "0"
+     ],
+     [
+      "Edit",
+      104,
+      "0"
+     ],
+     [
+      "ComboBox",
+      1008,
+      "behind"
+     ],
+     [
+      "Button",
+      201,
+      "Natal planet"
+     ],
+     [
+      "ComboBox",
+      1009,
+      "Lagna"
+     ],
+     [
+      "Button",
+      202,
+      "Natal Saham"
+     ],
+     [
+      "ComboBox",
+      1010,
+      "Punya Sahama (Fortune, good deeds)"
+     ],
+     [
+      "Button",
+      203,
+      "The beginning of"
+     ],
+     [
+      "ComboBox",
+      1011,
+      "Aries"
+     ],
+     [
+      "ComboBox",
+      1012,
+      "before"
+     ],
+     [
+      "Static",
+      -1,
+      "Date:"
+     ],
+     [
+      "ComboBox",
+      1003,
+      "October"
+     ],
+     [
+      "Static",
+      -1,
+      "Month"
+     ],
+     [
+      "Edit",
+      100,
+      "23"
+     ],
+     [
+      "Static",
+      -1,
+      "Date"
+     ],
+     [
+      "Static",
+      -1,
+      ","
+     ],
+     [
+      "Edit",
+      101,
+      "2026"
+     ],
+     [
+      "Static",
+      -1,
+      "Year"
+     ],
+     [
+      "Static",
+      -1,
+      "Time:"
+     ],
+     [
+      "Edit",
+      1004,
+      "17"
+     ],
+     [
+      "Static",
+      -1,
+      "Hours"
+     ],
+     [
+      "Static",
+      -1,
+      ":"
+     ],
+     [
+      "Edit",
+      1005,
+      "33"
+     ],
+     [
+      "Static",
+      -1,
+      "Minutes"
+     ],
+     [
+      "Static",
+      -1,
+      ":"
+     ],
+     [
+      "Edit",
+      1006,
+      "37.0000166"
+     ],
+     [
+      "Static",
+      -1,
+      "Seconds"
+     ],
+     [
+      "Static",
+      -1,
+      "Enter all the data and click the search "
+     ],
+     [
+      "Button",
+      1000,
+      "Back to Natal Chart"
+     ],
+     [
+      "Button",
+      1001,
+      "Search for Transit"
+     ],
+     [
+      "Static",
+      -1,
+      "Use the data below"
+     ],
+     [
+      "Static",
+      -1,
+      "Must click this at the end"
+     ],
+     [
+      "Static",
+      -1,
+      "Find when"
+     ],
+     [
+      "Static",
+      -1,
+      "transited exactly"
+     ],
+     [
+      "Static",
+      -1,
+      "Deg"
+     ],
+     [
+      "Static",
+      -1,
+      "Min"
+     ],
+     [
+      "Static",
+      -1,
+      "Sec"
+     ],
+     [
+      "Static",
+      -1,
+      "the following date and time:"
+     ],
+     [
+      "Static",
+      -1,
+      "in"
+     ],
+     [
+      "ComboBox",
+      1030,
+      "Rasi"
+     ]
+    ]
+   }
+  ],
+  "copies": {}
+ },
+ {
+  "top": "Transits",
+  "sub": "Longitude Correlation",
+  "listviews": [
+   {
+    "id": 59664,
+    "headers": [
+     "Transit Planet",
+     "Transit Longitude",
+     "Speed",
+     "Natal Point",
+     "Aspect %",
+     "Natal Longitude"
+    ],
+    "rows": 324,
+    "first": [
+     [
+      "Jupiter",
+      "28 Cn 59' 40.40\"",
+      "1.6801",
+      "Lagna in D-30",
+      "84.43",
+      "17 Aq 41' 02.71\""
+     ],
+     [
+      "",
+      "",
+      "",
+      "Sun in D-9",
+      "94.88",
+      "22 Sc 50' 58.81\""
+     ]
+    ]
+   }
+  ],
+  "dialogs": [
+   {
+    "id": 59648,
+    "controls": [
+     [
+      "Button",
+      1000,
+      "Show Natal Points\nAspected in Transit"
+     ],
+     [
+      "ComboBox",
+      1012,
+      "Rasi (D-1)"
+     ],
+     [
+      "ComboBox",
+      1003,
+      "October"
+     ],
+     [
+      "Edit",
+      100,
+      "23"
+     ],
+     [
+      "Edit",
+      101,
+      "2026"
+     ],
+     [
+      "Edit",
+      1004,
+      "17"
+     ],
+     [
+      "Edit",
+      1005,
+      "33"
+     ],
+     [
+      "Edit",
+      1006,
+      "37.0000166"
+     ],
+     [
+      "Edit",
+      1020,
+      "5"
+     ],
+     [
+      "Edit",
+      1021,
+      "54"
+     ],
+     [
+      "ComboBox",
+      1079,
+      "East of GMT"
+     ],
+     [
+      "Button",
+      201,
+      "Quantify aspects based on Parasara's tea"
+     ],
+     [
+      "Edit",
+      1022,
+      "80"
+     ],
+     [
+      "Button",
+      202,
+      "Consider conjunction, full, three-quarte"
+     ],
+     [
+      "Edit",
+      1023,
+      "4"
+     ],
+     [
+      "Button",
+      203,
+      "Consider perfect quadrants from natal po"
+     ],
+     [
+      "Edit",
+      1024,
+      "4"
+     ],
+     [
+      "Button",
+      204,
+      "Consider perfect trines and 7th from nat"
+     ],
+     [
+      "Edit",
+      1025,
+      "4"
+     ],
+     [
+      "Button",
+      1001,
+      "<<"
+     ],
+     [
+      "ComboBox",
+      1080,
+      "Month"
+     ],
+     [
+      "Button",
+      1007,
+      ">>"
+     ],
+     [
+      "Static",
+      -1,
+      "Enter data below and click this button."
+     ],
+     [
+      "Static",
+      -1,
+      "Date:"
+     ],
+     [
+      "Static",
+      -1,
+      "Month"
+     ],
+     [
+      "Static",
+      -1,
+      "Date"
+     ],
+     [
+      "Static",
+      -1,
+      ","
+     ],
+     [
+      "Static",
+      -1,
+      "Year"
+     ],
+     [
+      "Static",
+      -1,
+      "Time:"
+     ],
+     [
+      "Static",
+      -1,
+      "Hours"
+     ],
+     [
+      "Static",
+      -1,
+      ":"
+     ],
+     [
+      "Static",
+      -1,
+      "Minutes"
+     ],
+     [
+      "Static",
+      -1,
+      ":"
+     ],
+     [
+      "Static",
+      -1,
+      "Seconds"
+     ],
+     [
+      "Static",
+      -1,
+      "Time Zone:"
+     ],
+     [
+      "Static",
+      -1,
+      "Hour"
+     ],
+     [
+      "Static",
+      -1,
+      ":"
+     ],
+     [
+      "Static",
+      -1,
+      "Min"
+     ],
+     [
+      "Static",
+      -1,
+      "Calculate transits for the following dat"
+     ],
+     [
+      "Static",
+      -1,
+      "Divisional chart to\nbe used in transit"
+     ],
+     [
+      "Button",
+      1008,
+      "Show some relevant research articles"
+     ]
+    ]
+   }
+  ],
+  "copies": {}
+ },
+ {
+  "top": "Tajaka",
+  "sub": null,
+  "listviews": [
+   {
+    "id": 59665,
+    "headers": [
+     "Body",
+     "Longitude",
+     "Nakshatra",
+     "Pada",
+     "Rasi",
+     "Navamsa"
+    ],
+    "rows": 56,
+    "first": [
+     [
+      "Lagna ",
+      "26 Sg 00' 01.51\"",
+      "PSha",
+      "4",
+      "Sg",
+      "Sc"
+     ],
+     [
+      "Sun - AK",
+      "29 Sg 26' 33.44\"",
+      "USha",
+      "1",
+      "Sg",
+      "Sg"
+     ]
+    ]
+   }
+  ],
+  "dialogs": [
+   {
+    "id": 59648,
+    "controls": [
+     [
+      "Static",
+      -1,
+      "Year: "
+     ],
+     [
+      "Edit",
+      100,
+      "2026"
+     ],
+     [
+      "Static",
+      -1,
+      "Month: "
+     ],
+     [
+      "ComboBox",
+      1003,
+      "None"
+     ],
+     [
+      "Static",
+      -1,
+      "Sixty-hour Period:"
+     ],
+     [
+      "ComboBox",
+      1004,
+      "None"
+     ],
+     [
+      "Static",
+      -1,
+      "Five-hour Period:"
+     ],
+     [
+      "ComboBox",
+      1005,
+      "None"
+     ],
+     [
+      "Static",
+      -1,
+      "25-min period:"
+     ],
+     [
+      "ComboBox",
+      1006,
+      "None"
+     ],
+     [
+      "Static",
+      -1,
+      "2-min period:"
+     ],
+     [
+      "ComboBox",
+      1007,
+      "None"
+     ],
+     [
+      "Button",
+      1000,
+      "Find Tajaka Chart"
+     ],
+     [
+      "Static",
+      -1,
+      "Use the data below"
+     ],
+     [
+      "Button",
+      1001,
+      "Back to Natal Chart"
+     ],
+     [
+      "Static",
+      -1,
+      "Must click this at the end"
+     ],
+     [
+      "Button",
+      1002,
+      "Patyayini dasa"
+     ],
+     [
+      "Static",
+      -1,
+      "You can go to other views and\nsee dasas,"
+     ],
+     [
+      "Button",
+      1008,
+      "Mudda dasa"
+     ],
+     [
+      "Button",
+      1017,
+      "Narayana dasa"
+     ],
+     [
+      "Button",
+      1010,
+      "Pancha-vargeeya Bala"
+     ],
+     [
+      "Button",
+      1011,
+      "Dwadasa-vargeeya Bala (12)"
+     ],
+     [
+      "Button",
+      1015,
+      "Harsha Bala"
+     ],
+     [
+      "Button",
+      1012,
+      "Show Mixed Tajaka-Natal Chart!"
+     ],
+     [
+      "Button",
+      1014,
+      "Find Tajaka Sunrise Chart"
+     ],
+     [
+      "Static",
+      -1,
+      "Use the data below"
+     ]
+    ]
+   }
+  ],
+  "copies": {
+   "32985": {
+    "len": 1278,
+    "head": "+-----------------------------------------------+\r\n|           |Ma         |Ke         |           |\r\n|           |           |           |           |\r\n|           |           |           |           |\r\n|           |           |           |           |\r\n|           |           |           |        ",
+    "dialogs": []
+   },
+   "32992": {
+    "len": 3885,
+    "head": "+-----------------------------------------------+\r\n|           |Ma         |Ke         |           |\r\n|           |           |           |           |\r\n|           |           |           |           |\r\n|           |           |           |           |\r\n|           |           |           |        ",
+    "dialogs": []
+   }
+  }
+ },
+ {
+  "top": "Tithi Pravesha",
+  "sub": null,
+  "error": "activating Tithi Pravesha: unexpected page set"
+ },
+ {
+  "top": "Mundane",
+  "sub": null,
+  "error": "activating Mundane: unexpected page set"
+ },
+ {
+  "top": "Miscellany",
+  "sub": "Angular Return",
+  "error": "activating Miscellany: unexpected page set"
+ },
+ {
+  "top": "Miscellany",
+  "sub": "Progressions",
+  "error": "activating Miscellany: unexpected page set"
+ },
+ {
+  "top": "Miscellany",
+  "sub": "Prasna (Horary)",
+  "error": "activating Miscellany: unexpected page set"
+ },
+ {
+  "top": "Miscellany",
+  "sub": "Panchanga",
+  "error": "activating Miscellany: unexpected page set"
+ },
+ {
+  "top": "Miscellany",
+  "sub": "Laghu Parasari",
+  "error": "activating Miscellany: unexpected page set"
+ }
+]

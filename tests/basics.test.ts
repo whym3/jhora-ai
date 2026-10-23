@@ -38,3 +38,26 @@ describe('basic tables match JHora 8.0', async () => {
     }
   }
 });
+
+describe('All Divisional Longitudes table matches JHora 8.0', async () => {
+  const swe = await nodeSweph();
+  const parseShort = (s: string) => { const m = /(\d+)(\w\w)(\d+)/.exec(s)!; return { sign: m[2], minutes: +m[1] * 60 + +m[3] }; };
+  for (const chart of goldenCharts()) {
+    it(chart.name, async () => {
+      const got = runTable(await computeChart(swe, chart.birth), 'basics.allDivisionalLongitudes', {});
+      const golden = chart.views.find((v) => v.mode === 'All Divisional Longitudes')!;
+      expect(got.headers).toEqual(golden.headers);
+      expect(got.rows.map((r) => r[0])).toEqual(golden.rows.map((r) => r[0].trim()));
+      const bad: string[] = [];
+      golden.rows.forEach((r, i) => r.slice(1).forEach((cell, j) => {
+        const a = parseShort(got.rows[i][j + 1]), b = parseShort(cell);
+        // D-n multiplies the sunrise-derived bodies' small residuals (up to 1.4" x 144)
+        const n = (golden.headers[j + 1].match(/\d+/g) ?? ['1']).map(Number).reduce((a, b) => a * b, 1);
+        // Kunda is lagna x 81 (so x81n in D-n); the vighati/pranapada lagnas carry the sunrise residual x4
+        const tol = /Kunda/.test(r[0]) ? 1 + n / 4 : /Vighati|Pranapada/.test(r[0]) ? 1 + n / 8 : 1 + n / 40;
+        if (a.sign !== b.sign || Math.abs(a.minutes - b.minutes) > tol) bad.push(`${r[0].trim()} ${golden.headers[j + 1]}: ${got.rows[i][j + 1]} vs ${cell}`);
+      }));
+      expect(bad, bad.join('\n')).toEqual([]);
+    });
+  }
+});

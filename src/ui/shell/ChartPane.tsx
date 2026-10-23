@@ -12,7 +12,7 @@ export const VARGA_TITLES: Record<VargaName, string> = {
   D7: 'Saptamsa', D8: 'Ashtamsa', D9: 'Navamsa', D10: 'Dasamsa', D11: 'Rudramsa', D12: 'Dwadasamsa',
   D16: 'Shodasamsa', D20: 'Vimsamsa', D24: 'Siddhamsa', D27: 'Nakshatramsa', D30: 'Trimsamsa',
   D40: 'Khavedamsa', D45: 'Akshavedamsa', D60: 'Shashtyamsa', D81: 'Nava-navamsa',
-  D108: 'Ashtottaramsa', D144: 'Dwadasa-dwadasamsa',
+  D108: 'Ashtottaramsa', D144: 'Dwadasa-dwadasamsa', D10xD9: 'D-9 of D-10', D0: 'Empty',
 };
 const VARGA_NAMES = Object.keys(VARGA_TITLES) as VargaName[];
 const dn = (v: VargaName) => v.replace('D', 'D-');
