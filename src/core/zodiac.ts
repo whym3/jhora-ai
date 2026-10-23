@@ -28,3 +28,12 @@ export function formatLongitude(lon: number): string {
   const s = (rem - m) * 60;
   return `${String(d).padStart(2, ' ')} ${SIGNS[sign]} ${String(m).padStart(2, '0')}' ${s.toFixed(2).padStart(5, '0')}"`;
 }
+
+/** JHora's compact varga format "29Sg27": whole degrees, then minutes rounded without carry. */
+export function formatVargaLongitude(lon: number): string {
+  const sign = signOf(lon);
+  const inSign = lon - sign * 30;
+  const d = Math.floor(inSign);
+  const m = Math.round((inSign - d) * 60);
+  return `${String(d).padStart(2, ' ')}${SIGNS[sign]}${String(m).padStart(2, '0')}`;
+}
