@@ -151,6 +151,11 @@ export class Sweph {
     return this.m._swe_deltat_ex(jdUt, flags, this.serr);
   }
 
+  /** Force the delta-T (days) Swiss uses internally (rise/set, UT functions); null restores automatic. */
+  setDeltaTUserdef(days: number | null): void {
+    this.m._swe_set_delta_t_userdef(days === null ? -1e-10 : days);
+  }
+
   setSidMode(mode: number, t0 = 0, ayanT0 = 0): void {
     this.m._swe_set_sid_mode(mode, t0, ayanT0);
   }
@@ -180,15 +185,20 @@ export class Sweph {
     }
   }
 
-  /** Rise/set/transit time (JD UT) after jdUt, or null when the body doesn't rise/set. */
+  /**
+   * Rise/set/transit time (JD UT) after jdUt, or null when the body doesn't rise/set.
+   * Uses swe_rise_trans_true_hor (horizon height 0): unlike swe_rise_trans's fast
+   * path it honours FLG_TRUEPOS/FLG_NONUT in `flags`, which JHora passes through
+   * (its sunrise with TruePositions=1 is ~1.4 s later than the apparent-position one).
+   */
   riseTrans(jdUt: number, body: number, rsmi: number, flags: number,
             geo: { lon: number; lat: number; alt: number }, pressure = 0, temp = 0): number | null {
     const g = this.m._malloc(8 * 3);
     const H = this.m.HEAPF64;
     H[g >> 3] = geo.lon; H[(g >> 3) + 1] = geo.lat; H[(g >> 3) + 2] = geo.alt;
     try {
-      const ret = this.m._swe_rise_trans(jdUt, body, 0, flags, rsmi, g, pressure, temp, this.buf, this.serr);
-      if (ret === -1) throw new Error(`swe_rise_trans: ${this.err()}`);
+      const ret = this.m._swe_rise_trans_true_hor(jdUt, body, 0, flags, rsmi, g, pressure, temp, 0, this.buf, this.serr);
+      if (ret === -1) throw new Error(`swe_rise_trans_true_hor: ${this.err()}`);
       return ret === -2 ? null : this.f64(0);
     } finally { this.m._free(g); }
   }

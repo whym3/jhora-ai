@@ -13,18 +13,30 @@ const yes = (b: boolean) => (b ? 'Yes' : '-');
 type TableFn = (chart: Chart, params: Record<string, unknown>) => Table;
 type TextFn = (chart: Chart, params: Record<string, unknown>) => string;
 
-const bodyRows = (chart: Chart) =>
-  chart.bodies.map((b) => ({ label: b.id === 'Lagna' ? 'Lagna' : `${b.id}${b.retrograde ? ' (R)' : ''}`, lon: b.lon }));
+/** Row labels of the Longitudes table: planets carry "(R)" and their chara karaka, like "Saturn (R) - AmK". */
+function longitudeLabels(chart: Chart): string[] {
+  const karaka = new Map(charaKarakas(chart.positions).map((k) => [k.planet as string, k.karaka]));
+  return chart.longitudes.map((b) => {
+    const g = chart.positions.grahas[b.name as keyof typeof chart.positions.grahas];
+    if (!g) return b.name;
+    const retro = g.retrograde && b.name !== 'Rahu' && b.name !== 'Ketu' ? ' (R)' : '';
+    const k = karaka.get(b.name);
+    return k ? `${b.name}${retro} - ${k}` : `${b.name}${retro}`;
+  });
+}
 
 export const TABLES: Record<string, TableFn> = {
-  // Basics > Key Info > "Longitudes & Basic Info" (menu 105 id 32822)
-  'basics.longitudes': (chart) => ({
-    headers: ['Body', 'Longitude', 'Nakshatra', 'Pada', 'Rasi', 'Navamsa'],
-    rows: bodyRows(chart).map(({ label, lon }) => [
-      label, formatLongitude(lon), NAKSHATRAS[nakshatraOf(lon)], String(padaOf(lon)),
-      SIGNS[signOf(lon)], SIGNS[signOf(vargaLongitude(lon, ALL_VARGAS.D9))],
-    ]),
-  }),
+  // Basics > Key Info > "Longitudes & Basic Info" (menu 105 id 32822): all 56 bodies
+  'basics.longitudes': (chart) => {
+    const labels = longitudeLabels(chart);
+    return {
+      headers: ['Body', 'Longitude', 'Nakshatra', 'Pada', 'Rasi', 'Navamsa'],
+      rows: chart.longitudes.map((b, i) => [
+        labels[i], formatLongitude(b.lon), NAKSHATRAS[nakshatraOf(b.lon)], String(padaOf(b.lon)),
+        SIGNS[signOf(b.lon)], SIGNS[signOf(vargaLongitude(b.lon, ALL_VARGAS.D9))],
+      ]),
+    };
+  },
   // Basics > Key Info > "Coordinates" (33071)
   'basics.coordinates': (chart) => ({
     headers: ['Planet', 'Longitude', 'Lon Speed', 'Latitude', 'Lat Speed'],

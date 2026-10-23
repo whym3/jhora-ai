@@ -5,6 +5,7 @@ import { computePositions, GRAHAS, type Graha, type Positions } from './position
 import { calcSettingsFromIni } from './settings';
 import { ALL_VARGAS, vargaLongitude, type VargaName } from './vargas';
 import { DEFAULTS, type JhoraIni } from '../settings/generated';
+import { allBodies, type NamedBody } from './longitudes';
 
 export interface ChartBody { id: Graha | 'Lagna'; label: string; lon: number; retrograde: boolean }
 
@@ -15,6 +16,8 @@ export interface Chart {
   positions: Positions;
   /** D-1 bodies: Lagna first, then the nine grahas */
   bodies: ChartBody[];
+  /** the 56 bodies of JHora's Longitudes table, in its order */
+  longitudes: NamedBody[];
 }
 
 export const SHORT_LABEL: Record<Graha | 'Lagna', string> = {
@@ -26,7 +29,10 @@ export async function computeChart(swe: Sweph, birth: BirthData, iniOverrides: P
   const ini: JhoraIni = { ...DEFAULTS, ...iniOverrides };
   const jd = birthJdUt(birth, (y, m, d, h) => swe.julday(y, m, d, h));
   await swe.ensureEphemeris(jd);
-  const positions = computePositions(swe, jd, { lat: birth.lat, lon: birth.lon, alt: birth.altitudeM }, calcSettingsFromIni(ini));
+  const geo = { lat: birth.lat, lon: birth.lon, alt: birth.altitudeM };
+  const settings = calcSettingsFromIni(ini);
+  const positions = computePositions(swe, jd, geo, settings);
+  const longitudes = allBodies(swe, positions, geo, birth.tzHours, settings, ini);
   const bodies: ChartBody[] = [
     { id: 'Lagna', label: SHORT_LABEL.Lagna, lon: positions.ascendant, retrograde: false },
     ...GRAHAS.map((g) => ({
@@ -34,7 +40,7 @@ export async function computeChart(swe: Sweph, birth: BirthData, iniOverrides: P
       retrograde: positions.grahas[g].retrograde && g !== 'Rahu' && g !== 'Ketu',
     })),
   ];
-  return { birth, ini, positions, bodies };
+  return { birth, ini, positions, bodies, longitudes };
 }
 
 /** Bodies grouped by the sign they occupy in a varga (index 0 = Aries). */
