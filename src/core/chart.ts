@@ -6,6 +6,7 @@ import { calcSettingsFromIni } from './settings';
 import { ALL_VARGAS, vargaLongitude, type VargaName } from './vargas';
 import { DEFAULTS, type JhoraIni } from '../settings/generated';
 import { allBodies, type NamedBody } from './longitudes';
+import { dayFrame, type DayFrame } from './day';
 
 export interface ChartBody { id: Graha | 'Lagna'; label: string; lon: number; retrograde: boolean }
 
@@ -18,6 +19,8 @@ export interface Chart {
   bodies: ChartBody[];
   /** the 56 bodies of JHora's Longitudes table, in its order */
   longitudes: NamedBody[];
+  /** sunrise/sunset frame of the birth */
+  day: DayFrame;
 }
 
 export const SHORT_LABEL: Record<Graha | 'Lagna', string> = {
@@ -32,7 +35,8 @@ export async function computeChart(swe: Sweph, birth: BirthData, iniOverrides: P
   const geo = { lat: birth.lat, lon: birth.lon, alt: birth.altitudeM };
   const settings = calcSettingsFromIni(ini);
   const positions = computePositions(swe, jd, geo, settings);
-  const longitudes = allBodies(swe, positions, geo, birth.tzHours, settings, ini);
+  const day = dayFrame(swe, jd, geo, settings, ini.SunriseDefinition);
+  const longitudes = allBodies(swe, positions, geo, birth.tzHours, settings, ini, day);
   const bodies: ChartBody[] = [
     { id: 'Lagna', label: SHORT_LABEL.Lagna, lon: positions.ascendant, retrograde: false },
     ...GRAHAS.map((g) => ({
@@ -40,7 +44,7 @@ export async function computeChart(swe: Sweph, birth: BirthData, iniOverrides: P
       retrograde: positions.grahas[g].retrograde && g !== 'Rahu' && g !== 'Ketu',
     })),
   ];
-  return { birth, ini, positions, bodies, longitudes };
+  return { birth, ini, positions, bodies, longitudes, day };
 }
 
 /** Bodies grouped by the sign they occupy in a varga (index 0 = Aries). */

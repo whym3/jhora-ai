@@ -1,7 +1,7 @@
 // Small natal tables of JHora's "Longitudes & Basic Info" menu (menu 105).
 import { GRAHAS, norm360, type Graha, type Positions } from './positions';
 import { ALL_VARGAS, vargaLongitude, type VargaSpec } from './vargas';
-import { NAKSHATRAS, nakshatraOf, signOf } from './zodiac';
+import { NAK28, NAKSHATRAS, nakshatra28Of, nakshatraOf, signOf } from './zodiac';
 import { NAK_LORD, nakshatraLord, signLord } from './lords';
 
 export const ORDINAL = ['1st', '2nd', '3rd', '4th', '5th', '6th', '7th', '8th', '9th', '10th', '11th', '12th'];
@@ -63,7 +63,6 @@ export function navaTaras(fromLon: number): { tara: string; meaning: string; lor
  * Special taras. Counted in the 28-star scheme (Abhijit after Uttarashadha) except
  * where JHora counts differently; the offsets below reproduce JHora's table.
  */
-const NAK28 = [...NAKSHATRAS.slice(0, 21), 'Abhi', ...NAKSHATRAS.slice(21)] as string[];
 const NAK28_LORD: Graha[] = [...Array.from({ length: 21 }, (_, i) => nakshatraLord(i)), 'Sun', ...Array.from({ length: 6 }, (_, i) => nakshatraLord(21 + i))];
 export const SPECIAL_TARAS: [string, string, number][] = [
   ['Janma', 'Existence', 1], ['Karma', 'Work', 10], ['Samudayika', 'Collective', 18], ['Sanghatika', 'Social', 16],
@@ -146,4 +145,78 @@ export function lordLabel(lon: number, spec: VargaSpec, count: number, n: number
   // JHora names Rahu with Saturn for Aquarius but gives Scorpio to Mars alone here.
   if (sign === 10) return 'Saturn and Rahu';
   return signLord(sign);
+}
+
+// ---- Nakshatra aspects and latta ----
+/**
+ * Counted in the 28-star scheme from the planet's own star (offset 0 = own star);
+ * offsets reproduce JHora's table on all 18 golden charts. Latta: Sun 12th forward,
+ * Moon 22nd backward, Mars 3rd forward, Mercury 7th backward, Jupiter 6th forward,
+ * Venus 5th backward, Saturn 8th forward, Rahu 9th backward.
+ */
+const LATTA_OFFSET: Partial<Record<Graha, number>> = { Sun: 11, Moon: -21, Mars: 2, Mercury: -6, Jupiter: 5, Venus: -4, Saturn: 7, Rahu: -8 };
+const STAR_ASPECTS: Partial<Record<Graha, number[]>> = {
+  Sun: [13, 14], Moon: [13, 14], Mars: [0, 2, 6, 7, 14], Mercury: [0, 14], Jupiter: [9, 14, 18], Venus: [0, 14], Saturn: [2, 4, 14, 18], Rahu: [],
+};
+export function nakshatraAspects(p: Positions): { planet: Graha; latta: string; star: string; aspected: string[] }[] {
+  return (Object.keys(LATTA_OFFSET) as Graha[]).map((g) => {
+    const own = nakshatra28Of(p.grahas[g].lon);
+    return {
+      planet: g,
+      latta: NAK28[(own + LATTA_OFFSET[g]! + 28) % 28],
+      star: NAK28[own],
+      aspected: STAR_ASPECTS[g]!.map((o) => NAK28[(own + o) % 28]),
+    };
+  });
+}
+
+// ---- Drekkana types (Parasara's drekkana descriptions) ----
+/** Classification of each of the 36 drekkanas as JHora labels them (sign-major, Aries first). */
+const DREKKANA_TYPES: string[][] = [
+  ['Ayudha (weapon), Kroora (cruel)', 'Mriga (animal), Subha (auspicious)', 'Ayudha (weapon), Misra (mixed)'],
+  ['Agni (fire), Misra (mixed)', 'Mriga (animal)', '-'],
+  ['-', 'Pakshi (bird)', 'Ayudha (weapon)'],
+  ['Chatushpada (quadruped)', 'Sarpa (snake)', 'Sarpa (snake)'],
+  ['Chatushpada (quadruped), Kroora (cruel), Pakshi (bird)', 'Ayudha (weapon)', 'Ayudha (weapon), Kroora (cruel)'],
+  ['Agni (fire)', '-', '-'],
+  ['-', 'Pakshi (bird)', 'Ayudha (weapon), Chatushpada (quadruped)'],
+  ['Sarpa (snake), Kroora (cruel)', 'Sarpa (snake), Kroora (cruel)', 'Chatushpada (quadruped), Kroora (cruel)'],
+  ['Ayudha (weapon), Chatushpada (quadruped)', '-', 'Ayudha (weapon)'],
+  ['Nigala, Kroora (cruel), Chatushpada (quadruped)', '-', 'Ayudha (weapon)'],
+  ['Pakshi (bird), Kroora (cruel)', 'Agni (fire)', '-'],
+  ['-', '-', 'Sarpa (snake)'],
+];
+export function drekkanaType(lon: number): string {
+  const sign = signOf(lon);
+  return DREKKANA_TYPES[sign][Math.floor((lon - sign * 30) / 10)];
+}
+
+// ---- Special tithis ----
+const TITHI_NAMES = ['Pratipat', 'Dwitiya', 'Tritiya', 'Chaturthi', 'Panchami', 'Shashthi', 'Sapthami', 'Ashtami', 'Navami', 'Dasami', 'Ekadasi', 'Dwadasi', 'Trayodasi', 'Chaturdasi'];
+const TITHI_LORDS: Graha[] = ['Sun', 'Moon', 'Mars', 'Mercury', 'Jupiter', 'Venus', 'Saturn', 'Rahu', 'Sun', 'Moon', 'Mars', 'Mercury', 'Jupiter', 'Venus', 'Saturn'];
+const TITHI_DEITIES = ['Kaameswari', 'Bhaga Maalini', 'Nitya Klinna', 'Bherunda', 'Vahni Vaasini', 'Vajreswari', 'Siva Dooti', 'Tvarita', 'Kula Sundari', 'Nitya', 'Neela Pataaka', 'Vijaya', 'Sarva Mangala', 'Jwaalaa Maalini', 'Chitra'];
+const SPECIAL_TITHI_NAMES = ['Janma', 'Dhana', 'Bhratri', 'Matri', 'Putra', 'Satru', 'Kalatra', 'Mrityu', 'Bhagya', 'Karma', 'Laabha', 'Vyaya'];
+/** JHora prints these seed labels for rows 31-36 (its own quirk, identical on every chart). */
+const SEED_LABELS_31_36 = ['3', '6', '4', '2', '1', '4'];
+
+export interface TithiInfo { index: number; name: string; lord: Graha; deity: string; left: number }
+/** Tithi of a Moon-Sun elongation: 1-based index 1..30, name, lord, deity and fraction left. */
+export function tithiOf(elong: number): TithiInfo {
+  const t = norm360(elong) / 12;
+  const index = Math.floor(t) + 1;
+  const inPaksha = (index - 1) % 15; // 0..14
+  const name = index === 30 ? 'Amavasya' : index === 15 ? 'Pournimasya' : (index <= 15 ? 'Sukla ' : 'Krishna ') + TITHI_NAMES[inPaksha];
+  return { index, name, lord: index === 30 ? 'Rahu' : TITHI_LORDS[inPaksha], deity: TITHI_DEITIES[inPaksha], left: 1 - (t - Math.floor(t)) };
+}
+
+export function specialTithis(p: Positions): { name: string; seed: string; tithi: TithiInfo }[] {
+  const elong = norm360(p.grahas.Moon.lon - p.grahas.Sun.lon);
+  return Array.from({ length: 36 }, (_, i) => {
+    const n = i + 1, cycle = Math.floor(i / 12) + 1;
+    return {
+      name: SPECIAL_TITHI_NAMES[i % 12] + ' tithi' + (cycle > 1 ? ' (cycle ' + cycle + ')' : ''),
+      seed: n > 30 ? SEED_LABELS_31_36[n - 31] : String(n),
+      tithi: tithiOf(elong * n),
+    };
+  });
 }

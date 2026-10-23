@@ -2,18 +2,31 @@
 // matches a JHora view (the tab/mode it appears in) and its headers match JHora's.
 import type { Chart } from '../core/chart';
 import { GRAHAS } from '../core/positions';
-import { formatLongitude, formatVargaLongitude, nakshatraOf, NAKSHATRAS, padaOf, signOf, SIGNS } from '../core/zodiac';
+import { formatLongitude, formatVargaLongitude, NAK28, nakshatra28Of, nakshatraOf, NAKSHATRAS, padaOf, signOf, SIGNS } from '../core/zodiac';
 import { ALL_VARGAS, vargaLongitude, type VargaName } from '../core/vargas';
-import { charaKarakas, equalHousesMiddle, grahaYuddha, isCombust, lordLabel, navaTaras, ORDINAL, SHORT, specialTaras, yogiPoints } from '../core/basics';
+import { charaKarakas, drekkanaType, equalHousesMiddle, grahaYuddha, isCombust, lordLabel, nakshatraAspects, navaTaras, ORDINAL, SHORT, specialTaras, specialTithis, yogiPoints } from '../core/basics';
 import { kpLords } from '../core/kp';
 import { varnada } from '../core/bodies';
 import { norm360, type Graha } from '../core/positions';
 import type { NamedBody } from '../core/longitudes';
 import { bhavaArudha, grahaArudha, signArudha, type ArudhaOptions } from '../core/arudhas';
+import { sahamas } from '../core/sahamas';
+import { fromMrityuBhaga, fromPushkaraBhaga, inPushkaramsa, MRITYU_BHAGA, within } from '../core/pushkara';
 import type { VargaCtx } from '../core/signStrength';
 import type { Table } from './protocol';
 
 const yes = (b: boolean) => (b ? 'Yes' : '-');
+
+/** Rows of the pushkara / mrityu bhaga / drekkana tables: grahas, Maandi, lagna and the 11 other cusps. */
+function bhagaBodies(chart: Chart): [string, number][] {
+  const p = chart.positions;
+  return [
+    ...GRAHAS.map((g): [string, number] => [g, p.grahas[g].lon]),
+    ['Maandi', chart.longitudes.find((b) => b.name === 'Maandi')!.lon],
+    ['Lagna', p.ascendant],
+    ...ORDINAL.slice(1).map((o, i): [string, number] => [`${o} house`, norm360(p.ascendant + 30 * (i + 1))]),
+  ];
+}
 
 /** Columns of JHora's "Rasis occupied in all vargas" table. */
 const RASI_COLUMNS: [string, VargaName][] = [
@@ -124,6 +137,37 @@ export const TABLES: Record<string, TableFn> = {
     });
     return { headers: ['Body', ...RASI_COLUMNS.map((c) => c[0])], rows };
   },
+  'basics.sahamas': (chart) => ({
+    headers: ['Sahama name', 'Position', 'Nakshatra', 'Meaning of sahama'],
+    rows: sahamas(chart.positions, chart.day.isDay).map((s) => [s.name, formatLongitude(s.lon), NAK28[nakshatra28Of(s.lon)], s.meaning]),
+  }),
+  'basics.drekkanas': (chart) => ({
+    headers: ['Body', 'Drekkana occupied'],
+    rows: bhagaBodies(chart).map(([name, lon]) => [name, drekkanaType(lon)]),
+  }),
+  'basics.nakshatraAspects': (chart) => ({
+    headers: ['Planet', 'Latta on', 'Occupied Star', 'Aspected Stars'],
+    rows: nakshatraAspects(chart.positions).map((r) => [r.planet, r.latta, r.star, r.aspected.map((s) => s + '    ').join('')]),
+  }),
+  'basics.specialTithis': (chart) => ({
+    headers: ['Special Tithi', 'Seed', 'Name', '% left', 'Lord', 'Deity', 'Index', 'Index in paksha'],
+    rows: specialTithis(chart.positions).map((r) => [
+      r.name, r.seed, r.tithi.name, `${Math.round(r.tithi.left * 100)}%`, r.tithi.lord, r.tithi.deity, `${r.tithi.index}th`,
+      `${((r.tithi.index - 1) % 15) + 1}th in ${r.tithi.index <= 15 ? 'Brighter' : 'Darker'} half`,
+    ]),
+  }),
+  'basics.pushkara': (chart) => ({
+    headers: ['Body', 'In Pushkaramsa?', 'In Pushkara Bhaga?', 'From Pushkara Bhaga Center'],
+    rows: bhagaBodies(chart).map(([name, lon]) => [name, yes(inPushkaramsa(lon)), yes(within(fromPushkaraBhaga(lon))), `${Math.abs(fromPushkaraBhaga(lon)).toFixed(4)} deg`]),
+  }),
+  'basics.mrityuBhaga': (chart) => ({
+    headers: ['Body', 'From Mrityu Bhaga Center', 'Within the Trimsamsa (degree)?'],
+    rows: bhagaBodies(chart).map(([name, lon]) => {
+      const key = /house$/.test(name) ? 'Lagna' : (name as keyof typeof MRITYU_BHAGA);
+      const d = fromMrityuBhaga(key, lon);
+      return [name, `${Math.abs(d).toFixed(4)} deg`, yes(within(d))];
+    }),
+  }),
   // Basics > Key Info > "Coordinates" (33071)
   'basics.coordinates': (chart) => ({
     headers: ['Planet', 'Longitude', 'Lon Speed', 'Latitude', 'Lat Speed'],

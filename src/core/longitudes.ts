@@ -1,6 +1,6 @@
 // The complete body list of JHora's "Longitudes & Basic Info" table, in its order.
 import type { Sweph } from '../sweph';
-import { dayFrame, type Geo } from './day';
+import { dayFrame, type DayFrame, type Geo } from './day';
 import { computePositions, norm360, GRAHAS, type Positions } from './positions';
 import type { Settings } from './settings';
 import type { JhoraIni } from '../settings/generated';
@@ -12,8 +12,8 @@ import { yogiPoints } from './basics';
 
 export interface NamedBody { name: string; lon: number }
 
-export function allBodies(swe: Sweph, p: Positions, geo: Geo, tzHours: number, settings: Settings, ini: JhoraIni): NamedBody[] {
-  const frame = dayFrame(swe, p.jdUt, geo, settings, ini.SunriseDefinition);
+export function allBodies(swe: Sweph, p: Positions, geo: Geo, tzHours: number, settings: Settings, ini: JhoraIni, frame?: DayFrame): NamedBody[] {
+  frame ??= dayFrame(swe, p.jdUt, geo, settings, ini.SunriseDefinition);
   const sunAtRise = computePositions(swe, frame.sunrise, geo, settings).grahas.Sun.lon;
   const sl = specialLagnas(sunAtRise, frame.ghatis);
   const weekday = weekdayOf(frame.sunrise, tzHours);

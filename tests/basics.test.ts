@@ -13,11 +13,33 @@ const CASES: [string, (c: GoldenChart) => GoldenView | undefined, (rows: string[
   ['basics.specialTarasMoon', (c) => c.views.find((v) => v.mode === 'Special Taras (from Moon)'), (r) => r],
   ['basics.yogi', (c) => c.views.find((v) => v.mode === 'Yogi, Sahayogi, Avayogi'), (r) => r],
   ['basics.combustion', (c) => c.views.find((v) => v.mode === 'Combustion'), (r) => r],
+  ['basics.sahamas', (c) => c.views.find((v) => v.mode === 'Sahamas'), (r) => r],
+  ['basics.pushkara', (c) => c.views.find((v) => v.mode === 'Pushkaramsas'), (r) => r],
+  ['basics.mrityuBhaga', (c) => c.views.find((v) => v.mode === 'Mrityu Bhaga'), (r) => r],
+  ['basics.drekkanas', (c) => c.views.find((v) => v.mode === 'Planetary drekkanas'), (r) => r],
+  ['basics.nakshatraAspects', (c) => c.views.find((v) => v.mode === 'Nakshatra Aspects & Latta'), (r) => r],
+  ['basics.specialTithis', (c) => c.views.find((v) => v.mode === 'Special Tithis'), (r) => r],
   ['basics.grahaYuddha', (c) => c.views.find((v) => v.mode === 'Graha Yuddha'), (r) => r],
   // only the rows we compute so far (Parasara drekkana and navamsa, from lagna and Moon)
   ['basics.malicious', (c) => c.views.find((v) => v.mode === '64th navamsa and 22nd drekkana'),
     (rows) => rows.filter((r) => /^The (64th navamsa|22nd Para(r)?sara drekkana)( from Moon)?$/.test(r[0]))],
 ];
+
+/**
+ * Longitudes are already verified elsewhere to 0.03"; compare them to the minute here.
+ * Degree distances ("9.6110 deg") may carry the sunrise residual of Maandi (0.4"), so
+ * they are compared to 0.0002 deg.
+ */
+function expectRowsClose(have: string[][], want: string[][]) {
+  const loose = (cells: string[]) => cells.map((c) => c.replace(/(\d+ \w\w \d+') \d+\.\d+"/, '$1').replace(/^(\d+\.\d{4}) deg$/, 'DEG'));
+  expect(have.map(loose)).toEqual(want.map(loose));
+  const bad: string[] = [];
+  want.forEach((r, i) => r.forEach((cell, j) => {
+    const m = /^(\d+\.\d{4}) deg$/.exec(cell);
+    if (m && Math.abs(+m[1] - parseFloat(have[i][j])) > 0.0002) bad.push(`${r[0]}: ${have[i][j]} vs ${cell}`);
+  }));
+  expect(bad, bad.join('\n')).toEqual([]);
+}
 
 describe('basic tables match JHora 8.0', async () => {
   const swe = await nodeSweph();
@@ -31,9 +53,7 @@ describe('basic tables match JHora 8.0', async () => {
         expect(got.headers).toEqual(golden!.headers);
         const want = pick(golden!.rows).map((r) => r.map((c) => c.trim()));
         const have = got.rows.map((r) => r.map((c) => c.trim()));
-        // longitudes are already verified elsewhere to 0.03"; compare them to the minute here
-        const loose = (cells: string[]) => cells.map((c) => c.replace(/(\d+ \w\w \d+') \d+\.\d+"/, '$1'));
-        expect(have.map(loose)).toEqual(want.map(loose));
+        expectRowsClose(have, want);
       });
     }
   }

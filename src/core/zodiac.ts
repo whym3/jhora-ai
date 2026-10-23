@@ -14,7 +14,18 @@ export const NAKSHATRA_NAMES = ['Aswini', 'Bharani', 'Krittika', 'Rohini', 'Mrig
 
 const NAK_SPAN = 360 / 27;
 
+/** The 28-star scheme. JHora's Abhijit is the last quarter of Uttarashadha only (6 40 Cp - 10 00 Cp; verified on the golden charts). */
+export const NAK28 = [...NAKSHATRAS.slice(0, 21), 'Abhi', ...NAKSHATRAS.slice(21)] as string[];
+const ABHIJIT_START = 270 + 6 + 40 / 60, ABHIJIT_END = 280;
+
 export const signOf = (lon: number) => Math.floor(lon / 30) % 12;
+/** Index into NAK28 of a longitude. */
+export function nakshatra28Of(lon: number): number {
+  const l = ((lon % 360) + 360) % 360;
+  if (l >= ABHIJIT_START && l < ABHIJIT_END) return 21;
+  const n = nakshatraOf(l);
+  return n >= 21 ? n + 1 : n;
+}
 export const nakshatraOf = (lon: number) => Math.floor(lon / NAK_SPAN) % 27;
 export const padaOf = (lon: number) => Math.floor((lon % NAK_SPAN) / (NAK_SPAN / 4)) + 1;
 
