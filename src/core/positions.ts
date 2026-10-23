@@ -10,6 +10,7 @@
 import { SE, type Sweph } from '../sweph';
 import type { Settings } from './settings';
 import { jhoraDeltaT } from './deltat';
+import { JHORA_SPICA } from './engine';
 
 export const GRAHAS = ['Sun', 'Moon', 'Mars', 'Mercury', 'Jupiter', 'Venus', 'Saturn', 'Rahu', 'Ketu'] as const;
 export type Graha = (typeof GRAHAS)[number];
@@ -61,10 +62,10 @@ export function ayanamsa(swe: Sweph, jdUt: number, jdEt: number, s: Settings): {
       return { trueEq: mean + s.ayanamsaDelta, mean: mean + s.ayanamsaDelta };
     }
     case 'true-chitrapaksha': {
-      // Swiss Ephemeris' built-in Spica record; JHora's fixstars.cat entry
-      // differs from it by under 0.05" over 1800-2000.
-      const t = swe.fixstarEt('Spica', jdEt, flags).lon - 180;
-      const m = swe.fixstarEt('Spica', jdEt, flags | SE.FLG_NONUT).lon - 180;
+      // JHora's own Spica record (see data/sefstars.txt); Swiss 2.10's built-in
+      // Spica has slightly different proper motion (~0.04" in 1863).
+      const t = swe.fixstarEt(JHORA_SPICA, jdEt, flags).lon - 180;
+      const m = swe.fixstarEt(JHORA_SPICA, jdEt, flags | SE.FLG_NONUT).lon - 180;
       return { trueEq: t + s.ayanamsaDelta, mean: m + s.ayanamsaDelta };
     }
   }

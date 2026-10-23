@@ -18,7 +18,7 @@ describe('graha and lagna longitudes match JHora 8.0', async () => {
       const pos = computePositions(swe, jd, { lat: b.lat, lon: b.lon, alt: b.altitudeM }, DEFAULT_SETTINGS);
       const rows = view(chart, 'Longitudes & Basic Info').rows;
       const want = (label: string) => rows.find((r) => r[0].split(' ')[0] === label)!;
-      const check = (label: string, lon: number, tol = 0.1) => {
+      const check = (label: string, lon: number, tol = 0.03) => {
         const r = want(label);
         expect(arcsec(lon, parseLongitude(r[1])), `${label} ${formatLongitude(lon)} vs ${r[1]}`).toBeLessThan(tol);
         expect([NAKSHATRAS[nakshatraOf(lon)], String(padaOf(lon)), SIGNS[signOf(lon)]]).toEqual([r[2], r[3], r[4]]);

@@ -30,10 +30,10 @@ export interface BirthData {
   standardTz: number | null;
   summerTz: number | null;
   dst: boolean;
-  /** field 8, meaning not yet known; stored at doc+0x110 by the loader */
-  field8: number;
   /** field 15, meaning not yet known (default 1) */
   field15: number | null;
+  /** field 18, meaning not yet known */
+  field18: number | null;
   /** older files: saved sidereal longitudes Sun..Rahu and Lagna, plus a flag string */
   legacy: { longitudes: number[]; ascendant: number; flags: string } | null;
 }
@@ -75,7 +75,8 @@ export function parseJhd(text: string): BirthData {
     tzHours: -decodeHms(num(4)),
     lon: -decodeHms(num(5)),
     lat: decodeHms(num(6)),
-    altitudeM: 0,
+    // field 8 is the altitude in metres (JHora's Key Info shows 0.439521 as "0.44 meters")
+    altitudeM: t.length > 7 ? num(7) : 0,
     pressureMbar: DEFAULT_PRESSURE,
     temperatureC: DEFAULT_TEMPERATURE,
     city: '',
@@ -84,8 +85,8 @@ export function parseJhd(text: string): BirthData {
     standardTz: null,
     summerTz: null,
     dst: false,
-    field8: t.length > 7 ? num(7) : 0,
     field15: null,
+    field18: null,
     legacy: null,
   };
 
@@ -110,7 +111,7 @@ export function parseJhd(text: string): BirthData {
     data.pressureMbar = num(15);
     data.temperatureC = num(16);
   }
-  if (t.length >= 18) data.altitudeM = num(17);
+  if (t.length >= 18) data.field18 = num(17);
   return data;
 }
 
@@ -120,12 +121,12 @@ export function writeJhd(b: BirthData): string {
   const lines = [
     String(b.month), String(b.day), String(b.year),
     f(encodeHms(b.hour)), f(-encodeHms(b.tzHours)), f(-encodeHms(b.lon)), f(encodeHms(b.lat)),
-    f(b.field8),
+    f(b.altitudeM),
     f(-(b.standardTz ?? b.tzHours)), f(-(b.summerTz ?? b.tzHours)), b.dst ? '1' : '0',
     String(b.placeCode ?? 0),
     (b.city || 'Unknown').replace(/ /g, '^'), (b.country || 'Unknown').replace(/ /g, '^'),
     String(b.field15 ?? 1),
-    f(b.pressureMbar), f(b.temperatureC), f(b.altitudeM),
+    f(b.pressureMbar), f(b.temperatureC), String(b.field18 ?? 0),
   ];
   return lines.join('\r\n') + '\r\n';
 }

@@ -1,4 +1,5 @@
 import { loadSweph, type FileFetcher, type Sweph } from '../sweph';
+import starFile from './data/sefstars.txt?raw';
 
 /**
  * JHora 8.0 ships Swiss Ephemeris 2.02.01 (version string in swedll32.dll).
@@ -7,8 +8,12 @@ import { loadSweph, type FileFetcher, type Sweph } from '../sweph';
  */
 export const JHORA_SWISS_MODELS = 'SE2.02.01';
 
+/** Star name of JHora's Spica record in our sefstars.txt (used for the ayanamsa). */
+export const JHORA_SPICA = 'JHoraSpica';
+
 export async function loadEngine(fetcher: FileFetcher): Promise<Sweph> {
   const swe = await loadSweph(fetcher);
   swe.setAstroModels(JHORA_SWISS_MODELS);
+  swe.addFile('sefstars.txt', new TextEncoder().encode(starFile));
   return swe;
 }
