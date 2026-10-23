@@ -11,6 +11,7 @@ import { norm360, type Graha } from '../core/positions';
 import type { NamedBody } from '../core/longitudes';
 import { bhavaArudha, grahaArudha, signArudha, type ArudhaOptions } from '../core/arudhas';
 import { sahamas } from '../core/sahamas';
+import { brahmaRudraMaheswara } from '../core/deities';
 import { fromMrityuBhaga, fromPushkaraBhaga, inPushkaramsa, MRITYU_BHAGA, within } from '../core/pushkara';
 import type { VargaCtx } from '../core/signStrength';
 import type { Table } from './protocol';
@@ -141,6 +142,13 @@ export const TABLES: Record<string, TableFn> = {
     headers: ['Sahama name', 'Position', 'Nakshatra', 'Meaning of sahama'],
     rows: sahamas(chart.positions, chart.day.isDay).map((s) => [s.name, formatLongitude(s.lon), NAK28[nakshatra28Of(s.lon)], s.meaning]),
   }),
+  'basics.deities': (chart) => {
+    const p = chart.positions;
+    const ctx: VargaCtx = { sign: (g) => signOf(p.grahas[g].lon), degree: (g) => p.grahas[g].lon % 30 };
+    const ak = charaKarakas(p)[0].planet;
+    const d = brahmaRudraMaheswara(signOf(p.ascendant), ak, ctx);
+    return { headers: ['Special Deity', 'Planet in this chart'], rows: [['Brahma', d.brahma], ['Rudra', d.rudra], ['Maheswara', d.maheswara]] };
+  },
   'basics.drekkanas': (chart) => ({
     headers: ['Body', 'Drekkana occupied'],
     rows: bhagaBodies(chart).map(([name, lon]) => [name, drekkanaType(lon)]),

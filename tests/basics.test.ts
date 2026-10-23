@@ -17,6 +17,7 @@ const CASES: [string, (c: GoldenChart) => GoldenView | undefined, (rows: string[
   ['basics.pushkara', (c) => c.views.find((v) => v.mode === 'Pushkaramsas'), (r) => r],
   ['basics.mrityuBhaga', (c) => c.views.find((v) => v.mode === 'Mrityu Bhaga'), (r) => r],
   ['basics.drekkanas', (c) => c.views.find((v) => v.mode === 'Planetary drekkanas'), (r) => r],
+  ['basics.deities', (c) => c.views.find((v) => v.mode === 'Brahma Rudra Maheswara'), (r) => r],
   ['basics.nakshatraAspects', (c) => c.views.find((v) => v.mode === 'Nakshatra Aspects & Latta'), (r) => r],
   ['basics.specialTithis', (c) => c.views.find((v) => v.mode === 'Special Tithis'), (r) => r],
   ['basics.grahaYuddha', (c) => c.views.find((v) => v.mode === 'Graha Yuddha'), (r) => r],
