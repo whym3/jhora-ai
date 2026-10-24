@@ -29,6 +29,7 @@ import { AV_BODIES, ashtakavarga, prastara, type AvBody } from '../core/ashtakav
 import { SEVEN } from '../core/relations';
 import { findYogas, giversText, YOGA_MODES } from '../core/yogas';
 import { aspectPercent } from '../core/aspects';
+import { formatSpan, signChange } from '../core/signChange';
 import { compoundRelation } from '../core/relations';
 import { SIGN_LORD } from '../core/lords';
 import { DEBILITATION, EXALTATION } from '../core/signStrength';
@@ -321,6 +322,19 @@ export const TABLES: Record<string, TableFn> = {
   'strengths.harsha': (chart) => {
     const t = tajakaBalas(chart);
     return { headers: ['Planet', 'Harsha Bala', 'Strength'], rows: SEVEN.map((g) => [g, String(t[g].harsha), HARSHA_CLASSES[t[g].harsha / 5]]) };
+  },
+  // When will this planet change sign in this chart? (menu 33160)
+  'chart.signChange': (chart, params, swe) => {
+    if (!swe) throw new Error('needs the ephemeris');
+    const body = String(params.body ?? 'Lagna') as Graha | 'Lagna';
+    const varga = String(params.varga ?? 'D1') as VargaName;
+    const n = Number(varga.match(/^D(\d+)$/)?.[1] ?? 1);
+    const r = signChange(swe, chart, body, n);
+    const vn = varga.replace('D', 'D-');
+    return {
+      caption: `When will ${body} change in this ${vn} chart?`, headers: [], rows: [],
+      text: [`${body} changes sign in ${vn} chart, if the birthtime is    `, '', `	${formatSpan(r.earlierDays)} earlier`, '', 'or if the birthtime is    ', '', `	${formatSpan(r.laterDays)} later.`],
+    };
   },
   // Planetary Aspect Evaluation (menu 33296, FUN_0042bac0): Parasara's aspect of each planet on every body
   'aspects.evaluation': (chart, params) => {

@@ -77,3 +77,6 @@ td.rel3 { color: var(--muted); } td.rel4 { color: #c82828; } td.rel5 { color: #e
 .modal-backdrop { position: fixed; inset: 0; z-index: 60; background: rgb(0 0 0 / .35); display: flex; align-items: flex-start; justify-content: center; padding: 40px 16px; overflow: auto; }
 .modal { background: var(--panel); border: 1px solid var(--line); border-radius: 8px; padding: 10px 14px; max-width: min(1100px, 100%); overflow-x: auto; }
 .modal .note-bar { display: flex; justify-content: space-between; align-items: center; gap: 8px; }
+.body.relbox0 { fill: #0000ff; } .body.relbox1 { fill: #00a000; font-weight: 700; font-style: italic; } .body.relbox2 { fill: #288c28; }
+.body.relbox3 { fill: var(--muted); } .body.relbox4 { fill: #c82828; } .body.relbox5 { fill: #e00000; font-weight: 700; font-style: italic; }
+.chart-note pre { margin: 4px 0; font-size: .82rem; white-space: pre-wrap; }
