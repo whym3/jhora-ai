@@ -80,3 +80,8 @@ td.rel3 { color: var(--muted); } td.rel4 { color: #c82828; } td.rel5 { color: #e
 .body.relbox0 { fill: #0000ff; } .body.relbox1 { fill: #00a000; font-weight: 700; font-style: italic; } .body.relbox2 { fill: #288c28; }
 .body.relbox3 { fill: var(--muted); } .body.relbox4 { fill: #c82828; } .body.relbox5 { fill: #e00000; font-weight: 700; font-style: italic; }
 .chart-note pre { margin: 4px 0; font-size: .82rem; white-space: pre-wrap; }
+.place-search { grid-column: 1 / -1; display: flex; flex-direction: column; gap: 6px; }
+.place-bar { display: flex; gap: 6px; flex-wrap: wrap; } .place-bar input { flex: 1; min-width: 160px; } .place-bar select { max-width: 260px; }
+.place-results ul { list-style: none; margin: 0; padding: 0; max-height: 260px; overflow-y: auto; border: 1px solid var(--line); border-radius: 6px; }
+.place-results li button { width: 100%; text-align: left; border: 0; border-radius: 0; background: none; padding: 4px 8px; }
+.place-results li button:hover { background: var(--tab); }

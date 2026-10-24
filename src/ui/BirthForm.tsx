@@ -1,5 +1,7 @@
 import { useState } from 'react';
 import type { BirthData } from '../core/jhd';
+import { dstInEffect, summerZone, type Place } from '../core/atlas';
+import { PlaceSearch } from './PlaceSearch';
 
 interface Props { initial: BirthData; onSubmit: (b: BirthData) => void }
 
@@ -37,6 +39,15 @@ export function BirthForm({ initial, onSubmit }: Props) {
   const [latDir, setLatDir] = useState(initial.lat < 0 ? 'S' : 'N');
   const [city, setCity] = useState(initial.city);
 
+  /** Fill the place fields from the atlas; the zone follows JHora's DST rules for the entered date and time. */
+  const pick = (p: Place) => {
+    const [y, m, d] = date.split('-').map(Number);
+    setCity(p.name);
+    setLon(toDms(p.lon)); setLonDir(p.lon < 0 ? 'W' : 'E');
+    setLat(toDms(p.lat)); setLatDir(p.lat < 0 ? 'S' : 'N');
+    setTz(String(dstInEffect(p, y, m, d, parseHms(time)) ? summerZone(p) : p.tz));
+  };
+
   const submit = (e: React.FormEvent) => {
     e.preventDefault();
     const [y, m, d] = date.split('-').map(Number);
@@ -53,6 +64,7 @@ export function BirthForm({ initial, onSubmit }: Props) {
 
   return (
     <form className="birth-form" onSubmit={submit}>
+      <PlaceSearch onPick={pick} />
       <label>Date<input type="date" value={date} onChange={(e) => setDate(e.target.value)} required /></label>
       <label>Time<input value={time} onChange={(e) => setTime(e.target.value)} placeholder="hh:mm:ss" pattern="\d{1,2}:\d{2}(:\d{2})?" required /></label>
       <label>Time zone (h, east +)<input type="number" step="0.0001" value={tz} onChange={(e) => setTz(e.target.value)} required /></label>

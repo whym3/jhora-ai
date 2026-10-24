@@ -7,7 +7,8 @@
     "test": "vitest run",
     "dev": "vite",
     "build": "tsc && vite build",
-    "typecheck": "tsc"
+    "typecheck": "tsc",
+    "atlas": "node tools/atlas/install.mjs"
   },
   "keywords": [],
   "author": "",
