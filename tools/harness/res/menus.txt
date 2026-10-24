@@ -1,0 +1,990 @@
+MENU 103
+  -	_POPUP_
+    33076	&When will lagna change in this chart?
+    -	&Change birthtime to move lagna to
+      33187	The &previous sign
+      33186	The &next sign
+      0	
+      33188	&Undo the latest change
+      33189	&Undo all changes
+    32827	Show &ashtakavarga of this chart
+    0	
+    32777	&Rasi chakra
+    -	&Bhava chakra or Chalit chakra
+      33330	Based on rasi (D-1)
+      33332	Based on navamsa (D-9)
+      33333	Based on hora (D-2)
+      33334	Based on drekkana (D-3)
+      33335	Based on chaturthamsa (D-4)
+      33336	Based on panchamsa (D-5)
+      33337	Based on shashthamsa (D-6)
+      33339	Based on saptamsa (D-7)
+      33341	Based on ashtamsa (D-8)
+      33344	Based on dasamsa (D-10)
+      33346	Based on rudramsa (D-11)
+      33348	Based on dwadasamsa (D-12)
+      33350	Based on shodasamsa (D-16)
+      33352	Based on vimsamsa (D-20)
+      33354	Based on siddhamsa (D-24)
+      33355	Based on nakshatramsa (D-27)
+      33356	Based on trimsamsa (D-30)
+      33357	Based on khavedamsa (D-40)
+      33358	Based on akshavedamsa (D-45)
+      33359	Based on shashtyamsa (D-60)
+      33360	Based on nava-navamsa (D-81)
+      33361	Based on ashtottaramsa (D-108)
+      33362	Based on dwadasa-dwadasamsa (D-144)
+      0	
+      33353	Choose reference used for bhava/chalit chakra
+    -	Choose navamsa (D-9)
+      33237	Parasara's navamsa
+      33319	Parasara navamsa with even sign reversal (Uniform Krishna Mishra navamsa)
+      33238	Kalachakra navamsa
+      33285	Rangacharya's Krishna mishra navamsa / Nadi Navamsa of Pt Rath (non-uniform)
+    0	
+    -	Choose hora (D-2)
+      33258	Parasara hora with parivritti && even sign reversal (Uma-Shambhu)
+      33152	Traditional Parasara hora (only Cn && Le)
+      33151	Jagannatha hora (1st/7th, day/night)
+      33156	Parivritti-dwaya (bicyclical) hora
+      33153	Samasaptaka hora (rasi and 7th)
+      33154	Mandooka hora (rasi and 3rd)
+      33155	Kashinatha hora (ownership, day/night)
+      33257	Labha Mandooka hora (rasi and 11th)
+      33256	Raman hora (1st/11th, day/night)
+      33261	Raman hora (SJC modified)
+      33259	Niranjan hora (3rd/8th, 2nd/7th, day/night)
+      33260	Niranjan hora (SJC modified)
+    -	Choose drekkana (D-3)
+      33395	Parasara drekkana with parivritti && even sign reversal (Uma-Shambhu)
+      33147	Traditional Parasara drekkana
+      33144	Parivritti-traya drekkana
+      33145	Somanatha drekkana
+      33146	Jagannatha drekkana
+    -	Choose chaturthamsa (D-4)
+      33180	Traditional Parasara chaturthamsa
+      33176	Parivritti chaturthamsa (cyclical, H-4)
+    -	Choose panchamsa (D-5)
+      33181	Standard panchamsa
+      33177	Parivritti panchamsa (cyclical, H-5)
+    32786	Shashthamsa (D-6)
+    -	Choose saptamsa (D-7)
+      33401	Traditional Parasara saptamsa (Even: Start from 7th && go forward)
+      33402	Pararsara saptamsa with even sign reversal (Even: Start from 7th && go reverse)
+      33403	Pararsara saptamsa with even sign reversal (Even: Go reverse && end in 7th)
+    -	Choose ashtamsa (D-8)
+      33182	Continuous/regular ashtamsa
+      33178	Dr. Raman's ashtamsa (tattva based)
+    -	Choose dasamsa (D-10)
+      33263	Traditional Parasara dasamsa (Even: Start from 9th && go forward)
+      33398	Pararsara dasamsa with even sign reversal (Even: Start from 9th && go reverse)
+      33399	Pararsara dasamsa with even sign reversal (Even: Go reverse && end in 9th)
+      33400	Pararsara dasamsa with even sign reversal (Even: Start from reverse 9th && go reverse)
+      33264	Parivritti dasamsa (Ojha)
+    -	Choose D-11
+      33183	Rudramsa (regular, Pt. Rath)
+      33179	Ekadasamsa (anti-zodiacal, Dr. Raman)
+    -	Choose dwadasamsa (D-12)
+      33411	Traditional Parasara dwadasamsa
+      33412	Parasara dwadasamsa with even sign reversal
+    -	Choose shodasamsa (D-16)
+      33407	Traditional Parasara shodasamsa
+      33408	Parasara shodasamsa with even sign reversal
+    -	Choose vimsamsa (D-20)
+      33413	Traditional Parasara vimsamsa
+      33414	Parasara vimsamsa with even sign reversal
+    -	Choose siddhamsa (D-24)
+      33396	Parasara siddhamsa with even sign reversal (Odd Le->Cn, Even Cn->Le)
+      33397	Traditional Parasara siddhamsa (Odd Le->Cn, Even Cn->Ge)
+      33409	Parasara siddhamsa with even sign double reversal (Odd Le->Cn, Even Le->Cn)
+    -	Choose nakshatramsa (D-27)
+      33415	Traditional Parasara nakshatramsa
+      33416	Parasara nakshatramsa with even sign reversal
+    -	Choose trimsamsa (D-30)
+      33150	Parasara trimsamsa
+      33149	Parivritti (cyclical) trimsamsa
+      33148	Shashtyamsa like trimsamsa
+    -	Higher divisions
+      32797	Khavedamsa (D-40)
+      32798	Akshavedamsa (D-45)
+      -	Choose shashtyamsa (D-60)
+        33405	Traditional Parasara shashtyamsa (from sign)
+        33417	Parasara shashtyamsa (from Aries)
+        33406	Parasara shashtyamsa with even sign reversal (from sign)
+        33410	Parasara shashtyamsa with even sign reversal (from Aries)
+      0	
+      -	Choose nava-navmsa (D-81)
+        33240	Parasara's nava-navamsa
+        33241	Kalachakra nava-navamsa
+      32800	Ashtottaramsa (D-108)
+      33063	Dwadasamsa-Dwadasamsa (D-144)
+    0	
+    33375	&Custom divisional chart for research (cyclical or non-cyclical D-n)
+    33368	&Sub-divisional chart for research (D-mxn, i.e. D-n of D-m)
+    0	
+    33160	&When will this planet change sign in this chart?
+    33113	Planets in &marana karaka sthana
+    -	R&elationships
+      32944	&Permanent relationships of this planet
+      32945	&Temporary relationships of this planet
+      32946	&Compound relationships of this planet
+      0	
+      33109	P&achakadi relationships of this planet
+      0	
+      33110	&Pachakadi relationships of this rasi
+    -	&Highlight rasi(s)
+      32811	having &argala on this rasi
+      32812	having &virodhargala on this rasi
+      0	
+      32808	&aspected by this planet (graha drishti)
+      32819	aspected by this planet (&rasi drishti)
+      32809	aspected by this rasi (&rasi drishti)
+      0	
+      32810	&owned by this planet
+      32815	which is &moolatrikona of this planet
+      32816	where this planet is &exalted
+      32817	where this planet is &debilitated
+    33387	&Aspect table with relationships
+    0	
+    -	&Copy chart
+      32985	as &text to clipboard (current chart style)
+      32992	as text to clipboard (south-north-east styles)
+      0	
+      32986	as &bitmap (as it is on the screen now)
+      32987	as bitmap (south-north styles)
+      33284	as bitmap (Rasi-Navamsa)
+      0	
+      33041	as a 300 dpi &bitmap (as it is on the screen now)
+      33042	as a 300 dpi bitmap for books (south-north styles)
+      33283	as a 300 dpi bitmap for books (&Rasi-Navamsa)
+    0	
+    -	Choose a view (which bodies to show)
+      32803	Standard view
+      33211	Standard view with graha arudhas
+      32805	&Upagraha view
+      32806	&Graha arudha view
+      33081	&Dual graha arudha view
+      33107	&Chandra arudha view (from Moon)
+      33108	&Surya arudha view (from Sun)
+      32807	&Varnada view
+      32894	&Chara Karaka view
+      33052	&Special lagna view
+      0	
+      -	Optional bodies in standard view
+        33053	Nodes (Rahu and Ketu)
+        33054	Uranus, Neptune and Pluto
+        33055	Arudha Lagna
+        33056	Other Arudhas
+        33057	Hora Lagna
+        33058	Ghati Lagna (Ghatika Lagna)
+        33059	Sree Lagna
+        33268	Bhrigu Bindu
+        33270	Pranapada Lagna
+        33060	Maandi
+        33061	Gulika
+    -	&Chart display mode
+      32801	&Automatic (Natal, Tajaka etc)
+      32802	&Natal chart only
+    0	
+    33287	Packed chart mode (more charts)
+    0	
+    33293	Show chart based on &signs
+    33294	Show chart based on &houses from this planet
+MENU 105
+  -	_POPUP_
+    32821	Select &bodies to be shown
+    0	
+    32822	&Longitudes && Basic Info
+    33242	&Choose the divisional chart for longitudes
+    0	
+    33296	Planetary Aspect &Evaluation
+    33297	&Options for Planetary Aspect Evaluation
+    0	
+    33071	Latitudes, speeds etc (c&o-ordinates)
+    33265	&All Divisional Longitudes
+    32823	&Rasis occupied in all vargas
+    32902	Na&va Taras (from Moon)
+    33197	Na&va Taras (from lagna)
+    32903	Special Taras/&Nakshatras (from Moon)
+    33198	Special Taras/&Nakshatras (from lagna)
+    32824	Nakshatra &Aspects && Latta
+    33286	&Yogi, Sahayogi and Avayogi Planets
+    33393	&Pushkaramsas and Pushkara Bhagas
+    32893	Special &Tithis
+    32825	&Chara Karakas
+    33167	C&ombustion
+    33168	Graha &Yuddha (planetary war)
+    33039	Bra&hma, Rudra, Maheswara
+    33072	Distances from &Mrityu Bhaga
+    33158	Planetary &drekkanas (ayudha drekkana etc)
+    33159	Lords of &64th navamsa and 22nd drekkana
+    32901	&Sahamas (sahams)
+    0	
+    33115	Natal Longitudes
+    33116	Natal Sahamas (sahams)
+    0	
+    32975	&Copy to clipboard
+MENU 106
+  -	_POPUP_
+    32840	Show AV of this &divisional chart
+    33117	Use &natal chart or derived chart (Tajaka/TP)?
+    32839	&Highlight the rasi containing planet
+    32841	H&ighlight rasis occupied in this divisional chart
+    0	
+    32973	Recompute taking another sign as &lagna
+    33097	&Go back to the actual lagna
+    0	
+    32829	Show &BAVs and SAV
+    32830	Show &SoAV - sodhita (reduced) ashtakavargas
+    0	
+    32831	Show PAV of &Sun
+    32832	Show PAV of &Moon
+    32833	Show PAV of M&ars
+    32834	Show PAV of M&ercury
+    32835	Show PAV of &Jupiter
+    32836	Show PAV of &Venus
+    32837	Show PAV of Sa&turn
+    32838	Show PAV of &Lagna
+    0	
+    32842	Show s&odhya pindas
+    32843	Show &nakshatras && rasis from sodhya pindas
+MENU 108
+  -	_POPUP_
+    32892	&Entry chart of this period
+    33125	&Locate an event
+    33196	&Shift dasa dates
+    33269	&Dasa-Transit Correlation
+    0	
+    -	Definition of &year in dasas
+      32882	&Mean tropical solar year (365.24219 days)
+      33419	&True tropical solar year (Sun traversing 360 deg tropically)
+      0	
+      33418	&Mean sidereal solar year (365.256364 days)
+      32885	&True sidereal solar year (Sun traversing 360 deg sidereally)
+      0	
+      32883	&Savana year (360 days)
+      32886	Year with 360 &tithis
+      0	
+      32884	&User defined year (n days)
+    -	Preferences related to dasas
+      33019	Dasa seed settings for &Tajaka
+      33043	Use dasa sesham in compressed mundane dasas
+    0	
+    32971	Use Tribhagi variation
+    0	
+    32846	&Vimsottari dasa
+    32854	&Ashtottari dasa
+    32847	&Kalachakra dasa
+    32848	&Yogini dasa
+    0	
+    32855	&Dwisaptati sama dasa
+    32856	Shat&trimsa sama dasa
+    32857	D&wadasottari dasa
+    32858	C&haturaseeti sama dasa
+    32859	&Sataabdika dasa
+    32860	S&hodasottari dasa
+    32861	&Panchottari dasa
+    32862	Shashti&hayani dasa
+    33329	Saptarshi &nakshatra dasa (Pt Rath)
+    0	
+    33130	Vimsottari seed strength comparison &help
+    32972	&Copy to clipboard
+    33236	&Copy to clipboard (only dates)
+    32991	Print this &window
+    33389	Sum of &longitudes of planets upto this level
+  -	_POPUP_
+    32892	&Entry chart of this period
+    33125	&Locate an event
+    33196	&Shift dasa dates
+    33269	&Dasa-Transit Correlation
+    0	
+    -	Definition of &year in dasas
+      32882	&Mean tropical solar year (365.24219 days)
+      33419	&True tropical solar year (Sun traversing 360 deg tropically)
+      0	
+      33418	&Mean sidereal solar year (365.256364 days)
+      32885	&True sidereal solar year (Sun traversing 360 deg sidereally)
+      0	
+      32883	&Savana year (360 days)
+      32886	Year with 360 &tithis
+      0	
+      32884	&User defined year (n days)
+    -	Preferences related to dasas
+      33019	Dasa seed settings for &Tajaka
+      33043	Use dasa sesham in compressed mundane dasas
+    0	
+    32849	&Narayana dasa (rasi && vargas)
+    33201	&Lagnamsaka dasa
+    33202	&Padanaathaamsa dasa
+    32850	&Sudasa
+    32851	&Drigdasa
+    32868	&Lagna Kendradi Rasi dasa
+    32869	&AK Kendradi Rasi dasa
+    32870	&Trikona dasa
+    32871	C&hara dasa (Parasara)
+    33024	C&hara dasa (K.N. Rao)
+    33165	C&hara dasa (Rangacharya)
+    32872	&Yogardha dasa
+    32873	&Paryaaya dasas (3 types)
+    0	
+    32876	&Shoola dasa (of all houses)
+    32877	N&iryaana shoola dasa
+    32878	&Brahma dasa
+    32879	&Sthira dasa
+    32880	&Mandooka dasa of D-11 (Rath)
+    33251	&Mandooka dasa (K.N. Rao)
+    32881	Na&vamsa dasa
+    32867	&Varnada dasa
+    0	
+    32972	&Copy to clipboard
+    33236	&Copy to clipboard (only dates)
+    32991	Print this &window
+  -	_POPUP_
+    32892	&Entry chart of this period
+    33125	&Locate an event
+    33196	&Shift dasa dates
+    33269	&Dasa-Transit Correlation
+    0	
+    -	Definition of &year in dasas
+      32882	&Mean tropical solar year (365.24219 days)
+      33419	&True tropical solar year (Sun traversing 360 deg tropically)
+      0	
+      33418	&Mean sidereal solar year (365.256364 days)
+      32885	&True sidereal solar year (Sun traversing 360 deg sidereally)
+      0	
+      32883	&Savana year (360 days)
+      32886	Year with 360 &tithis
+      0	
+      32884	&User defined year (n days)
+    -	Preferences related to dasas
+      33019	Dasa seed settings for &Tajaka
+      33043	Use dasa sesham in compressed mundane dasas
+    0	
+    32853	&Moola dasa
+    33164	&Naisargika dasa
+    33106	&Tara dasa
+    33266	&Kaala dasa
+    33288	&Chakra dasa
+    32864	&AK Kendradi Graha dasa
+    0	
+    32852	&Patyayini dasa
+    33128	&Sudarsana Chakra dasa
+    33235	&Buddhi gati dasa (Agni purana)
+    32863	&Rasi-Bhukta Vimsottari (RBV) dasa
+    33267	&Karaka dasa
+    0	
+    32865	&Tithi Ashtottari dasa
+    33203	Yoga &Vimsottari dasa
+    33204	&Karana Chaturaseeti sama dasa
+    32866	Tithi &Yogini dasa
+    0	
+    32972	&Copy to clipboard
+    33236	&Copy to clipboard (only dates)
+    32991	Print this &window
+MENU 109
+  -	_POPUP_
+    33253	&Highlight vedhas, aspects and lattas on this star (if any)
+    0	
+    32961	Highlight aspects (vedhas) &FROM this star
+    32963	Highlight aspects (vedhas) &ON this box
+    33249	Highlight fixed &graha drishti on this star (if any)
+    33250	Highlight &lattas on this star (if any)
+    0	
+    32964	Set a special &nakshatra (natal) as a special point
+    32965	Set a natal &tara as a special point (nava-tara scheme)
+    32966	Set a special &tithi (natal) as a special point
+    32967	Set a &house in natal chart as a special point
+    33243	Set the natal nakshatra of a planet as a special point
+    0	
+    32960	Set this box as a &special point
+    33023	Set a special &nakshatra from here as a special point
+    33022	Set a &tara from here as a special point
+    0	
+    32962	&Reset this special point box
+    32959	Reset &all special points
+    0	
+    33244	&Divisional chart used for transit positions
+    32968	View transits on this date
+MENU 110
+  -	_POPUP_
+    32974	&Copy to clipboard
+MENU 128
+  -	&File
+    57600	&New	Ctrl+N
+    57601	&Open...	Ctrl+O
+    57603	&Save	Ctrl+S
+    57604	Save &As...
+    0	
+    57607	&Print...	Ctrl+P
+    57609	Print Pre&view
+    57606	P&rint Setup...
+    0	
+    33338	&Import preferences (.ini file)
+    33340	&Export preferences (.ini file)
+    0	
+    57612	&Email chart to someone who has this software
+    0	
+    57616	Recent File
+    0	
+    57665	E&xit
+  -	&Edit
+    32776	Birth&data	Ctrl+D
+    33200	Change time&zone
+    33199	&User defined special point
+    33252	Planetary &Special Lagnas (research)
+    0	
+    32988	Chart &notes (in notepad)
+    0	
+    32982	Copy &basic calculations
+    32983	Copy &complete calculations	Ctrl+C
+  -	&Modes
+    32772	Reset to &Natal Mode
+    0	
+    32774	Go to &Tajaka Mode Screen
+    32888	Go to Tithi &Pravesha Mode Screen
+    32895	Go to T&ransit Mode Screen
+    32896	Go to Pr&ogressions Mode Screen
+    33082	Go to Prasna/&Horary Mode Screen
+    32775	Go to &Mundane Mode Screen
+    33291	Go to Nisheka/&Aadhana Chakra
+    0	
+    0	
+    33070	Go to the next &lifecycle
+    33069	Go to the previous l&ifecycle
+  -	&View
+    33104	Navigate &Backward	Alt+Left
+    33105	Navigate &Forward	Alt+Right
+    0	
+    32889	Key &Information
+    32947	Two &Vargas Together
+    32957	&Sarvatobhadra Chakra
+    33090	&Kalachakra
+    33021	K&ota Chakra
+    33026	&Yogas
+    33379	&Aspect Table with Relationships
+    0	
+    33320	&Horoscope Matching Score
+    0	
+    33292	View jhora.ini file (&preference settings) in notepad
+    0	
+    59392	&Toolbar
+    59393	&Status Bar
+  -	&Preferences
+    -	Related to &Calculations
+      33374	&Siddhanta (Planetary Model) - Drik vs SSS (Sri Surya Siddhanta)
+      32993	&Ayanamsa
+      0	
+      32937	&Planet Calculation Options
+      32936	&Upagraha Calculation Options
+      32935	&Divisional Chart Calculation Options
+      33391	Nodal E&xaltation && Debilitation Sign Options
+      33162	&Chara karaka scheme (7 or 8)
+      33074	&Sunrise, sunset && special lagna definitions
+      33078	Hora, Kaala && &Weekday Start Options
+      33157	Ashtaka&varga Calculation Options
+      33166	Va&iseshikamsa Calculation Options
+      33124	&Tajaka Calculation Options
+      33282	&Tithi Pravesha Calculation Options
+      33421	&Lunar calendar options
+      33422	&Solar calendar options
+      33079	&Mrityu Bhaga Options
+      33392	Pus&hkara Bhaga Definition Options
+      33245	Arudha &Pada Calculation Options
+      33073	&Life cycle length for casting a new chart (countries etc)
+      0	
+      32938	&Restore Default Calculation Options
+      33328	&Set Calculation Options as recommended by author
+    -	Related to &Display
+      32887	Chart Style and &Language
+      33114	Use of &2 chart styles
+      -	&Font size adjustment
+        33121	Use &bigger fonts
+        33122	Use &smaller fonts
+        33118	&Adjust font size
+      33049	&Colors to be used
+      32994	&Pages to include in printouts
+      33075	&Astrologer's name and address (for printouts)
+      0	
+      33289	&Save current window sizes for future use
+      33290	Switch back to &default window sizes
+    32934	Set Current &Location as Default
+    0	
+    32900	&Save Preferences
+    0	
+    33394	&Updates
+  -	&Websites
+    33303	"&Jagannatha Hora" Software: Official Website
+    33302	Jagannatha Hora Discussions: Official &Yahoogroup (jhora)
+    0	
+    33304	Free Do-It-Yourself short "&Homam" manuals, MP3 && video 
+    33305	Free Do-It-Yourself short "&Tarpana" manuals
+    33365	Free MP3 audio and text of &mantras and stotras
+    33307	&Vedic-wisdom yahoogroup (spirituality only and NO astrology)
+    33308	Samplings of spiritual &writings from vedic-wisdom yahoogroup
+    33306	Saraswati &Films (dedicated to spirituality && heritage)
+    0	
+    33312	Yahoogroup archiving Jyotish writings by &PVR Narasimha Rao
+    33311	Some Jyotish &research articles
+    33314	Download free MP3 audio of Boston Jyotish &classes
+    0	
+    33310	Vedic-&astrology yahoogroup for general Jyotish discussions
+    33309	"Sri Jagannath Centre" organization of Pt Sanjay &Rath
+    33313	"Saptarishis Astrology" ancient &manuscript download page
+    33315	Astro-dienst Atlas &Query
+    33316	AstroData&Bank (vast database including birthdata)
+  32828	M&oreMenus
+  -	&Help
+    57667	&Contents
+    33083	&Getting started with this software
+    0	
+    33364	Show free Vedic astrology &textbook
+    0	
+    57664	&About Jagannatha Hora
+MENU 129
+  -	_POPUP_
+    33062	&Vimsopaka Balas (6, 7, 10, 16 groups)
+    0	
+    32844	&Amsa Balas or Vaiseshikamsas (6, 7, 10, 16 groups)
+    0	
+    32897	&Basic Avasthas (age, alertness, mood)
+    32898	&Sayanadi Avasthas (activity)
+    0	
+    32932	&Pancha-vargeeya Bala (Tajaka)
+    32933	&Dwadasa-vargeeya Bala (Tajaka)
+    32931	&Harsha Bala (Tajaka)
+    0	
+    33046	Change &varga for avasthas related to alertness and mood
+    -	&Relationships to be used in avasthas
+      33044	&Permanent
+      33045	&Compound
+    -	R&elationships in avasthas/vimsopaka are based on
+      33047	&Rasi chart always
+      33048	Relevant &varga chart
+    0	
+    32978	&Copy to clipboard
+MENU 136
+  -	&Help
+    57664	&About Jagannatha Hora
+MENU 137
+  -	&Help
+    57664	&About Jagannatha Hora
+MENU 138
+  -	_POPUP_
+    33076	&When will lagna change in this chart?
+    33160	&When will this planet change sign in this chart?
+    32969	Planet &longitudes
+    32827	Show &ashtakavarga of this chart
+    32970	Compressed &Patyayini dasa
+    0	
+    32777	&Rasi chakra
+    33009	&Bhava chakra or Chalit chakra
+    32778	&Navamsa chakra
+    0	
+    32782	Hora (D-2)
+    32783	Drekkana (D-3)
+    32784	Chaturthamsa (D-4)
+    32785	Panchamsa (D-5)
+    32786	Shashthamsa (D-6)
+    32787	Saptamsa (D-7)
+    32788	Ashtamsa (D-8)
+    32789	Dasamsa (D-10)
+    32790	Rudramsa (D-11)
+    32791	Dwadasamsa (D-12)
+    32792	Shodasamsa (D-16)
+    32793	Vimsamsa (D-20)
+    32794	Siddhamsa (D-24)
+    32795	Nakshatramsa (D-27)
+    32796	Trimsamsa (D-30)
+    -	Higher divisions
+      32797	Khavedamsa (D-40)
+      32798	Akshavedamsa (D-45)
+      32799	Shashtyamsa (D-60)
+      0	
+      33239	Navanavamsa (D-81)
+      32800	Ashtottaramsa (D-108)
+      33063	Dwadasamsa-Dwadasamsa (D-144)
+    0	
+    33113	Planets in &marana karaka sthana
+    -	R&elationships
+      32944	&Permanent relationships of this planet
+      32945	&Temporary relationships of this planet
+      32946	&Compound relationships of this planet
+    -	&Highlight rasi(s)
+      32811	having &argala on this rasi
+      32812	having &virodhargala on this rasi
+      0	
+      32808	&aspected by this planet (graha drishti)
+      32819	aspected by this planet (&rasi drishti)
+      32809	aspected by this rasi (&rasi drishti)
+      0	
+      32810	&owned by this planet
+      32815	which is &moolatrikona of this planet
+      32816	where this planet is &exalted
+      32817	where this planet is &debilitated
+    33387	&Aspect table with relationships
+    0	
+    -	&Copy chart
+      32985	as &text to clipboard (current chart style)
+      32992	as text to clipboard (south-north-east styles)
+      0	
+      32986	as &bitmap (as it is on the screen now)
+      32987	as bitmap (south-north styles)
+      0	
+      33041	as a 300 dpi &bitmap (as it is on the screen now)
+      33042	as a 300 dpi bitmap for books (south-north styles)
+    0	
+    -	Choose a view (which bodies to show)
+      32803	Standard view
+      32805	&Upagraha view
+      32806	&Graha arudha view
+      33081	&Dual graha arudha view
+      33107	&Chandra arudha view (from Moon)
+      33108	&Surya arudha view (from Sun)
+      32807	&Varnada view
+      32894	&Chara Karaka view
+      33052	&Special lagna view
+      0	
+      -	Optional bodies in standard view
+        33053	Nodes (Rahu and Ketu)
+        33054	Uranus, Neptune and Pluto
+        33055	Arudha Lagna
+        33056	Other Arudhas
+        33057	Hora Lagna
+        33058	Ghati Lagna (Ghatika Lagna)
+        33059	Sree Lagna
+        33060	Maandi
+        33061	Gulika
+    -	&Chart display mode
+      32801	&Automatic (Natal, Tajaka etc)
+      32802	&Natal chart only
+MENU 139
+  -	&Help
+    57664	&About Jagannatha Hora
+MENU 140
+  -	_POPUP_
+    32904	&Shadbala Summary
+    32913	Shadbala &Break-up
+    0	
+    32907	S&thana Bala
+    32908	&Kaala Bala
+    32909	&DigBala
+    32910	&Cheshta Bala
+    32911	D&rigBala
+    32912	&Naisargika Bala
+    0	
+    32905	&Bhava balas
+    32906	&Ishta-Kashta Phala
+    33317	&Rashmis && Ishta-Kashta Phala of Parasara
+    0	
+    32977	&Copy to clipboard
+MENU 141
+  -	_POPUP_
+    32930	Select &bodies to be shown
+    0	
+    32915	&Navamsa
+    0	
+    32916	Hora (D-2)
+    32917	Drekkana (D-3)
+    32918	Chaturthamsa (D-4)
+    32919	Saptamsa (D-7)
+    32920	Dasamsa (D-10)
+    32921	Dwadasamsa (D-12)
+    32922	Shodasamsa (D-16)
+    32923	Vimsamsa (D-20)
+    32924	Siddhamsa (D-24)
+    32925	Nakshatramsa (D-27)
+    32926	Trimsamsa (D-30)
+    0	
+    32927	Khavedamsa (D-40)
+    32928	Akshavedamsa (D-45)
+    32929	Shashtyamsa (D-60)
+    33064	Nadyamsa (D-150)
+    0	
+    32976	&Copy to clipboard
+MENU 142
+  -	&Help
+    57664	&About Jagannatha Hora
+MENU 143
+  -	_POPUP_
+    32948	&Standard (tara, murthi, vedha)
+    33111	Natal &reference to use
+    0	
+    32950	&Ashtakavarga related
+    32954	&Natal varga for ashtakavarga
+    32955	&Transit varga for ashtakavarga
+    0	
+    32953	Aspects on special &nakshatras
+    33213	Aspects on special &nakshatras (lagna)
+    32951	Transits in s&pecial nakshatras
+    33212	Transits in s&pecial nakshatras (lagna)
+    0	
+    32952	&Latta (planetary kick)
+    33214	An&ga graha transits
+    0	
+    32949	&Houses from lagna && Moon
+    0	
+    32956	&Change the transit date && time
+    32979	&Copy to clipboard
+MENU 144
+  -	&Help
+    57664	&About Jagannatha Hora
+MENU 145
+  -	_POPUP_
+    32995	Each &rasi is a house
+    33001	&Equal houses (30 deg each)
+    33129	&Equal houses based on nakshatra padas (9 padas each)
+    33388	&SSS house system (Sri Surya Siddhanta)
+    32998	&Porphyry houses (Sripathi)
+    32997	P&lacidus houses (KP/Krishnamoorthy)
+    0	
+    32996	&Koch houses
+    32999	Re&giomontanus houses
+    33000	&Campanus houses
+    33005	A&xial rotation system houses
+    33007	P&olich/Page (topocentric system) houses
+    33008	&Alcabitus houses
+    0	
+    33248	Choose the reference longitude for finding houses (lagna or Moon etc)
+    0	
+    33003	Ascendant (or the chosen reference) is the middle of first house
+    33004	Ascendant (or the chosen reference) is the start of first house
+    0	
+    33010	&Copy to clipboard
+MENU 146
+  -	_POPUP_
+    33011	Nakshatra and sub &lords of each planet (upto 5 levels of subs)
+    0	
+    33012	&Planets occupying each planet's &nakshatra
+    33014	&Planets occupying each planet's &sub
+    33015	&Planets occupying each planet's &prati-sub (2nd level)
+    33016	&Planets occupying each planet's &sookshma-sub (3rd level)
+    33017	&Planets occupying each planet's p&raana-sub (4th level)
+    33018	&Planets occupying each planet's &deha-sub (5th level)
+    0	
+    33013	&Copy to clipboard
+MENU 147
+  -	_POPUP_
+    33020	View transits on this date
+    33127	Change the &base nakshatra
+MENU 148
+  -	&Help
+    57664	&About Jagannatha Hora
+MENU 149
+  -	_POPUP_
+    33037	Select a &varga (divisional chart)
+    0	
+    33027	&All yogas
+    33028	&Pancha maha purusha yogas
+    33029	&Solar yogas
+    33030	&Lunar yogas
+    33031	&Naabhasa yogas
+    33032	&Raja yogas
+    33033	Ra&ja sambandha yogas
+    33036	&Dhana yogas
+    33034	Dar&idra yogas
+    33035	&Parivraja yogas
+    33038	&Other popular yogas
+    0	
+    33077	Just show a &list of supported of yogas (toggle)
+    0	
+    32975	&Copy to clipboard
+MENU 150
+  -	_POPUP_
+    33086	&Copy monthly panchanga in JD format
+    33089	&Copy planetary co-ordinates in this chart in JD format
+    33087	&Copy monthly ephemeris in JD format (5:30 am)
+    33088	&Copy monthly planetary movements (in JD format)
+    33420	&Copy monthly panchanga (DP format)
+    33085	&Copy monthly panchanga
+    0	
+    33084	&Print window
+MENU 151
+  -	&Help
+    57664	&About Jagannatha Hora
+MENU 152
+  -	_POPUP_
+    33091	Show &Planets
+    33094	Show &Yogini and Mrityu
+    33092	Show &Trisphuta etc
+    33095	Show &Upagrahas
+    33096	Show Special &Lagnas
+    33093	Show &Sahamas
+    0	
+    33255	&Base planet and division
+    33254	&Divisional chart to be used for planets
+    0	
+    33126	Fully &customize base nakshatra
+MENU 153
+  -	_POPUP_
+    33076	&When will lagna change in this chart?
+    32827	Show &ashtakavarga of this chart
+    0	
+    32777	&Rasi chakra
+    33009	&Bhava chakra or Chalit chakra
+    32778	&Navamsa chakra
+    0	
+    32782	Hora (D-2)
+    32783	Drekkana (D-3)
+    32784	Chaturthamsa (D-4)
+    32785	Panchamsa (D-5)
+    32786	Shashthamsa (D-6)
+    32787	Saptamsa (D-7)
+    32788	Ashtamsa (D-8)
+    32789	Dasamsa (D-10)
+    32790	Rudramsa (D-11)
+    32791	Dwadasamsa (D-12)
+    32792	Shodasamsa (D-16)
+    32793	Vimsamsa (D-20)
+    32794	Siddhamsa (D-24)
+    32795	Nakshatramsa (D-27)
+    32796	Trimsamsa (D-30)
+    -	Higher divisions
+      32797	Khavedamsa (D-40)
+      32798	Akshavedamsa (D-45)
+      32799	Shashtyamsa (D-60)
+      0	
+      33239	Navanavamsa (D-81)
+      32800	Ashtottaramsa (D-108)
+      33063	Dwadasamsa-Dwadasamsa (D-144)
+    0	
+    33113	Planets in &marana karaka sthana
+    -	R&elationships
+      32944	&Permanent relationships of this planet
+      32945	&Temporary relationships of this planet
+      32946	&Compound relationships of this planet
+    -	&Highlight rasi(s)
+      32811	having &argala on this rasi
+      32812	having &virodhargala on this rasi
+      0	
+      32808	&aspected by this planet (graha drishti)
+      32819	aspected by this planet (&rasi drishti)
+      32809	aspected by this rasi (&rasi drishti)
+      0	
+      32810	&owned by this planet
+      32815	which is &moolatrikona of this planet
+      32816	where this planet is &exalted
+      32817	where this planet is &debilitated
+    0	
+    -	&Copy chart
+      32985	as &text to clipboard (current chart style)
+      32992	as text to clipboard (south-north-east styles)
+      0	
+      32986	as &bitmap (as it is on the screen now)
+      32987	as bitmap (south-north styles)
+      0	
+      33041	as a 300 dpi &bitmap (as it is on the screen now)
+      33042	as a 300 dpi bitmap for books (south-north styles)
+    0	
+    -	Choose a view (which bodies to show)
+      32803	Standard view
+      32805	&Upagraha view
+      32806	&Graha arudha view
+      33081	&Dual graha arudha view
+      33107	&Chandra arudha view (from Moon)
+      33108	&Surya arudha view (from Sun)
+      32807	&Varnada view
+      32894	&Chara Karaka view
+      33052	&Special lagna view
+      0	
+      -	Optional bodies in standard view
+        33053	Nodes (Rahu and Ketu)
+        33054	Uranus, Neptune and Pluto
+        33055	Arudha Lagna
+        33056	Other Arudhas
+        33057	Hora Lagna
+        33058	Ghati Lagna (Ghatika Lagna)
+        33059	Sree Lagna
+        33060	Maandi
+        33061	Gulika
+    -	&Chart display mode
+      32801	&Automatic (Natal, Tajaka etc)
+      32802	&Natal chart only
+MENU 154
+  -	&Help
+    57664	&About Jagannatha Hora
+MENU 155
+  -	_POPUP_
+    1	&Janma nakshatra (Moonstar)
+    33140	&Utpanna nakshatra (5th from Moonstar)
+    33139	&Kshema nakshatra (4th from Moonstar)
+    33138	&Aadhaana nakshatra (8th from Moonstar)
+    33137	&Lagna nakshatra
+    33136	&Mandi nakshatra
+    33135	&Gulika nakshatra
+    33134	&Trisphuta (sookshma) nakshatra
+    33161	&Sun's nakshatra
+    0	
+    33131	&Sign containing the nakshatra pada is the first house
+    33132	&Pada and 4 padas on either side form the first house
+    0	
+    33141	&Copy to clipboard
+    0	
+    33142	&Accept this seed and cast Vimsottari dasa
+MENU 156
+  -	_POPUP_
+    33169	Show All &Graha Balas
+    33170	Show &Bhava Balas
+    33172	Show &Shadbala breakup
+    33175	Show &Vimsopaka Bala in four varga schemes
+    33174	Show Va&iseshikamsas in four varga schemes
+    33318	Show Rashmis and Ishta phala of &Parasara
+    0	
+    33171	Change the &varga used in ashtakavarga
+MENU 157
+  -	_POPUP_
+    33184	Show Transit &Calendar
+    33185	Show &Legend (explanation of symbols)
+MENU 158
+  -	&Help
+    57664	&About Jagannatha Hora
+MENU 159
+  -	_POPUP_
+    33215	Consider &1 planet (including upagrahas)
+    33230	Consider 2 planets (no &upagrahas)
+    33216	Consider &2 planets (including upagrahas)
+    33231	Consider &3 planets (no upagrahas)
+    33232	Consider &4 planets (no upagrahas)
+    33233	Consider &5 planets (no upagrahas)
+    -	Add this &lagna to planet(s)
+      33217	&None
+      33218	Normal &lagna
+      33219	&Hora lagna
+      33220	&Ghati lagna
+      33221	&Bhava lagna
+      33222	&Sree lagna
+      33226	&Indu lagna
+      33223	&Pranapada lagna
+      33224	&Vighati lagna
+    0	
+    33225	&Varga to be used
+    -	&Method used in vargas
+      33228	&Find longitudes in divisions
+      33229	&Count signs in divisions
+    33234	Use only one &cycle in compressed/annual charts
+    0	
+    33246	What is all this?
+    0	
+    33227	C&opy to clipboard
+MENU 160
+  -	&Help
+    57664	&About Jagannatha Hora
+MENU 161
+  -	_POPUP_
+    32974	&Copy to clipboard
+MENU 162
+  -	_POPUP_
+    33366	&Copy to clipboard
+MENU 163
+  -	_POPUP_
+    33380	Select varga (divisional chart)
+    33381	Select reference for houses
+    -	Full aspect value
+      33382	&60
+      33383	&100
+    0	
+    -	Aspects of Mars, Jupiter and Saturn
+      33385	As per Parasara's teachings
+      33386	As per Dr Raman's teachings
+MENU 164
+  -	&Help
+    57664	&About Jagannatha Hora

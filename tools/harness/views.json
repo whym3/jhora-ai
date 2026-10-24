@@ -169,7 +169,64 @@
    "top": "Strengths",
    "sub": "Ashtakavarga",
    "lists": true,
-   "copies": {}
+   "copies": {
+    "chart_text": 32985,
+    "chart_text_sne": 32992
+   },
+   "pane_copies": [
+    "chart_text",
+    "chart_text_sne"
+   ],
+   "modes": [
+    [
+     "BAVs and SAV",
+     32829
+    ],
+    [
+     "SoAV",
+     32830
+    ],
+    [
+     "PAV Sun",
+     32831
+    ],
+    [
+     "PAV Moon",
+     32832
+    ],
+    [
+     "PAV Mars",
+     32833
+    ],
+    [
+     "PAV Mercury",
+     32834
+    ],
+    [
+     "PAV Jupiter",
+     32835
+    ],
+    [
+     "PAV Venus",
+     32836
+    ],
+    [
+     "PAV Saturn",
+     32837
+    ],
+    [
+     "PAV Lagna",
+     32838
+    ],
+    [
+     "Sodhya pindas",
+     32842
+    ],
+    [
+     "Nakshatras & rasis from sodhya pindas",
+     32843
+    ]
+   ]
   },
   {
    "top": "Strengths",
@@ -183,122 +240,150 @@
    "modes": [
     [
      "Shadbala Summary",
-     32904
+     32904,
+     59648
     ],
     [
      "Shadbala Break-up",
-     32913
+     32913,
+     59648
     ],
     [
      "Sthana Bala",
-     32907
+     32907,
+     59648
     ],
     [
      "Kaala Bala",
-     32908
+     32908,
+     59648
     ],
     [
      "DigBala",
-     32909
+     32909,
+     59648
     ],
     [
      "Cheshta Bala",
-     32910
+     32910,
+     59648
     ],
     [
      "DrigBala",
-     32911
+     32911,
+     59648
     ],
     [
      "Naisargika Bala",
-     32912
+     32912,
+     59648
     ],
     [
      "Bhava balas",
-     32905
+     32905,
+     59648
     ],
     [
      "Ishta-Kashta Phala",
-     32906
+     32906,
+     59648
     ],
     [
      "Rashmis",
-     33317
+     33317,
+     59648
     ],
     [
      "Vimsopaka Balas",
-     33062
+     33062,
+     59664
     ],
     [
      "Amsa Balas",
-     32844
+     32844,
+     59664
     ],
     [
      "Basic Avasthas",
-     32897
+     32897,
+     59664
     ],
     [
      "Sayanadi Avasthas",
-     32898
+     32898,
+     59664
     ],
     [
      "Pancha-vargeeya Bala",
-     32932
+     32932,
+     59664
     ],
     [
      "Dwadasa-vargeeya Bala",
-     32933
+     32933,
+     59664
     ],
     [
      "Harsha Bala",
-     32931
+     32931,
+     59664
     ],
     [
      "All yogas",
-     33027
+     33027,
+     59680
     ],
     [
      "Pancha maha purusha yogas",
-     33028
+     33028,
+     59680
     ],
     [
      "Solar yogas",
-     33029
+     33029,
+     59680
     ],
     [
      "Lunar yogas",
-     33030
+     33030,
+     59680
     ],
     [
      "Naabhasa yogas",
-     33031
+     33031,
+     59680
     ],
     [
      "Raja yogas",
-     33032
+     33032,
+     59680
     ],
     [
      "Raja sambandha yogas",
-     33033
+     33033,
+     59680
     ],
     [
      "Dhana yogas",
-     33036
+     33036,
+     59680
     ],
     [
      "Daridra yogas",
-     33034
+     33034,
+     59680
     ],
     [
      "Parivraja yogas",
-     33035
+     33035,
+     59680
     ],
     [
      "Other popular yogas",
-     33038
+     33038,
+     59680
     ]
-   ],
-   "pane_modes": true
+   ]
   },
   {
    "top": "Dasas",

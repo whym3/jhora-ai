@@ -121,6 +121,15 @@ class Session:
                     return text, dialogs
         return "", []
 
+    def focus_list(self, control_id):
+        for lv in self.main.descendants(class_name="SysListView32"):
+            if lv.is_visible() and lv.control_id() == control_id:
+                r = lv.rectangle()
+                lv.click_input(coords=(8, min(r.height() - 4, 40)))
+                time.sleep(0.2)
+                return True
+        return False
+
     def visible_lists(self):
         out = []
         for lv in self.main.descendants(class_name="SysListView32"):
@@ -174,8 +183,11 @@ def capture_chart(root, chart, manifest, ini_overrides):
                 continue
             s.guard()
             modes = tab.get("modes") or [[None, None]]
-            for label, cmd in modes:
-                popups = s.command(cmd, to_panes=tab.get("pane_modes", False)) if cmd else []
+            for mode in modes:
+                label, cmd = mode[0], mode[1]
+                if len(mode) > 2:   # the view holds several lists: menu commands act on the last one clicked
+                    s.focus_list(mode[2])
+                popups = s.command(cmd) if cmd else []
                 if tab.get("lists"):
                     for lv in s.visible_lists():
                         result["views"].append({"top": top, "sub": sub, "mode": label, "control_id": lv["id"], "headers": lv["headers"], "rows": lv["rows"]})

@@ -108,3 +108,13 @@ export function computePositions(
     outer,
   };
 }
+
+/** Sidereal longitude and speed of one body (as computePositions does it), for root finding. */
+export function siderealLongitude(swe: Sweph, jdUt: number, body: Graha, s: Settings): { lon: number; speed: number } {
+  const flags = calcFlags(s);
+  const jdEt = jdUt + (jhoraDeltaT(jdUt) ?? swe.deltaT(jdUt));
+  const ay = ayanamsa(swe, jdUt, jdEt, s);
+  const id = body === 'Rahu' || body === 'Ketu' ? (s.trueNodes ? SE.TRUE_NODE : SE.MEAN_NODE) : SWE_ID[body];
+  const p = swe.calcEt(jdEt, id, flags);
+  return { lon: norm360(p.lon - ay.trueEq + (body === 'Ketu' ? 180 : 0)), speed: p.speedLon };
+}
