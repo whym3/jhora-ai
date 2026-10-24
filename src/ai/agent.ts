@@ -7,12 +7,14 @@ import OpenAI from 'openai';
 import type {
   BetaContentBlockParam, BetaMessageParam, BetaToolResultBlockParam, BetaToolUnion, BetaToolUseBlock,
 } from '@anthropic-ai/sdk/resources/beta/messages/messages';
-import type { ChatCompletionMessageParam, ChatCompletionTool } from 'openai/resources/chat/completions/completions';
+import type { FunctionTool, ResponseInputItem } from 'openai/resources/responses/responses';
 import { AI_TOOLS, runTool, type ToolContext } from './tools';
 import { SYSTEM_PROMPT } from './systemPrompt';
 
 export type Provider = 'claude' | 'openai';
 export type Effort = 'low' | 'medium' | 'high' | 'xhigh' | 'max';
+export const OPENAI_REASONING = ['none', 'minimal', 'low', 'medium', 'high', 'xhigh'] as const;
+export type OpenAIReasoning = '' | (typeof OPENAI_REASONING)[number];
 
 export interface AiSettings {
   provider: Provider;
@@ -22,8 +24,8 @@ export interface AiSettings {
   openaiModel: string;
   /** Claude effort (thinking depth and thoroughness) */
   effort: Effort;
-  /** OpenAI reasoning_effort for reasoning models; '' = not sent */
-  openaiReasoning: '' | 'low' | 'medium' | 'high';
+  /** OpenAI reasoning.effort for reasoning models; '' = the model's default (not sent) */
+  openaiReasoning: OpenAIReasoning;
 }
 
 export const CLAUDE_MODELS = ['claude-opus-5-5', 'claude-sonnet-5-5', 'claude-haiku-5-5', 'claude-fable-5-1'];
@@ -119,47 +121,61 @@ class ClaudeConversation implements Conversation {
 }
 
 // ---------------------------------------------------------------------------
-// OpenAI
+// OpenAI (Responses API: function tools work together with reasoning models)
 
-const OPENAI_TOOLS: ChatCompletionTool[] = AI_TOOLS.map((t) => ({
-  type: 'function',
-  function: { name: t.name, description: t.description, parameters: t.parameters },
+const OPENAI_TOOLS: FunctionTool[] = AI_TOOLS.map((t) => ({
+  type: 'function', name: t.name, description: t.description, parameters: t.parameters, strict: false,
 }));
 
 class OpenAIConversation implements Conversation {
   readonly provider = 'openai' as const;
   private client: OpenAI;
-  private messages: ChatCompletionMessageParam[] = [{ role: 'system', content: SYSTEM_PROMPT }];
+  /** the last completed response; the server keeps the conversation (previous_response_id) */
+  private lastId: string | null = null;
 
   constructor(private settings: AiSettings, private ctx: ToolContext) {
     this.client = new OpenAI({ apiKey: settings.openaiKey, dangerouslyAllowBrowser: true });
   }
 
   async send(text: string, onEvent: (e: AgentEvent) => void, signal: AbortSignal) {
-    this.messages.push({ role: 'user', content: text });
+    let previous = this.lastId;
+    let input: ResponseInputItem[] = [{ role: 'user', content: text }];
     for (;;) {
-      const stream = this.client.chat.completions.stream({
+      const stream = this.client.responses.stream({
         model: this.settings.openaiModel,
-        messages: this.messages,
+        instructions: SYSTEM_PROMPT,
+        input,
         tools: OPENAI_TOOLS,
-        ...(this.settings.openaiReasoning ? { reasoning_effort: this.settings.openaiReasoning } : {}),
+        ...(previous ? { previous_response_id: previous } : {}),
+        ...(this.settings.openaiReasoning ? { reasoning: { effort: this.settings.openaiReasoning } } : {}),
       }, { signal });
-      stream.on('content.delta', ({ delta }) => onEvent({ type: 'text', delta }));
-      const completion = await stream.finalChatCompletion();
-      const choice = completion.choices[0];
-      const msg = choice.message;
-      const calls = (msg.tool_calls ?? []).filter((c) => c.type === 'function');
-      this.messages.push({ role: 'assistant', content: msg.content ?? '', ...(calls.length ? { tool_calls: calls } : {}) });
-      if (msg.refusal) onEvent({ type: 'text', delta: `\n\n[The model declined: ${msg.refusal}]` });
-      if (calls.length === 0) return;
-      if (choice.finish_reason === 'length') throw new Error('The answer hit the output limit while calling a tool; please ask again more narrowly.');
+      stream.on('response.output_text.delta', (e) => onEvent({ type: 'text', delta: e.delta }));
+      const response = await stream.finalResponse();
+      previous = response.id;
+      for (const item of response.output) {
+        if (item.type === 'message') {
+          for (const c of item.content) if (c.type === 'refusal') onEvent({ type: 'text', delta: `
+
+[The model declined: ${c.refusal}]` });
+        }
+      }
+      const calls = response.output.flatMap((o) => (o.type === 'function_call' ? [o] : []));
+      if (calls.length === 0) {
+        // commit only a finished turn: a stopped or failed question leaves no unanswered tool calls behind
+        this.lastId = response.id;
+        if (response.status === 'incomplete') onEvent({ type: 'text', delta: `
+
+[Incomplete: ${response.incomplete_details?.reason ?? 'unknown reason'}]` });
+        return;
+      }
+      if (response.status === 'incomplete') throw new Error('The answer hit the output limit while calling a tool; please ask again more narrowly.');
       const parsed = calls.map((c) => {
-        let input: unknown;
-        try { input = JSON.parse(c.function.arguments || '{}'); } catch { input = undefined; }
-        return { id: c.id, name: c.function.name, input };
+        let args: unknown;
+        try { args = JSON.parse(c.arguments || '{}'); } catch { args = undefined; }
+        return { id: c.call_id, name: c.name, input: args };
       });
       const results = await runAll(this.ctx, parsed, onEvent);
-      parsed.forEach((c, k) => this.messages.push({ role: 'tool', tool_call_id: c.id, content: results[k].text }));
+      input = parsed.map((c, k) => ({ type: 'function_call_output', call_id: c.id, output: results[k].text }));
     }
   }
 }

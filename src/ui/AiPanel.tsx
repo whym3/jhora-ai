@@ -5,7 +5,7 @@ import type { ChartSpec } from '../engine/protocol';
 import { stableStringify } from '../engine/hash';
 import { useEngine } from './EngineProvider';
 import {
-  CLAUDE_MODELS, DEFAULT_SETTINGS, errorText, isOpenAIChatModel, listModels, startConversation,
+  CLAUDE_MODELS, DEFAULT_SETTINGS, OPENAI_REASONING, errorText, isOpenAIChatModel, listModels, startConversation,
   type AgentEvent, type AiSettings, type Conversation, type Effort, type ModelEntry,
 } from '../ai/agent';
 import { chartContext } from '../ai/systemPrompt';
@@ -137,8 +137,8 @@ function Settings({ s, set }: { s: AiSettings; set: (p: Partial<AiSettings>) => 
           </label>
           <label>Reasoning effort
             <select value={s.openaiReasoning} onChange={(e) => set({ openaiReasoning: e.target.value as AiSettings['openaiReasoning'] })}>
-              <option value="">(not sent)</option>
-              {['low', 'medium', 'high'].map((m) => <option key={m}>{m}</option>)}
+              <option value="">(model default)</option>
+              {OPENAI_REASONING.map((m) => <option key={m}>{m}</option>)}
             </select>
           </label>
           {loader}
