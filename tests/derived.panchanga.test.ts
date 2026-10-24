@@ -37,12 +37,13 @@ describe('Miscellany > Panchanga', async () => {
     expect(d.tithi.items[0].index).toBe(tithi(lon(t0, 'Sun'), lon(t0, 'Moon')).index);
     expect(d.nakshatra.items[0].index).toBe(nakshatra(lon(t0, 'Moon')).index);
     const geo = { lat: chart.birth.lat, lon: chart.birth.lon, alt: chart.birth.altitudeM };
-    expect(Math.abs(t0 - dayFrame(swe, t0 + 0.3, geo, s, 0).sunrise)).toBeLessThan(1e-6);
+    // displayed sunrise = JHora's ecliptic rise, within a few seconds of the frame sunrise
+    expect(Math.abs(t0 - dayFrame(swe, t0 + 0.3, geo, s, 0).sunrise)).toBeLessThan(5e-5);
   });
 
   it('tithi / karana / yoga / nakshatra ends sit on their boundaries and inside the day when counted', () => {
     for (const d of days) {
-      const t0 = d.sunrise.jd;
+      const t0 = d.dayStart.jd;
       for (const [tr, step, f] of [
         [d.tithi, 12, (jd: number) => norm360(lon(jd, 'Moon') - lon(jd, 'Sun'))],
         [d.karana, 6, (jd: number) => norm360(lon(jd, 'Moon') - lon(jd, 'Sun'))],
@@ -51,8 +52,9 @@ describe('Miscellany > Panchanga', async () => {
         [d.moonSign, 30, (jd: number) => lon(jd, 'Moon')],
       ] as const) {
         for (const e of tr.items) {
+          // JHora's search returns the later end of a 1 s bracket
           const v = f(e.end.jd) / step;
-          expect(Math.abs(v - Math.round(v))).toBeLessThan(1e-7);
+          expect(Math.abs(v - Math.round(v))).toBeLessThan(2e-4 / step);
         }
         for (let j = 0; j < tr.count; j++) {
           expect(tr.items[j].end.jd).toBeGreaterThanOrEqual(t0);
@@ -77,16 +79,17 @@ describe('Miscellany > Panchanga', async () => {
     for (const d of days.slice(0, 7)) {
       const len = d.sunset.jd - d.sunrise.jd;
       for (const k of [d.rahu, d.gulika, d.yama]) {
-        expect(k.end.jd - k.start.jd).toBeCloseTo(len / 8, 9);
+        // kaalas divide the frame's day; the displayed (ecliptic) rise/set differ by ~1-2 s
+        expect(k.end.jd - k.start.jd).toBeCloseTo(len / 8, 5);
         const part = (k.start.jd - d.sunrise.jd) / (len / 8);
-        expect(Math.abs(part - Math.round(part))).toBeLessThan(1e-6);
+        expect(Math.abs(part - Math.round(part))).toBeLessThan(1e-3);
       }
-      for (const m of d.durmuhurta) expect(m.end.jd - m.start.jd).toBeCloseTo(len / 15, 9);
+      for (const m of d.durmuhurta) expect(m.end.jd - m.start.jd).toBeCloseTo(len / 15, 5);
       for (const v of d.varjya) expect(v.end.jd).toBeGreaterThanOrEqual(d.sunrise.jd);
     }
     // Sunday Rahu kaalam is the 8th part, Monday the 2nd
     const sun = days.find((d) => d.weekday === 0)!;
-    expect((sun.rahu.start.jd - sun.sunrise.jd) / ((sun.sunset.jd - sun.sunrise.jd) / 8)).toBeCloseTo(7, 6);
+    expect((sun.rahu.start.jd - sun.sunrise.jd) / ((sun.sunset.jd - sun.sunrise.jd) / 8)).toBeCloseTo(7, 2);
   });
 
   it('formats times as JHora (truncate / round, * on another day)', () => {

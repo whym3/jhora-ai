@@ -41,7 +41,8 @@ import { calcSettingsFromIni, type Settings } from '../settings';
 import { dayFrame } from '../day';
 import { jhoraDeltaT } from '../deltat';
 import { TITHI_NAMES, KI_NAKSHATRAS, YOGAS, KARANAS, WEEKDAYS } from '../keyInfo';
-import { solveAngle, scanCrossing, wrap180 } from './common';
+import { solveAngle, wrap180 } from './common';
+import { jhoraCrossing } from '../tajaka/search';
 
 export const MONTHS = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
 const WEEKDAY_SHORT = ['Su', 'Mo', 'Tu', 'We', 'Th', 'Fr', 'Sa'];          // 0x8a294c
@@ -71,6 +72,8 @@ export interface PanchangaDay {
   /** row counter JHora compares event days against (1-based day of month, or the chart's day) */
   counter: number;
   date: { year: number; month: number; day: number };
+  /** start of the record's day: the frame sunrise + 0.01 hour (FUN_00465c80); the day is [dayStart, dayStart + 1) */
+  dayStart: Moment;
   weekday: number;
   sunrise: Moment; sunset: Moment; moonrise: Moment | null; moonset: Moment | null;
   tithi: Track; nakshatra: Track; yoga: Track; karana: Track; moonSign: Track;
@@ -106,22 +109,28 @@ const sumSM = (c: Ctx): Fn => (jd) => {
   return { lon: norm360(m.lon + s.lon), speed: m.speed + s.speed };
 };
 
-/** Next moment after jd when f reaches the multiple of `step` above its value at jd. */
-function nextBoundary(f: Fn, jd: number, step: number): { index: number; jd: number } {
+const SECOND = 1 / 86400;
+
+/**
+ * Next moment after jd when f reaches the multiple of `step` above its value at jd, found as
+ * JHora does (FUN_0049c0d0 -> FUN_0049c130: 3-day steps as the Moon is involved, 1 s bracket,
+ * later end returned). The yoga (Moon + Sun) uses the sum variant FUN_0049cb50, the same
+ * algorithm with 7-day steps for the Moon (60 for the Sun, 1/6 day for the lagna).
+ */
+function nextBoundary(f: Fn, jd: number, step: number, days = 3): { index: number; jd: number } {
   const v = f(jd);
   const index = Math.floor(v.lon / step + 1e-12) % Math.round(360 / step);
   const target = norm360((index + 1) * step);
-  let gap = target - v.lon; if (gap <= 0) gap += 360;
-  return { index, jd: solveAngle(f, target, jd + gap / v.speed) };
+  return { index, jd: jhoraCrossing((t) => f(t).lon, target, jd, { step: days, tol: SECOND }) };
 }
 
 /** The element at sunrise and up to `max` following ones whose ends fall in [t0, t0 + 1). */
-function track(c: Ctx, f: Fn, step: number, t0: number, max: number, nameIndex: (i: number) => number = (i) => i): Track {
+function track(c: Ctx, f: Fn, step: number, t0: number, max: number, nameIndex: (i: number) => number = (i) => i, days = 3): Track {
   const items: Element[] = [];
   let t = t0;
   let count = 0;
   for (let k = 0; k < max; k++) {
-    const b = nextBoundary(f, t, step);
+    const b = nextBoundary(f, t, step, days);
     items.push({ index: nameIndex(b.index), end: moment(c, b.jd) });
     if (b.jd < t0 || b.jd >= t0 + 1) break;
     count = k + 1;
@@ -130,11 +139,17 @@ function track(c: Ctx, f: Fn, step: number, t0: number, max: number, nameIndex: 
   return { count, items };
 }
 
-/** FUN_004a1a00 for the Moon: ascendant (or descendant) reaching the Moon's longitude after `from`. */
-function moonRiseSet(c: Ctx, from: number, set: boolean): Moment | null {
-  const moon = lonOf(c, 'Moon');
-  const t = scanCrossing((jd) => norm360(ascendantAt(c, jd) - moon(jd).lon), set ? 180 : 0, from, 1, 1 / 24, 2.5, 1e-8);
-  return t === null ? null : moment(c, t);
+/**
+ * FUN_004a1a00(body, rise, set, backRise, backSet): the ecliptic rise/set - the moment the
+ * ascendant minus the body's longitude reaches -offset (rise) or 180 + offset (set), where
+ * offset = 0 for SunriseDefinition 0/3, the semi-diameter for 1, semi-diameter + 0.5667 for 2
+ * (only 0 is ported). FUN_0049c0d0 -> FUN_0049c130 with the lagna involved: 1/12-day steps,
+ * 1/15 s bracket, later end returned (tajaka/search.ts jhoraCrossing).
+ */
+function riseSet(c: Ctx, body: Graha, from: number, set: boolean, backward: boolean): Moment {
+  const lon = lonOf(c, body);
+  const t = jhoraCrossing((jd) => ascendantAt(c, jd) - lon(jd).lon, set ? 180 : 0, from, { step: backward ? -1 / 12 : 1 / 12, tol: 1 / (15 * 86400) });
+  return moment(c, t);
 }
 
 function span(c: Ctx, a: number, b: number): Span { return { start: moment(c, a), end: moment(c, b) }; }
@@ -146,17 +161,20 @@ export function panchangaDay(chart: Chart, swe: Sweph, jdNoon: number, counter: 
   const c: Ctx = { swe, s, tz: b.tzHours, lat: b.lat, lon: b.lon };
   const geo = { lat: b.lat, lon: b.lon, alt: b.altitudeM };
   const fr = dayFrame(swe, jdNoon, geo, s, chart.ini.SunriseDefinition);
+  // FUN_00465c80 moves the chart to the frame's sunrise and then adds 0.01 hour (0x546ba0)
+  // to its clock time: the record's day is [sunrise + 36 s, sunrise + 36 s + 1 day).
   const t0 = fr.sunrise;
+  const t1 = t0 + 0.01 / 24;
   const sr = moment(c, t0);
   const local = swe.revjul(t0 + c.tz / 24);
   const weekday = (Math.floor(swe.julday(local.year, local.month, local.day, 12) + 0.5) + 1) % 7;
   const moonAt = lonOf(c, 'Moon');
 
-  const tithi = track(c, elongation(c), 12, t0, 2);
-  const nakshatra = track(c, (jd) => moonAt(jd), 360 / 27, t0, 2);
-  const yoga = track(c, sumSM(c), 360 / 27, t0, 2);
-  const karana = track(c, elongation(c), 6, t0, 3, (h) => KARANA_OF_HALF[h] - 1);
-  const moonSign = track(c, (jd) => moonAt(jd), 30, t0, 1);
+  const tithi = track(c, elongation(c), 12, t1, 2);
+  const nakshatra = track(c, (jd) => moonAt(jd), 360 / 27, t1, 2);
+  const yoga = track(c, sumSM(c), 360 / 27, t1, 2, (i) => i, 7);
+  const karana = track(c, elongation(c), 6, t1, 3, (h) => KARANA_OF_HALF[h] - 1);
+  const moonSign = track(c, (jd) => moonAt(jd), 30, t1, 1);
 
   // Rahu / Gulika / Yama kaalas: eighths of the day part
   const part = (fr.sunset - t0) / 8;
@@ -165,16 +183,17 @@ export function panchangaDay(chart: Chart, swe: Sweph, jdNoon: number, counter: 
 
   // Varjya (FUN_00466f80)
   const varjya: Span[] = [];
-  const nak = trunc(moonAt(t0).lon * 27 / 360) % 27;
+  const nak = trunc(moonAt(t1).lon * 27 / 360) % 27;
   const step = 360 / 27;
-  const nakStart = solveAngle(moonAt, nak * step, t0 - wrap180(moonAt(t0).lon - nak * step) / moonAt(t0).speed);
-  const nakEnd = solveAngle(moonAt, norm360((nak + 1) * step), t0 + wrap180((nak + 1) * step - moonAt(t0).lon) / moonAt(t0).speed);
-  const nakEnd2 = solveAngle(moonAt, norm360((nak + 2) * step), nakEnd + step / moonAt(nakEnd).speed);
+  const moonLon = (jd: number) => moonAt(jd).lon;
+  const nakStart = jhoraCrossing(moonLon, nak * step, t1, { step: -3, tol: SECOND });
+  const nakEnd = jhoraCrossing(moonLon, norm360((nak + 1) * step), t1, { step: 3, tol: SECOND });
+  const nakEnd2 = jhoraCrossing(moonLon, norm360((nak + 2) * step), nakEnd, { step: 3, tol: SECOND });
   for (const [i, a, z] of [[nak, nakStart, nakEnd], [(nak + 1) % 27, nakEnd, nakEnd2]] as const) {
     const d = z - a;
     const st = a + VARJYA[i] * d / 60;
     const en = st + d / 15;
-    if (t0 <= en && st <= t0 + 1) varjya.push(span(c, st, en));
+    if (t1 <= en && st <= t1 + 1) varjya.push(span(c, st, en));
   }
   // Durmuhurta
   const muh = (fr.sunset - t0) / 15;
@@ -195,9 +214,11 @@ export function panchangaDay(chart: Chart, swe: Sweph, jdNoon: number, counter: 
   });
 
   return {
-    counter, date: { year: sr.year, month: sr.month, day: sr.day }, weekday,
-    sunrise: sr, sunset: moment(c, fr.sunset),
-    moonrise: moonRiseSet(c, t0, false), moonset: moonRiseSet(c, t0, true),
+    counter, date: { year: sr.year, month: sr.month, day: sr.day }, dayStart: moment(c, t1), weekday,
+    // FUN_00467af0: the Sun's rise searched backward and its set forward from the sunrise
+    // chart (t1; the ecliptic rise can lie ~0.5 s after the frame sunrise t0)
+    sunrise: riseSet(c, 'Sun', t1, false, true), sunset: riseSet(c, 'Sun', t1, true, false),
+    moonrise: riseSet(c, 'Moon', t1, false, false), moonset: riseSet(c, 'Moon', t1, true, false),
     tithi, nakshatra, yoga, karana, moonSign,
     rahu: kaala(RAHU[weekday]), gulika: kaala(gulikaK), yama: kaala(YAMA[weekday]),
     varjya, durmuhurta, horas, choghadiyas,
@@ -262,9 +283,12 @@ export function dayText(d: PanchangaDay, horas = false): string {
   out += buf + '\n    ';
   out += `Sunrise at ${T2(d.sunrise)}, Sunset at ${T2(d.sunset)},\n    Moonrise at ${T2(d.moonrise)}, `;
   out += `Moonset at ${T2(d.moonset)}, `;
-  // JHora repeats "Moon in X till T" once per tithi end of the day (it loops on the tithi count)
+  // 0x46ab76: the "Moon in X till T" line is sprintf'ed into the moonset buffer once per tithi
+  // end of the day (loop on the tithi count, record +0x68) and appended once after the loop -
+  // so with no tithi ending that day the "Moonset at ..., " text is appended a second time.
   if (d.moonSign.count === 0) out += `Moon in ${SIGN_SHORT[d.moonSign.items[0].index]} (whole day)`;
-  else for (let j = 0; j < d.tithi.count; j++) out += `Moon in ${SIGN_SHORT[d.moonSign.items[0].index]} till ${timeText(d.moonSign.items[0].end, 0, k)}`;
+  else if (d.tithi.count > 0) out += `Moon in ${SIGN_SHORT[d.moonSign.items[0].index]} till ${timeText(d.moonSign.items[0].end, 0, k)}`;
+  else out += `Moonset at ${T2(d.moonset)}, `;
   if (horas) {
     out += '\n' + 'Horas: ';
     d.horas.forEach((h, i) => { if (i % 6 === 0 && i) out += '\n       '; out += `${PLANET[h.lord]}: ${timeText(h.end, 0, k)}, `; });

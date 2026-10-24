@@ -46,13 +46,14 @@
 // double (+8) while FUN_0049c130 reads its target from +0x10 (zeroed), with no second body;
 // taken literally JHora would search for the Moon at 0 Aries. We search for the natal Moon
 // longitude (the evident intent); capture a golden NP chart before relying on it.
-// JHora's root finder stops at a ~1 s bracket; we bisect to ~1 ms.
+// The root finder is JHora's own (1 s bracket, later end returned), see search() below.
 import type { Sweph } from '../../sweph';
 import type { Chart } from '../chart';
 import { siderealLongitude, norm360 } from '../positions';
 import { calcSettingsFromIni, type Settings } from '../settings';
 import { newMoon } from '../keyInfo';
 import { scanCrossing, wrap180 } from './common';
+import { jhoraCrossing } from '../tajaka/search';
 
 export const PRAVESHA_TYPES = ['Tithi Pravesha', 'Nakshatra Pravesha', 'Yoga Pravesha'] as const;
 /** DAT_00597f18 after CBN_SELCHANGE of combo 1011 (strings 0x57808c / 0x57e784 / 0x57e7a0). */
@@ -88,7 +89,6 @@ export interface TPDateSelection {
 export interface TPResult { start: number; end: number; label: string }
 
 const STEP = 0.0035;
-const DAY_SPAN = 400;   // days scanned before giving up
 
 interface Ctx {
   swe: Sweph;
@@ -137,13 +137,17 @@ function context(swe: Sweph, natal: Chart, type: PraveshaType): Ctx {
   };
 }
 
-/** FUN_0049d7c0 + FUN_0049c130: the next (dir 1) or previous (dir -1) moment the angle hits `target`. */
+/**
+ * FUN_0049d7c0 + FUN_0049c130: the next (dir 1) or previous (dir -1) moment the angle hits
+ * `target`, as JHora finds it: 3-day steps (the Moon is involved), regula falsi / bisection
+ * to a 1 s bracket, returning the bracket's later end (tajaka/search.ts jhoraCrossing).
+ */
 function search(c: Ctx, target: number, from: number, dir: 1 | -1): number {
   const f = (t: number) => praveshaAngle(c.swe, c.s, c.type, t);
-  const t = scanCrossing(f, norm360(target), from, dir, 3, DAY_SPAN);
-  if (t === null) throw new Error('Tithi Pravesha search failed');
-  return t;
+  return jhoraCrossing(f, norm360(target), from, { step: 3 * dir, tol: SECOND });
 }
+
+const SECOND = 1 / 86400;
 
 /** The annual hit-and-check loop of FUN_0041b250 / FUN_0041c4c0. */
 function annualSearch(c: Ctx, from: number, dir: 1 | -1, secondary: boolean): { jd: number; next: number } {

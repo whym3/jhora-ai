@@ -14,6 +14,8 @@ import { ASYNC_TABLES, TABLES } from '../src/engine/jobs';
 import { DERIVED_VIEWS } from '../src/ui/shell/derivedViews';
 import type { BirthData } from '../src/core/jhd';
 
+/** JHora's root finder stops at a 1 s bracket (later end): ~1.4e-4 deg of elongation per second */
+const TOL = 2e-4;
 const wrap = (x: number) => { let d = x % 360; if (d > 180) d -= 360; else if (d < -180) d += 360; return d; };
 
 describe('Tithi Pravesha', async () => {
@@ -29,7 +31,7 @@ describe('Tithi Pravesha', async () => {
     for (const k of [1, 7, 25, 40]) {
       const r = tpYearChart(swe, natal, { year: by + k });
       expect(r.label).toBe('Annual TP');
-      expect(Math.abs(praveshaError(swe, natal, 0, r.start))).toBeLessThan(1e-6);
+      expect(Math.abs(praveshaError(swe, natal, 0, r.start))).toBeLessThan(TOL);
       expect(sunSign(r.start)).toBe(natalSign);
       const sun = siderealLongitude(swe, r.start, 'Sun', s).lon;
       expect(tithi(sun, siderealLongitude(swe, r.start, 'Moon', s).lon).index).toBe(tithi(natal.positions.grahas.Sun.lon, natal.positions.grahas.Moon.lon).index);
@@ -37,7 +39,7 @@ describe('Tithi Pravesha', async () => {
       expect(Math.abs(r.start - natal.positions.jdUt - k * 365.2564)).toBeLessThan(32);
       expect(r.end - r.start).toBeGreaterThan(353);
       expect(r.end - r.start).toBeLessThan(386);
-      expect(Math.abs(praveshaError(swe, natal, 0, r.end))).toBeLessThan(1e-6);
+      expect(Math.abs(praveshaError(swe, natal, 0, r.end))).toBeLessThan(TOL);
     }
   });
 
@@ -46,14 +48,14 @@ describe('Tithi Pravesha', async () => {
     const a = tpYearChart(swe, natal, { year: y, month: 1 });
     expect(a.label).toBe('Monthly TP');
     const m3 = tpYearChart(swe, natal, { year: y, month: 3 });
-    expect(Math.abs(praveshaError(swe, natal, 0, m3.start))).toBeLessThan(1e-6);
+    expect(Math.abs(praveshaError(swe, natal, 0, m3.start))).toBeLessThan(TOL);
     expect(Math.abs(m3.start - a.start - 2 * 29.5306)).toBeLessThan(1.5);
     expect(m3.end - m3.start).toBeGreaterThan(29);
     expect(m3.end - m3.start).toBeLessThan(30.1);
     const d5 = tpYearChart(swe, natal, { year: y, month: 3, day: 5 });
     expect(d5.label).toBe('Daily TP');
-    expect(Math.abs(praveshaError(swe, natal, 0, d5.start, 48))).toBeLessThan(1e-6);
-    expect(Math.abs(praveshaError(swe, natal, 0, d5.end, 60))).toBeLessThan(1e-6);
+    expect(Math.abs(praveshaError(swe, natal, 0, d5.start, 48))).toBeLessThan(TOL);
+    expect(Math.abs(praveshaError(swe, natal, 0, d5.end, 60))).toBeLessThan(TOL);
     expect(d5.start).toBeGreaterThan(m3.start);
     expect(d5.start - m3.start).toBeLessThan(6);
   });
@@ -69,15 +71,15 @@ describe('Tithi Pravesha', async () => {
     const ann = tpDateChart(swe, natal, { kind: 0, before: false, ...date });
     expect(ann.start).toBeGreaterThan(jd);
     expect(sunSign(ann.start)).toBe(natalSign);
-    expect(Math.abs(praveshaError(swe, natal, 0, ann.start))).toBeLessThan(1e-6);
+    expect(Math.abs(praveshaError(swe, natal, 0, ann.start))).toBeLessThan(TOL);
     const fn = tpDateChart(swe, natal, { kind: 2, before: false, ...date });
     const e = praveshaError(swe, natal, 0, fn.start);
-    expect(Math.min(Math.abs(e), Math.abs(wrap(e - 180)))).toBeLessThan(1e-6);
+    expect(Math.min(Math.abs(e), Math.abs(wrap(e - 180)))).toBeLessThan(TOL);
     expect(fn.start - jd).toBeLessThan(15.5);
     expect(fn.end - fn.start).toBeLessThan(16);
     const dy = tpDateChart(swe, natal, { kind: 3, before: false, ...date });
     const off = norm360(praveshaError(swe, natal, 0, dy.start) + 1e-9);
-    expect(Math.abs(off - 12 * Math.round(off / 12)) % 360).toBeLessThan(1e-5);
+    expect(Math.abs(off - 12 * Math.round(off / 12)) % 360).toBeLessThan(TOL);
     expect(dy.start - jd).toBeGreaterThan(0);
     expect(dy.start - jd).toBeLessThan(1.3);
   });
@@ -85,7 +87,7 @@ describe('Tithi Pravesha', async () => {
   it('yoga pravesha reproduces Moon + Sun; lunar month helper is consistent', () => {
     const r = tpYearChart(swe, natal, { year: by + 5, type: 2 });
     expect(r.label).toBe('Annual YP');
-    expect(Math.abs(praveshaError(swe, natal, 2, r.start))).toBeLessThan(1e-6);
+    expect(Math.abs(praveshaError(swe, natal, 2, r.start))).toBeLessThan(TOL);
     expect(lunarMonthAt(swe, s, natal.positions.jdUt, 4)).toBe((natalSign + 11) % 12);
   });
 
