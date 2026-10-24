@@ -18,6 +18,8 @@ export interface Table {
   text?: string[];
   /** heading shown above the table */
   caption?: string;
+  /** rows can be expanded (dasa periods); false when no deeper level exists */
+  drill?: boolean;
 }
 
 export interface ChartResult { positions: Positions; bodies: ChartBody[] }

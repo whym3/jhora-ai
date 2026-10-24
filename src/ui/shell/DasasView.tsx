@@ -5,7 +5,7 @@ import { TableView } from '../widgets/TableView';
 
 /** Nakshatra dasa systems in JHora's menu order. */
 export const NAKSHATRA_DASA_SYSTEMS = [
-  'Vimsottari', 'Ashtottari', 'Yogini', 'Dwisaptati sama', 'Shattrimsa sama', 'Dwadasottari',
+  'Vimsottari', 'Ashtottari', 'Kalachakra', 'Yogini', 'Dwisaptati sama', 'Shattrimsa sama', 'Dwadasottari',
   'Chaturaseeti sama', 'Sataabdika', 'Shodasottari', 'Panchottari', 'Shashtihayani', 'Saptarshi nakshatra',
 ] as const;
 
@@ -27,7 +27,7 @@ export function NakshatraDasasView({ spec }: { spec: ChartSpec }) {
         </select>
         <button onClick={() => setPath((p) => p.slice(0, -1))} disabled={!path.length}>Up</button>
       </div>
-      <TableView job={job} onRowClick={path.length < MAX_DEPTH - 1 ? (i) => setPath((p) => [...p, i]) : undefined} />
+      <TableView job={job} onRowClick={path.length < MAX_DEPTH - 1 && job.data?.drill !== false ? (i) => setPath((p) => [...p, i]) : undefined} />
     </div>
   );
 }

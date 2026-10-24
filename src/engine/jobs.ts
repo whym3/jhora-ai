@@ -4,6 +4,7 @@ import type { Chart } from '../core/chart';
 import type { Sweph } from '../sweph';
 import { vimsottari, type Period } from '../core/dasas/vimsottari';
 import { NAKSHATRA_DASAS, nakshatraDasa, SAPTARSHI_TITLE, saptarshiDasa } from '../core/dasas/nakshatra';
+import { kalachakraDasa } from '../core/dasas/kalachakra';
 import { dasaClock } from '../core/dasas/time';
 import { antarDasaText, formatDasaTime, mahaDasaText, periodLabel } from '../core/dasas/format';
 import { GRAHAS } from '../core/positions';
@@ -195,8 +196,10 @@ export const TABLES: Record<string, TableFn> = {
     const moon = chart.positions.grahas.Moon.lon;
     const def = NAKSHATRA_DASAS[system];
     const saptarshi = system === 'Saptarshi nakshatra';
-    const title = def ? def.title : saptarshi ? SAPTARSHI_TITLE : 'Vimsottari Dasa';
-    const mds = def ? nakshatraDasa(def, moon, levels) : saptarshi ? saptarshiDasa(chart.positions.ascendant, levels, NAKSHATRAS) : vimsottari(moon, levels);
+    // Kalachakra: maha dasas only (JHora's antardasa rule is not ported yet)
+    const kc = system === 'Kalachakra' ? kalachakraDasa(moon, 9, chart.ini.KCDRohini4NavamsaInLeo !== 0) : null;
+    const title = kc ? kc.title : def ? def.title : saptarshi ? SAPTARSHI_TITLE : 'Vimsottari Dasa';
+    const mds = kc ? kc.periods : def ? nakshatraDasa(def, moon, levels) : saptarshi ? saptarshiDasa(chart.positions.ascendant, levels, NAKSHATRAS) : vimsottari(moon, levels);
     const ctx = { clock: dasaClock(swe, chart), tz: chart.birth.tzHours, revjul: (jd: number) => swe.revjul(jd) };
     let list = mds; let parent: Period | null = null;
     for (const i of path) { parent = list[i]; list = parent.children ?? []; }
@@ -207,6 +210,7 @@ export const TABLES: Record<string, TableFn> = {
       headers: [LEVEL[path.length] ?? 'Periods', 'Start', 'End'],
       rows: list.map((p) => [periodLabel(p), when(p.start), when(p.end)]),
       text: !parent ? mahaDasaText(title, mds, ctx) : path.length === 1 ? antarDasaText(title, parent, ctx) : undefined,
+      drill: !kc,
     };
   },
   // Strengths > Other strengths (menu modes 0..10 of CStrengthsView)

@@ -7,6 +7,7 @@ import { dasaClock } from '../src/core/dasas/time';
 import { antarDasaText, mahaDasaText } from '../src/core/dasas/format';
 import { NAKSHATRA_DASAS, nakshatraDasa, SAPTARSHI_TITLE, saptarshiDasa } from '../src/core/dasas/nakshatra';
 import { NAKSHATRAS } from '../src/core/zodiac';
+import { kalachakraDasa } from '../src/core/dasas/kalachakra';
 
 /**
  * Compare dasa texts line by line; times may differ by `tolSec` seconds. The
@@ -92,6 +93,21 @@ describe('Saptarshi nakshatra dasa matches JHora 8.0', async () => {
         if (m) have = antarDasaText(SAPTARSHI_TITLE, mds[+m[1]], ctx);
         if (have) bad.push(...compareDasaText(have, t.lines, 2).map((b) => `${t.name} ${b}`));
       }
+      expect(bad.slice(0, 6), bad.slice(0, 6).join(' | ')).toEqual([]);
+    });
+  }
+});
+
+describe('Kalachakra dasa (maha dasas) matches JHora 8.0', async () => {
+  const swe = await nodeSweph();
+  for (const chart of goldenV2Charts()) {
+    const t = chart.texts.find((x) => x.sub === 'Nakshatra dasas' && x.mode === 'Kalachakra' && x.name === 'dasa' && x.lines);
+    if (!t) continue;
+    it(chart.name, async () => {
+      const c = await computeChart(swe, chart.birth);
+      const ctx = { clock: dasaClock(swe, c), tz: chart.birth.tzHours, revjul: (jd: number) => swe.revjul(jd) };
+      const k = kalachakraDasa(c.positions.grahas.Moon.lon);
+      const bad = compareDasaText(mahaDasaText(k.title, k.periods, ctx), t.lines, Number(process.env.DASA_TOL ?? 90));
       expect(bad.slice(0, 6), bad.slice(0, 6).join(' | ')).toEqual([]);
     });
   }
