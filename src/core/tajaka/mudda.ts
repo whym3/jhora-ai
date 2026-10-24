@@ -23,8 +23,9 @@ import type { Sweph } from '../../sweph';
 import { siderealLongitude } from '../positions';
 import { calcSettingsFromIni } from '../settings';
 import { vimsottari, type Period } from '../dasas/vimsottari';
-import { dasaClock, type DasaClock } from '../dasas/time';
-import type { TajakaChart } from './annual';
+import type { DasaClock } from '../dasas/time';
+import type { Chart } from '../chart';
+import { sunSearch, type TajakaChart } from './annual';
 
 export const MUDDA_TITLE = 'Mudda/Vimsottari Dasa';
 const NAK = 360 / 27;
@@ -38,6 +39,17 @@ export function tajakaCompression(swe: Sweph, t: TajakaChart): number {
   const a = siderealLongitude(swe, t.start, 'Sun', settings).lon;
   const b = siderealLongitude(swe, t.end, 'Sun', settings).lon;
   return nominal + wrap180(b - a - nominal * 360) / 360;
+}
+
+/**
+ * Dasa clock of a derived chart with the Sun-longitude year (mode 3): FUN_0049dae0 on
+ * the chart record (doc+0x77410) -> FUN_0049dc20, i.e. JHora's own search for the Sun
+ * at chartSun + 360 * years, guessed at chart + years * 365.24219 + 30 days.
+ */
+export function jhoraSunClock(swe: Sweph, chart: Chart): DasaClock {
+  const settings = calcSettingsFromIni(chart.ini);
+  const ref = chart.positions.jdUt, sun = chart.positions.grahas.Sun.lon;
+  return { toJd: (y) => sunSearch(swe, settings, ref, sun, y, 365.24219) };
 }
 
 /** Scale period times (dasa years from the chart moment) by `k`, recursively. */
@@ -75,7 +87,7 @@ export function muddaDasa(swe: Sweph, t: TajakaChart, opts: MuddaOptions = {}): 
   return {
     title: MUDDA_TITLE,
     periods: compressPeriods(base, F / 120),
-    clock: dasaClock(swe, t.chart, 'true-sidereal'),
+    clock: jhoraSunClock(swe, t.chart),
     compression: F,
   };
 }

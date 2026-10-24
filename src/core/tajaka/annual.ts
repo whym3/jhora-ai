@@ -20,9 +20,9 @@
 //     3  FUN_0049dc20: the moment the sidereal Sun reaches natalSun + 360*years
 //     7  FUN_0049de30: the same with tropical positions
 //     6  natal JD + years * 365.256364        0  natal JD + years * 365.24219
-//   JHora's root finder (FUN_0049c130) brackets the crossing and stops when the
-//   bracket is under 1 s, returning the later end; we solve exactly (<1e-6 s), so
-//   JHora's time can be up to ~1 s later than ours.
+//   The crossing is found with JHora's own search FUN_0049c130 (search.ts), which
+//   returns the later end of a bracket under 1 s, not the exact root; it is ported
+//   step by step so the chart moment matches JHora's.
 // * Sunrise variant (FUN_0041b000): after finding start and end, each is replaced
 //   by the sunrise of its day (day frame FUN_004a1350 obj+0x2660 = DayFrame.sunrise).
 // * The chart is cast for the natal place and time zone (FUN_0049d250 copies the
@@ -34,6 +34,7 @@ import { siderealLongitude } from '../positions';
 import { calcSettingsFromIni, type Settings } from '../settings';
 import { dayFrame } from '../day';
 import type { BirthData } from '../jhd';
+import { jhoraCrossing, SUN_SEARCH } from './search';
 
 /** Form input of the Tajaka tab. Sub-period indices are 1-based (0/undefined = "None"). */
 export interface TajakaSelection {
@@ -116,18 +117,12 @@ export function tajakaYearMode(ini: { TrueTajaka: number; TropicalTajaka: number
   return ini.TrueTajaka ? 3 : 6;
 }
 
-const wrap180 = (x: number) => { let d = x % 360; if (d > 180) d -= 360; else if (d < -180) d += 360; return d; };
-
-/** Moment the Sun (sidereal, or tropical with `tropical`) reaches `target` near `guess`. */
-export function sunReaches(swe: Sweph, target: number, guess: number, settings: Settings): number {
-  let t = guess;
-  for (let i = 0; i < 30; i++) {
-    const { lon, speed } = siderealLongitude(swe, t, 'Sun', settings);
-    const d = wrap180(target - lon);
-    t += d / speed;
-    if (Math.abs(d) < 1e-10) break;
-  }
-  return t;
+/**
+ * FUN_0049dc20 / FUN_0049de30: the moment the Sun reaches refSun + 360 * years,
+ * found by JHora's backward search (search.ts) from refJd + years * yearLen + 30 days.
+ */
+export function sunSearch(swe: Sweph, settings: Settings, refJd: number, refSun: number, years: number, yearLen: number): number {
+  return jhoraCrossing((jd) => siderealLongitude(swe, jd, 'Sun', settings).lon, years * 360 + refSun, refJd + years * yearLen + 30, SUN_SEARCH);
 }
 
 /** FUN_0049dae0: JD (UT) at `years` solar years after the natal moment, in year mode `mode`. */
@@ -138,7 +133,8 @@ export function solarYearsToJd(swe: Sweph, natal: Chart, years: number, mode: 0 
   let settings = calcSettingsFromIni(natal.ini);
   if (mode === 7) settings = { ...settings, ayanamsa: 'tropical', ayanamsaDelta: 0 };
   const sun0 = siderealLongitude(swe, jd0, 'Sun', settings).lon;
-  return sunReaches(swe, sun0 + years * 360, jd0 + years * (mode === 7 ? 365.24219 : 365.256364), settings);
+  // (sic) the sidereal search guesses with the tropical year and vice versa
+  return sunSearch(swe, settings, jd0, sun0, years, mode === 7 ? 365.256364 : 365.24219);
 }
 
 export interface TajakaWindow { period: TajakaPeriod; start: number; end: number; variant: TajakaVariant; label: string }
