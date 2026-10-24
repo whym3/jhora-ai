@@ -31,23 +31,14 @@ function compare(have: string[], want: string[], tolSec: number): string[] {
 }
 
 /**
- * Dates must agree to 2 s, except for dasas seeded by the Moon, tithi/karana,
- * Sree Lagna or degrees in sign, where tiny input differences are magnified over a
- * life span. With the Moon now identical to JHora's DLL (tools/sweph-patches/0001)
- * these agree to 3 s; 5 s allows for rounding.
+ * Dates must agree to 2 s, except for dasas seeded by the Moon, tithi/karana or
+ * degrees in sign, where tiny input differences are magnified over a life span.
+ * With the Moon (tools/sweph-patches/0001) and delta-T (deltat.ts) identical to
+ * JHora's DLL these agree to 3 s.
  */
-// Sudasa's balance comes from Sree Lagna, which moves 27x the Moon.
-// Kaala's k comes from the birth time within the day, so a sunrise error is stretched by
-// each 45-year cycle; with JHora's rise-search order and delta-T (day.ts) it agrees to 2 s.
-const TOL_SEC: Record<string, number> = { Sudasa: 5 };
-// Maharshi Mahesh Yogi (1917-01-12): our delta-T table (deltat.ts) interpolates the DLL's
-// delta-T 0.85 ms short there, i.e. 0.0005" of Moon; with the DLL's exact value these
-// agree to 2 s as well.
-const CHART_TOL_SEC: Record<string, number> = {
-  'Sudasa/Maharshi Mahesh Yogi': 30, 'Patyayini/Maharshi Mahesh Yogi': 20,
-  'Karana Chaturaseeti/Maharshi Mahesh Yogi': 10, 'Tithi Ashtottari/Maharshi Mahesh Yogi': 10,
-};
-const TOLERANT = new Set(['Patyayini', 'RBV', 'Tithi Ashtottari', 'Karana Chaturaseeti', 'Tithi Yogini']);
+// Sudasa's balance comes from Sree Lagna (27x the Moon) and Kaala's k from the birth time
+// within the day (a sunrise error is stretched by each 45-year cycle); both agree to 2 s.
+const TOLERANT = new Set(['Patyayini', 'Karana Chaturaseeti', 'Tithi Yogini']);
 
 describe('Rasi and other dasas match JHora 8.0', async () => {
   const swe = await nodeSweph();
@@ -68,7 +59,7 @@ describe('Rasi and other dasas match JHora 8.0', async () => {
           for (const t of texts) {
             const k = t.name === 'dasa' ? -1 : Number(t.name!.split('_').pop());
             const have = k < 0 ? mahaDasaText(d.title, d.periods, dctx) : antarDasaText(d.title, d.periods[k], dctx);
-            bad.push(...compare(have, t.lines!, CHART_TOL_SEC[`${mode}/${g.name}`] ?? TOL_SEC[mode] ?? (TOLERANT.has(mode) ? 5 : 2)).map((b) => `${t.name}: ${b}`));
+            bad.push(...compare(have, t.lines!, TOLERANT.has(mode) ? 3 : 2).map((b) => `${t.name}: ${b}`));
           }
           expect(bad.slice(0, 4), bad.slice(0, 4).join('\n')).toEqual([]);
         });

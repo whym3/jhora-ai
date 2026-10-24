@@ -11,7 +11,8 @@ import { kalachakraDasa } from '../src/core/dasas/kalachakra';
 
 /**
  * Compare dasa texts line by line; times may differ by `tolSec` seconds (the
- * Moon matches JHora's DLL to ~1e-7"; what remains is rounding in the dates).
+ * Moon and delta-T match JHora's DLL; what remains is rounding in the dates).
+ * Default 3 s: the largest residual is 3 s, in some 1870s-1880s dates.
  */
 function compareDasaText(have: string[], want: string[], tolSec: number): string[] {
   const bad: string[] = [];
@@ -43,7 +44,7 @@ describe('Vimsottari dasa matches JHora 8.0', async () => {
         if (t.name === 'dasa') have = mahaDasaText('Vimsottari Dasa', mds, ctx);
         const m = /^dasa_level2_(\d+)$/.exec(t.name);
         if (m) have = antarDasaText('Vimsottari Dasa', mds[+m[1]], ctx);
-        if (have) bad.push(...compareDasaText(have, want, Number(process.env.DASA_TOL ?? 90)).map((b) => `${t.name}\n${b}`));
+        if (have) bad.push(...compareDasaText(have, want, Number(process.env.DASA_TOL ?? 3)).map((b) => `${t.name}\n${b}`));
       }
       expect(bad.slice(0, 10), bad.slice(0, 10).join('\n')).toEqual([]);
     });
@@ -66,7 +67,7 @@ describe('nakshatra dasas match JHora 8.0', async () => {
           if (t.name === 'dasa') have = mahaDasaText(def.title, mds, ctx);
           const m = /^dasa_level2_(\d+)$/.exec(t.name);
           if (m) have = antarDasaText(def.title, mds[+m[1]], ctx);
-          if (have) bad.push(...compareDasaText(have, t.lines, Number(process.env.DASA_TOL ?? 90)).map((b) => `${t.name}\n${b}`));
+          if (have) bad.push(...compareDasaText(have, t.lines, Number(process.env.DASA_TOL ?? 3)).map((b) => `${t.name}\n${b}`));
         }
         expect(bad.slice(0, 6), bad.slice(0, 6).join('\n')).toEqual([]);
       });
@@ -105,7 +106,7 @@ describe('Kalachakra dasa (maha dasas) matches JHora 8.0', async () => {
       const c = await computeChart(swe, chart.birth);
       const ctx = { clock: dasaClock(swe, c), tz: chart.birth.tzHours, revjul: (jd: number) => swe.revjul(jd) };
       const k = kalachakraDasa(c.positions.grahas.Moon.lon);
-      const bad = compareDasaText(mahaDasaText(k.title, k.periods, ctx), t.lines, Number(process.env.DASA_TOL ?? 90));
+      const bad = compareDasaText(mahaDasaText(k.title, k.periods, ctx), t.lines, Number(process.env.DASA_TOL ?? 3));
       expect(bad.slice(0, 6), bad.slice(0, 6).join(' | ')).toEqual([]);
     });
   }
