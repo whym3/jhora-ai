@@ -46,18 +46,12 @@ export function dayFrame(swe: Sweph, jdUt: number, geo: Geo, settings: Settings,
   const bits = sunriseBits(sunriseDef);
   const rise = SE.CALC_RISE | bits;
   const set = SE.CALC_SET | bits;
-  // last sunrise at or before the moment: search from 1.2 days back and step forward
-  let sunrise = nextEvent(swe, jdUt - 1.2, rise, flags, geo);
-  for (let i = 0; i < 3; i++) {
-    const n = nextEvent(swe, sunrise + 0.01, rise, flags, geo);
-    // a moment at sunrise still belongs to the night: JHora treats its sunrise charts (Tajaka/TP
-    // "sunrise chart", cast at the computed sunrise) as night births. The rise search only
-    // reproduces to a few ms from another starting point, so allow 0.1 s.
-    if (n > jdUt - 0.1 / 86400) break;
-    sunrise = n;
-  }
-  const sunset = nextEvent(swe, sunrise + 0.01, set, flags, geo);
-  const nextSunrise = nextEvent(swe, sunset + 0.01, rise, flags, geo);
+  // FUN_004a1350's order: the sunrise after the moment, the sunrise found from 1.5 days
+  // before that, then sunset from that sunrise. The rise search lands on one of two
+  // results ~14 ms apart depending on where it starts, so the start points matter.
+  const nextSunrise = nextEvent(swe, jdUt, rise, flags, geo);
+  const sunrise = nextEvent(swe, nextSunrise - 1.5, rise, flags, geo);
+  const sunset = nextEvent(swe, sunrise, set, flags, geo);
   const prevSunset = nextEvent(swe, sunrise - 1.2, set, flags, geo);
   return {
     sunrise, sunset, nextSunrise, prevSunset,

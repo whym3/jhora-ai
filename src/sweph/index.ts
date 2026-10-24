@@ -40,6 +40,7 @@ export class Sweph {
   private buf: number;   // scratch: 64 doubles
   private ibuf: number;  // scratch: 16 ints
   private serr: number;  // 256-byte error string
+  private deltaTModel: ((jdUt: number) => number | null) | null = null;
 
   constructor(module: any, fetcher: FileFetcher) {
     this.m = module;
@@ -115,6 +116,7 @@ export class Sweph {
   }
 
   private calcRaw(jdUt: number, body: number, flags: number): number {
+    this.ut(jdUt);
     return this.m._swe_calc_ut(jdUt, body, flags, this.buf, this.serr);
   }
 
@@ -148,6 +150,8 @@ export class Sweph {
   }
 
   deltaT(jdUt: number, flags = SE.FLG_SWIEPH): number {
+    const own = this.deltaTModel?.(jdUt);
+    if (own != null) return own;
     return this.m._swe_deltat_ex(jdUt, flags, this.serr);
   }
 
@@ -156,11 +160,26 @@ export class Sweph {
     this.m._swe_set_delta_t_userdef(days === null ? -1e-10 : days);
   }
 
+  /**
+   * Delta-T (days) for UT moments in place of Swiss's own model. Every UT-based call
+   * (rise/set, houses, ayanamsa, crossings) then uses it, as JHora's DLL uses its own;
+   * null from the model, or no model, leaves Swiss's automatic delta-T.
+   */
+  setDeltaTModel(model: ((jdUt: number) => number | null) | null): void {
+    this.deltaTModel = model;
+    if (!model) this.setDeltaTUserdef(null);
+  }
+
+  private ut(jdUt: number): void {
+    if (this.deltaTModel) this.setDeltaTUserdef(this.deltaTModel(jdUt));
+  }
+
   setSidMode(mode: number, t0 = 0, ayanT0 = 0): void {
     this.m._swe_set_sid_mode(mode, t0, ayanT0);
   }
 
   ayanamsaUt(jdUt: number, flags: number): number {
+    this.ut(jdUt);
     const ret = this.m._swe_get_ayanamsa_ex_ut(jdUt, flags, this.buf, this.serr);
     if (ret < 0) throw new Error(`swe_get_ayanamsa_ex_ut: ${this.err()}`);
     return this.f64(0);
@@ -172,6 +191,7 @@ export class Sweph {
 
   /** Houses for tropical or sidereal flags; hsys is a one-letter code like 'P'. */
   houses(jdUt: number, flags: number, lat: number, lon: number, hsys: string): Houses {
+    this.ut(jdUt);
     const m = this.m;
     const cusps = m._malloc(8 * 37), ascmc = m._malloc(8 * 10);
     const cs = m._malloc(8 * 37), as = m._malloc(8 * 10);
@@ -193,6 +213,7 @@ export class Sweph {
    */
   riseTrans(jdUt: number, body: number, rsmi: number, flags: number,
             geo: { lon: number; lat: number; alt: number }, pressure = 0, temp = 0): number | null {
+    this.ut(jdUt);
     const g = this.m._malloc(8 * 3);
     const H = this.m.HEAPF64;
     H[g >> 3] = geo.lon; H[(g >> 3) + 1] = geo.lat; H[(g >> 3) + 2] = geo.alt;
@@ -205,6 +226,7 @@ export class Sweph {
 
   /** Fixed star position by name (e.g. "Spica") at a UT moment. Call ensureStars() first. */
   fixstarUt(name: string, jdUt: number, flags: number): Position & { name: string } {
+    this.ut(jdUt);
     return this.fixstar(name, jdUt, flags, true);
   }
 
@@ -229,12 +251,14 @@ export class Sweph {
 
   /** Next time (JD UT) after jdUt when the Sun reaches longitude x2cross. */
   solcrossUt(x2cross: number, jdUt: number, flags: number): number {
+    this.ut(jdUt);
     const jd = this.m._swe_solcross_ut(x2cross, jdUt, flags, this.serr);
     if (jd < jdUt) throw new Error(`swe_solcross_ut: ${this.err()}`);
     return jd;
   }
 
   mooncrossUt(x2cross: number, jdUt: number, flags: number): number {
+    this.ut(jdUt);
     const jd = this.m._swe_mooncross_ut(x2cross, jdUt, flags, this.serr);
     if (jd < jdUt) throw new Error(`swe_mooncross_ut: ${this.err()}`);
     return jd;

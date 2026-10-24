@@ -28,8 +28,7 @@ const CASES: [string, (c: GoldenChart) => GoldenView | undefined, (rows: string[
 
 /**
  * Longitudes are already verified elsewhere to 0.03"; compare them to the minute here.
- * Degree distances ("9.6110 deg") may carry the sunrise residual of Maandi (0.4"), so
- * they are compared to 0.0002 deg.
+ * Degree distances ("9.6110 deg") are compared to the last printed digit.
  */
 function expectRowsClose(have: string[][], want: string[][]) {
   const loose = (cells: string[]) => cells.map((c) => c.replace(/(\d+ \w\w \d+') \d+\.\d+"/, '$1').replace(/^(\d+\.\d{4}) deg$/, 'DEG'));
@@ -37,7 +36,7 @@ function expectRowsClose(have: string[][], want: string[][]) {
   const bad: string[] = [];
   want.forEach((r, i) => r.forEach((cell, j) => {
     const m = /^(\d+\.\d{4}) deg$/.exec(cell);
-    if (m && Math.abs(+m[1] - parseFloat(have[i][j])) > 0.0002) bad.push(`${r[0]}: ${have[i][j]} vs ${cell}`);
+    if (m && Math.abs(+m[1] - parseFloat(have[i][j])) > 0.0001 + 1e-9) bad.push(`${r[0]}: ${have[i][j]} vs ${cell}`);
   }));
   expect(bad, bad.join('\n')).toEqual([]);
 }
@@ -72,10 +71,9 @@ describe('All Divisional Longitudes table matches JHora 8.0', async () => {
       const bad: string[] = [];
       golden.rows.forEach((r, i) => r.slice(1).forEach((cell, j) => {
         const a = parseShort(got.rows[i][j + 1]), b = parseShort(cell);
-        // D-n multiplies the sunrise-derived bodies' small residuals (up to 1.4" x 144)
         const n = (golden.headers[j + 1].match(/\d+/g) ?? ['1']).map(Number).reduce((a, b) => a * b, 1);
-        // Kunda is lagna x 81 (so x81n in D-n); the vighati/pranapada lagnas carry the sunrise residual x4
-        const tol = /Kunda/.test(r[0]) ? 1 + n / 4 : /Vighati|Pranapada/.test(r[0]) ? 1 + n / 8 : 1 + n / 40;
+        // to the minute; Kunda is lagna x 81 (so x81n in D-n)
+        const tol = /Kunda/.test(r[0]) ? 1 + n / 40 : 1;
         if (a.sign !== b.sign || Math.abs(a.minutes - b.minutes) > tol) bad.push(`${r[0].trim()} ${golden.headers[j + 1]}: ${got.rows[i][j + 1]} vs ${cell}`);
       }));
       expect(bad, bad.join('\n')).toEqual([]);

@@ -5,17 +5,9 @@ import { computeChart } from '../src/core/chart';
 import { keyInfoText } from '../src/core/keyInfo';
 import { runText } from '../src/engine/jobs';
 
-/**
- * Lines must match exactly, except "Janma Ghatis" (4 decimals of a ghati = 0.144 s):
- * our sunrise differs from JHora's by a few milliseconds (ephemeris/delta-T), which
- * flips the last digit for Maharshi Mahesh Yogi (4.67654829 vs JHora's 4.6766), so
- * it is compared to +-0.0001. The time-of-day lines are compared exactly (seconds).
- */
+/** Lines must match exactly, Janma Ghatis (4 decimals of a ghati = 0.144 s) included. */
 function compare(have: string[], want: string[]) {
-  const loose = (l: string) => l.replace(/^(Janma Ghatis: +)[\d.]+$/, '$1#');
-  expect(have.map(loose)).toEqual(want.map(loose));
-  const g = (ls: string[]) => parseFloat(ls.find((l) => l.startsWith('Janma Ghatis:'))!.slice(15));
-  expect(Math.abs(g(have) - g(want))).toBeLessThanOrEqual(0.0001 + 1e-9);
+  expect(have).toEqual(want);
 }
 
 describe('Key Info (Basics > Key Info, cmd 32974)', () => {
