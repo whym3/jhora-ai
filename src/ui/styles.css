@@ -36,7 +36,7 @@ summary { cursor: pointer; font-weight: 600; }
 .birth-form { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 10px; margin-top: 12px; }
 .birth-form label { display: flex; flex-direction: column; gap: 4px; font-size: .85rem; color: var(--muted); }
 .birth-form .coord { display: flex; gap: 4px; } .birth-form .coord input { flex: 1; min-width: 0; }
-.birth-form button { align-self: end; background: var(--accent); color: white; border-color: var(--accent); }
+.birth-form > button { align-self: end; background: var(--accent); color: white; border-color: var(--accent); }
 .chart { width: 100%; max-width: 460px; height: auto; background: var(--panel); }
 .cell { fill: var(--cell); stroke: var(--line); stroke-width: 1.5; }
 .lagna-cell { fill: var(--lagna-cell); }

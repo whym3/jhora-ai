@@ -1,0 +1,10 @@
+{
+  "name": "Jagannatha Hora Web",
+  "short_name": "JHora Web",
+  "start_url": ".",
+  "scope": ".",
+  "display": "standalone",
+  "background_color": "#f6f3ec",
+  "theme_color": "#a3341f",
+  "icons": [{ "src": "icon.svg", "sizes": "any", "type": "image/svg+xml", "purpose": "any" }]
+}
