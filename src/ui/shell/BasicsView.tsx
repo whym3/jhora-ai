@@ -19,8 +19,12 @@ export function KeyInfoView({ spec }: { spec: ChartSpec }) {
   const entry = KEY_INFO_MODES.find((m) => m[1] === mode) ?? KEY_INFO_MODES[0];
   const table = entry[2];
   const job = useJob(table ? { kind: 'table' as const, chart: spec, table } : null);
+  // JHora's Key Info text pane (copy command 32974): date, panchanga, horas, sunrise...
+  const info = useJob({ kind: 'text' as const, chart: spec, cmd: 32974 });
   return (
     <div className="subview">
+      {info.data && <pre className="key-info">{info.data}</pre>}
+      {info.status === 'error' && <p className="error">{info.error}</p>}
       <div className="subview-bar">
         <select aria-label="Key Info mode" value={mode} onChange={(e) => setView({ basicsMode: Number(e.target.value) })}>
           {KEY_INFO_MODES.map(([label, id, t]) => <option key={id} value={id}>{label}{t ? '' : ' (not yet)'}</option>)}

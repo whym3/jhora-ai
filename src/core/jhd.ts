@@ -20,6 +20,8 @@ export interface BirthData {
   /** geographic latitude, north positive */
   lat: number;
   altitudeM: number;
+  /** false when the file has no altitude field (JHora then shows its DefaultAltitude ini value) */
+  altitudeGiven?: boolean;
   pressureMbar: number;
   temperatureC: number;
   city: string;
@@ -77,6 +79,7 @@ export function parseJhd(text: string): BirthData {
     lat: decodeHms(num(6)),
     // field 8 is the altitude in metres (JHora's Key Info shows 0.439521 as "0.44 meters")
     altitudeM: t.length > 7 ? num(7) : 0,
+    altitudeGiven: t.length > 7,
     pressureMbar: DEFAULT_PRESSURE,
     temperatureC: DEFAULT_TEMPERATURE,
     city: '',

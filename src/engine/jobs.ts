@@ -37,6 +37,7 @@ import { DEBILITATION, EXALTATION } from '../core/signStrength';
 import { MOOLATRIKONA } from '../core/deities';
 import { fromMrityuBhaga, fromPushkaraBhaga, inPushkaramsa, MRITYU_BHAGA, within } from '../core/pushkara';
 import type { VargaCtx } from '../core/signStrength';
+import { keyInfoText } from '../core/keyInfo';
 import type { Table } from './protocol';
 
 const yes = (b: boolean) => (b ? 'Yes' : '-');
@@ -110,7 +111,7 @@ const DIV_COLUMNS: [string, VargaName | null][] = [
 ];
 
 type TableFn = (chart: Chart, params: Record<string, unknown>, swe?: Sweph) => Table;
-type TextFn = (chart: Chart, params: Record<string, unknown>) => string;
+type TextFn = (chart: Chart, params: Record<string, unknown>, swe?: Sweph) => string;
 
 /**
  * A body's longitude in a varga. Varnadas are recomputed inside the varga (from the
@@ -510,7 +511,13 @@ function specialTarasTable(lon: number, from: string): Table {
   };
 }
 
-export const TEXTS: Record<number, TextFn> = {};
+export const TEXTS: Record<number, TextFn> = {
+  // Basics > Key Info (cmd 32974): JHora's copied text without the chart-file line, CRLF-joined
+  32974: (chart, _params, swe) => {
+    if (!swe) throw new Error('Key Info needs the ephemeris');
+    return keyInfoText(swe, chart).join('\r\n');
+  },
+};
 
 /**
  * Tables that need more than the one chart (e.g. the natal chart behind a Tajaka
@@ -545,8 +552,8 @@ export function runTable(chart: Chart, table: string, params: Record<string, unk
   return fn(chart, params, swe);
 }
 
-export function runText(chart: Chart, cmd: number, params: Record<string, unknown>): string {
+export function runText(chart: Chart, cmd: number, params: Record<string, unknown>, swe?: Sweph): string {
   const fn = TEXTS[cmd];
   if (!fn) throw new Error(`text command not implemented: ${cmd}`);
-  return fn(chart, params);
+  return fn(chart, params, swe);
 }
