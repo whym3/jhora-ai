@@ -3,6 +3,8 @@ import type { BirthData } from '../core/jhd';
 import type { JhoraIni } from '../settings/generated';
 import type { Positions } from '../core/positions';
 import type { ChartBody } from '../core/chart';
+import type { NamedBody } from '../core/longitudes';
+import type { DayFrame } from '../core/day';
 
 /** Everything that identifies a chart: birth data plus the settings that affect it. */
 export interface ChartSpec {
@@ -26,7 +28,14 @@ export interface Table {
   notes?: string[];
 }
 
-export interface ChartResult { positions: Positions; bodies: ChartBody[] }
+export interface ChartResult {
+  positions: Positions;
+  bodies: ChartBody[];
+  /** JHora's 56 bodies (special lagnas, upagrahas, sphutas...) */
+  longitudes: NamedBody[];
+  day: DayFrame;
+  birth: BirthData;
+}
 
 export type JobRequest =
   | { kind: 'chart'; chart: ChartSpec }

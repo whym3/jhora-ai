@@ -1,0 +1,15 @@
+/* Sarvatobhadra extras (tokens from src/ui/styles.css). */
+.chakra .sbc-from { fill: var(--lagna-cell); }
+.chakra .sbc-to { fill: var(--hl); }
+.chakra .sbc-vowel { font-size: 12px; fill: var(--lagna); }
+.chakra .sbc-consonant { font-size: 12px; fill: var(--ink); }
+.chakra .sbc-rasi { font-size: 12px; fill: var(--accent); }
+.chakra .sbc-tithi { font-size: 10px; fill: var(--muted); }
+.chakra .sbc-vaara { font-size: 10px; fill: var(--ink); }
+.chakra .sbc-drishti { fill: #c0187a; }
+.chakra .sbc-latta { fill: #2a50c8; }
+.chakra .sbc-th { font-size: 12px; font-weight: 600; fill: var(--accent); }
+.chakra .sbc-td { font-size: 12px; fill: var(--ink); }
+.chakra rect.sbc-hit { fill: transparent; cursor: pointer; }
+.sbc-bar { display: flex; gap: 8px; align-items: center; flex-wrap: wrap; margin: 4px 0; font-size: .9rem; }
+@media (prefers-color-scheme: dark) { .chakra .sbc-drishti { fill: #ff7ac0; } .chakra .sbc-latta { fill: #8fb0ff; } }

@@ -1,0 +1,8 @@
+/* Sudarsana chakra rings (JHora: outer pink, middle white, inner green). */
+.chakra .sud-outer { fill: #ffd2d2; stroke: var(--line); stroke-width: 1.5; }
+.chakra .sud-middle { fill: #ffffff; stroke: var(--line); stroke-width: 1.5; }
+.chakra .sud-inner { fill: #d2ffd2; stroke: var(--line); stroke-width: 1.5; }
+.chakra .sud-sign { font-size: 12px; fill: var(--muted); }
+@media (prefers-color-scheme: dark) {
+  .chakra .sud-outer { fill: #4a2f2f; } .chakra .sud-middle { fill: var(--panel); } .chakra .sud-inner { fill: #2f4a33; }
+}

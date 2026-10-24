@@ -1,0 +1,8 @@
+/* Kota Chakra zones (tokens from src/ui/styles.css). */
+.chakra .kota-bahya { fill: var(--cell); stroke: var(--line); stroke-width: 1.5; }
+.chakra .kota-praakaara { fill: var(--tab); stroke: var(--line); stroke-width: 1.5; }
+.chakra .kota-durgantara { fill: var(--lagna-cell); stroke: var(--line); stroke-width: 1.5; }
+.chakra .kota-stambha { fill: var(--panel); stroke: var(--line); stroke-width: 2; }
+.chakra .kota-area { font-size: 10px; fill: var(--muted); }
+.chakra .ck-body.kota-malefic { fill: var(--accent); }
+.chakra .ck-body.kota-benefic { fill: var(--lagna); }

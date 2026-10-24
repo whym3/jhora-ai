@@ -1,0 +1,3 @@
+/* Kalachakra wheel (tokens from src/ui/styles.css). */
+.chakra .kc-dikpala { font-size: 11px; fill: var(--lagna); }
+.chakra .kc-wheel { fill: var(--cell); stroke: var(--line); stroke-width: 1; }

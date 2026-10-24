@@ -1,0 +1,16 @@
+/* Chakras sub-tab drawings. Uses the tokens of src/ui/styles.css only. */
+.chakra { width: 100%; max-width: 620px; height: auto; background: var(--panel); }
+.chakra .ck-frame { fill: var(--cell); stroke: var(--line); stroke-width: 1.5; }
+.chakra .ck-line { fill: none; stroke: var(--line); stroke-width: 1.5; }
+.chakra .ck-strong { fill: none; stroke: var(--ink); stroke-width: 2; }
+.chakra .ck-hl { fill: var(--hl); }
+.chakra .ck-base { fill: var(--lagna-cell); }
+.chakra .ck-label { font-size: 11px; fill: var(--ink); }
+.chakra .ck-small { font-size: 9px; fill: var(--muted); }
+.chakra .ck-title { font-size: 14px; fill: var(--ink); font-weight: 600; }
+.chakra .ck-star { font-size: 11px; fill: var(--muted); }
+.chakra .ck-body { font-size: 12px; fill: var(--accent); font-weight: 600; }
+.chakra .ck-body.ck-lagna { fill: var(--lagna); }
+.chakra .ck-body.ck-transit { fill: var(--ink); font-style: italic; font-weight: 400; }
+.chakra .ck-vedha { stroke: var(--accent); stroke-width: 1.5; stroke-dasharray: 4 3; fill: none; }
+.chakra-legend { font-size: .85rem; color: var(--muted); margin: 4px 0; }

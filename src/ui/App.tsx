@@ -1,11 +1,12 @@
 import { useEffect, useMemo } from 'react';
 import { parseJhd, writeJhd, type BirthData } from '../core/jhd';
-import type { ChartSpec } from '../engine/protocol';
+import type { ChartResult, ChartSpec } from '../engine/protocol';
 import { EngineProvider, useEngine, useJob } from './EngineProvider';
 import { BirthForm } from './BirthForm';
 import type { ChartStyle } from './ChartDiagram';
 import { ChartPane } from './shell/ChartPane';
 import { TajakaView } from './shell/TajakaView';
+import { CHAKRA_VIEWS, type ChakraSubTab } from './chakras';
 import { AshtakavargaView, KeyInfoView, OtherStrengthsView, TableSubView } from './shell/BasicsView';
 import { NakshatraDasasView, OtherDasasView, RasiDasasView } from './shell/DasasView';
 import { NotPorted } from './shell/NotPorted';
@@ -66,7 +67,11 @@ import { setState as useStoreSet } from './state/store';
 
 const FIXED_TABLES: Record<string, string> = { 'Basics/Houses': 'basics.houses', 'Basics/Amsa rulers': 'basics.amsaRulers', 'Basics/KP': 'basics.kp' };
 
-function SubView({ top, sub, spec, natalSpec, docId }: { top: TopTab; sub: string | null; spec: ChartSpec; natalSpec: ChartSpec; docId: string }) {
+function SubView({ top, sub, spec, natalSpec, docId, chart }: { top: TopTab; sub: string | null; spec: ChartSpec; natalSpec: ChartSpec; docId: string; chart: ChartResult | null }) {
+  if (top === 'Chakras' && sub && sub in CHAKRA_VIEWS) {
+    const View = CHAKRA_VIEWS[sub as ChakraSubTab];
+    return chart ? <div className="subview chakra-view"><View chart={chart} /></div> : <p className="status">Calculating…</p>;
+  }
   if (top === 'Tajaka') return <TajakaView natalSpec={natalSpec} docId={docId} />;
   if (top === 'Basics' && sub === 'Key Info') return <KeyInfoView spec={spec} />;
   if (top === 'Strengths' && sub === 'Ashtakavarga') return <AshtakavargaView spec={spec} />;
@@ -111,7 +116,7 @@ function Workspace() {
           {SUB_TABS[view.topTab] && (
             <TabBar level="sub" tabs={SUB_TABS[view.topTab]!} active={sub!} onSelect={(s) => setSubTab(view.topTab, s)} />
           )}
-          {spec && natalSpec && <SubView top={view.topTab} sub={sub} spec={spec} natalSpec={natalSpec} docId={doc.id} />}
+          {spec && natalSpec && <SubView top={view.topTab} sub={sub} spec={spec} natalSpec={natalSpec} docId={doc.id} chart={chart.data} />}
         </div>
       </div>
     </>

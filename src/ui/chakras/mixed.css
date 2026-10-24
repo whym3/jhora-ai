@@ -1,0 +1,8 @@
+/* Mixed 2-Vargas: outer band background and inner-outer separator. */
+.chakra .mixed-band { fill: var(--lagna-cell); stroke: var(--line); stroke-width: 1.5; }
+.chakra .mixed-innerbg { fill: var(--panel); }
+.chakra .mixed-sep { fill: none; stroke: var(--accent); stroke-width: 1; }
+.chakra .mixed-grid { fill: none; stroke: var(--line); stroke-width: 1.5; }
+.chakra .mixed-small .ck-body { font-size: 10px; }
+.chakra .mixed-caption { font-size: 12px; fill: var(--muted); }
+.chakra .mixed-varga { font-size: 16px; fill: var(--ink); }

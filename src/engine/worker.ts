@@ -49,7 +49,7 @@ async function run(req: JobRequest): Promise<unknown> {
   switch (req.kind) {
     case 'chart': {
       const c = await chartFor(req.chart);
-      return { positions: c.positions, bodies: c.bodies };
+      return { positions: c.positions, bodies: c.bodies, longitudes: c.longitudes, day: c.day, birth: c.birth };
     }
     case 'table':
       return memo<Table>(`table:${req.table}:${stableStringify(req.params ?? {})}:${stableStringify(req.chart)}`,
