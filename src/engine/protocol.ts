@@ -20,6 +20,10 @@ export interface Table {
   caption?: string;
   /** rows can be expanded (dasa periods); false when no deeper level exists */
   drill?: boolean;
+  /** CSS class per cell (same shape as rows), e.g. relationship colours */
+  cellClasses?: (string | undefined)[][];
+  /** lines shown under the table (legends) */
+  notes?: string[];
 }
 
 export interface ChartResult { positions: Positions; bodies: ChartBody[] }

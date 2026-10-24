@@ -11,6 +11,7 @@ import { ALL_VARGAS, vargaLongitude, type VargaName } from './vargas';
 import { charaKarakas } from './basics';
 import { bhavaArudha } from './arudhas';
 import META from './data/yogas.json';
+import { grahaAspects, rasiAspects as rasiAsp } from './aspects';
 
 export interface YogaRecord {
   cat: number;
@@ -87,25 +88,6 @@ function meta(cat: number, idx: number): { name: string; definition: string; res
   const m = META_BY_KEY.get(`${cat}:${idx}`);
   if (!m) throw new Error(`no yoga ${cat}:${idx}`);
   return m;
-}
-
-/** Rasi drishti incl. the same sign (FUN_004ae3e0). */
-function rasiAsp(a: number, b: number): boolean {
-  if (a === b) return true;
-  const ok = a % 3 === 0 ? b % 3 === 1 : a % 3 === 1 ? b % 3 === 0 : b % 3 === 2;
-  return ok && mod12(a + 1) !== b && mod12(b + 1) !== a;
-}
-
-/** Graha drishti of planet p from sign `from` on sign `to` (FUN_004ae450): Ketu none, special aspects of Ma/Ju/Sa/Ra. */
-function grahaAsp(p: number, from: number, to: number): boolean {
-  if (p === 9) return false;
-  const d = mod12(to - from);
-  if (d === 6) return true;
-  if (p === 3) return d === 3 || d === 7;
-  if (p === 5) return d === 4 || d === 8;
-  if (p === 7) return d === 2 || d === 9;
-  if (p === 8) return d === 4 || d === 8 || d === 1;
-  return false;
 }
 
 /** Own sign incl. the nodes' co-lordship of Aquarius and Scorpio (FUN_004ae4e0). */
@@ -415,7 +397,7 @@ export function findYogas(chart: Chart, category = 0, varga: VargaName = 'D1'): 
           if (j !== 0 && k !== 0) y(6, 0, [i3]);
           continue;
         }
-        const assoc = s3 === s2 || (grahaAsp(i3, s3, s2) && grahaAsp(i2, s2, s3)) || (LORD[s3] === i2 && LORD[s2] === i3);
+        const assoc = s3 === s2 || (grahaAspects(GRAHA_OF[i3], s3, s2) && grahaAspects(GRAHA_OF[i2], s2, s3)) || (LORD[s3] === i2 && LORD[s2] === i3);
         if (!assoc) continue;
         let idx = 3;
         if (j === 0 && k === 8) idx = 1;

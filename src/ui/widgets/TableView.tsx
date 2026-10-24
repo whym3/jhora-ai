@@ -30,11 +30,12 @@ export function TableView({ job, title, onCopy, onRowClick }: Props) {
           <thead><tr>{job.data.headers.map((h, i) => <th key={i}>{h}</th>)}</tr></thead>
           <tbody>
             {job.data.rows.map((r, i) => (
-              <tr key={i} className={onRowClick ? 'clickable' : undefined} onClick={onRowClick ? () => onRowClick(i) : undefined}>{r.map((c, j) => <td key={j} className={/\d+ \w\w \d+'/.test(c) ? 'mono' : undefined}>{c}</td>)}</tr>
+              <tr key={i} className={onRowClick ? 'clickable' : undefined} onClick={onRowClick ? () => onRowClick(i) : undefined}>{r.map((c, j) => <td key={j} className={job.data!.cellClasses?.[i]?.[j] ?? (/\d+ \w\w \d+'/.test(c) ? 'mono' : undefined)}>{c}</td>)}</tr>
             ))}
           </tbody>
         </table>
       )}
+      {job.data?.notes?.map((n, i) => <p key={i} className="table-note">{n}</p>)}
     </div>
   );
 }

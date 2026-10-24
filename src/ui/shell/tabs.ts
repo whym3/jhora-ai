@@ -14,6 +14,7 @@ export const SUB_TABS: Partial<Record<TopTab, readonly string[]>> = {
 /** Key Info table modes: JHora's menu 105 (label, command id). */
 export const KEY_INFO_MODES: [string, number, string | null][] = [
   ['Longitudes & Basic Info', 32822, 'basics.longitudes'],
+  ['Planetary Aspect Evaluation', 33296, 'aspects.evaluation'],
   ['Latitudes, speeds etc (co-ordinates)', 33071, 'basics.coordinates'],
   ['All Divisional Longitudes', 33265, 'basics.allDivisionalLongitudes'],
   ['Rasis occupied in all vargas', 32823, 'basics.rasisInVargas'],

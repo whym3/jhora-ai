@@ -28,6 +28,11 @@ import { AGES, ALERTNESS, basicAvasthas, HARSHA_CLASSES, INTENSITY, MOODS, PANCH
 import { AV_BODIES, ashtakavarga, prastara, type AvBody } from '../core/ashtakavarga';
 import { SEVEN } from '../core/relations';
 import { findYogas, giversText, YOGA_MODES } from '../core/yogas';
+import { aspectPercent } from '../core/aspects';
+import { compoundRelation } from '../core/relations';
+import { SIGN_LORD } from '../core/lords';
+import { DEBILITATION, EXALTATION } from '../core/signStrength';
+import { MOOLATRIKONA } from '../core/deities';
 import { fromMrityuBhaga, fromPushkaraBhaga, inPushkaramsa, MRITYU_BHAGA, within } from '../core/pushkara';
 import type { VargaCtx } from '../core/signStrength';
 import type { Table } from './protocol';
@@ -316,6 +321,63 @@ export const TABLES: Record<string, TableFn> = {
   'strengths.harsha': (chart) => {
     const t = tajakaBalas(chart);
     return { headers: ['Planet', 'Harsha Bala', 'Strength'], rows: SEVEN.map((g) => [g, String(t[g].harsha), HARSHA_CLASSES[t[g].harsha / 5]]) };
+  },
+  // Planetary Aspect Evaluation (menu 33296, FUN_0042bac0): Parasara's aspect of each planet on every body
+  'aspects.evaluation': (chart, params) => {
+    const av = ALL_VARGAS[String(params.aspectedVarga ?? 'D1') as VargaName];
+    const pv = ALL_VARGAS[String(params.aspectingVarga ?? 'D1') as VargaName];
+    const from = GRAHAS.map((q) => vargaLongitude(chart.positions.grahas[q].lon, pv));
+    const cells = (lon: number) => GRAHAS.map((q, k) => { const x = aspectPercent(lon, from[k], q); return x === 0 ? '-' : `${x.toFixed(2).padStart(5)}%`; });
+    const rows: string[][] = [];
+    chart.longitudes.forEach((b, i) => {
+      const lon = vargaLongitude(b.lon, av);
+      const retro = i >= 1 && i < 8 && chart.positions.grahas[GRAHAS[i - 1]].retrograde;
+      rows.push([`${b.name}${retro ? ' (R)' : ''}`, formatLongitude(lon), ...cells(lon)]);
+      if (i > 9) return;
+      const step = b.name === 'Rahu' || b.name === 'Ketu' ? -30 : 30;
+      for (let h = 1; h < 12; h++) {
+        const x = norm360(lon + h * step);
+        rows.push([`${ORDINAL[h]} from ${b.name}`, formatLongitude(x), ...cells(x)]);
+      }
+    });
+    const vname = (v: VargaName) => (v === 'D1' ? 'Rasi' : v.replace('D', 'D-'));
+    return { headers: ['Aspected Body', `Longitude (in ${vname(String(params.aspectedVarga ?? 'D1') as VargaName)})`, ...GRAHAS], rows };
+  },
+  // Aspect Table with Relationships (menu 33387, CAspectTableView FUN_004286c0)
+  'aspects.table': (chart, params) => {
+    const varga = String(params.varga ?? 'D1') as VargaName;
+    const spec = ALL_VARGAS[varga];
+    const maxValue = Number(params.max ?? 100);
+    const lonOf = (g: Graha) => vargaLongitude(chart.positions.grahas[g].lon, spec);
+    const signOfG = (g: Graha) => signOf(lonOf(g));
+    const rel = (p: Graha, q: Graha) => (p === q ? 'own' : `rel${3 - compoundRelation(p, q, signOfG)}`);
+    const value = (target: number, p: Graha) => String(Math.trunc(aspectPercent(target, lonOf(p), p) * maxValue * 0.01 + 0.5));
+    const lagna = vargaLongitude(chart.positions.ascendant, spec);
+    const houses = Array.from({ length: 12 }, (_, h) => norm360(lagna + 30 * h));
+    const sun = lonOf('Sun');
+    const combust = (g: Graha) => {
+      if (!['Mars', 'Mercury', 'Jupiter', 'Venus', 'Saturn'].includes(g)) return false;
+      const r = chart.positions.grahas[g].retrograde;
+      if ((g === 'Mercury' && r) || (g === 'Venus' && !r)) return false;
+      return norm360(lonOf(g) - sun) <= 6 || norm360(sun - lonOf(g)) <= 6;
+    };
+    const rows: string[][] = [], cellClasses: (string | undefined)[][] = [];
+    for (const p of GRAHAS) {
+      const s = signOfG(p), lord = SIGN_LORD[s];
+      const marks = [EXALTATION[p] === s ? '↑' : '', DEBILITATION[p] === s ? '↓' : '', MOOLATRIKONA[p] === s ? '△' : '', '⌂', combust(p) ? '●' : ''].join('');
+      rows.push([`${p} ${marks}`, ...GRAHAS.map((q) => (q === p ? '' : value(lonOf(q), p))), ...houses.map((x) => value(x, p))]);
+      cellClasses.push([rel(p, lord), ...GRAHAS.map((q) => (q === p ? undefined : rel(p, q))), ...houses.map((x) => rel(p, SIGN_LORD[signOf(x)]))]);
+    }
+    return {
+      caption: `Chart used: ${varga === 'D1' ? 'Rasi' : varga.replace('D', 'D-')}`,
+      headers: ['Aspecting planet', ...GRAHAS, ...ORDINAL],
+      rows, cellClasses,
+      notes: [
+        `Full aspect value: ${Math.trunc(maxValue)}`, 'Houses from: Lagna',
+        '↑ Uchcha (exalted)  ↓ Neecha (debilitated)  △ Moolatrikona  ⌂ house of the sign lord (coloured by relationship)  ● Asta (combust)',
+        'Aspect Legend (color code): Swagriha (own house) Blue, Adhimitra (best friend) Bold Italic Green, Mitra (friend) Green, Sama (neutral) Black, Satru (enemy) Red, Adhisatru (worst enemy) Bold Italic Red',
+      ],
+    };
   },
   'strengths.yogas': (chart, params) => {
     const varga = (String(params.varga ?? 'D1')) as VargaName;

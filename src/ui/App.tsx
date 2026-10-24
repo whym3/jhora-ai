@@ -96,7 +96,7 @@ function Workspace() {
       </details>
       <TabBar level="top" tabs={TOP_TABS} active={view.topTab} onSelect={(t) => setTopTab(t as TopTab)} />
       <div className="workspace">
-        <ChartPane chart={chart.data} />
+        <ChartPane chart={chart.data} spec={spec} />
         <div className="right-pane">
           {SUB_TABS[view.topTab] && (
             <TabBar level="sub" tabs={SUB_TABS[view.topTab]!} active={sub!} onSelect={(s) => setSubTab(view.topTab, s)} />
