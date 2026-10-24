@@ -154,7 +154,8 @@ def capture_dasa_levels(s, result, top, sub, label, copies, reset, max_rows=12):
     """JHora divides a period when it is left-clicked; the pane's buttons only move
     between dasa cycles, so `reset()` rebuilds the mahadasa view before each click."""
     def pane():
-        p = [w for w in s.main.descendants(class_name="AfxFrameOrView42s") if w.is_visible() and w.rectangle().left > 1000]
+        half = s.main.rectangle().left + s.main.rectangle().width() * 0.45   # the dasa pane is the right-hand view
+        p = [w for w in s.main.descendants(class_name="AfxFrameOrView42s") if w.is_visible() and w.rectangle().left > half]
         return p[0] if p else None
     if not pane():
         return

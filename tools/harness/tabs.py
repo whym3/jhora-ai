@@ -5,6 +5,7 @@ window to a fixed size, click along each strip's caption row and record which pa
 became visible; the groups found left-to-right are the tabs in JHora's order.
 Calibration is done once per JHora process and verified on every activation.
 """
+import ctypes
 import time
 
 TOP_TABS = ["Chakras", "Basics", "Strengths", "Dasas", "Transits", "Tajaka", "Tithi Pravesha", "Mundane", "Miscellany"]
@@ -17,7 +18,21 @@ SUB_TABS = {
     "Transits": ["Basic Transit Results", "Transit Calendar", "Special Search", "Longitude Correlation"],
     "Miscellany": ["Angular Return", "Progressions", "Prasna (Horary)", "Panchanga", "Laghu Parasari"],
 }
-WINDOW = (0, 0, 2000, 1400)
+
+
+def _work_area():
+    """Desktop work area (excludes the taskbar) as (left, top, right, bottom)."""
+    class RECT(ctypes.Structure):
+        _fields_ = [("l", ctypes.c_long), ("t", ctypes.c_long), ("r", ctypes.c_long), ("b", ctypes.c_long)]
+    r = RECT()
+    ctypes.windll.user32.SystemParametersInfoW(0x30, 0, ctypes.byref(r), 0)   # SPI_GETWORKAREA
+    return r.l, r.t, r.r, r.b
+
+
+# The main window is pinned to 2000x1400, or to the work area when the screen is smaller
+# (a window larger than the screen breaks the tab-strip calibration).
+_l, _t, _r, _b = _work_area()
+WINDOW = (_l, _t, min(2000, _r - _l), min(1400, _b - _t))
 PAGE_CLASSES = ("AfxMDIFrame42s", "AfxWnd42s", "AfxFrameOrView42s", "#32770", "SysListView32")
 TOP_STRIP_ID = 9592
 
