@@ -1,0 +1,1515 @@
+{
+ "chart": "Mahatma Gandhi.jhd",
+ "window": "Jagannatha Hora - Mahatma Gandhi.jhd",
+ "ini_overrides": {},
+ "views": [
+  {
+   "top": "Basics",
+   "sub": "Key Info",
+   "mode": "Longitudes & Basic Info",
+   "control_id": 59648,
+   "headers": [
+    "Body",
+    "Longitude",
+    "Nakshatra",
+    "Pada",
+    "Rasi",
+    "Navamsa"
+   ],
+   "rows": [
+    [
+     "Lagna ",
+     "15 Ta 53' 39.36\"",
+     "Rohi",
+     "2",
+     "Ta",
+     "Ta"
+    ],
+    [
+     "Sun - MK",
+     "16 Vi 55' 06.06\"",
+     "Hast",
+     "3",
+     "Vi",
+     "Ge"
+    ],
+    [
+     "Moon - AK",
+     "27 Sc 30' 21.89\"",
+     "Jye",
+     "4",
+     "Sc",
+     "Pi"
+    ],
+    [
+     "Mars - PiK",
+     "16 Le 38' 39.15\"",
+     "PPha",
+     "1",
+     "Le",
+     "Le"
+    ],
+    [
+     "Mercury - PK",
+     "12 Li 08' 53.29\"",
+     "Swat",
+     "2",
+     "Li",
+     "Cp"
+    ],
+    [
+     "Jupiter (R) - AmK",
+     "17 Ta 21' 29.54\"",
+     "Rohi",
+     "3",
+     "Ta",
+     "Ge"
+    ],
+    [
+     "Venus - BK",
+     "17 Li 12' 13.77\"",
+     "Swat",
+     "4",
+     "Li",
+     "Pi"
+    ],
+    [
+     "Saturn (R) - GK",
+     " 6 Ta 43' 45.68\"",
+     "Krit",
+     "4",
+     "Ta",
+     "Pi"
+    ],
+    [
+     "Rahu - DK",
+     "26 Ge 34' 03.33\"",
+     "Puna",
+     "2",
+     "Ge",
+     "Ta"
+    ],
+    [
+     "Ketu ",
+     "26 Sg 34' 03.33\"",
+     "PSha",
+     "4",
+     "Sg",
+     "Sc"
+    ],
+    [
+     "Maandi ",
+     " 1 Ar 31' 30.44\"",
+     "Aswi",
+     "1",
+     "Ar",
+     "Ar"
+    ],
+    [
+     "Gulika ",
+     "16 Pi 46' 18.04\"",
+     "Reva",
+     "1",
+     "Pi",
+     "Sg"
+    ],
+    [
+     "Bhava Lagna ",
+     " 3 Ta 40' 27.66\"",
+     "Krit",
+     "3",
+     "Ta",
+     "Aq"
+    ],
+    [
+     "Hora Lagna ",
+     "21 Sg 03' 08.35\"",
+     "PSha",
+     "3",
+     "Sg",
+     "Li"
+    ],
+    [
+     "Ghati Lagna ",
+     "13 Sc 11' 10.39\"",
+     "Anu",
+     "3",
+     "Sc",
+     "Li"
+    ],
+    [
+     "Vighati Lagna ",
+     " 3 Ta 51' 20.62\"",
+     "Krit",
+     "3",
+     "Ta",
+     "Aq"
+    ],
+    [
+     "Varnada Lagna ",
+     "15 Aq 53' 39.36\"",
+     "Sata",
+     "3",
+     "Aq",
+     "Sg"
+    ],
+    [
+     "Sree Lagna ",
+     " 8 Pi 33' 30.27\"",
+     "UBha",
+     "2",
+     "Pi",
+     "Vi"
+    ],
+    [
+     "Pranapada Lagna ",
+     " 4 Vi 28' 39.70\"",
+     "UPha",
+     "3",
+     "Vi",
+     "Aq"
+    ],
+    [
+     "Indu Lagna ",
+     "27 Pi 30' 21.89\"",
+     "Reva",
+     "4",
+     "Pi",
+     "Pi"
+    ],
+    [
+     "Bhrigu Bindu ",
+     "12 Vi 02' 12.61\"",
+     "Hast",
+     "1",
+     "Vi",
+     "Ar"
+    ],
+    [
+     "Dhooma ",
+     " 0 Aq 15' 06.06\"",
+     "Dhan",
+     "3",
+     "Aq",
+     "Li"
+    ],
+    [
+     "Vyatipata ",
+     "29 Ta 44' 53.94\"",
+     "Mrig",
+     "2",
+     "Ta",
+     "Vi"
+    ],
+    [
+     "Parivesha ",
+     "29 Sc 44' 53.94\"",
+     "Jye",
+     "4",
+     "Sc",
+     "Pi"
+    ],
+    [
+     "Indra Chapa ",
+     " 0 Le 15' 06.06\"",
+     "Magh",
+     "1",
+     "Le",
+     "Ar"
+    ],
+    [
+     "Upaketu ",
+     "16 Le 55' 06.06\"",
+     "PPha",
+     "2",
+     "Le",
+     "Vi"
+    ],
+    [
+     "Kaala ",
+     "22 Ta 26' 40.70\"",
+     "Rohi",
+     "4",
+     "Ta",
+     "Cn"
+    ],
+    [
+     "Mrityu ",
+     " 4 Cn 08' 08.35\"",
+     "Push",
+     "1",
+     "Cn",
+     "Le"
+    ],
+    [
+     "Artha Prahara ",
+     "24 Cn 28' 08.86\"",
+     "Asre",
+     "3",
+     "Cn",
+     "Aq"
+    ],
+    [
+     "Yama Ghantaka ",
+     "15 Le 18' 36.39\"",
+     "PPha",
+     "1",
+     "Le",
+     "Le"
+    ],
+    [
+     "Prana Sphuta ",
+     " 6 Sc 14' 34.85\"",
+     "Anu",
+     "1",
+     "Sc",
+     "Le"
+    ],
+    [
+     "Deha Sphuta ",
+     "26 Ge 49' 13.12\"",
+     "Puna",
+     "3",
+     "Ge",
+     "Ge"
+    ],
+    [
+     "Mrityu Sphuta ",
+     "14 Ge 19' 12.35\"",
+     "Ardr",
+     "3",
+     "Ge",
+     "Aq"
+    ],
+    [
+     "Sookshma TriSphuta ",
+     "17 Ar 23' 00.32\"",
+     "Bhar",
+     "2",
+     "Ar",
+     "Vi"
+    ],
+    [
+     "Tithi Sphuta ",
+     "10 Ge 35' 15.82\"",
+     "Ardr",
+     "2",
+     "Ge",
+     "Cp"
+    ],
+    [
+     "Yoga Sphuta (Sun-Moon) ",
+     "14 Ta 25' 27.95\"",
+     "Rohi",
+     "2",
+     "Ta",
+     "Ta"
+    ],
+    [
+     "Rahu Tithi Sphuta ",
+     " 9 Cp 38' 57.27\"",
+     "USha",
+     "4",
+     "Cp",
+     "Pi"
+    ],
+    [
+     "Kshetra Sphuta ",
+     " 1 Ge 30' 30.58\"",
+     "Mrig",
+     "3",
+     "Ge",
+     "Li"
+    ],
+    [
+     "Beeja Sphuta ",
+     "21 Ta 28' 49.38\"",
+     "Rohi",
+     "4",
+     "Ta",
+     "Cn"
+    ],
+    [
+     "TriSphuta ",
+     " 0 Cp 10' 19.29\"",
+     "USha",
+     "2",
+     "Cp",
+     "Cp"
+    ],
+    [
+     "ChatusSphuta ",
+     "17 Ge 05' 25.35\"",
+     "Ardr",
+     "4",
+     "Ge",
+     "Pi"
+    ],
+    [
+     "PanchaSphuta ",
+     "13 Vi 39' 28.68\"",
+     "Hast",
+     "2",
+     "Vi",
+     "Ta"
+    ],
+    [
+     "V2 ",
+     "15 Pi 53' 39.36\"",
+     "UBha",
+     "4",
+     "Pi",
+     "Ta"
+    ],
+    [
+     "V3 ",
+     "15 Aq 53' 39.36\"",
+     "Sata",
+     "3",
+     "Aq",
+     "Ar"
+    ],
+    [
+     "V4 ",
+     "15 Cn 53' 39.36\"",
+     "Push",
+     "4",
+     "Cn",
+     "Ta"
+    ],
+    [
+     "V5 ",
+     "15 Li 53' 39.36\"",
+     "Swat",
+     "3",
+     "Li",
+     "Sg"
+    ],
+    [
+     "V6 ",
+     "15 Cn 53' 39.36\"",
+     "Push",
+     "4",
+     "Cn",
+     "Vi"
+    ],
+    [
+     "V7 ",
+     "15 Aq 53' 39.36\"",
+     "Sata",
+     "3",
+     "Aq",
+     "Sg"
+    ],
+    [
+     "V8 ",
+     "15 Pi 53' 39.36\"",
+     "UBha",
+     "4",
+     "Pi",
+     "Ta"
+    ],
+    [
+     "V9 ",
+     "15 Aq 53' 39.36\"",
+     "Sata",
+     "3",
+     "Aq",
+     "Ar"
+    ],
+    [
+     "V10 ",
+     "15 Cn 53' 39.36\"",
+     "Push",
+     "4",
+     "Cn",
+     "Ta"
+    ],
+    [
+     "V11 ",
+     "15 Li 53' 39.36\"",
+     "Swat",
+     "3",
+     "Li",
+     "Sg"
+    ],
+    [
+     "V12 ",
+     "15 Cn 53' 39.36\"",
+     "Push",
+     "4",
+     "Cn",
+     "Vi"
+    ],
+    [
+     "Kunda ",
+     "27 Cn 26' 08.25\"",
+     "Asre",
+     "4",
+     "Cn",
+     "Pi"
+    ],
+    [
+     "Yoga Sphuta ",
+     "17 Le 45' 27.95\"",
+     "PPha",
+     "2",
+     "Le",
+     "Vi"
+    ],
+    [
+     "Avayoga Sphuta ",
+     "24 Aq 25' 27.95\"",
+     "PBha",
+     "2",
+     "Aq",
+     "Ta"
+    ],
+    [
+     "Muntha",
+     " 6 Vi 27' 42.37\"",
+     "UPha",
+     "3",
+     "Vi",
+     "Aq"
+    ]
+   ]
+  },
+  {
+   "top": "Strengths",
+   "sub": "Other strengths",
+   "mode": "Pancha-vargeeya Bala",
+   "control_id": 59648,
+   "headers": [
+    "Planet",
+    "Shadbala",
+    "In rupas",
+    "% Strength",
+    "IshtaPhala",
+    "KashtaPhala"
+   ],
+   "rows": [
+    [
+     "Sun",
+     "352.26",
+     "5.87",
+     "117.42",
+     "14.33",
+     "41.74"
+    ],
+    [
+     "Moon",
+     "534.75",
+     "8.91",
+     "148.54",
+     "13.86",
+     "43.48"
+    ],
+    [
+     "Mars",
+     "445.14",
+     "7.42",
+     "148.38",
+     "9.43",
+     "49.58"
+    ],
+    [
+     "Mercury",
+     "353.23",
+     "5.89",
+     "84.10",
+     "43.45",
+     "14.41"
+    ],
+    [
+     "Jupiter",
+     "528.13",
+     "8.80",
+     "135.42",
+     "43.36",
+     "16.62"
+    ],
+    [
+     "Venus",
+     "272.80",
+     "4.55",
+     "82.67",
+     "11.70",
+     "45.97"
+    ],
+    [
+     "Saturn",
+     "252.14",
+     "4.20",
+     "84.05",
+     "15.78",
+     "28.91"
+    ]
+   ]
+  },
+  {
+   "top": "Strengths",
+   "sub": "Other strengths",
+   "mode": "Pancha-vargeeya Bala",
+   "control_id": 59664,
+   "headers": [
+    "Planet",
+    "Pancha-vargeeya",
+    "Classification"
+   ],
+   "rows": [
+    [
+     "Sun",
+     "4.39",
+     "Weak"
+    ],
+    [
+     "Moon",
+     "8.49",
+     "Ordinary"
+    ],
+    [
+     "Mars",
+     "7.08",
+     "Ordinary"
+    ],
+    [
+     "Mercury",
+     "13.62",
+     "Powerful"
+    ],
+    [
+     "Jupiter",
+     "10.24",
+     "Powerful"
+    ],
+    [
+     "Venus",
+     "10.56",
+     "Powerful"
+    ],
+    [
+     "Saturn",
+     "7.65",
+     "Ordinary"
+    ]
+   ]
+  },
+  {
+   "top": "Strengths",
+   "sub": "Other strengths",
+   "mode": "Pancha-vargeeya Bala",
+   "control_id": 59680,
+   "headers": [
+    "Yoga",
+    "Varga",
+    "Yoga givers",
+    "Results ascribed to yoga",
+    "Brief definition of yoga"
+   ],
+   "rows": [
+    [
+     "Ubhayachara",
+     "D-1",
+     "Me, Ve, Ma",
+     "Enjoys comforts, king or an equal",
+     "Planets other than Moon in 2nd and 12th from Sun"
+    ],
+    [
+     "Anaphaa",
+     "D-1",
+     "Me, Ve",
+     "Comforts, good looks and character",
+     "Planets other than Sun in 12th from Moon"
+    ],
+    [
+     "Gaja-Kesari",
+     "D-1",
+     "Mo, Ju",
+     "Famous and virtuous",
+     "Moon and Jupiter in mutual kendras"
+    ],
+    [
+     "Paasa",
+     "D-1",
+     "Naabhasa yoga - throughout life",
+     "Talkative, characterless, may be imprisoned",
+     "Seven planets in 5 rasis"
+    ],
+    [
+     "Sankha",
+     "D-1",
+     "Me, Ve",
+     "Wealth, good spouse and children, kind, pious, intelligent, long-lived",
+     "The 5th and 6th lords in mutual kendras, strong lagna lord"
+    ],
+    [
+     "Kalpadruma/Parijata",
+     "D-1",
+     "Ve, Ve, Ve, Ju",
+     "King, principled, warrior, prosperous, strong, kind",
+     "Lagna lord, his disposior, latter's rasi & navamsa dispositors are all in own/exaltation sign or kendra/kona"
+    ],
+    [
+     "Harsha",
+     "D-1",
+     "Ve",
+     "Happy, strong, good-natured, invincible",
+     "The 6th lord in the 6th house"
+    ],
+    [
+     "Yogakaraka",
+     "D-1",
+     "Sa",
+     "Success and achievements",
+     "Same planet owns a kendra and a kona"
+    ],
+    [
+     "Rajayoga",
+     "D-1",
+     "Ve, Me",
+     "Successful and high achievements",
+     "Conjunction, aspect or exchange of kendra/kona lords"
+    ],
+    [
+     "Yogada (HL)",
+     "D-1",
+     "Ju",
+     "Wealth and prosperity",
+     "Associated with lagna and HL (by aspect, conjunction or ownership)"
+    ],
+    [
+     "Rajayoga",
+     "D-1",
+     "Mo, Sa",
+     "Successful and high achivements",
+     "Atma karaka and 9th lord in lagna, 5th or 7th"
+    ],
+    [
+     "Raja Sambandha",
+     "D-1",
+     "Ju, Sa",
+     "Important person in a king's court",
+     "Amatya karaka conjoining/aspecting 10th lord"
+    ],
+    [
+     "Raja Sambandha",
+     "D-1",
+     "Ju",
+     "A famous minister",
+     "Amatya karaka in a kona"
+    ],
+    [
+     "Raja Sambandha",
+     "D-1",
+     "Mo, Ju",
+     "An associate liked by a king",
+     "Amatya karaka in a kendra/kona from atma karaka"
+    ]
+   ]
+  },
+  {
+   "top": "Strengths",
+   "sub": "Other strengths",
+   "mode": "Dwadasa-vargeeya Bala",
+   "control_id": 59648,
+   "headers": [
+    "Planet",
+    "Shadbala",
+    "In rupas",
+    "% Strength",
+    "IshtaPhala",
+    "KashtaPhala"
+   ],
+   "rows": [
+    [
+     "Sun",
+     "352.26",
+     "5.87",
+     "117.42",
+     "14.33",
+     "41.74"
+    ],
+    [
+     "Moon",
+     "534.75",
+     "8.91",
+     "148.54",
+     "13.86",
+     "43.48"
+    ],
+    [
+     "Mars",
+     "445.14",
+     "7.42",
+     "148.38",
+     "9.43",
+     "49.58"
+    ],
+    [
+     "Mercury",
+     "353.23",
+     "5.89",
+     "84.10",
+     "43.45",
+     "14.41"
+    ],
+    [
+     "Jupiter",
+     "528.13",
+     "8.80",
+     "135.42",
+     "43.36",
+     "16.62"
+    ],
+    [
+     "Venus",
+     "272.80",
+     "4.55",
+     "82.67",
+     "11.70",
+     "45.97"
+    ],
+    [
+     "Saturn",
+     "252.14",
+     "4.20",
+     "84.05",
+     "15.78",
+     "28.91"
+    ]
+   ]
+  },
+  {
+   "top": "Strengths",
+   "sub": "Other strengths",
+   "mode": "Dwadasa-vargeeya Bala",
+   "control_id": 59664,
+   "headers": [
+    "Planet",
+    "Dwadasa-vargeeya"
+   ],
+   "rows": [
+    [
+     "Sun",
+     "4 (out of 12)"
+    ],
+    [
+     "Moon",
+     "7 (out of 12)"
+    ],
+    [
+     "Mars",
+     "8 (out of 12)"
+    ],
+    [
+     "Mercury",
+     "8 (out of 12)"
+    ],
+    [
+     "Jupiter",
+     "5 (out of 12)"
+    ],
+    [
+     "Venus",
+     "6 (out of 12)"
+    ],
+    [
+     "Saturn",
+     "6 (out of 12)"
+    ]
+   ]
+  },
+  {
+   "top": "Strengths",
+   "sub": "Other strengths",
+   "mode": "Dwadasa-vargeeya Bala",
+   "control_id": 59680,
+   "headers": [
+    "Yoga",
+    "Varga",
+    "Yoga givers",
+    "Results ascribed to yoga",
+    "Brief definition of yoga"
+   ],
+   "rows": [
+    [
+     "Ubhayachara",
+     "D-1",
+     "Me, Ve, Ma",
+     "Enjoys comforts, king or an equal",
+     "Planets other than Moon in 2nd and 12th from Sun"
+    ],
+    [
+     "Anaphaa",
+     "D-1",
+     "Me, Ve",
+     "Comforts, good looks and character",
+     "Planets other than Sun in 12th from Moon"
+    ],
+    [
+     "Gaja-Kesari",
+     "D-1",
+     "Mo, Ju",
+     "Famous and virtuous",
+     "Moon and Jupiter in mutual kendras"
+    ],
+    [
+     "Paasa",
+     "D-1",
+     "Naabhasa yoga - throughout life",
+     "Talkative, characterless, may be imprisoned",
+     "Seven planets in 5 rasis"
+    ],
+    [
+     "Sankha",
+     "D-1",
+     "Me, Ve",
+     "Wealth, good spouse and children, kind, pious, intelligent, long-lived",
+     "The 5th and 6th lords in mutual kendras, strong lagna lord"
+    ],
+    [
+     "Kalpadruma/Parijata",
+     "D-1",
+     "Ve, Ve, Ve, Ju",
+     "King, principled, warrior, prosperous, strong, kind",
+     "Lagna lord, his disposior, latter's rasi & navamsa dispositors are all in own/exaltation sign or kendra/kona"
+    ],
+    [
+     "Harsha",
+     "D-1",
+     "Ve",
+     "Happy, strong, good-natured, invincible",
+     "The 6th lord in the 6th house"
+    ],
+    [
+     "Yogakaraka",
+     "D-1",
+     "Sa",
+     "Success and achievements",
+     "Same planet owns a kendra and a kona"
+    ],
+    [
+     "Rajayoga",
+     "D-1",
+     "Ve, Me",
+     "Successful and high achievements",
+     "Conjunction, aspect or exchange of kendra/kona lords"
+    ],
+    [
+     "Yogada (HL)",
+     "D-1",
+     "Ju",
+     "Wealth and prosperity",
+     "Associated with lagna and HL (by aspect, conjunction or ownership)"
+    ],
+    [
+     "Rajayoga",
+     "D-1",
+     "Mo, Sa",
+     "Successful and high achivements",
+     "Atma karaka and 9th lord in lagna, 5th or 7th"
+    ],
+    [
+     "Raja Sambandha",
+     "D-1",
+     "Ju, Sa",
+     "Important person in a king's court",
+     "Amatya karaka conjoining/aspecting 10th lord"
+    ],
+    [
+     "Raja Sambandha",
+     "D-1",
+     "Ju",
+     "A famous minister",
+     "Amatya karaka in a kona"
+    ],
+    [
+     "Raja Sambandha",
+     "D-1",
+     "Mo, Ju",
+     "An associate liked by a king",
+     "Amatya karaka in a kendra/kona from atma karaka"
+    ]
+   ]
+  },
+  {
+   "top": "Strengths",
+   "sub": "Other strengths",
+   "mode": "Harsha Bala",
+   "control_id": 59648,
+   "headers": [
+    "Planet",
+    "Shadbala",
+    "In rupas",
+    "% Strength",
+    "IshtaPhala",
+    "KashtaPhala"
+   ],
+   "rows": [
+    [
+     "Sun",
+     "352.26",
+     "5.87",
+     "117.42",
+     "14.33",
+     "41.74"
+    ],
+    [
+     "Moon",
+     "534.75",
+     "8.91",
+     "148.54",
+     "13.86",
+     "43.48"
+    ],
+    [
+     "Mars",
+     "445.14",
+     "7.42",
+     "148.38",
+     "9.43",
+     "49.58"
+    ],
+    [
+     "Mercury",
+     "353.23",
+     "5.89",
+     "84.10",
+     "43.45",
+     "14.41"
+    ],
+    [
+     "Jupiter",
+     "528.13",
+     "8.80",
+     "135.42",
+     "43.36",
+     "16.62"
+    ],
+    [
+     "Venus",
+     "272.80",
+     "4.55",
+     "82.67",
+     "11.70",
+     "45.97"
+    ],
+    [
+     "Saturn",
+     "252.14",
+     "4.20",
+     "84.05",
+     "15.78",
+     "28.91"
+    ]
+   ]
+  },
+  {
+   "top": "Strengths",
+   "sub": "Other strengths",
+   "mode": "Harsha Bala",
+   "control_id": 59664,
+   "headers": [
+    "Planet",
+    "Harsha Bala",
+    "Strength"
+   ],
+   "rows": [
+    [
+     "Sun",
+     "5",
+     "Little"
+    ],
+    [
+     "Moon",
+     "10",
+     "Average"
+    ],
+    [
+     "Mars",
+     "5",
+     "Little"
+    ],
+    [
+     "Mercury",
+     "5",
+     "Little"
+    ],
+    [
+     "Jupiter",
+     "0",
+     "Nil"
+    ],
+    [
+     "Venus",
+     "10",
+     "Average"
+    ],
+    [
+     "Saturn",
+     "10",
+     "Average"
+    ]
+   ]
+  },
+  {
+   "top": "Strengths",
+   "sub": "Other strengths",
+   "mode": "Harsha Bala",
+   "control_id": 59680,
+   "headers": [
+    "Yoga",
+    "Varga",
+    "Yoga givers",
+    "Results ascribed to yoga",
+    "Brief definition of yoga"
+   ],
+   "rows": [
+    [
+     "Ubhayachara",
+     "D-1",
+     "Me, Ve, Ma",
+     "Enjoys comforts, king or an equal",
+     "Planets other than Moon in 2nd and 12th from Sun"
+    ],
+    [
+     "Anaphaa",
+     "D-1",
+     "Me, Ve",
+     "Comforts, good looks and character",
+     "Planets other than Sun in 12th from Moon"
+    ],
+    [
+     "Gaja-Kesari",
+     "D-1",
+     "Mo, Ju",
+     "Famous and virtuous",
+     "Moon and Jupiter in mutual kendras"
+    ],
+    [
+     "Paasa",
+     "D-1",
+     "Naabhasa yoga - throughout life",
+     "Talkative, characterless, may be imprisoned",
+     "Seven planets in 5 rasis"
+    ],
+    [
+     "Sankha",
+     "D-1",
+     "Me, Ve",
+     "Wealth, good spouse and children, kind, pious, intelligent, long-lived",
+     "The 5th and 6th lords in mutual kendras, strong lagna lord"
+    ],
+    [
+     "Kalpadruma/Parijata",
+     "D-1",
+     "Ve, Ve, Ve, Ju",
+     "King, principled, warrior, prosperous, strong, kind",
+     "Lagna lord, his disposior, latter's rasi & navamsa dispositors are all in own/exaltation sign or kendra/kona"
+    ],
+    [
+     "Harsha",
+     "D-1",
+     "Ve",
+     "Happy, strong, good-natured, invincible",
+     "The 6th lord in the 6th house"
+    ],
+    [
+     "Yogakaraka",
+     "D-1",
+     "Sa",
+     "Success and achievements",
+     "Same planet owns a kendra and a kona"
+    ],
+    [
+     "Rajayoga",
+     "D-1",
+     "Ve, Me",
+     "Successful and high achievements",
+     "Conjunction, aspect or exchange of kendra/kona lords"
+    ],
+    [
+     "Yogada (HL)",
+     "D-1",
+     "Ju",
+     "Wealth and prosperity",
+     "Associated with lagna and HL (by aspect, conjunction or ownership)"
+    ],
+    [
+     "Rajayoga",
+     "D-1",
+     "Mo, Sa",
+     "Successful and high achivements",
+     "Atma karaka and 9th lord in lagna, 5th or 7th"
+    ],
+    [
+     "Raja Sambandha",
+     "D-1",
+     "Ju, Sa",
+     "Important person in a king's court",
+     "Amatya karaka conjoining/aspecting 10th lord"
+    ],
+    [
+     "Raja Sambandha",
+     "D-1",
+     "Ju",
+     "A famous minister",
+     "Amatya karaka in a kona"
+    ],
+    [
+     "Raja Sambandha",
+     "D-1",
+     "Mo, Ju",
+     "An associate liked by a king",
+     "Amatya karaka in a kendra/kona from atma karaka"
+    ]
+   ]
+  }
+ ],
+ "texts": [
+  {
+   "top": "Basics",
+   "sub": "Key Info",
+   "mode": "Longitudes & Basic Info",
+   "name": "key_info",
+   "cmd": 32974,
+   "lines": [
+    "C:\\Users\\remoteuser\\Documents\\jhora-web\\golden\\charts\\Mahatma Gandhi",
+    "",
+    "Tajaka annual",
+    "",
+    "Date:          October 3, 2000",
+    "Time:          21:04:58",
+    "Time Zone:     4:39:16 (East of GMT)",
+    "Place:         69 E 49' 00\", 21 N 37' 00\"",
+    "Altitude:      0.00 meters",
+    "",
+    "Lunar Yr-Mo:   Vikrama - Aswayuja",
+    "Tithi:         Sukla Shashthi (Ve) (11.77% left)",
+    "Vedic Weekday: Tuesday (Ma)",
+    "Nakshatra:     Jyeshtha (Me) (18.70% left)",
+    "Yoga:          Soubhagya (Ve) (66.82% left)",
+    "Karana:        Taitula (Me) (23.54% left)",
+    "Hora Lord:     Sun (5 min sign: Le)",
+    "Mahakala Hora: Sun (5 min sign: Cn)",
+    "Kaala Lord:    Rahu (Mahakala: Rahu)",
+    "",
+    "Sunrise:       5:55:28",
+    "Sunset:        17:42:14",
+    "Janma Ghatis:  37.8963",
+    "",
+    "Ayanamsa:      23-51-06.89",
+    "Sidereal Time: 21:55:41",
+    "",
+    "C:\\Users\\remoteuser\\Documents\\jhora-web\\golden\\charts\\Mahatma Gandhi",
+    "",
+    "Natal Chart",
+    "",
+    "Date:          October 2, 1869",
+    "Time:          7:20:00",
+    "Time Zone:     4:39:16 (East of GMT)",
+    "Place:         69 E 49' 00\", 21 N 37' 00\"",
+    "Altitude:      0.00 meters",
+    "",
+    "Lunar Yr-Mo:   Sukla - Bhadrapada",
+    "Tithi:         Krishna Ekadasi (Ma) (7.44% left)",
+    "Vedic Weekday: Saturday (Sa)",
+    "Nakshatra:     Aasresha (Me) (14.81% left)",
+    "Yoga:          Sadhya (Ve) (62.93% left)",
+    "Karana:        Balava (Mo) (14.89% left)",
+    "Hora Lord:     Jupiter (5 min sign: Cn)",
+    "Mahakala Hora: Jupiter (5 min sign: Ge)",
+    "Kaala Lord:    Saturn (Mahakala: Saturn)",
+    "",
+    "Sunrise:       5:55:02",
+    "Sunset:        17:43:22",
+    "Janma Ghatis:  3.5405",
+    "",
+    "Ayanamsa:      22-01-26.49",
+    "Sidereal Time: 8:03:26",
+    "",
+    ""
+   ]
+  },
+  {
+   "top": "Basics",
+   "sub": "Key Info",
+   "mode": "Longitudes & Basic Info",
+   "name": "table",
+   "cmd": 32975,
+   "lines": [
+    "Body                    Longitude        Nakshatra Pada Rasi Navamsa",
+    "",
+    "Lagna                   15 Ta 53' 39.36\" Rohi      2    Ta   Ta",
+    "Sun - MK                16 Vi 55' 06.06\" Hast      3    Vi   Ge",
+    "Moon - AK               27 Sc 30' 21.89\" Jye       4    Sc   Pi",
+    "Mars - PiK              16 Le 38' 39.15\" PPha      1    Le   Le",
+    "Mercury - PK            12 Li 08' 53.29\" Swat      2    Li   Cp",
+    "Jupiter (R) - AmK       17 Ta 21' 29.54\" Rohi      3    Ta   Ge",
+    "Venus - BK              17 Li 12' 13.77\" Swat      4    Li   Pi",
+    "Saturn (R) - GK          6 Ta 43' 45.68\" Krit      4    Ta   Pi",
+    "Rahu - DK               26 Ge 34' 03.33\" Puna      2    Ge   Ta",
+    "Ketu                    26 Sg 34' 03.33\" PSha      4    Sg   Sc",
+    "Maandi                   1 Ar 31' 30.44\" Aswi      1    Ar   Ar",
+    "Gulika                  16 Pi 46' 18.04\" Reva      1    Pi   Sg",
+    "Bhava Lagna              3 Ta 40' 27.66\" Krit      3    Ta   Aq",
+    "Hora Lagna              21 Sg 03' 08.35\" PSha      3    Sg   Li",
+    "Ghati Lagna             13 Sc 11' 10.39\" Anu       3    Sc   Li",
+    "Vighati Lagna            3 Ta 51' 20.62\" Krit      3    Ta   Aq",
+    "Varnada Lagna           15 Aq 53' 39.36\" Sata      3    Aq   Sg",
+    "Sree Lagna               8 Pi 33' 30.27\" UBha      2    Pi   Vi",
+    "Pranapada Lagna          4 Vi 28' 39.70\" UPha      3    Vi   Aq",
+    "Indu Lagna              27 Pi 30' 21.89\" Reva      4    Pi   Pi",
+    "Bhrigu Bindu            12 Vi 02' 12.61\" Hast      1    Vi   Ar",
+    "Dhooma                   0 Aq 15' 06.06\" Dhan      3    Aq   Li",
+    "Vyatipata               29 Ta 44' 53.94\" Mrig      2    Ta   Vi",
+    "Parivesha               29 Sc 44' 53.94\" Jye       4    Sc   Pi",
+    "Indra Chapa              0 Le 15' 06.06\" Magh      1    Le   Ar",
+    "Upaketu                 16 Le 55' 06.06\" PPha      2    Le   Vi",
+    "Kaala                   22 Ta 26' 40.70\" Rohi      4    Ta   Cn",
+    "Mrityu                   4 Cn 08' 08.35\" Push      1    Cn   Le",
+    "Artha Prahara           24 Cn 28' 08.86\" Asre      3    Cn   Aq",
+    "Yama Ghantaka           15 Le 18' 36.39\" PPha      1    Le   Le",
+    "Prana Sphuta             6 Sc 14' 34.85\" Anu       1    Sc   Le",
+    "Deha Sphuta             26 Ge 49' 13.12\" Puna      3    Ge   Ge",
+    "Mrityu Sphuta           14 Ge 19' 12.35\" Ardr      3    Ge   Aq",
+    "Sookshma TriSphuta      17 Ar 23' 00.32\" Bhar      2    Ar   Vi",
+    "Tithi Sphuta            10 Ge 35' 15.82\" Ardr      2    Ge   Cp",
+    "Yoga Sphuta (Sun-Moon)  14 Ta 25' 27.95\" Rohi      2    Ta   Ta",
+    "Rahu Tithi Sphuta        9 Cp 38' 57.27\" USha      4    Cp   Pi",
+    "Kshetra Sphuta           1 Ge 30' 30.58\" Mrig      3    Ge   Li",
+    "Beeja Sphuta            21 Ta 28' 49.38\" Rohi      4    Ta   Cn",
+    "TriSphuta                0 Cp 10' 19.29\" USha      2    Cp   Cp",
+    "ChatusSphuta            17 Ge 05' 25.35\" Ardr      4    Ge   Pi",
+    "PanchaSphuta            13 Vi 39' 28.68\" Hast      2    Vi   Ta",
+    "V2                      15 Pi 53' 39.36\" UBha      4    Pi   Ta",
+    "V3                      15 Aq 53' 39.36\" Sata      3    Aq   Ar",
+    "V4                      15 Cn 53' 39.36\" Push      4    Cn   Ta",
+    "V5                      15 Li 53' 39.36\" Swat      3    Li   Sg",
+    "V6                      15 Cn 53' 39.36\" Push      4    Cn   Vi",
+    "V7                      15 Aq 53' 39.36\" Sata      3    Aq   Sg",
+    "V8                      15 Pi 53' 39.36\" UBha      4    Pi   Ta",
+    "V9                      15 Aq 53' 39.36\" Sata      3    Aq   Ar",
+    "V10                     15 Cn 53' 39.36\" Push      4    Cn   Ta",
+    "V11                     15 Li 53' 39.36\" Swat      3    Li   Sg",
+    "V12                     15 Cn 53' 39.36\" Push      4    Cn   Vi",
+    "Kunda                   27 Cn 26' 08.25\" Asre      4    Cn   Pi",
+    "Yoga Sphuta             17 Le 45' 27.95\" PPha      2    Le   Vi",
+    "Avayoga Sphuta          24 Aq 25' 27.95\" PBha      2    Aq   Ta",
+    "Muntha                   6 Vi 27' 42.37\" UPha      3    Vi   Aq",
+    "",
+    ""
+   ]
+  },
+  {
+   "top": "Dasas",
+   "sub": "Nakshatra dasas",
+   "mode": "Vimsottari",
+   "name": "dasa",
+   "cmd": 32972,
+   "lines": [
+    "Mudda/Vimsottari Dasa:",
+    "",
+    " Maha Dasas:",
+    "",
+    " Mars: 2000-09-15 (14:53:23) - 2000-10-07 (0:49:27)",
+    " Rah: 2000-10-07 (0:49:27) - 2000-11-29 (23:38:28)",
+    " Jup: 2000-11-29 (23:38:28) - 2001-01-16 (3:41:31)",
+    " Sat: 2001-01-16 (3:41:31) - 2001-03-13 (14:24:48)",
+    " Merc: 2001-03-13 (14:24:48) - 2001-05-04 (11:36:36)",
+    " Ket: 2001-05-04 (11:36:36) - 2001-05-26 (6:10:09)",
+    " Ven: 2001-05-26 (6:10:09) - 2001-07-28 (1:43:22)",
+    " Sun: 2001-07-28 (1:43:22) - 2001-08-15 (20:40:44)",
+    " Moon: 2001-08-15 (20:40:44) - 2001-09-15 (20:55:32)",
+    "",
+    ""
+   ]
+  },
+  {
+   "top": "Dasas",
+   "sub": "Nakshatra dasas",
+   "mode": "Vimsottari",
+   "name": "dasa_dates",
+   "cmd": 33236,
+   "lines": [
+    "Mudda/Vimsottari Dasa:",
+    "",
+    " Maha Dasas:",
+    "",
+    " Mars:  2000-09-15  -  2000-10-07",
+    " Rah:  2000-10-07  -  2000-11-29",
+    " Jup:  2000-11-29  -  2001-01-16",
+    " Sat:  2001-01-16  -  2001-03-13",
+    " Merc:  2001-03-13  -  2001-05-04",
+    " Ket:  2001-05-04  -  2001-05-26",
+    " Ven:  2001-05-26  -  2001-07-28",
+    " Sun:  2001-07-28  -  2001-08-15",
+    " Moon:  2001-08-15  -  2001-09-15",
+    "",
+    ""
+   ]
+  },
+  {
+   "top": "Dasas",
+   "sub": "Nakshatra dasas",
+   "mode": "Vimsottari",
+   "name": "dasa_level2_0",
+   "cmd": 32972,
+   "lines": [
+    "Mudda/Vimsottari Dasa:",
+    "",
+    " Mars MD: 2000-09-15 (14:53:23) - 2000-10-07 (0:49:27)",
+    "",
+    "  Antardasas in this MD:",
+    "",
+    "  Mars: 2000-09-15 (14:53:23) - 2000-09-16 (21:03:09)",
+    "  Rah: 2000-09-16 (21:03:09) - 2000-09-20 (2:30:31)",
+    "  Jup: 2000-09-20 (2:30:31) - 2000-09-22 (23:13:34)",
+    "  Sat: 2000-09-22 (23:13:34) - 2000-09-26 (8:39:54)",
+    "  Merc: 2000-09-26 (8:39:54) - 2000-09-29 (9:23:28)",
+    "  Ket: 2000-09-29 (9:23:28) - 2000-09-30 (15:18:05)",
+    "  Ven: 2000-09-30 (15:18:05) - 2000-10-04 (4:39:11)",
+    "  Sun: 2000-10-04 (4:39:11) - 2000-10-05 (6:13:43)",
+    "  Moon: 2000-10-05 (6:13:43) - 2000-10-07 (0:49:27)",
+    "",
+    ""
+   ]
+  },
+  {
+   "top": "Dasas",
+   "sub": "Nakshatra dasas",
+   "mode": "Vimsottari",
+   "name": "dasa_level2_1",
+   "cmd": 32972,
+   "lines": [
+    "Mudda/Vimsottari Dasa:",
+    "",
+    " Rah MD: 2000-10-07 (0:49:27) - 2000-11-29 (23:38:28)",
+    "",
+    "  Antardasas in this MD:",
+    "",
+    "  Rah: 2000-10-07 (0:49:27) - 2000-10-15 (5:28:09)",
+    "  Jup: 2000-10-15 (5:28:09) - 2000-10-22 (11:28:01)",
+    "  Sat: 2000-10-22 (11:28:01) - 2000-10-31 (1:05:31)",
+    "  Merc: 2000-10-31 (1:05:31) - 2000-11-07 (16:20:31)",
+    "  Ket: 2000-11-07 (16:20:31) - 2000-11-10 (19:37:21)",
+    "  Ven: 2000-11-10 (19:37:21) - 2000-11-19 (18:05:47)",
+    "  Sun: 2000-11-19 (18:05:47) - 2000-11-22 (10:15:07)",
+    "  Moon: 2000-11-22 (10:15:07) - 2000-11-26 (21:00:41)",
+    "  Mars: 2000-11-26 (21:00:41) - 2000-11-29 (23:38:28)",
+    "",
+    ""
+   ]
+  },
+  {
+   "top": "Dasas",
+   "sub": "Other dasas",
+   "mode": "Patyayini",
+   "name": "dasa",
+   "cmd": 32972,
+   "lines": [
+    "Patyayini Dasa (useful in Tajaka charts):",
+    "",
+    " Maha Dasas:",
+    "",
+    " Sat: 2000-10-03 (21:04:58) - 2000-12-30 (10:22:06)",
+    " Merc: 2000-12-30 (10:22:06) - 2001-03-10 (11:28:17)",
+    " Asc: 2001-03-10 (11:28:17) - 2001-04-29 (5:48:34)",
+    " Mars: 2001-04-29 (5:48:34) - 2001-05-09 (8:53:45)",
+    " Sun: 2001-05-09 (8:53:45) - 2001-05-13 (2:03:12)",
+    " Ven: 2001-05-13 (2:03:12) - 2001-05-16 (23:01:41)",
+    " Jup: 2001-05-16 (23:01:41) - 2001-05-19 (1:21:32)",
+    " Moon: 2001-05-19 (1:21:32) - 2001-10-04 (3:10:01)",
+    " Sat: 2001-10-04 (3:10:01) - 2001-12-30 (16:33:02)",
+    "",
+    ""
+   ]
+  },
+  {
+   "top": "Dasas",
+   "sub": "Other dasas",
+   "mode": "Patyayini",
+   "name": "dasa_level2_0",
+   "cmd": 32972,
+   "lines": [
+    "Patyayini Dasa (useful in Tajaka charts):",
+    "",
+    " Sat MD: 2000-10-03 (21:04:58) - 2000-12-30 (10:22:06)",
+    "",
+    "  Antardasas in this MD:",
+    "",
+    "  Sat: 2000-10-03 (21:04:58) - 2000-10-25 (15:00:58)",
+    "  Merc: 2000-10-25 (15:00:58) - 2000-11-11 (22:46:45)",
+    "  Asc: 2000-11-11 (22:46:45) - 2000-11-23 (20:15:25)",
+    "  Mars: 2000-11-23 (20:15:25) - 2000-11-26 (5:13:00)",
+    "  Sun: 2000-11-26 (5:13:00) - 2000-11-27 (2:01:32)",
+    "  Ven: 2000-11-27 (2:01:32) - 2000-11-27 (23:41:18)",
+    "  Jup: 2000-11-27 (23:41:18) - 2000-11-28 (11:24:02)",
+    "  Moon: 2000-11-28 (11:24:02) - 2000-12-30 (10:22:06)",
+    "",
+    ""
+   ]
+  },
+  {
+   "top": "Strengths",
+   "sub": "Other strengths",
+   "mode": "Pancha-vargeeya Bala",
+   "name": "vimsopaka",
+   "cmd": 32978,
+   "lines": [
+    "Planet  Pancha-vargeeya Classification",
+    "",
+    "Sun     4.39            Weak",
+    "Moon    8.49            Ordinary",
+    "Mars    7.08            Ordinary",
+    "Mercury 13.62           Powerful",
+    "Jupiter 10.24           Powerful",
+    "Venus   10.56           Powerful",
+    "Saturn  7.65            Ordinary",
+    "",
+    ""
+   ]
+  },
+  {
+   "top": "Strengths",
+   "sub": "Other strengths",
+   "mode": "Dwadasa-vargeeya Bala",
+   "name": "vimsopaka",
+   "cmd": 32978,
+   "lines": [
+    "Planet  Dwadasa-vargeeya",
+    "",
+    "Sun     4 (out of 12)",
+    "Moon    7 (out of 12)",
+    "Mars    8 (out of 12)",
+    "Mercury 8 (out of 12)",
+    "Jupiter 5 (out of 12)",
+    "Venus   6 (out of 12)",
+    "Saturn  6 (out of 12)",
+    "",
+    ""
+   ]
+  },
+  {
+   "top": "Strengths",
+   "sub": "Other strengths",
+   "mode": "Harsha Bala",
+   "name": "vimsopaka",
+   "cmd": 32978,
+   "lines": [
+    "Planet  Harsha Bala Strength",
+    "",
+    "Sun     5           Little",
+    "Moon    10          Average",
+    "Mars    5           Little",
+    "Mercury 5           Little",
+    "Jupiter 0           Nil",
+    "Venus   10          Average",
+    "Saturn  10          Average",
+    "",
+    ""
+   ]
+  }
+ ]
+}

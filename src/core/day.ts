@@ -50,7 +50,10 @@ export function dayFrame(swe: Sweph, jdUt: number, geo: Geo, settings: Settings,
   let sunrise = nextEvent(swe, jdUt - 1.2, rise, flags, geo);
   for (let i = 0; i < 3; i++) {
     const n = nextEvent(swe, sunrise + 0.01, rise, flags, geo);
-    if (n > jdUt) break;
+    // a moment at sunrise still belongs to the night: JHora treats its sunrise charts (Tajaka/TP
+    // "sunrise chart", cast at the computed sunrise) as night births. The rise search only
+    // reproduces to a few ms from another starting point, so allow 0.1 s.
+    if (n > jdUt - 0.1 / 86400) break;
     sunrise = n;
   }
   const sunset = nextEvent(swe, sunrise + 0.01, set, flags, geo);
