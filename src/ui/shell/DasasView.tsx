@@ -26,6 +26,13 @@ export function RasiDasasView({ spec }: { spec: ChartSpec }) {
   return <DasaPane spec={spec} table="dasas.rasi" systems={RASI_DASA_SYSTEMS} />;
 }
 
+/** Other (graha) dasa systems ported so far. */
+export const OTHER_DASA_SYSTEMS = ['Moola'] as const;
+
+export function OtherDasasView({ spec }: { spec: ChartSpec }) {
+  return <DasaPane spec={spec} table="dasas.other" systems={OTHER_DASA_SYSTEMS} />;
+}
+
 function DasaPane({ spec, table, systems }: { spec: ChartSpec; table: string; systems: readonly string[] }) {
   const [system, setSystem] = useState<string>(systems[0]);
   const [path, setPath] = useState<number[]>([]);

@@ -104,3 +104,84 @@ export function strongerSign(a: number, b: number, ctx: VargaCtx): number {
   const adv = (g: Graha) => (g === 'Rahu' || g === 'Ketu' ? 30 - ctx.degree(g) : ctx.degree(g));
   return adv(la) < adv(lb) ? b : a;
 }
+
+/**
+ * Stronger co-lord as FUN_004ac110 decides (dasa variants): like strongerPlanet,
+ * but the last tie-break counts signs from the co-owned sign (Aquarius backwards,
+ * Scorpio forwards), +1 if exalted, -1 if debilitated; the larger count wins.
+ */
+export function strongerPlanetByDistance(p: Graha, q: Graha, ctx: VargaCtx): Graha {
+  const own = (g: Graha) => (g === 'Saturn' || g === 'Rahu' ? 10 : g === 'Mars' || g === 'Ketu' ? 7 : 0);
+  const sp = ctx.sign(p), sq = ctx.sign(q);
+  if (sp === own(p)) { if (sq !== own(q)) return q; } else if (sq === own(q)) return p;
+  const np = occupants(sp, ctx), nq = occupants(sq, ctx);
+  if (np > nq) return p;
+  if (nq > np) return q;
+  const ap = aspectScore(sp, ctx), aq = aspectScore(sq, ctx);
+  if (ap > aq) return p;
+  if (aq > ap) return q;
+  const ep = EXALTATION[p] === sp, eq = EXALTATION[q] === sq;
+  if (ep && !eq) return p;
+  if (!ep && eq) return q;
+  const dp = DEBILITATION[p] === sp, dq = DEBILITATION[q] === sq;
+  if (!dp && dq) return p;
+  if (dp && !dq) return q;
+  if (sp % 3 > sq % 3) return p;
+  if (sq % 3 > sp % 3) return q;
+  const count = (g: Graha) => {
+    const o = own(g), s = ctx.sign(g);
+    let n = mod12(Math.floor(o / 3) % 2 === 0 ? s - o : o - s);
+    if (EXALTATION[g] === s && n < 12) n++;
+    if (DEBILITATION[g] === s && n > 0) n--;
+    return n;
+  };
+  return count(p) < count(q) ? q : p;
+}
+
+/** Lord of a sign with the co-lords decided by FUN_004ac110. */
+export function signLordByDistance(sign: number, ctx: VargaCtx): Graha {
+  if (sign === 10) return strongerPlanetByDistance('Saturn', 'Rahu', ctx);
+  if (sign === 7) return strongerPlanetByDistance('Mars', 'Ketu', ctx);
+  return SIGN_LORD[sign];
+}
+
+/**
+ * Stronger of two signs as FUN_004abbb0 decides (used by Moola dasa): more
+ * planets, more exalted planets, fewer debilitated ones, aspect score, lord in
+ * a sign of the other parity, modality (dual > fixed > movable), finally the
+ * lord further advanced in its sign. Ties go to a.
+ */
+export function strongerSignDignityFirst(a: number, b: number, ctx: VargaCtx): number {
+  const na = occupants(a, ctx), nb = occupants(b, ctx);
+  if (na > nb) return a;
+  if (nb > na) return b;
+  const exalted = (s: number) => PLANETS.filter((g) => ctx.sign(g) === s && EXALTATION[g] === s).length;
+  const ea = exalted(a), eb = exalted(b);
+  if (ea > eb) return a;
+  if (eb > ea) return b;
+  const debil = (s: number) => PLANETS.filter((g) => ctx.sign(g) === s && DEBILITATION[g] === s).length;
+  const da = debil(a), db = debil(b);
+  if (da < db) return a;
+  if (db < da) return b;
+  const sa = aspectScore(a, ctx), sb = aspectScore(b, ctx);
+  if (sa > sb) return a;
+  if (sb > sa) return b;
+  const la = signLordByDistance(a, ctx), lb = signLordByDistance(b, ctx);
+  const pa = ctx.sign(la) % 2 !== a % 2, pb = ctx.sign(lb) % 2 !== b % 2;
+  if (pa && !pb) return a;
+  if (pb && !pa) return b;
+  if (a % 3 > b % 3) return a;
+  if (b % 3 > a % 3) return b;
+  const adv = (g: Graha) => (g === 'Rahu' || g === 'Ketu' ? 30 - ctx.degree(g) : ctx.degree(g));
+  return adv(la) < adv(lb) ? b : a;
+}
+
+/** JHora's insertion sort (FUN_004ab650/FUN_004ab780): strongest first, ties keep their order. */
+export function sortByStrength<T>(items: T[], stronger: (x: T, y: T) => T): T[] {
+  const out: T[] = [];
+  for (const it of items) {
+    const i = out.findIndex((x) => stronger(x, it) === it && x !== it);
+    if (i < 0) out.push(it); else out.splice(i, 0, it);
+  }
+  return out;
+}
