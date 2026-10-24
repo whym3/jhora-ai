@@ -1,0 +1,237 @@
+{
+ "_comment": "Panchanga (natal month), transits for 2024-03-15 12:00 (natal zone), Tithi Pravesha annual 2000 with the views of the TP chart. Run on a few charts.",
+ "tabs": [
+  {
+   "top": "Miscellany",
+   "sub": "Panchanga",
+   "copies": {
+    "monthly": 33085,
+    "monthly_jd": 33086
+   }
+  },
+  {
+   "top": "Transits",
+   "sub": "Basic Transit Results",
+   "form": [
+    [
+     "combo",
+     1003,
+     2
+    ],
+    [
+     "edit",
+     100,
+     "15"
+    ],
+    [
+     "edit",
+     101,
+     "2024"
+    ],
+    [
+     "edit",
+     1004,
+     "12"
+    ],
+    [
+     "edit",
+     1005,
+     "0"
+    ],
+    [
+     "edit",
+     1006,
+     "0"
+    ],
+    [
+     "click",
+     1001
+    ]
+   ],
+   "lists": true,
+   "copies": {
+    "transit": 32979
+   },
+   "modes": [
+    [
+     "Standard",
+     32948
+    ],
+    [
+     "Houses",
+     32949
+    ],
+    [
+     "AV",
+     32950
+    ],
+    [
+     "SpecialNak",
+     32951
+    ],
+    [
+     "SpecialNakAspects",
+     32953
+    ],
+    [
+     "Latta",
+     32952
+    ],
+    [
+     "SpecialNakLagna",
+     33212
+    ],
+    [
+     "SpecialNakAspectsLagna",
+     33213
+    ],
+    [
+     "AngaGraha",
+     33214
+    ]
+   ]
+  },
+  {
+   "top": "Transits",
+   "sub": "Basic Transit Results",
+   "form": [
+    [
+     "click",
+     1000
+    ]
+   ]
+  },
+  {
+   "top": "Transits",
+   "sub": "Longitude Correlation",
+   "form": [
+    [
+     "combo",
+     1003,
+     2
+    ],
+    [
+     "edit",
+     100,
+     "15"
+    ],
+    [
+     "edit",
+     101,
+     "2024"
+    ],
+    [
+     "edit",
+     1004,
+     "12"
+    ],
+    [
+     "edit",
+     1005,
+     "0"
+    ],
+    [
+     "edit",
+     1006,
+     "0"
+    ],
+    [
+     "edit",
+     1020,
+     "5"
+    ],
+    [
+     "edit",
+     1021,
+     "30"
+    ],
+    [
+     "combo",
+     1079,
+     0
+    ],
+    [
+     "click",
+     201
+    ],
+    [
+     "edit",
+     1022,
+     "80"
+    ],
+    [
+     "click",
+     1000
+    ]
+   ],
+   "lists": true,
+   "copies": {
+    "correlation": 33366
+   }
+  },
+  {
+   "top": "Tithi Pravesha",
+   "sub": null,
+   "form": [
+    [
+     "edit",
+     100,
+     "2000"
+    ],
+    [
+     "combo",
+     1003,
+     0
+    ],
+    [
+     "click",
+     1000
+    ]
+   ]
+  },
+  {
+   "top": "Basics",
+   "sub": "Key Info",
+   "lists": true,
+   "copies": {
+    "key_info": 32974,
+    "table": 32975
+   },
+   "pane_copies": [
+    "key_info"
+   ],
+   "modes": [
+    [
+     "TP annual 2000",
+     32822
+    ]
+   ]
+  },
+  {
+   "top": "Dasas",
+   "sub": "Nakshatra dasas",
+   "copies": {
+    "dasa": 32972,
+    "dasa_dates": 33236
+   },
+   "modes": [
+    [
+     "TP Vimsottari",
+     32846
+    ]
+   ],
+   "dasa_levels": true,
+   "dasa_level_rows": 1
+  },
+  {
+   "top": "Tithi Pravesha",
+   "sub": null,
+   "form": [
+    [
+     "click",
+     1001
+    ]
+   ]
+  }
+ ]
+}
