@@ -8,7 +8,7 @@ import type {
   BetaContentBlockParam, BetaMessageParam, BetaToolResultBlockParam, BetaToolUnion, BetaToolUseBlock,
 } from '@anthropic-ai/sdk/resources/beta/messages/messages';
 import type { FunctionTool, ResponseInputItem } from 'openai/resources/responses/responses';
-import { AI_TOOLS, runTool, type ToolContext } from './tools';
+import { AI_TOOLS, anthropicStrictSchema, openaiStrictSchema, runTool, type ToolContext } from './tools';
 import { SYSTEM_PROMPT } from './systemPrompt';
 
 export type Provider = 'claude' | 'openai';
@@ -64,7 +64,10 @@ async function runAll(ctx: ToolContext, calls: { id: string; name: string; input
 const CLAUDE_TOOLS: BetaToolUnion[] = AI_TOOLS.map((t) => ({
   name: t.name,
   description: t.description,
-  input_schema: t.parameters as { type: 'object' },
+  input_schema: anthropicStrictSchema(t.parameters) as { type: 'object' },
+  // the model's inputs always match the schema; ranges are enforced by runTool()
+  strict: true,
+  ...(t.examples ? { input_examples: t.examples } : {}),
   // stream tool inputs as they are generated; runTool() validates them before running
   eager_input_streaming: true,
 }));
@@ -124,7 +127,8 @@ class ClaudeConversation implements Conversation {
 // OpenAI (Responses API: function tools work together with reasoning models)
 
 const OPENAI_TOOLS: FunctionTool[] = AI_TOOLS.map((t) => ({
-  type: 'function', name: t.name, description: t.description, parameters: t.parameters, strict: false,
+  // strict: every property required, optional ones nullable (runTool() drops the nulls)
+  type: 'function', name: t.name, description: t.description, parameters: openaiStrictSchema(t.parameters), strict: true,
 }));
 
 class OpenAIConversation implements Conversation {
