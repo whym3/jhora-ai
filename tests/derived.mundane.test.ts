@@ -25,7 +25,7 @@ describe('Mundane tab', async () => {
 
   it('planetary transit: the body sits on a division boundary and the period ends at the next change', async () => {
     const r = await run({ mode: 'transit', body: 1, division: 0, after: true });
-    expect(r.label).toBe('Rasi change (Sun)');
+    expect(r.label).toBe('Rasi change (Su)');
     const sun = r.chart.positions.grahas.Sun.lon;
     expect(Math.abs(wrap(sun - Math.round(sun / 30) * 30))).toBeLessThan(2e-4);   // 1-second bracket
     expect(r.chart.positions.jdUt).toBeGreaterThan(natal.positions.jdUt);
@@ -45,12 +45,12 @@ describe('Mundane tab', async () => {
     const r = await run({ mode: 'transit', body: 3, division: 2, after: true });
     const mars = r.chart.positions.grahas.Mars.lon;
     expect(Math.abs(wrap(mars - Math.round(mars / (30 / 9)) * (30 / 9)))).toBeLessThan(1e-4);
-    expect(r.label).toBe('Navamsa change (Mars)');
+    expect(r.label).toBe('Navamsa change (Ma)');
   });
 
   it('conjunction and aspects: lon(p1) - lon(p2) equals the angle', async () => {
     const r = await run({ mode: 'conjunction', body1: 2, body2: 1, aspect: 0, after: true });
-    expect(r.label).toBe('Moon-Sun Conj');
+    expect(r.label).toBe('Mo-Su Conj');
     const p = r.chart.positions.grahas;
     expect(Math.abs(wrap(p.Moon.lon - p.Sun.lon))).toBeLessThan(2e-4);
     expect(r.periodDays).toBeGreaterThan(29);
@@ -63,7 +63,7 @@ describe('Mundane tab', async () => {
 
   it('stationary transit: the speed changes sign at the found moment', async () => {
     const r = await run({ mode: 'stationary', body: 1, after: true });   // Mercury
-    expect(r.label).toBe('Retro change (Mercury)');
+    expect(r.label).toBe('Retro change (Me)');
     const before = await lonAt(r.birth, -0.01), after = await lonAt(r.birth, 0.01);
     expect(Math.sign(before.positions.grahas.Mercury.speed)).not.toBe(Math.sign(after.positions.grahas.Mercury.speed));
     expect(r.periodDays).toBeGreaterThan(15);

@@ -2,9 +2,9 @@
 // * Tithi Pravesha annual chart of 2000 (form: edit 100 = 2000, combo 1003 = 0, click 1000):
 //   Key Info text, Longitudes & Basic Info ('TP annual 2000') and the compressed Vimsottari
 //   dasa texts ('TP Vimsottari': dasa 32972, dasa_dates 33236, dasa_level2_0).
-// * Miscellany > Panchanga: monthly panchanga copy of the natal month ('monthly_jd', cmd 33086).
-//   The captured text is in FUN_0046a150's layout ("Copy monthly panchanga", our
-//   'panchanga.monthly'), not the tab-separated JD layout ('panchanga.monthlyJd', unverified).
+// * Miscellany > Panchanga: monthly panchanga copy of the natal month (cmd 33085, our
+//   'panchanga.monthly'). It is stored as 'monthly_jd': the capture posted 33086 ("JD format"),
+//   which JHora always disables, and read the clipboard 33085 had left.
 import { existsSync, readdirSync, readFileSync } from 'node:fs';
 import { describe, expect, it } from 'vitest';
 import { nodeSweph } from './helpers';

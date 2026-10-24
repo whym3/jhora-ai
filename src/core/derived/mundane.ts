@@ -69,6 +69,8 @@ const wrap180 = (x: number) => { let d = x % 360; if (d > 180) d -= 360; else if
 
 /** JHora body index (combo order): 0 Lagna, 1 Sun ... 7 Saturn, 8 Rahu, 9 Ketu. */
 export const MUNDANE_BODIES = ['Lagna', 'Sun', 'Moon', 'Mars', 'Mercury', 'Jupiter', 'Venus', 'Saturn', 'Rahu', 'Ketu'] as const;
+/** Short names JHora puts in chart labels ("Retro change (Ju)", "Mo-Su Opp", "Ang Ret As-Su"). */
+export const BODY_SHORT = ['As', 'Su', 'Mo', 'Ma', 'Me', 'Ju', 'Ve', 'Sa', 'Ra', 'Ke'] as const;
 /** Combo 1004 (division of the transit mode). */
 export const TRANSIT_DIVISIONS = ['Rasi', 'Nakshatra', 'Navamsa', 'D-2', 'D-3', 'D-4', 'D-5', 'D-6', 'D-7', 'D-8', 'D-10', 'D-11',
   'D-12', 'D-16', 'D-20', 'D-24', 'D-27', 'D-30', 'D-40', 'D-45', 'D-60', 'D-108', 'D-144'];

@@ -25,7 +25,8 @@
 //     (wd + 5k) % 7 by day and (wd + 4(k-7)) % 7 by night (names 0x8a2240).
 // Copy formats:
 //   33085 "Copy monthly panchanga"        FUN_00463fc0 -> FUN_0046a150 (no horas)
-//   33086 "Copy monthly panchanga in JD format" FUN_00464310 -> FUN_0046af00
+//   33086 "Copy monthly panchanga in JD format" FUN_00464310: never reachable - the update
+//         handler 0x4648d0 always disables it (enables 33084/33085, 33087/33088 and 33420)
 //   33420 DP format (FUN_00464070 -> FUN_0046eee0, asks month/year in a dialog): not ported
 //   33087/33088/33089 monthly ephemeris / movements / co-ordinates: not ported
 // Times: FUN_004ba720 -> FUN_004c1d40 "%d:%02d" (mode 0 truncates the seconds,
@@ -301,34 +302,6 @@ export function dayText(d: PanchangaDay, horas = false): string {
 /** FUN_0046a150 for the whole month: the clipboard text of command 33085. */
 export function monthlyText(days: PanchangaDay[], horas = false): string {
   return days.map((d) => dayText(d, horas)).join('');
-}
-
-/** FUN_0046af00: "Copy monthly panchanga in JD format" (33086), tab separated. */
-export function jdFormatText(days: PanchangaDay[], month: number, year: number): string {
-  let out = `\nMonthly Panchanga for ${MONTHS[month - 1]}, ${year}:\n`;
-  const tithiCode = (i: number) => `${i >= 15 ? 'K' : 'S'}${(i % 15) + 1}`;
-  for (const d of days) {
-    const k = d.counter;
-    const T0 = (t: Moment) => timeText(t, 0, k);
-    const T2 = (t: Moment | null) => timeText(t, 2, k);
-    out += `\n${d.date.day}\t`;
-    out += `${WEEKDAY_SHORT[d.weekday]}\t`;
-    out += `${T2(d.sunrise)}\t${T2(d.sunset)}\t${T2(d.moonrise)}\t${T2(d.moonset)}\t`;
-    out += `${d.moonSign.items[0].index + 1}\t` + (d.moonSign.count === 0 ? '24hr\t' : `${T0(d.moonSign.items[0].end)}\t`);
-    out += `${tithiCode(d.tithi.items[0].index)}\t` + (d.tithi.count === 0 ? '24hr\t' : `${T0(d.tithi.items[0].end)}\t`);
-    out += `${d.nakshatra.items[0].index + 1}\t` + (d.nakshatra.count === 0 ? '24hr\t' : `${T0(d.nakshatra.items[0].end)}\t`);
-    out += `${d.yoga.items[0].index + 1}\t` + (d.yoga.count === 0 ? '24hr\t' : `${T0(d.yoga.items[0].end)}\t`);
-    out += `${d.karana.items[0].index + 1}\t${T0(d.karana.items[0].end)}\t`;
-    out += d.karana.count < 2 ? '\t\t' : `${d.karana.items[1].index + 1}\t${T0(d.karana.items[1].end)}\t`;
-    if (d.tithi.count > 1 || d.nakshatra.count > 1 || d.yoga.count > 1 || d.karana.count > 2) {
-      out += `\n${d.date.day}\t` + '\t\t\t\t\t\t\t';
-      out += d.tithi.count < 2 ? '\t\t' : `${tithiCode(d.tithi.items[1].index)}\t${T0(d.tithi.items[1].end)}\t`;
-      out += d.nakshatra.count < 2 ? '\t\t' : `${d.nakshatra.items[1].index + 1}\t${T0(d.nakshatra.items[1].end)}\t`;
-      out += d.yoga.count < 2 ? '\t\t' : `${d.yoga.items[1].index + 1}\t${T0(d.yoga.items[1].end)}\t`;
-      out += d.karana.count < 3 ? '\t\t' : `${d.karana.items[2].index + 1}\t${T0(d.karana.items[2].end)}\t`;
-    }
-  }
-  return out;
 }
 
 export { SIGN_SHORT as PANCHANGA_SIGNS, PLANET as PANCHANGA_PLANETS, WEEKDAY_SHORT };

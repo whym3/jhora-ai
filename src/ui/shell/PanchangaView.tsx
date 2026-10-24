@@ -1,13 +1,13 @@
 // Miscellany > Panchanga (CPanchangaView): the pane shows the chart's day and the
 // next one (with horas and Gouri panchanga choghadiyas); menu 150 copies the monthly
-// panchanga (33085) or the same in "JD format" (33086). Works on the shown chart.
+// panchanga (33085; JHora keeps its "JD format" item 33086 disabled). Works on the shown chart.
 import { useState } from 'react';
 import type { ChartSpec } from '../../engine/protocol';
 import { useJob } from '../EngineProvider';
 import { TableView } from '../widgets/TableView';
 
 const MONTHS = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
-type Mode = 'daily' | 'monthly' | 'monthlyJd';
+type Mode = 'daily' | 'monthly';
 
 export function PanchangaView({ spec }: { natalSpec: ChartSpec; docId: string; spec: ChartSpec }) {
   const [mode, setMode] = useState<Mode>('daily');
@@ -20,7 +20,6 @@ export function PanchangaView({ spec }: { natalSpec: ChartSpec; docId: string; s
         <select aria-label="Panchanga mode" value={mode} onChange={(e) => setMode(e.target.value as Mode)}>
           <option value="daily">Panchanga (this day and the next)</option>
           <option value="monthly">Monthly panchanga</option>
-          <option value="monthlyJd">Monthly panchanga in JD format</option>
         </select>
         {mode !== 'daily' && (
           <>

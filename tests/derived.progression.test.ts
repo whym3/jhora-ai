@@ -90,7 +90,7 @@ describe('Progressions and angular return', async () => {
     }
     const before = angularReturn(swe, natal, { a: 1, b: 2, before: true, ...date, tzHours: natal.birth.tzHours });
     expect(before.start).toBeLessThan(swe.julday(date.year, date.month, date.day, date.hour - natal.birth.tzHours));
-    expect(before.label).toBe('Ang Ret Sun-Moon');
+    expect(before.label).toBe('Ang Ret Su-Mo');
     expect(() => angularReturn(swe, natal, { a: 3, b: 3, before: false, ...date, tzHours: 0 })).toThrow(/DIFFERENT/);
     expect(Math.abs(wrap(lagnaAt(swe, natal.positions.jdUt, natal.birth, s) - natal.positions.ascendant))).toBeLessThan(1e-9);
   });
@@ -102,6 +102,6 @@ describe('Progressions and angular return', async () => {
     expect(birth.override?.ascendant).toBeDefined();
     expect(t.rows.length).toBe(10);
     const a = await ANGULAR_JOBS['angularReturn.find'](natal, { a: 1, b: 2, before: false, ...date, tzHours: natal.birth.tzHours }, swe);
-    expect(JSON.parse(a.text![0]).label).toBe('Ang Ret Sun-Moon');
+    expect(JSON.parse(a.text![0]).label).toBe('Ang Ret Su-Mo');
   });
 });

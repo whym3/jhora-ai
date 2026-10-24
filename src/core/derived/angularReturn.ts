@@ -24,6 +24,7 @@ import { ayanamsa, norm360, siderealLongitude, type Graha } from '../positions';
 import { calcSettingsFromIni, type Settings } from '../settings';
 import { jhoraDeltaT } from '../deltat';
 import { birthAt, scanCrossing } from './common';
+import { BODY_SHORT } from './mundane';
 import type { BirthData } from '../jhd';
 
 export const ANGRET_BODIES = ['Lagna', 'Sun', 'Moon', 'Mars', 'Mercury', 'Jupiter', 'Venus', 'Saturn', 'Rahu', 'Ketu'] as const;
@@ -84,6 +85,6 @@ export function angularReturn(swe: Sweph, natal: Chart, inp: AngularReturnInput)
   if (start === null) throw new Error('angular return not found within 300 years');
   const end = scanCrossing(f, angle, start + 0.0035, 1, step, limit);
   if (end === null) throw new Error('next angular return not found within 300 years');
-  return { label: `Ang Ret ${A}-${B}`, angle, start, end, birth: birthAt(swe, natal, start) };
+  return { label: `Ang Ret ${BODY_SHORT[inp.a]}-${BODY_SHORT[inp.b]}`, angle, start, end, birth: birthAt(swe, natal, start) };
 }
 

@@ -24,7 +24,7 @@ from pywinauto import Application  # noqa: E402
 
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 from jh_dump import check_ini, read_listview, tcp_connections  # noqa: E402
-from tabs import Tabs, TabError, SUB_TABS  # noqa: E402
+from tabs import Tabs, TabError, SUB_TABS, ensure_front  # noqa: E402
 
 WM_COMMAND = 0x0111
 HERE = os.path.dirname(os.path.abspath(__file__))
@@ -54,6 +54,20 @@ class Clipboard:
     @staticmethod
     def seq():
         return win32clipboard.GetClipboardSequenceNumber()
+
+    @staticmethod
+    def clear():
+        for _ in range(20):
+            try:
+                win32clipboard.OpenClipboard()
+            except Exception:
+                time.sleep(0.05)
+                continue
+            try:
+                win32clipboard.EmptyClipboard()
+            finally:
+                win32clipboard.CloseClipboard()
+            return
 
 
 class Session:
@@ -101,26 +115,60 @@ class Session:
         time.sleep(settle)
         return self.dismiss_dialogs()
 
-    def copy_text(self, cmd, target=None):
+    def copy_text(self, cmd, target=None, wait=2.0):
+        """Post a copy command and return the clipboard text it leaves. The clipboard is
+        emptied first (a slow copy, e.g. the JD-format panchanga, must not be read as the
+        previous text) and read once it has text and has not changed for 0.2 s."""
+        self.dismiss_dialogs()      # a modal box left open would swallow the command
+        Clipboard.clear()
         seq = Clipboard.seq()
         (target or self.main).post_message(WM_COMMAND, cmd, 0)
-        for _ in range(40):
+        deadline = time.time() + wait
+        while time.time() < deadline:
             time.sleep(0.05)
-            if Clipboard.seq() != seq:
+            now = Clipboard.seq()
+            if now == seq:
+                continue
+            time.sleep(0.2)
+            if Clipboard.seq() != now:
+                continue
+            seq = now
+            text = Clipboard.read()
+            if not text:
+                continue
+            # some copies confirm with a modal "Successfully copied..." box shortly after
+            dialogs = []
+            for _ in range(15):
                 time.sleep(0.1)
-                text = Clipboard.read()
-                dialogs = self.dismiss_dialogs()
-                time.sleep(0.3)
                 dialogs += self.dismiss_dialogs()
-                return text, dialogs
+                if dialogs:
+                    break
+            return text, dialogs
         return "", self.dismiss_dialogs()
 
-    def copy_from_panes(self, cmd):
+    def copy_active(self, cmd, wait=2.0):
+        """Copy via the frame, which routes the command to its active view. If that view is
+        not the one owning the command (e.g. after copies posted to other panes), make
+        each visible pane the active view in turn (WM_MOUSEACTIVATE, no click: a click
+        would act on the view) and retry."""
+        text, dialogs = self.copy_text(cmd, wait=wait)
+        if text:
+            return text, dialogs
+        panes = [w for w in self.main.descendants(class_name="AfxFrameOrView42s") if w.is_visible()]
+        for w in sorted(panes, key=lambda w: -w.rectangle().width() * w.rectangle().height()):
+            ctypes.windll.user32.SendMessageW(w.handle, 0x0021, self.main.handle, (0x0201 << 16) | 1)
+            time.sleep(0.2)
+            text, dialogs = self.copy_text(cmd, wait=wait)
+            if text:
+                return text, dialogs
+        return "", dialogs
+
+    def copy_from_panes(self, cmd, wait=2.0):
         """Some copies (Key Info, chart drawings) belong to a pane that is not the
         active view: post the command to each visible pane until one answers."""
         for w in self.main.descendants(class_name="AfxFrameOrView42s"):
             if w.is_visible():
-                text, dialogs = self.copy_text(cmd, target=w)
+                text, dialogs = self.copy_text(cmd, target=w, wait=wait)
                 if text:
                     return text, dialogs
         return "", []
@@ -129,6 +177,7 @@ class Session:
         for lv in self.main.descendants(class_name="SysListView32"):
             if lv.is_visible() and lv.control_id() == control_id:
                 r = lv.rectangle()
+                ensure_front(self.main)
                 lv.click_input(coords=(8, min(r.height() - 4, 40)))
                 time.sleep(0.2)
                 return True
@@ -170,6 +219,7 @@ def capture_dasa_levels(s, result, top, sub, label, copies, reset, max_rows=12):
         p = pane()
         if not p:
             return
+        ensure_front(s.main)
         p.click_input(coords=(DASA_ROW_X, DASA_ROW0 + DASA_ROW_DY * i))
         time.sleep(0.4)
         text, _ = s.copy_text(copies["dasa"])
@@ -178,9 +228,33 @@ def capture_dasa_levels(s, result, top, sub, label, copies, reset, max_rows=12):
     reset()
 
 
+RDW_REPAINT = 0x0001 | 0x0004 | 0x0080 | 0x0100   # INVALIDATE | ERASE | ALLCHILDREN | UPDATENOW
+DRAW_KEYS = ("fn", "text", "x", "y", "rect", "fmt", "opts", "color", "bk", "brush", "pts")
+
+
+def record_draw(s, trace):
+    """Repaint the window and return what the visible views drew (gditrace events),
+    without the tab strips; each event keeps its window's class name."""
+    import win32gui
+    trace.drain(0.3)
+    ctypes.windll.user32.RedrawWindow(s.main.handle, None, None, RDW_REPAINT)
+    out = []
+    for e in trace.drain(1.0):
+        cls = win32gui.GetClassName(e["hwnd"]) if e["hwnd"] else ""
+        if cls == "AfxWnd42s" or (e["fn"] == "DrawText" and e.get("rect") and e["rect"][1] == 10 and e["rect"][3] == 23):
+            continue    # tab captions
+        out.append({"hwnd": e["hwnd"], "cls": cls, **{k: e[k] for k in DRAW_KEYS if e.get(k) is not None}})
+    return out
+
+
 def capture_chart(root, chart, manifest, ini_overrides):
     s = Session(root, chart)
-    result = {"chart": os.path.basename(chart), "window": s.main.window_text(), "ini_overrides": ini_overrides, "views": [], "texts": []}
+    result = {"chart": os.path.basename(chart), "window": s.main.window_text(), "ini_overrides": ini_overrides, "views": [], "texts": [], "draws": []}
+    trace = None
+    if any(t.get("draw") for t in manifest["tabs"]):
+        from gditrace import GdiTrace
+        trace = GdiTrace(s.pid)
+        trace.start()
     try:
         for tab in manifest["tabs"]:
             top, sub = tab["top"], tab["sub"]
@@ -220,8 +294,11 @@ def capture_chart(root, chart, manifest, ini_overrides):
                 if tab.get("lists"):
                     for lv in s.visible_lists():
                         result["views"].append({"top": top, "sub": sub, "mode": label, "control_id": lv["id"], "headers": lv["headers"], "rows": lv["rows"]})
+                if tab.get("draw") and trace:
+                    result["draws"].append({"top": top, "sub": sub, "mode": label, "events": record_draw(s, trace)})
+                wait = tab.get("copy_wait", 2.0)
                 for name, ccmd in (tab.get("copies") or {}).items():
-                    text, dialogs = s.copy_from_panes(ccmd) if name in (tab.get("pane_copies") or []) else s.copy_text(ccmd)
+                    text, dialogs = s.copy_from_panes(ccmd, wait) if name in (tab.get("pane_copies") or []) else s.copy_active(ccmd, wait=wait)
                     if text:
                         result["texts"].append({"top": top, "sub": sub, "mode": label, "name": name, "cmd": ccmd, "lines": text.replace("\r\n", "\n").split("\n")})
                     if dialogs:
@@ -240,8 +317,22 @@ def capture_chart(root, chart, manifest, ini_overrides):
             if modes[0][1]:
                 s.command(modes[0][1])
     finally:
+        if trace:
+            trace.stop()
         s.close()
+    if not result["draws"]:
+        del result["draws"]
     return result
+
+
+def kill_harness_jhora(root):
+    """Kill JHora instances started from the private copy only: never `taskkill /IM`,
+    which would also close the user's own JHora."""
+    exe = os.path.normcase(os.path.abspath(os.path.join(root, "bin", "jhora.exe")))
+    script = ("Get-CimInstance Win32_Process -Filter \"Name='jhora.exe'\" | "
+              f"Where-Object {{ $_.ExecutablePath -and $_.ExecutablePath.ToLower() -eq '{exe.lower()}' }} | "
+              "ForEach-Object { Stop-Process -Id $_.ProcessId -Force }")
+    subprocess.run(["powershell", "-NoProfile", "-Command", script], capture_output=True)
 
 
 def write_ini_overrides(root, overrides):
@@ -287,7 +378,7 @@ def main():
                 if "network connection" in str(e):
                     raise           # never relaunch JHora after it tried to go online
                 print(f"   attempt {attempt + 1} failed: {e}")
-                subprocess.run(["taskkill", "/F", "/IM", "jhora.exe"], capture_output=True)
+                kill_harness_jhora(args.jhora)
                 time.sleep(3)
         if result is None:
             print("   giving up on this chart")

@@ -1,0 +1,2591 @@
+{
+ "_comment": "Mundane, Angular Return, Progressions and Prasna charts (form pinned; each followed by the found chart's Key Info, longitudes and Vimsottari, then Back), the JD-format panchanga copy, and what every chakra view draws (gditrace). Output: golden/jhora-misc.",
+ "tabs": [
+  {
+   "top": "Mundane",
+   "sub": null,
+   "label": "Mundane: Transit Sun Rasi before",
+   "form": [
+    [
+     "combo",
+     1003,
+     1
+    ],
+    [
+     "combo",
+     1004,
+     0
+    ],
+    [
+     "combo",
+     1005,
+     0
+    ],
+    [
+     "click",
+     1018,
+     8.0
+    ]
+   ]
+  },
+  {
+   "top": "Basics",
+   "sub": "Key Info",
+   "lists": true,
+   "copies": {
+    "key_info": 32974
+   },
+   "pane_copies": [
+    "key_info"
+   ],
+   "modes": [
+    [
+     "Mundane: Transit Sun Rasi before",
+     32822
+    ]
+   ]
+  },
+  {
+   "top": "Dasas",
+   "sub": "Nakshatra dasas",
+   "copies": {
+    "dasa": 32972
+   },
+   "modes": [
+    [
+     "Mundane: Transit Sun Rasi before",
+     32846
+    ]
+   ]
+  },
+  {
+   "top": "Mundane",
+   "sub": null,
+   "form": [
+    [
+     "click",
+     1016,
+     2.0
+    ]
+   ]
+  },
+  {
+   "top": "Mundane",
+   "sub": null,
+   "label": "Mundane: Transit Moon Nakshatra after",
+   "form": [
+    [
+     "combo",
+     1003,
+     2
+    ],
+    [
+     "combo",
+     1004,
+     1
+    ],
+    [
+     "combo",
+     1005,
+     1
+    ],
+    [
+     "click",
+     1018,
+     8.0
+    ]
+   ]
+  },
+  {
+   "top": "Basics",
+   "sub": "Key Info",
+   "lists": true,
+   "copies": {
+    "key_info": 32974
+   },
+   "pane_copies": [
+    "key_info"
+   ],
+   "modes": [
+    [
+     "Mundane: Transit Moon Nakshatra after",
+     32822
+    ]
+   ]
+  },
+  {
+   "top": "Dasas",
+   "sub": "Nakshatra dasas",
+   "copies": {
+    "dasa": 32972
+   },
+   "modes": [
+    [
+     "Mundane: Transit Moon Nakshatra after",
+     32846
+    ]
+   ]
+  },
+  {
+   "top": "Mundane",
+   "sub": null,
+   "form": [
+    [
+     "click",
+     1016,
+     2.0
+    ]
+   ]
+  },
+  {
+   "top": "Mundane",
+   "sub": null,
+   "label": "Mundane: Transit Jupiter Navamsa before",
+   "form": [
+    [
+     "combo",
+     1003,
+     5
+    ],
+    [
+     "combo",
+     1004,
+     2
+    ],
+    [
+     "combo",
+     1005,
+     0
+    ],
+    [
+     "click",
+     1018,
+     8.0
+    ]
+   ]
+  },
+  {
+   "top": "Basics",
+   "sub": "Key Info",
+   "lists": true,
+   "copies": {
+    "key_info": 32974
+   },
+   "pane_copies": [
+    "key_info"
+   ],
+   "modes": [
+    [
+     "Mundane: Transit Jupiter Navamsa before",
+     32822
+    ]
+   ]
+  },
+  {
+   "top": "Dasas",
+   "sub": "Nakshatra dasas",
+   "copies": {
+    "dasa": 32972
+   },
+   "modes": [
+    [
+     "Mundane: Transit Jupiter Navamsa before",
+     32846
+    ]
+   ]
+  },
+  {
+   "top": "Mundane",
+   "sub": null,
+   "form": [
+    [
+     "click",
+     1016,
+     2.0
+    ]
+   ]
+  },
+  {
+   "top": "Mundane",
+   "sub": null,
+   "label": "Mundane: Transit Lagna Rasi after",
+   "form": [
+    [
+     "combo",
+     1003,
+     0
+    ],
+    [
+     "combo",
+     1004,
+     0
+    ],
+    [
+     "combo",
+     1005,
+     1
+    ],
+    [
+     "click",
+     1018,
+     8.0
+    ]
+   ]
+  },
+  {
+   "top": "Basics",
+   "sub": "Key Info",
+   "lists": true,
+   "copies": {
+    "key_info": 32974
+   },
+   "pane_copies": [
+    "key_info"
+   ],
+   "modes": [
+    [
+     "Mundane: Transit Lagna Rasi after",
+     32822
+    ]
+   ]
+  },
+  {
+   "top": "Dasas",
+   "sub": "Nakshatra dasas",
+   "copies": {
+    "dasa": 32972
+   },
+   "modes": [
+    [
+     "Mundane: Transit Lagna Rasi after",
+     32846
+    ]
+   ]
+  },
+  {
+   "top": "Mundane",
+   "sub": null,
+   "form": [
+    [
+     "click",
+     1016,
+     2.0
+    ]
+   ]
+  },
+  {
+   "top": "Mundane",
+   "sub": null,
+   "label": "Mundane: Conjunction Saturn Jupiter before",
+   "form": [
+    [
+     "combo",
+     1012,
+     7
+    ],
+    [
+     "combo",
+     1009,
+     5
+    ],
+    [
+     "combo",
+     1036,
+     0
+    ],
+    [
+     "combo",
+     1010,
+     0
+    ],
+    [
+     "click",
+     1021,
+     8.0
+    ]
+   ]
+  },
+  {
+   "top": "Basics",
+   "sub": "Key Info",
+   "lists": true,
+   "copies": {
+    "key_info": 32974
+   },
+   "pane_copies": [
+    "key_info"
+   ],
+   "modes": [
+    [
+     "Mundane: Conjunction Saturn Jupiter before",
+     32822
+    ]
+   ]
+  },
+  {
+   "top": "Dasas",
+   "sub": "Nakshatra dasas",
+   "copies": {
+    "dasa": 32972
+   },
+   "modes": [
+    [
+     "Mundane: Conjunction Saturn Jupiter before",
+     32846
+    ]
+   ]
+  },
+  {
+   "top": "Mundane",
+   "sub": null,
+   "form": [
+    [
+     "click",
+     1016,
+     2.0
+    ]
+   ]
+  },
+  {
+   "top": "Mundane",
+   "sub": null,
+   "label": "Mundane: Opposition Sun Moon after",
+   "form": [
+    [
+     "combo",
+     1012,
+     1
+    ],
+    [
+     "combo",
+     1009,
+     2
+    ],
+    [
+     "combo",
+     1036,
+     1
+    ],
+    [
+     "combo",
+     1010,
+     1
+    ],
+    [
+     "click",
+     1021,
+     8.0
+    ]
+   ]
+  },
+  {
+   "top": "Basics",
+   "sub": "Key Info",
+   "lists": true,
+   "copies": {
+    "key_info": 32974
+   },
+   "pane_copies": [
+    "key_info"
+   ],
+   "modes": [
+    [
+     "Mundane: Opposition Sun Moon after",
+     32822
+    ]
+   ]
+  },
+  {
+   "top": "Dasas",
+   "sub": "Nakshatra dasas",
+   "copies": {
+    "dasa": 32972
+   },
+   "modes": [
+    [
+     "Mundane: Opposition Sun Moon after",
+     32846
+    ]
+   ]
+  },
+  {
+   "top": "Mundane",
+   "sub": null,
+   "form": [
+    [
+     "click",
+     1016,
+     2.0
+    ]
+   ]
+  },
+  {
+   "top": "Mundane",
+   "sub": null,
+   "label": "Mundane: Trine5 Mars Venus after",
+   "form": [
+    [
+     "combo",
+     1012,
+     3
+    ],
+    [
+     "combo",
+     1009,
+     6
+    ],
+    [
+     "combo",
+     1036,
+     2
+    ],
+    [
+     "combo",
+     1010,
+     1
+    ],
+    [
+     "click",
+     1021,
+     8.0
+    ]
+   ]
+  },
+  {
+   "top": "Basics",
+   "sub": "Key Info",
+   "lists": true,
+   "copies": {
+    "key_info": 32974
+   },
+   "pane_copies": [
+    "key_info"
+   ],
+   "modes": [
+    [
+     "Mundane: Trine5 Mars Venus after",
+     32822
+    ]
+   ]
+  },
+  {
+   "top": "Dasas",
+   "sub": "Nakshatra dasas",
+   "copies": {
+    "dasa": 32972
+   },
+   "modes": [
+    [
+     "Mundane: Trine5 Mars Venus after",
+     32846
+    ]
+   ]
+  },
+  {
+   "top": "Mundane",
+   "sub": null,
+   "form": [
+    [
+     "click",
+     1016,
+     2.0
+    ]
+   ]
+  },
+  {
+   "top": "Mundane",
+   "sub": null,
+   "label": "Mundane: Stationary Jupiter before",
+   "form": [
+    [
+     "combo",
+     1053,
+     2
+    ],
+    [
+     "combo",
+     1055,
+     0
+    ],
+    [
+     "click",
+     1052,
+     8.0
+    ]
+   ]
+  },
+  {
+   "top": "Basics",
+   "sub": "Key Info",
+   "lists": true,
+   "copies": {
+    "key_info": 32974
+   },
+   "pane_copies": [
+    "key_info"
+   ],
+   "modes": [
+    [
+     "Mundane: Stationary Jupiter before",
+     32822
+    ]
+   ]
+  },
+  {
+   "top": "Dasas",
+   "sub": "Nakshatra dasas",
+   "copies": {
+    "dasa": 32972
+   },
+   "modes": [
+    [
+     "Mundane: Stationary Jupiter before",
+     32846
+    ]
+   ]
+  },
+  {
+   "top": "Mundane",
+   "sub": null,
+   "form": [
+    [
+     "click",
+     1016,
+     2.0
+    ]
+   ]
+  },
+  {
+   "top": "Mundane",
+   "sub": null,
+   "label": "Mundane: Stationary Mercury after",
+   "form": [
+    [
+     "combo",
+     1053,
+     1
+    ],
+    [
+     "combo",
+     1055,
+     1
+    ],
+    [
+     "click",
+     1052,
+     8.0
+    ]
+   ]
+  },
+  {
+   "top": "Basics",
+   "sub": "Key Info",
+   "lists": true,
+   "copies": {
+    "key_info": 32974
+   },
+   "pane_copies": [
+    "key_info"
+   ],
+   "modes": [
+    [
+     "Mundane: Stationary Mercury after",
+     32822
+    ]
+   ]
+  },
+  {
+   "top": "Dasas",
+   "sub": "Nakshatra dasas",
+   "copies": {
+    "dasa": 32972
+   },
+   "modes": [
+    [
+     "Mundane: Stationary Mercury after",
+     32846
+    ]
+   ]
+  },
+  {
+   "top": "Mundane",
+   "sub": null,
+   "form": [
+    [
+     "click",
+     1016,
+     2.0
+    ]
+   ]
+  },
+  {
+   "top": "Mundane",
+   "sub": null,
+   "label": "Mundane: Eclipse next Lunar start",
+   "form": [
+    [
+     "combo",
+     1031,
+     1
+    ],
+    [
+     "combo",
+     1032,
+     0
+    ],
+    [
+     "combo",
+     1037,
+     0
+    ],
+    [
+     "click",
+     1028,
+     8.0
+    ]
+   ]
+  },
+  {
+   "top": "Basics",
+   "sub": "Key Info",
+   "lists": true,
+   "copies": {
+    "key_info": 32974
+   },
+   "pane_copies": [
+    "key_info"
+   ],
+   "modes": [
+    [
+     "Mundane: Eclipse next Lunar start",
+     32822
+    ]
+   ]
+  },
+  {
+   "top": "Dasas",
+   "sub": "Nakshatra dasas",
+   "copies": {
+    "dasa": 32972
+   },
+   "modes": [
+    [
+     "Mundane: Eclipse next Lunar start",
+     32846
+    ]
+   ]
+  },
+  {
+   "top": "Mundane",
+   "sub": null,
+   "form": [
+    [
+     "click",
+     1016,
+     2.0
+    ]
+   ]
+  },
+  {
+   "top": "Mundane",
+   "sub": null,
+   "label": "Mundane: Eclipse previous Global Solar maximum",
+   "form": [
+    [
+     "combo",
+     1031,
+     0
+    ],
+    [
+     "combo",
+     1032,
+     1
+    ],
+    [
+     "combo",
+     1037,
+     1
+    ],
+    [
+     "click",
+     1028,
+     8.0
+    ]
+   ]
+  },
+  {
+   "top": "Basics",
+   "sub": "Key Info",
+   "lists": true,
+   "copies": {
+    "key_info": 32974
+   },
+   "pane_copies": [
+    "key_info"
+   ],
+   "modes": [
+    [
+     "Mundane: Eclipse previous Global Solar maximum",
+     32822
+    ]
+   ]
+  },
+  {
+   "top": "Dasas",
+   "sub": "Nakshatra dasas",
+   "copies": {
+    "dasa": 32972
+   },
+   "modes": [
+    [
+     "Mundane: Eclipse previous Global Solar maximum",
+     32846
+    ]
+   ]
+  },
+  {
+   "top": "Mundane",
+   "sub": null,
+   "form": [
+    [
+     "click",
+     1016,
+     2.0
+    ]
+   ]
+  },
+  {
+   "top": "Mundane",
+   "sub": null,
+   "label": "Mundane: Eclipse next Local Solar start",
+   "form": [
+    [
+     "combo",
+     1031,
+     1
+    ],
+    [
+     "combo",
+     1032,
+     2
+    ],
+    [
+     "combo",
+     1037,
+     0
+    ],
+    [
+     "click",
+     1028,
+     8.0
+    ]
+   ]
+  },
+  {
+   "top": "Basics",
+   "sub": "Key Info",
+   "lists": true,
+   "copies": {
+    "key_info": 32974
+   },
+   "pane_copies": [
+    "key_info"
+   ],
+   "modes": [
+    [
+     "Mundane: Eclipse next Local Solar start",
+     32822
+    ]
+   ]
+  },
+  {
+   "top": "Dasas",
+   "sub": "Nakshatra dasas",
+   "copies": {
+    "dasa": 32972
+   },
+   "modes": [
+    [
+     "Mundane: Eclipse next Local Solar start",
+     32846
+    ]
+   ]
+  },
+  {
+   "top": "Mundane",
+   "sub": null,
+   "form": [
+    [
+     "click",
+     1016,
+     2.0
+    ]
+   ]
+  },
+  {
+   "top": "Mundane",
+   "sub": null,
+   "label": "Mundane: Solar New Year previous",
+   "form": [
+    [
+     "combo",
+     1046,
+     0
+    ],
+    [
+     "click",
+     1019,
+     8.0
+    ]
+   ]
+  },
+  {
+   "top": "Basics",
+   "sub": "Key Info",
+   "lists": true,
+   "copies": {
+    "key_info": 32974
+   },
+   "pane_copies": [
+    "key_info"
+   ],
+   "modes": [
+    [
+     "Mundane: Solar New Year previous",
+     32822
+    ]
+   ]
+  },
+  {
+   "top": "Dasas",
+   "sub": "Nakshatra dasas",
+   "copies": {
+    "dasa": 32972
+   },
+   "modes": [
+    [
+     "Mundane: Solar New Year previous",
+     32846
+    ]
+   ]
+  },
+  {
+   "top": "Mundane",
+   "sub": null,
+   "form": [
+    [
+     "click",
+     1016,
+     2.0
+    ]
+   ]
+  },
+  {
+   "top": "Mundane",
+   "sub": null,
+   "label": "Mundane: Solar New Month next",
+   "form": [
+    [
+     "combo",
+     1007,
+     1
+    ],
+    [
+     "click",
+     1020,
+     8.0
+    ]
+   ]
+  },
+  {
+   "top": "Basics",
+   "sub": "Key Info",
+   "lists": true,
+   "copies": {
+    "key_info": 32974
+   },
+   "pane_copies": [
+    "key_info"
+   ],
+   "modes": [
+    [
+     "Mundane: Solar New Month next",
+     32822
+    ]
+   ]
+  },
+  {
+   "top": "Dasas",
+   "sub": "Nakshatra dasas",
+   "copies": {
+    "dasa": 32972
+   },
+   "modes": [
+    [
+     "Mundane: Solar New Month next",
+     32846
+    ]
+   ]
+  },
+  {
+   "top": "Mundane",
+   "sub": null,
+   "form": [
+    [
+     "click",
+     1016,
+     2.0
+    ]
+   ]
+  },
+  {
+   "top": "Mundane",
+   "sub": null,
+   "label": "Mundane: Lunar New Year previous",
+   "form": [
+    [
+     "combo",
+     1029,
+     0
+    ],
+    [
+     "click",
+     1022,
+     8.0
+    ]
+   ]
+  },
+  {
+   "top": "Basics",
+   "sub": "Key Info",
+   "lists": true,
+   "copies": {
+    "key_info": 32974
+   },
+   "pane_copies": [
+    "key_info"
+   ],
+   "modes": [
+    [
+     "Mundane: Lunar New Year previous",
+     32822
+    ]
+   ]
+  },
+  {
+   "top": "Dasas",
+   "sub": "Nakshatra dasas",
+   "copies": {
+    "dasa": 32972
+   },
+   "modes": [
+    [
+     "Mundane: Lunar New Year previous",
+     32846
+    ]
+   ]
+  },
+  {
+   "top": "Mundane",
+   "sub": null,
+   "form": [
+    [
+     "click",
+     1016,
+     2.0
+    ]
+   ]
+  },
+  {
+   "top": "Mundane",
+   "sub": null,
+   "label": "Mundane: Lunar New Month next",
+   "form": [
+    [
+     "combo",
+     1011,
+     1
+    ],
+    [
+     "click",
+     1023,
+     8.0
+    ]
+   ]
+  },
+  {
+   "top": "Basics",
+   "sub": "Key Info",
+   "lists": true,
+   "copies": {
+    "key_info": 32974
+   },
+   "pane_copies": [
+    "key_info"
+   ],
+   "modes": [
+    [
+     "Mundane: Lunar New Month next",
+     32822
+    ]
+   ]
+  },
+  {
+   "top": "Dasas",
+   "sub": "Nakshatra dasas",
+   "copies": {
+    "dasa": 32972
+   },
+   "modes": [
+    [
+     "Mundane: Lunar New Month next",
+     32846
+    ]
+   ]
+  },
+  {
+   "top": "Mundane",
+   "sub": null,
+   "form": [
+    [
+     "click",
+     1016,
+     2.0
+    ]
+   ]
+  },
+  {
+   "top": "Mundane",
+   "sub": null,
+   "label": "Mundane: New Lunar Day previous",
+   "form": [
+    [
+     "combo",
+     1027,
+     0
+    ],
+    [
+     "click",
+     1026,
+     8.0
+    ]
+   ]
+  },
+  {
+   "top": "Basics",
+   "sub": "Key Info",
+   "lists": true,
+   "copies": {
+    "key_info": 32974
+   },
+   "pane_copies": [
+    "key_info"
+   ],
+   "modes": [
+    [
+     "Mundane: New Lunar Day previous",
+     32822
+    ]
+   ]
+  },
+  {
+   "top": "Dasas",
+   "sub": "Nakshatra dasas",
+   "copies": {
+    "dasa": 32972
+   },
+   "modes": [
+    [
+     "Mundane: New Lunar Day previous",
+     32846
+    ]
+   ]
+  },
+  {
+   "top": "Mundane",
+   "sub": null,
+   "form": [
+    [
+     "click",
+     1016,
+     2.0
+    ]
+   ]
+  },
+  {
+   "top": "Mundane",
+   "sub": null,
+   "label": "Mundane: Ardra Pravesha next",
+   "form": [
+    [
+     "combo",
+     1039,
+     1
+    ],
+    [
+     "click",
+     1038,
+     8.0
+    ]
+   ]
+  },
+  {
+   "top": "Basics",
+   "sub": "Key Info",
+   "lists": true,
+   "copies": {
+    "key_info": 32974
+   },
+   "pane_copies": [
+    "key_info"
+   ],
+   "modes": [
+    [
+     "Mundane: Ardra Pravesha next",
+     32822
+    ]
+   ]
+  },
+  {
+   "top": "Dasas",
+   "sub": "Nakshatra dasas",
+   "copies": {
+    "dasa": 32972
+   },
+   "modes": [
+    [
+     "Mundane: Ardra Pravesha next",
+     32846
+    ]
+   ]
+  },
+  {
+   "top": "Mundane",
+   "sub": null,
+   "form": [
+    [
+     "click",
+     1016,
+     2.0
+    ]
+   ]
+  },
+  {
+   "top": "Mundane",
+   "sub": null,
+   "label": "Mundane: Fortnight previous",
+   "form": [
+    [
+     "combo",
+     1044,
+     0
+    ],
+    [
+     "click",
+     1043,
+     8.0
+    ]
+   ]
+  },
+  {
+   "top": "Basics",
+   "sub": "Key Info",
+   "lists": true,
+   "copies": {
+    "key_info": 32974
+   },
+   "pane_copies": [
+    "key_info"
+   ],
+   "modes": [
+    [
+     "Mundane: Fortnight previous",
+     32822
+    ]
+   ]
+  },
+  {
+   "top": "Dasas",
+   "sub": "Nakshatra dasas",
+   "copies": {
+    "dasa": 32972
+   },
+   "modes": [
+    [
+     "Mundane: Fortnight previous",
+     32846
+    ]
+   ]
+  },
+  {
+   "top": "Mundane",
+   "sub": null,
+   "form": [
+    [
+     "click",
+     1016,
+     2.0
+    ]
+   ]
+  },
+  {
+   "top": "Mundane",
+   "sub": null,
+   "label": "Mundane: Swearing-in 1y 0d",
+   "form": [
+    [
+     "edit",
+     100,
+     "1"
+    ],
+    [
+     "edit",
+     101,
+     "0"
+    ],
+    [
+     "click",
+     1015,
+     8.0
+    ]
+   ]
+  },
+  {
+   "top": "Basics",
+   "sub": "Key Info",
+   "lists": true,
+   "copies": {
+    "key_info": 32974
+   },
+   "pane_copies": [
+    "key_info"
+   ],
+   "modes": [
+    [
+     "Mundane: Swearing-in 1y 0d",
+     32822
+    ]
+   ]
+  },
+  {
+   "top": "Dasas",
+   "sub": "Nakshatra dasas",
+   "copies": {
+    "dasa": 32972
+   },
+   "modes": [
+    [
+     "Mundane: Swearing-in 1y 0d",
+     32846
+    ]
+   ]
+  },
+  {
+   "top": "Mundane",
+   "sub": null,
+   "form": [
+    [
+     "click",
+     1016,
+     2.0
+    ]
+   ]
+  },
+  {
+   "top": "Mundane",
+   "sub": null,
+   "label": "Mundane: Swearing-in 0y 45d",
+   "form": [
+    [
+     "edit",
+     100,
+     "0"
+    ],
+    [
+     "edit",
+     101,
+     "45"
+    ],
+    [
+     "click",
+     1015,
+     8.0
+    ]
+   ]
+  },
+  {
+   "top": "Basics",
+   "sub": "Key Info",
+   "lists": true,
+   "copies": {
+    "key_info": 32974
+   },
+   "pane_copies": [
+    "key_info"
+   ],
+   "modes": [
+    [
+     "Mundane: Swearing-in 0y 45d",
+     32822
+    ]
+   ]
+  },
+  {
+   "top": "Dasas",
+   "sub": "Nakshatra dasas",
+   "copies": {
+    "dasa": 32972
+   },
+   "modes": [
+    [
+     "Mundane: Swearing-in 0y 45d",
+     32846
+    ]
+   ]
+  },
+  {
+   "top": "Mundane",
+   "sub": null,
+   "form": [
+    [
+     "click",
+     1016,
+     2.0
+    ]
+   ]
+  },
+  {
+   "top": "Miscellany",
+   "sub": "Angular Return",
+   "label": "Angular Return: Sun-Moon after",
+   "form": [
+    [
+     "combo",
+     1011,
+     1
+    ],
+    [
+     "combo",
+     1012,
+     2
+    ],
+    [
+     "combo",
+     1006,
+     1
+    ],
+    [
+     "combo",
+     1007,
+     2
+    ],
+    [
+     "edit",
+     102,
+     "15"
+    ],
+    [
+     "edit",
+     103,
+     "2001"
+    ],
+    [
+     "edit",
+     1008,
+     "12"
+    ],
+    [
+     "edit",
+     1009,
+     "0"
+    ],
+    [
+     "edit",
+     1010,
+     "0"
+    ],
+    [
+     "edit",
+     1020,
+     "5"
+    ],
+    [
+     "edit",
+     1021,
+     "30"
+    ],
+    [
+     "combo",
+     1079,
+     0
+    ],
+    [
+     "click",
+     1004,
+     6.0
+    ]
+   ]
+  },
+  {
+   "top": "Basics",
+   "sub": "Key Info",
+   "lists": true,
+   "copies": {
+    "key_info": 32974
+   },
+   "pane_copies": [
+    "key_info"
+   ],
+   "modes": [
+    [
+     "Angular Return: Sun-Moon after",
+     32822
+    ]
+   ]
+  },
+  {
+   "top": "Dasas",
+   "sub": "Nakshatra dasas",
+   "copies": {
+    "dasa": 32972
+   },
+   "modes": [
+    [
+     "Angular Return: Sun-Moon after",
+     32846
+    ]
+   ]
+  },
+  {
+   "top": "Miscellany",
+   "sub": "Angular Return",
+   "form": [
+    [
+     "click",
+     1001,
+     2.0
+    ]
+   ]
+  },
+  {
+   "top": "Miscellany",
+   "sub": "Angular Return",
+   "label": "Angular Return: Lagna-Sun before",
+   "form": [
+    [
+     "combo",
+     1011,
+     0
+    ],
+    [
+     "combo",
+     1012,
+     1
+    ],
+    [
+     "combo",
+     1006,
+     0
+    ],
+    [
+     "combo",
+     1007,
+     2
+    ],
+    [
+     "edit",
+     102,
+     "15"
+    ],
+    [
+     "edit",
+     103,
+     "2001"
+    ],
+    [
+     "edit",
+     1008,
+     "12"
+    ],
+    [
+     "edit",
+     1009,
+     "0"
+    ],
+    [
+     "edit",
+     1010,
+     "0"
+    ],
+    [
+     "edit",
+     1020,
+     "5"
+    ],
+    [
+     "edit",
+     1021,
+     "30"
+    ],
+    [
+     "combo",
+     1079,
+     0
+    ],
+    [
+     "click",
+     1004,
+     6.0
+    ]
+   ]
+  },
+  {
+   "top": "Basics",
+   "sub": "Key Info",
+   "lists": true,
+   "copies": {
+    "key_info": 32974
+   },
+   "pane_copies": [
+    "key_info"
+   ],
+   "modes": [
+    [
+     "Angular Return: Lagna-Sun before",
+     32822
+    ]
+   ]
+  },
+  {
+   "top": "Dasas",
+   "sub": "Nakshatra dasas",
+   "copies": {
+    "dasa": 32972
+   },
+   "modes": [
+    [
+     "Angular Return: Lagna-Sun before",
+     32846
+    ]
+   ]
+  },
+  {
+   "top": "Miscellany",
+   "sub": "Angular Return",
+   "form": [
+    [
+     "click",
+     1001,
+     2.0
+    ]
+   ]
+  },
+  {
+   "top": "Miscellany",
+   "sub": "Angular Return",
+   "label": "Angular Return: Jupiter-Saturn after",
+   "form": [
+    [
+     "combo",
+     1011,
+     5
+    ],
+    [
+     "combo",
+     1012,
+     7
+    ],
+    [
+     "combo",
+     1006,
+     1
+    ],
+    [
+     "combo",
+     1007,
+     2
+    ],
+    [
+     "edit",
+     102,
+     "15"
+    ],
+    [
+     "edit",
+     103,
+     "2001"
+    ],
+    [
+     "edit",
+     1008,
+     "12"
+    ],
+    [
+     "edit",
+     1009,
+     "0"
+    ],
+    [
+     "edit",
+     1010,
+     "0"
+    ],
+    [
+     "edit",
+     1020,
+     "5"
+    ],
+    [
+     "edit",
+     1021,
+     "30"
+    ],
+    [
+     "combo",
+     1079,
+     0
+    ],
+    [
+     "click",
+     1004,
+     6.0
+    ]
+   ]
+  },
+  {
+   "top": "Basics",
+   "sub": "Key Info",
+   "lists": true,
+   "copies": {
+    "key_info": 32974
+   },
+   "pane_copies": [
+    "key_info"
+   ],
+   "modes": [
+    [
+     "Angular Return: Jupiter-Saturn after",
+     32822
+    ]
+   ]
+  },
+  {
+   "top": "Dasas",
+   "sub": "Nakshatra dasas",
+   "copies": {
+    "dasa": 32972
+   },
+   "modes": [
+    [
+     "Angular Return: Jupiter-Saturn after",
+     32846
+    ]
+   ]
+  },
+  {
+   "top": "Miscellany",
+   "sub": "Angular Return",
+   "form": [
+    [
+     "click",
+     1001,
+     2.0
+    ]
+   ]
+  },
+  {
+   "top": "Miscellany",
+   "sub": "Progressions",
+   "label": "Progression: NakshatraDasa Rasi Moon Vimsottari",
+   "form": [
+    [
+     "combo",
+     1007,
+     0
+    ],
+    [
+     "combo",
+     1013,
+     2
+    ],
+    [
+     "combo",
+     1014,
+     0
+    ],
+    [
+     "combo",
+     1003,
+     5
+    ],
+    [
+     "edit",
+     100,
+     "15"
+    ],
+    [
+     "edit",
+     101,
+     "2010"
+    ],
+    [
+     "edit",
+     1004,
+     "12"
+    ],
+    [
+     "edit",
+     1005,
+     "0"
+    ],
+    [
+     "edit",
+     1006,
+     "0"
+    ],
+    [
+     "click",
+     1009,
+     4.0
+    ]
+   ]
+  },
+  {
+   "top": "Basics",
+   "sub": "Key Info",
+   "lists": true,
+   "copies": {
+    "key_info": 32974
+   },
+   "pane_copies": [
+    "key_info"
+   ],
+   "modes": [
+    [
+     "Progression: NakshatraDasa Rasi Moon Vimsottari",
+     32822
+    ]
+   ]
+  },
+  {
+   "top": "Dasas",
+   "sub": "Nakshatra dasas",
+   "copies": {
+    "dasa": 32972
+   },
+   "modes": [
+    [
+     "Progression: NakshatraDasa Rasi Moon Vimsottari",
+     32846
+    ]
+   ]
+  },
+  {
+   "top": "Miscellany",
+   "sub": "Progressions",
+   "form": [
+    [
+     "click",
+     1000,
+     2.0
+    ]
+   ]
+  },
+  {
+   "top": "Miscellany",
+   "sub": "Progressions",
+   "label": "Progression: NakshatraDasa Navamsa Lagna Yogini",
+   "form": [
+    [
+     "combo",
+     1007,
+     1
+    ],
+    [
+     "combo",
+     1013,
+     0
+    ],
+    [
+     "combo",
+     1014,
+     3
+    ],
+    [
+     "combo",
+     1003,
+     5
+    ],
+    [
+     "edit",
+     100,
+     "15"
+    ],
+    [
+     "edit",
+     101,
+     "2010"
+    ],
+    [
+     "edit",
+     1004,
+     "12"
+    ],
+    [
+     "edit",
+     1005,
+     "0"
+    ],
+    [
+     "edit",
+     1006,
+     "0"
+    ],
+    [
+     "click",
+     1009,
+     4.0
+    ]
+   ]
+  },
+  {
+   "top": "Basics",
+   "sub": "Key Info",
+   "lists": true,
+   "copies": {
+    "key_info": 32974
+   },
+   "pane_copies": [
+    "key_info"
+   ],
+   "modes": [
+    [
+     "Progression: NakshatraDasa Navamsa Lagna Yogini",
+     32822
+    ]
+   ]
+  },
+  {
+   "top": "Dasas",
+   "sub": "Nakshatra dasas",
+   "copies": {
+    "dasa": 32972
+   },
+   "modes": [
+    [
+     "Progression: NakshatraDasa Navamsa Lagna Yogini",
+     32846
+    ]
+   ]
+  },
+  {
+   "top": "Miscellany",
+   "sub": "Progressions",
+   "form": [
+    [
+     "click",
+     1000,
+     2.0
+    ]
+   ]
+  },
+  {
+   "top": "Miscellany",
+   "sub": "Progressions",
+   "label": "Progression: Sudarsana Rasi",
+   "form": [
+    [
+     "combo",
+     1007,
+     0
+    ],
+    [
+     "combo",
+     1013,
+     2
+    ],
+    [
+     "combo",
+     1014,
+     0
+    ],
+    [
+     "combo",
+     1003,
+     5
+    ],
+    [
+     "edit",
+     100,
+     "15"
+    ],
+    [
+     "edit",
+     101,
+     "2010"
+    ],
+    [
+     "edit",
+     1004,
+     "12"
+    ],
+    [
+     "edit",
+     1005,
+     "0"
+    ],
+    [
+     "edit",
+     1006,
+     "0"
+    ],
+    [
+     "click",
+     1008,
+     4.0
+    ]
+   ]
+  },
+  {
+   "top": "Basics",
+   "sub": "Key Info",
+   "lists": true,
+   "copies": {
+    "key_info": 32974
+   },
+   "pane_copies": [
+    "key_info"
+   ],
+   "modes": [
+    [
+     "Progression: Sudarsana Rasi",
+     32822
+    ]
+   ]
+  },
+  {
+   "top": "Dasas",
+   "sub": "Nakshatra dasas",
+   "copies": {
+    "dasa": 32972
+   },
+   "modes": [
+    [
+     "Progression: Sudarsana Rasi",
+     32846
+    ]
+   ]
+  },
+  {
+   "top": "Miscellany",
+   "sub": "Progressions",
+   "form": [
+    [
+     "click",
+     1000,
+     2.0
+    ]
+   ]
+  },
+  {
+   "top": "Miscellany",
+   "sub": "Progressions",
+   "label": "Progression: Solar Rasi",
+   "form": [
+    [
+     "combo",
+     1007,
+     0
+    ],
+    [
+     "combo",
+     1013,
+     2
+    ],
+    [
+     "combo",
+     1014,
+     0
+    ],
+    [
+     "combo",
+     1003,
+     5
+    ],
+    [
+     "edit",
+     100,
+     "15"
+    ],
+    [
+     "edit",
+     101,
+     "2010"
+    ],
+    [
+     "edit",
+     1004,
+     "12"
+    ],
+    [
+     "edit",
+     1005,
+     "0"
+    ],
+    [
+     "edit",
+     1006,
+     "0"
+    ],
+    [
+     "click",
+     1001,
+     4.0
+    ]
+   ]
+  },
+  {
+   "top": "Basics",
+   "sub": "Key Info",
+   "lists": true,
+   "copies": {
+    "key_info": 32974
+   },
+   "pane_copies": [
+    "key_info"
+   ],
+   "modes": [
+    [
+     "Progression: Solar Rasi",
+     32822
+    ]
+   ]
+  },
+  {
+   "top": "Dasas",
+   "sub": "Nakshatra dasas",
+   "copies": {
+    "dasa": 32972
+   },
+   "modes": [
+    [
+     "Progression: Solar Rasi",
+     32846
+    ]
+   ]
+  },
+  {
+   "top": "Miscellany",
+   "sub": "Progressions",
+   "form": [
+    [
+     "click",
+     1000,
+     2.0
+    ]
+   ]
+  },
+  {
+   "top": "Miscellany",
+   "sub": "Progressions",
+   "label": "Progression: Solar D-10",
+   "form": [
+    [
+     "combo",
+     1007,
+     9
+    ],
+    [
+     "combo",
+     1013,
+     2
+    ],
+    [
+     "combo",
+     1014,
+     0
+    ],
+    [
+     "combo",
+     1003,
+     5
+    ],
+    [
+     "edit",
+     100,
+     "15"
+    ],
+    [
+     "edit",
+     101,
+     "2010"
+    ],
+    [
+     "edit",
+     1004,
+     "12"
+    ],
+    [
+     "edit",
+     1005,
+     "0"
+    ],
+    [
+     "edit",
+     1006,
+     "0"
+    ],
+    [
+     "click",
+     1001,
+     4.0
+    ]
+   ]
+  },
+  {
+   "top": "Basics",
+   "sub": "Key Info",
+   "lists": true,
+   "copies": {
+    "key_info": 32974
+   },
+   "pane_copies": [
+    "key_info"
+   ],
+   "modes": [
+    [
+     "Progression: Solar D-10",
+     32822
+    ]
+   ]
+  },
+  {
+   "top": "Dasas",
+   "sub": "Nakshatra dasas",
+   "copies": {
+    "dasa": 32972
+   },
+   "modes": [
+    [
+     "Progression: Solar D-10",
+     32846
+    ]
+   ]
+  },
+  {
+   "top": "Miscellany",
+   "sub": "Progressions",
+   "form": [
+    [
+     "click",
+     1000,
+     2.0
+    ]
+   ]
+  },
+  {
+   "top": "Miscellany",
+   "sub": "Progressions",
+   "label": "Progression: Bhrigu Rasi",
+   "form": [
+    [
+     "combo",
+     1007,
+     0
+    ],
+    [
+     "combo",
+     1013,
+     2
+    ],
+    [
+     "combo",
+     1014,
+     0
+    ],
+    [
+     "combo",
+     1003,
+     5
+    ],
+    [
+     "edit",
+     100,
+     "15"
+    ],
+    [
+     "edit",
+     101,
+     "2010"
+    ],
+    [
+     "edit",
+     1004,
+     "12"
+    ],
+    [
+     "edit",
+     1005,
+     "0"
+    ],
+    [
+     "edit",
+     1006,
+     "0"
+    ],
+    [
+     "click",
+     1012,
+     4.0
+    ]
+   ]
+  },
+  {
+   "top": "Basics",
+   "sub": "Key Info",
+   "lists": true,
+   "copies": {
+    "key_info": 32974
+   },
+   "pane_copies": [
+    "key_info"
+   ],
+   "modes": [
+    [
+     "Progression: Bhrigu Rasi",
+     32822
+    ]
+   ]
+  },
+  {
+   "top": "Dasas",
+   "sub": "Nakshatra dasas",
+   "copies": {
+    "dasa": 32972
+   },
+   "modes": [
+    [
+     "Progression: Bhrigu Rasi",
+     32846
+    ]
+   ]
+  },
+  {
+   "top": "Miscellany",
+   "sub": "Progressions",
+   "form": [
+    [
+     "click",
+     1000,
+     2.0
+    ]
+   ]
+  },
+  {
+   "top": "Miscellany",
+   "sub": "Prasna (Horary)",
+   "label": "Prasna: 108 37",
+   "form": [
+    [
+     "edit",
+     100,
+     "37"
+    ],
+    [
+     "click",
+     1001,
+     3.0
+    ]
+   ]
+  },
+  {
+   "top": "Basics",
+   "sub": "Key Info",
+   "lists": true,
+   "copies": {
+    "key_info": 32974
+   },
+   "pane_copies": [
+    "key_info"
+   ],
+   "modes": [
+    [
+     "Prasna: 108 37",
+     32822
+    ]
+   ]
+  },
+  {
+   "top": "Dasas",
+   "sub": "Nakshatra dasas",
+   "copies": {
+    "dasa": 32972
+   },
+   "modes": [
+    [
+     "Prasna: 108 37",
+     32846
+    ]
+   ]
+  },
+  {
+   "top": "Miscellany",
+   "sub": "Prasna (Horary)",
+   "form": [
+    [
+     "click",
+     1000,
+     2.0
+    ]
+   ]
+  },
+  {
+   "top": "Miscellany",
+   "sub": "Prasna (Horary)",
+   "label": "Prasna: 249 150",
+   "form": [
+    [
+     "edit",
+     101,
+     "150"
+    ],
+    [
+     "click",
+     1004,
+     3.0
+    ]
+   ]
+  },
+  {
+   "top": "Basics",
+   "sub": "Key Info",
+   "lists": true,
+   "copies": {
+    "key_info": 32974
+   },
+   "pane_copies": [
+    "key_info"
+   ],
+   "modes": [
+    [
+     "Prasna: 249 150",
+     32822
+    ]
+   ]
+  },
+  {
+   "top": "Dasas",
+   "sub": "Nakshatra dasas",
+   "copies": {
+    "dasa": 32972
+   },
+   "modes": [
+    [
+     "Prasna: 249 150",
+     32846
+    ]
+   ]
+  },
+  {
+   "top": "Miscellany",
+   "sub": "Prasna (Horary)",
+   "form": [
+    [
+     "click",
+     1000,
+     2.0
+    ]
+   ]
+  },
+  {
+   "top": "Miscellany",
+   "sub": "Prasna (Horary)",
+   "label": "Prasna: Nadi 777",
+   "form": [
+    [
+     "edit",
+     1006,
+     "777"
+    ],
+    [
+     "click",
+     1012,
+     3.0
+    ]
+   ]
+  },
+  {
+   "top": "Basics",
+   "sub": "Key Info",
+   "lists": true,
+   "copies": {
+    "key_info": 32974
+   },
+   "pane_copies": [
+    "key_info"
+   ],
+   "modes": [
+    [
+     "Prasna: Nadi 777",
+     32822
+    ]
+   ]
+  },
+  {
+   "top": "Dasas",
+   "sub": "Nakshatra dasas",
+   "copies": {
+    "dasa": 32972
+   },
+   "modes": [
+    [
+     "Prasna: Nadi 777",
+     32846
+    ]
+   ]
+  },
+  {
+   "top": "Miscellany",
+   "sub": "Prasna (Horary)",
+   "form": [
+    [
+     "click",
+     1000,
+     2.0
+    ]
+   ]
+  },
+  {
+   "top": "Miscellany",
+   "sub": "Prasna (Horary)",
+   "label": "Prasna: 249 100 replace",
+   "form": [
+    [
+     "click",
+     201,
+     0.5
+    ],
+    [
+     "edit",
+     101,
+     "100"
+    ],
+    [
+     "click",
+     1004,
+     3.0
+    ]
+   ]
+  },
+  {
+   "top": "Basics",
+   "sub": "Key Info",
+   "lists": true,
+   "copies": {
+    "key_info": 32974
+   },
+   "pane_copies": [
+    "key_info"
+   ],
+   "modes": [
+    [
+     "Prasna: 249 100 replace",
+     32822
+    ]
+   ]
+  },
+  {
+   "top": "Dasas",
+   "sub": "Nakshatra dasas",
+   "copies": {
+    "dasa": 32972
+   },
+   "modes": [
+    [
+     "Prasna: 249 100 replace",
+     32846
+    ]
+   ]
+  },
+  {
+   "top": "Miscellany",
+   "sub": "Prasna (Horary)",
+   "form": [
+    [
+     "click",
+     1000,
+     2.0
+    ]
+   ]
+  },
+  {
+   "top": "Miscellany",
+   "sub": "Prasna (Horary)",
+   "form": [
+    [
+     "click",
+     202,
+     0.5
+    ]
+   ]
+  },
+  {
+   "top": "Miscellany",
+   "sub": "Panchanga",
+   "copies": {
+    "monthly": 33085
+   },
+   "copy_wait": 10
+  },
+  {
+   "top": "Chakras",
+   "sub": "Many Vargas",
+   "draw": true
+  },
+  {
+   "top": "Chakras",
+   "sub": "Mixed 2-Vargas",
+   "draw": true
+  },
+  {
+   "top": "Chakras",
+   "sub": "Kalachakra",
+   "draw": true
+  },
+  {
+   "top": "Chakras",
+   "sub": "Sarvatobhadra",
+   "draw": true
+  },
+  {
+   "top": "Chakras",
+   "sub": "Kota Chakra",
+   "draw": true
+  },
+  {
+   "top": "Chakras",
+   "sub": "Surya Kalanala",
+   "draw": true
+  },
+  {
+   "top": "Chakras",
+   "sub": "Chandra Kalanala",
+   "draw": true
+  },
+  {
+   "top": "Chakras",
+   "sub": "Sudarsana",
+   "draw": true
+  },
+  {
+   "top": "Chakras",
+   "sub": "Shoola",
+   "draw": true
+  },
+  {
+   "top": "Chakras",
+   "sub": "Tripataki",
+   "draw": true
+  }
+ ]
+}

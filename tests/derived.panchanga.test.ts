@@ -6,7 +6,7 @@ import { siderealLongitude, norm360 } from '../src/core/positions';
 import { calcSettingsFromIni } from '../src/core/settings';
 import { tithi, nakshatra, TITHI_NAMES } from '../src/core/keyInfo';
 import { dayFrame } from '../src/core/day';
-import { jdFormatText, monthlyText, panchangaDays, timeText } from '../src/core/derived/panchanga';
+import { monthlyText, panchangaDays, timeText } from '../src/core/derived/panchanga';
 import { laghuRows, laghuValue } from '../src/core/derived/laghuParasari';
 import { PANCHANGA_JOBS, LAGHU_TABLES } from '../src/core/derived/panchangaJobs';
 
@@ -99,18 +99,13 @@ describe('Miscellany > Panchanga', async () => {
     expect(timeText(m, 0, 1)).toBe('6:59*');
   });
 
-  it('builds the monthly copy text and the JD format', () => {
+  it('builds the monthly copy text', () => {
     const text = monthlyText(days);
     expect(text.startsWith('\n')).toBe(true);
     expect(text).toContain('RahuK: ');
     expect(text).toContain('Sunrise at ');
     expect(text.split('\n').filter((l) => /^\w+ \d+, \d+:$/.test(l))).toHaveLength(31);
     expect(text).toContain(TITHI_NAMES[days[0].tithi.items[0].index]);
-    const jd = jdFormatText(days, chart.birth.month, chart.birth.year);
-    expect(jd).toMatch(/^\nMonthly Panchanga for \w+, \d+:\n/);
-    const first = jd.split('\n')[3].split('\t');
-    expect(first[0]).toBe('1');
-    expect(first[8]).toMatch(/^[SK]\d+$/);
   });
 
   it('jobs return rows and clipboard text', async () => {
@@ -120,8 +115,6 @@ describe('Miscellany > Panchanga', async () => {
     const daily = await PANCHANGA_JOBS['panchanga.daily'](chart, {}, swe);
     expect(daily.rows).toHaveLength(2);
     expect(daily.text!.join('\n')).toContain('Choghadiyas: ');
-    const jd = await PANCHANGA_JOBS['panchanga.monthlyJd'](chart, { month: 2, year: 2001 }, swe);
-    expect(jd.caption).toBe('Monthly Panchanga for February, 2001:');
   });
 });
 

@@ -22,7 +22,7 @@ import type { Period } from '../dasas/vimsottari';
 import { birthAt, type AsyncTableFn } from './common';
 import {
   ardraPravesha, aspectMoment, ASPECTS, contactTime, ctxOf, divisionName, eclipse, ECLIPSE_NOTES, fortnight, lifecycleMoment,
-  lunarNewMonth, lunarNewYear, MUNDANE_BODIES, mundaneDasa, newLunarDay, solarNewMonth, solarNewYear, lunarSolarOptions,
+  lunarNewMonth, lunarNewYear, BODY_SHORT, MUNDANE_BODIES, mundaneDasa, newLunarDay, solarNewMonth, solarNewYear, lunarSolarOptions,
   stationaryChange, swearingInLabel, transitChange, type EclipseType,
 } from './mundane';
 
@@ -48,13 +48,13 @@ async function find(natal: Chart, params: Record<string, unknown>, swe: Sweph): 
     case 'transit': {
       const body = num(params.body), division = num(params.division);
       const r = transitChange(c, body, division, base, after);
-      return { ...r, label: `${divisionName(division)} change (${MUNDANE_BODIES[body]})` };
+      return { ...r, label: `${divisionName(division)} change (${BODY_SHORT[body]})` };
     }
     case 'stationary': {
       const body = num(params.body) + 3;
       if (body >= 8 && !c.settings.trueNodes) throw new Error('Stationary transit cannot occur with mean nodes');
       const r = stationaryChange(c, body, base, after);
-      return { ...r, label: `Retro change (${MUNDANE_BODIES[body]})` };
+      return { ...r, label: `Retro change (${BODY_SHORT[body]})` };
     }
     case 'conjunction': {
       const p1 = num(params.body1, 1), p2 = num(params.body2, 2);
@@ -62,7 +62,7 @@ async function find(natal: Chart, params: Record<string, unknown>, swe: Sweph): 
       if (p1 === p2) throw new Error('Please select two different planets.');
       const angle = ASPECTS[num(params.aspect)][1];
       const r = aspectMoment(c, p1, p2, angle, base, after);
-      return { ...r, label: `${MUNDANE_BODIES[p1]}-${MUNDANE_BODIES[p2]} ${angle === 180 ? 'Opp' : 'Conj'}` };
+      return { ...r, label: `${BODY_SHORT[p1]}-${BODY_SHORT[p2]} ${angle === 180 ? 'Opp' : 'Conj'}` };
     }
     case 'eclipse': {
       const type = num(params.type) as EclipseType;

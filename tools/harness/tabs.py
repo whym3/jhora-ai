@@ -20,6 +20,14 @@ SUB_TABS = {
 }
 
 
+def ensure_front(main):
+    """Coordinate clicks go to whatever window is on top: bring the harness copy's window
+    back to the front first (the user may have another JHora, or anything else, open)."""
+    if ctypes.windll.user32.GetForegroundWindow() != main.handle:
+        main.set_focus()
+        time.sleep(0.2)
+
+
 def _work_area():
     """Desktop work area (excludes the taskbar) as (left, top, right, bottom)."""
     class RECT(ctypes.Structure):
@@ -75,7 +83,7 @@ class Tabs:
         r = strip.rectangle()
         groups = []
         for x in range(r.left + 8, (x_max or r.right) - 8, step):
-            strip.click_input(coords=(x - r.left, y_off), absolute=False)
+            ensure_front(self.main); strip.click_input(coords=(x - r.left, y_off), absolute=False)
             time.sleep(0.12)
             v = self._settled_visible(strip)
             if groups and groups[-1][2] == v:
@@ -137,13 +145,13 @@ class Tabs:
         effect: the set must equal the expected one or at least differ from before."""
         before = self._visible(strip)
         r = strip.rectangle()
-        strip.click_input(coords=(x - r.left, y_off), absolute=False)
+        ensure_front(self.main); strip.click_input(coords=(x - r.left, y_off), absolute=False)
         time.sleep(0.3)
         after = self._settled_visible(strip)
         if after == expect or after != before:
             return
         # a second click sometimes lands after a repaint; try once more
-        strip.click_input(coords=(x - r.left, y_off), absolute=False)
+        ensure_front(self.main); strip.click_input(coords=(x - r.left, y_off), absolute=False)
         time.sleep(0.3)
         after = self._settled_visible(strip)
         if after != expect and after == before:

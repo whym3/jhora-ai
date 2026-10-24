@@ -5,7 +5,7 @@ import type { Chart } from '../chart';
 import type { Table } from '../../engine/protocol';
 import type { AsyncTableFn } from './common';
 import { TITHI_NAMES, KI_NAKSHATRAS, YOGAS, KARANAS, WEEKDAYS } from '../keyInfo';
-import { dayText, jdFormatText, monthlyText, panchangaDays, timeText, PANCHANGA_SIGNS, type PanchangaDay, type Track } from './panchanga';
+import { dayText, monthlyText, panchangaDays, timeText, PANCHANGA_SIGNS, type PanchangaDay, type Track } from './panchanga';
 import { laghuParasari, LAGHU_LAGNAS, type LaghuOptions } from './laghuParasari';
 
 const lines = (s: string) => s.split('\n');
@@ -38,20 +38,6 @@ export const PANCHANGA_JOBS: Record<string, AsyncTableFn> = {
     const { year, month } = ym(chart, params);
     const days = await panchangaDays(chart, swe, 31, year, month);
     return { caption: `Monthly Panchanga: ${year}-${month}`, headers: DAY_HEADERS, rows: days.map(dayRow), text: lines(monthlyText(days)) };
-  },
-  // "Copy monthly panchanga in JD format" (id 33086): tab-separated rows. params { year?, month? }
-  'panchanga.monthlyJd': async (chart, params, swe) => {
-    const { year, month } = ym(chart, params);
-    const days = await panchangaDays(chart, swe, 31, year, month);
-    const text = lines(jdFormatText(days, month, year));
-    const rows = text.filter((l) => /^\d+\t/.test(l)).map((l) => l.split('\t'));
-    const width = Math.max(...rows.map((r) => r.length));
-    return {
-      caption: text[1],
-      headers: ['Day', 'Wd', 'Sunrise', 'Sunset', 'Moonrise', 'Moonset', 'Moon', 'till', 'Tithi', 'till', 'Nak', 'till', 'Yoga', 'till', 'Karana', 'till', 'Karana', 'till', ''].slice(0, width),
-      rows: rows.map((r) => [...r, ...Array(width - r.length).fill('')]),
-      text,
-    };
   },
   // The Panchanga pane itself (FUN_004649b0 via FUN_004665f0(2)): the chart's day and the next, with horas and choghadiyas
   'panchanga.daily': async (chart, _params, swe) => {
