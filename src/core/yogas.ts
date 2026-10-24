@@ -519,8 +519,8 @@ export function findYogas(chart: Chart, category = 0, varga: VargaName = 'D1'): 
   // ---------------------------------------------------------------- 10 Parivraja
   if (want(10)) {
     if (S[2] === S[7]) {
-      if (S[2] === c.AL) y(10, 0, [2, 7]);
-      else if (rasiAsp(S[2], c.AL)) y(10, 1, [2, 7]);
+      if (S[2] === c.AL) y(10, 0, [7, 2]);
+      else if (rasiAsp(S[2], c.AL)) y(10, 1, [7, 2]);
     }
     if (all9[S[L10]] > 4 && kk(L10)) y(10, 2, [L10]);
     if (c.lagnaDegree > 27 && ben[L] > 0 && kk(5)) y(10, 3, [5, ...BEN.filter((p) => S[p] === L)]);
