@@ -10,6 +10,8 @@
     "typecheck": "tsc",
     "mcp:build": "vite build -c vite.mcp.config.ts",
     "mcp": "node dist-mcp/jhora-mcp.mjs",
+    "mcp:http": "node dist-mcp/jhora-mcp.mjs --http",
+    "mcp:https": "node dist-mcp/jhora-mcp.mjs --https",
     "atlas": "node tools/atlas/install.mjs",
     "parity": "node tools/parity-report.mjs"
   },

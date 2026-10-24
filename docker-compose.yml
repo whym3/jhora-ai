@@ -1,0 +1,14 @@
+# The MCP server in Docker over HTTPS, reachable from this machine only:
+# https://localhost:3443/mcp (docker compose up -d --build). The certificate comes from
+# mkcert (mkcert -cert-file .cache/mcp-tls/cert.pem -key-file .cache/mcp-tls/key.pem
+# localhost 127.0.0.1); saved charts stay in ./charts on the host.
+services:
+  jhora-mcp:
+    build: .
+    image: jhora-mcp
+    ports:
+      - "127.0.0.1:3443:3443"
+    volumes:
+      - ./charts:/app/charts
+      - ./.cache/mcp-tls:/app/tls:ro
+    restart: unless-stopped

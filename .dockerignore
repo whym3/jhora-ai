@@ -1,0 +1,10 @@
+node_modules
+.cache
+dist
+dist-mcp
+charts
+graphify-out
+golden
+tests
+tools
+.git
