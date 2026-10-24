@@ -1,0 +1,94 @@
+{
+ "_comment": "Tajaka annual 2000: fill the Tajaka form, find the chart, then capture the ordinary views of the Tajaka chart.",
+ "tabs": [
+  {
+   "top": "Tajaka",
+   "sub": null,
+   "form": [
+    [
+     "edit",
+     100,
+     "2000"
+    ],
+    [
+     "click",
+     1000
+    ]
+   ]
+  },
+  {
+   "top": "Basics",
+   "sub": "Key Info",
+   "lists": true,
+   "copies": {
+    "key_info": 32974,
+    "table": 32975
+   },
+   "pane_copies": [
+    "key_info"
+   ],
+   "modes": [
+    [
+     "Longitudes & Basic Info",
+     32822
+    ]
+   ]
+  },
+  {
+   "top": "Dasas",
+   "sub": "Nakshatra dasas",
+   "copies": {
+    "dasa": 32972,
+    "dasa_dates": 33236
+   },
+   "modes": [
+    [
+     "Vimsottari",
+     32846
+    ]
+   ],
+   "dasa_levels": true,
+   "dasa_level_rows": 2
+  },
+  {
+   "top": "Dasas",
+   "sub": "Other dasas",
+   "copies": {
+    "dasa": 32972
+   },
+   "modes": [
+    [
+     "Patyayini",
+     32852
+    ]
+   ],
+   "dasa_levels": true,
+   "dasa_level_rows": 1
+  },
+  {
+   "top": "Strengths",
+   "sub": "Other strengths",
+   "lists": true,
+   "copies": {
+    "vimsopaka": 32978
+   },
+   "modes": [
+    [
+     "Pancha-vargeeya Bala",
+     32932,
+     59664
+    ],
+    [
+     "Dwadasa-vargeeya Bala",
+     32933,
+     59664
+    ],
+    [
+     "Harsha Bala",
+     32931,
+     59664
+    ]
+   ]
+  }
+ ]
+}

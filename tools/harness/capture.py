@@ -200,6 +200,17 @@ def capture_chart(root, chart, manifest, ini_overrides):
                 print("   !!", top, sub, e)
                 continue
             s.guard()
+            for step in tab.get("form") or []:      # e.g. ["edit", 100, "2000"], ["combo", 1003, 6], ["click", 1000]
+                kind, cid = step[0], step[1]
+                ctrl = next(w for w in s.main.descendants() if w.control_id() == cid and w.is_visible())
+                if kind == "edit":
+                    ctrl.set_edit_text(str(step[2]))
+                elif kind == "combo":
+                    ctrl.select(int(step[2]))
+                elif kind == "click":
+                    ctrl.click()
+                    time.sleep(step[2] if len(step) > 2 else 3.0)
+                s.guard()
             modes = tab.get("modes") or [[None, None]]
             for mode in modes:
                 label, cmd = mode[0], mode[1]
