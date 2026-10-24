@@ -1,10 +1,11 @@
-import { useEffect, useMemo } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { parseJhd, writeJhd, type BirthData } from '../core/jhd';
 import type { ChartResult, ChartSpec } from '../engine/protocol';
 import { EngineProvider, useEngine, useJob } from './EngineProvider';
 import { BirthForm } from './BirthForm';
 import type { ChartStyle } from './ChartDiagram';
 import { ChartPane } from './shell/ChartPane';
+import { Preferences } from './Preferences';
 import { TajakaView } from './shell/TajakaView';
 import { DERIVED_VIEWS, type DerivedViewKey } from './shell/derivedViews';
 import { TRANSIT_VIEWS } from './shell/TransitsView';
@@ -27,6 +28,7 @@ async function loadSample(name: string) {
 function Toolbar() {
   const doc = useActiveDoc();
   const style = useStore((s) => s.view.chartStyle);
+  const [prefs, setPrefs] = useState(false);
   const openFile = async (f: File) => openChart(parseJhd(await f.text()), f.name.replace(/\.jhd$/i, ''));
   const save = () => {
     if (!doc) return;
@@ -46,6 +48,8 @@ function Toolbar() {
         <option value="south">South Indian</option>
         <option value="north">North Indian</option>
       </select>
+      <button onClick={() => setPrefs(true)}>Preferences…</button>
+      {prefs && <Preferences onClose={() => setPrefs(false)} />}
     </div>
   );
 }
