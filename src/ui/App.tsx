@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from 'react';
+import { lazy, Suspense, useEffect, useMemo, useState } from 'react';
 import { parseJhd, writeJhd, type BirthData } from '../core/jhd';
 import type { ChartResult, ChartSpec } from '../engine/protocol';
 import { EngineProvider, useEngine, useJob } from './EngineProvider';
@@ -18,6 +18,9 @@ import { SUB_TABS, TOP_TABS, type TopTab } from './shell/tabs';
 import { closeChart, currentSubTab, openChart, setSubTab, setTopTab, setView, updateChart, useActiveDoc, useStore } from './state/store';
 import { TabBar } from './widgets/TabBar';
 
+// the AI panel (and its provider SDKs) loads on first use
+const AiPanel = lazy(() => import('./AiPanel').then((m) => ({ default: m.AiPanel })));
+
 const SAMPLES = ['santosh', 'Swami Vivekananda', 'Mahatma Gandhi', 'India', 'Ramana Maharshi', 'Prof. B. V. Raman', 'Author of this software'];
 
 async function loadSample(name: string) {
@@ -32,7 +35,12 @@ function Toolbar() {
   const [prefs, setPrefs] = useState(false);
   // toolbar button 33320 (FUN_004e8db0): matching against a nakshatra/pada or another open chart
   const [matching, setMatching] = useState(false);
+  const [ai, setAi] = useState(false);
+  const [aiUsed, setAiUsed] = useState(false);
   const ini = useStore((s) => s.ini);
+  // the AI reads the chart on screen: a derived chart (Tajaka etc.) when one is shown
+  const aiSpec = useMemo<ChartSpec | null>(() => (doc ? { birth: doc.derived?.birth ?? doc.birth, ini: { ...diffIni(ini), ...doc.ini } } : null), [doc, ini]);
+  const aiTitle = doc ? (doc.derived ? `${doc.title} - ${doc.derived.label}` : doc.title) : '';
   const openFile = async (f: File) => openChart(parseJhd(await f.text()), f.name.replace(/\.jhd$/i, ''));
   const save = () => {
     if (!doc) return;
@@ -54,6 +62,8 @@ function Toolbar() {
       </select>
       <button onClick={() => setMatching(true)} disabled={!doc}>Horoscope Matching</button>
       <button onClick={() => setPrefs(true)}>Preferences…</button>
+      <button onClick={() => { setAi((v) => !v); setAiUsed(true); }} className={ai ? 'active' : undefined}>AI Astrologer</button>
+      {aiUsed && <Suspense fallback={null}><AiPanel open={ai} onClose={() => setAi(false)} spec={aiSpec} title={aiTitle} /></Suspense>}
       {prefs && <Preferences onClose={() => setPrefs(false)} />}
       {matching && doc && (
         <div className="modal-backdrop" onClick={() => setMatching(false)}>
