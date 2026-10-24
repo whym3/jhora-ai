@@ -64,3 +64,13 @@ export function goldenCalcs(): { name: string; birth: BirthData; lines: string[]
   }
   return [...out.values()];
 }
+
+/** Charts captured by harness v3 (golden/jhora-v3), same layout as v2. */
+export function goldenV3Charts(): GoldenChartV2[] {
+  if (!existsSync('golden/jhora-v3')) return [];
+  return readdirSync('golden/jhora-v3').filter((f) => f.endsWith('.json')).map((f) => {
+    const name = f.replace(/\.json$/, '');
+    const g = JSON.parse(readFileSync(`golden/jhora-v3/${f}`, 'utf8'));
+    return { name, birth: parseJhd(readFileSync(`golden/charts/${name}.jhd`, 'latin1')), views: g.views, texts: g.texts };
+  });
+}

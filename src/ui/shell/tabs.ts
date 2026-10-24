@@ -60,3 +60,14 @@ export const AV_MODE_LABELS: Record<(typeof AV_MODES)[number], string> = {
   'PAV of Mars': 'PAV of Mars', 'PAV of Mercury': 'PAV of Mercury', 'PAV of Jupiter': 'PAV of Jupiter', 'PAV of Venus': 'PAV of Venus',
   'PAV of Saturn': 'PAV of Saturn', 'PAV of Lagna': 'PAV of Lagna', 'Sodhya pindas': 'Sodhya pindas',
 };
+
+/** Strengths > Other strengths, second (vimsopaka) pane modes in JHora's order. */
+export const VIMSOPAKA_PANE_MODES: [string, string][] = [
+  ['Vimsopaka Balas', 'strengths.vimsopaka'],
+  ['Amsa Balas', 'strengths.amsaBalas'],
+  ['Basic Avasthas', 'strengths.basicAvasthas'],
+  ['Sayanadi Avasthas', 'strengths.sayanadi'],
+  ['Pancha-vargeeya Bala', 'strengths.panchaVargeeya'],
+  ['Dwadasa-vargeeya Bala', 'strengths.dwadasaVargeeya'],
+  ['Harsha Bala', 'strengths.harsha'],
+];

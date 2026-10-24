@@ -23,6 +23,7 @@ import { brahmaRudraMaheswara } from '../core/deities';
 import { amsaRuler } from '../core/amsaRulers';
 import { computeShadbala, type Seven } from '../core/shadbala';
 import { vimsopaka } from '../core/vimsopaka';
+import { AGES, ALERTNESS, basicAvasthas, HARSHA_CLASSES, INTENSITY, MOODS, PANCHA_CLASSES, SAYANADI, sayanadiAvasthas, tajakaBalas, VAISESHIKAMSA_GROUPS, vaiseshikamsas } from '../core/otherStrengths';
 import { AV_BODIES, ashtakavarga, prastara, type AvBody } from '../core/ashtakavarga';
 import { SEVEN } from '../core/relations';
 import { fromMrityuBhaga, fromPushkaraBhaga, inPushkaramsa, MRITYU_BHAGA, within } from '../core/pushkara';
@@ -283,6 +284,31 @@ export const TABLES: Record<string, TableFn> = {
     const rows = AV_BODIES.map((b) => [short(b), ...mark(b, table[b])]);
     if (mode !== 'SoAV') rows.push(['SAV', ...av.sav.map(String)]);
     return { caption: mode === 'SoAV' ? `Sodhita (reduced) ${caption}` : caption, headers: signCols, rows };
+  },
+  // Strengths > Other strengths, vimsopaka pane modes
+  'strengths.amsaBalas': (chart) => {
+    const v = vaiseshikamsas(chart);
+    return { headers: ['Vaiseshikamsas', ...VAISESHIKAMSA_GROUPS.map((g) => g.name)], rows: GRAHAS.map((g) => [g, ...v[g].map((x) => x.label)]) };
+  },
+  'strengths.basicAvasthas': (chart) => {
+    const a = basicAvasthas(chart);
+    return { headers: ['Planet', 'Age', 'Alertness (D-1)', 'Mood (D-1)'], rows: GRAHAS.map((g) => [g, AGES[a[g].age], ALERTNESS[a[g].alertness], a[g].moods.map((m) => MOODS[m]).join(', ')]) };
+  },
+  'strengths.sayanadi': (chart) => {
+    const a = sayanadiAvasthas(chart);
+    return { headers: ['Planet', 'Activity', ...[1, 2, 3, 4, 5].map((i) => `Intensity ${i}`)], rows: GRAHAS.map((g) => [g, SAYANADI[a[g].avastha], ...a[g].intensities.map((i) => INTENSITY[i])]) };
+  },
+  'strengths.panchaVargeeya': (chart) => {
+    const t = tajakaBalas(chart);
+    return { headers: ['Planet', 'Pancha-vargeeya', 'Classification'], rows: SEVEN.map((g) => [g, f2(t[g].pancha), PANCHA_CLASSES[t[g].panchaClass]]) };
+  },
+  'strengths.dwadasaVargeeya': (chart) => {
+    const t = tajakaBalas(chart);
+    return { headers: ['Planet', 'Dwadasa-vargeeya'], rows: SEVEN.map((g) => [g, `${t[g].dwadasa} (out of 12)`]) };
+  },
+  'strengths.harsha': (chart) => {
+    const t = tajakaBalas(chart);
+    return { headers: ['Planet', 'Harsha Bala', 'Strength'], rows: SEVEN.map((g) => [g, String(t[g].harsha), HARSHA_CLASSES[t[g].harsha / 5]]) };
   },
   'strengths.vimsopaka': (chart) => {
     const vb = vimsopaka(chart);

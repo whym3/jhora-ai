@@ -4,7 +4,7 @@ import type { ChartSpec } from '../../engine/protocol';
 import { useJob } from '../EngineProvider';
 import { TableView } from '../widgets/TableView';
 import { setView, useStore } from '../state/store';
-import { AV_MODE_LABELS, AV_MODES, KEY_INFO_MODES, OTHER_STRENGTH_MODES } from './tabs';
+import { AV_MODE_LABELS, AV_MODES, KEY_INFO_MODES, OTHER_STRENGTH_MODES, VIMSOPAKA_PANE_MODES } from './tabs';
 import { NotPorted } from './NotPorted';
 
 /** A sub-tab that is one fixed table (Houses, KP, ...). */
@@ -35,7 +35,8 @@ export function OtherStrengthsView({ spec }: { spec: ChartSpec }) {
   const entry = OTHER_STRENGTH_MODES.find((m) => m[1] === mode) ?? OTHER_STRENGTH_MODES[0];
   const table = entry[2];
   const job = useJob(table ? { kind: 'table' as const, chart: spec, table } : null);
-  const vimsopakaJob = useJob({ kind: 'table' as const, chart: spec, table: 'strengths.vimsopaka' });
+  const [pane2, setPane2] = useState(VIMSOPAKA_PANE_MODES[0][1]);
+  const vimsopakaJob = useJob({ kind: 'table' as const, chart: spec, table: pane2 });
   return (
     <div className="subview">
       <div className="subview-bar">
@@ -44,6 +45,11 @@ export function OtherStrengthsView({ spec }: { spec: ChartSpec }) {
         </select>
       </div>
       {table ? <TableView job={job} /> : <NotPorted name={entry[0]} />}
+      <div className="subview-bar">
+        <select aria-label="Second pane mode" value={pane2} onChange={(e) => setPane2(e.target.value)}>
+          {VIMSOPAKA_PANE_MODES.map(([label, id]) => <option key={id} value={id}>{label}</option>)}
+        </select>
+      </div>
       <TableView job={vimsopakaJob} />
     </div>
   );
