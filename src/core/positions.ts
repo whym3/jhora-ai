@@ -11,6 +11,7 @@ import { SE, type Sweph } from '../sweph';
 import type { Settings } from './settings';
 import { jhoraDeltaT } from './deltat';
 import { JHORA_SPICA } from './engine';
+import { computePositionsSSS } from './sss';
 
 export const GRAHAS = ['Sun', 'Moon', 'Mars', 'Mercury', 'Jupiter', 'Venus', 'Saturn', 'Rahu', 'Ketu'] as const;
 export type Graha = (typeof GRAHAS)[number];
@@ -78,6 +79,8 @@ export function ayanamsa(swe: Sweph, jdUt: number, jdEt: number, s: Settings): {
 export function computePositions(
   swe: Sweph, jdUt: number, geo: { lat: number; lon: number; alt: number }, s: Settings,
 ): Positions {
+  // Siddhanta=1: FUN_0049aaa0 branches to its Sri Surya Siddhanta code (src/core/sss)
+  if (s.sss) return computePositionsSSS(jdUt, geo, s, swe);
   const flags = calcFlags(s);
   if (s.topocentric) swe.setTopo(geo.lon, geo.lat, geo.alt);
   const jdEt = jdUt + (jhoraDeltaT(jdUt) ?? swe.deltaT(jdUt));

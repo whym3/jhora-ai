@@ -20,6 +20,10 @@ export interface Settings {
   noGravDeflection: boolean;
   /** TrueNodes: true (osculating) instead of mean nodes */
   trueNodes: boolean;
+  /** Siddhanta=1: Sri Surya Siddhanta planetary model (src/core/sss) */
+  sss?: boolean;
+  /** UserSelectedAyanamsa=18: SSS ayanamsa (only honoured by the SSS model so far) */
+  sssAyanamsa?: boolean;
 }
 
 /**
@@ -46,6 +50,8 @@ export function calcSettingsFromIni(ini: Partial<JhoraIni>): Settings {
     noAberration: s.NoAberration !== 0,
     noGravDeflection: s.NoGravDeflection !== 0,
     trueNodes: s.TrueNodes !== 0,
+    sss: s.Siddhanta === 1,
+    sssAyanamsa: s.UserSelectedAyanamsa === 18,
   };
 }
 
