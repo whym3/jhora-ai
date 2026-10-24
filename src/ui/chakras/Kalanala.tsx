@@ -17,7 +17,6 @@ function KalanalaSvg({ k, name }: { k: Kalanala; name: string }) {
     <ChakraSvg w={W + 2 * PAD} h={TOP + H + 24} title={name}>
       <rect x={0} y={0} width={W + 2 * PAD} height={TOP + H + 24} className="ck-frame" />
       <text x={PAD} y={17} className="ck-title">{k.title}</text>
-      <text x={W + PAD} y={17} textAnchor="end" className="ck-small">{name} · base {NAK28[k.baseStar]}</text>
       {k.ellipse && (
         <ellipse cx={(X(k.ellipse.x0) + X(k.ellipse.x1)) / 2} cy={(Y(k.ellipse.y0) + Y(k.ellipse.y1)) / 2}
           rx={(X(k.ellipse.x1) - X(k.ellipse.x0)) / 2} ry={(Y(k.ellipse.y1) - Y(k.ellipse.y0)) / 2} className="ck-strong" />

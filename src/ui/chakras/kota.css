@@ -6,3 +6,5 @@
 .chakra .kota-area { font-size: 10px; fill: var(--muted); }
 .chakra .ck-body.kota-malefic { fill: var(--accent); }
 .chakra .ck-body.kota-benefic { fill: var(--lagna); }
+.chakra .kota-swami { fill: var(--lagna); }
+.chakra .kota-pala { fill: var(--accent); }

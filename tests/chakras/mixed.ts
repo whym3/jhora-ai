@@ -16,8 +16,8 @@ describe('Mixed 2-Vargas', () => {
   it('defaults to Rasi inside and Navamsa outside', () => {
     const d = mixedVargas(chart);
     expect([d.innerVarga, d.outerVarga]).toEqual([0, 1]);
-    expect(d.innerCaption).toEqual(['Inner', 'Rasi']);
-    expect(d.outerCaption).toEqual(['Outer', 'Navamsa']);
+    expect(d.innerCaption).toEqual(['Inner: Natal Chart', 'Rasi']);
+    expect(d.outerCaption).toEqual(['Outer: Natal Chart', 'Navamsa']);
     expect(d.signs).toHaveLength(12);
     expect(d.lagnaSign).toBe(0);
   });

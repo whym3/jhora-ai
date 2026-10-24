@@ -19,6 +19,14 @@
 //   the 30-degree sector from 30h to 30(h+1) degrees, counted ANTI-clockwise
 //   from the 3 o'clock radius (label tables local_9a4[0x28..0x4b] x and
 //   [4..0x27] y). Sign labels use the short sign names (Ar..Pi).
+// * Text placement (logical box W x H, its top-left (x0, y0); table local_9a4):
+//   house h (0..11) of ring r has its cell at (SUD_HOUSE_X[12r + h] * W/120,
+//   SUD_HOUSE_Y[12r + h] * H/120) from (x0, y0). The sign name is centred
+//   (DT_CENTER) in a W/10 x H/10 box there; the n-th body of the house
+//   (n = count mod 6) is drawn left/top-aligned at
+//   ((SUD_SLOT_X[i] + 2)/16 * W/12, (SUD_SLOT_Y[i] + 1)/16 * H/12) from the
+//   cell, i = 6 (12r + h) + n (the x unit is 3/2 W/12 for sahamas). The title
+//   is left-aligned in [x0, y0 - 44, x0 + W/3, y0 - 20] px.
 // * Bodies: view+0x12c selects the set (constructor 0x481430 sets 0):
 //     0 "Planets"        bodies 0..9 (As, Su..Ke)            - command 33091
 //     1 "Trisphuta etc"  bodies 33..36                        - no handler here
@@ -50,6 +58,39 @@ export const SUDARSANA_MODE_BODIES: number[][] = [
 ];
 
 export const SUDARSANA_RINGS = ['Lagna', 'Moon', 'Sun'] as const;
+
+/** Cell of house h of ring r (index 12r + h), in 1/120ths of the box (local_9a4[0x28..], [4..]). */
+export const SUD_HOUSE_X = [
+  64, 62, 57, 52, 47, 45, 45, 47, 52, 57, 62, 64, 87, 79, 64, 46, 30, 21, 21, 30, 46, 64, 79, 87,
+  100, 89, 65, 42, 20, 8, 8, 20, 42, 65, 89, 100,
+];
+export const SUD_HOUSE_Y = [
+  55, 50, 47, 47, 50, 55, 60, 65, 68, 68, 65, 60, 49, 34, 24, 24, 34, 49, 67, 81, 91, 91, 81, 67,
+  45, 24, 10, 10, 24, 45, 71, 91, 105, 105, 91, 71,
+];
+/** Body slot n of house cell c (index 6c + n), in 1/16ths of W/12 (x, plus 2) and H/12 (y, plus 1) (local_9a4[0x5e..], [0x136..]). */
+export const SUD_SLOT_X = [
+  16, 16, 23, 23, 30, 30, 14, 10, 20, 16, 26, 21, 11, 5, 5, 13, 5, 16, 4, -2, -5, 4, -8, 3,
+  -2, 2, -8, -4, -14, -11, -4, -4, -11, -11, -18, -18, -4, -4, -11, -11, -18, -18, -2, 2, -8, -4, -14, -11,
+  4, -2, -5, 4, -8, 3, 11, 5, 5, 13, 5, 16, 14, 10, 20, 16, 26, 21, 16, 16, 23, 23, 30, 30,
+  12, 19, 10, 10, 17, 17, 10, 17, 14, 2, 21, 9, 6, 13, 14, -2, -2, 7, 6, 13, 14, -2, -2, 7,
+  0, 7, -10, -2, -3, 5, 0, -7, 0, 2, -7, -6, 0, -7, 0, 2, -7, -6, 0, 7, -10, -2, -3, 5,
+  6, 13, 14, -2, -2, 7, 6, 13, 14, -2, -2, 7, 10, 17, 14, 2, 21, 9, 12, 19, 10, 10, 17, 17,
+  12, 19, 10, 10, 17, 17, 10, 17, 14, 0, 21, 7, 6, 13, 14, 0, -2, 7, 6, 13, 14, 0, -2, 7,
+  0, 7, -10, 0, -3, 7, 0, -7, 0, 2, -7, -6, 0, -7, 0, 2, -7, -6, 0, 7, -10, 0, -3, 7,
+  6, 13, 14, 0, -2, 7, 6, 13, 14, 0, -2, 7, 10, 17, 14, 0, 21, 7, 12, 19, 10, 10, 17, 17,
+];
+export const SUD_SLOT_Y = [
+  -2, -8, -2, -8, -2, -8, -6, -12, -10, -18, -14, -24, -10, -10, -16, -16, -22, -22, -10, -10, -16, -16, -22, -22,
+  -4, -10, -8, -16, -12, -22, -2, -8, -2, -8, -2, -8, 0, 6, 0, 6, 0, 6, 2, 8, 6, 14, 10, 20,
+  8, 8, 14, 14, 20, 20, 8, 8, 14, 14, 20, 20, 4, 10, 8, 16, 12, 22, 0, 6, 0, 6, 0, 6,
+  0, 0, 6, -6, 6, -6, -8, -8, -2, -14, -2, -14, -8, -8, -2, -14, -8, -14, -8, -8, -2, -14, -8, -14,
+  -8, -8, -2, -14, -2, -14, 0, 0, 6, -6, 6, -6, -2, -2, -8, 4, -8, 4, 6, 6, 0, 12, 0, 12,
+  6, 6, 0, 12, 6, 12, 6, 6, 0, 12, 6, 12, 6, 6, 0, 12, 0, 12, -2, -2, -8, 4, -8, 4,
+  0, 0, 6, -6, 6, -6, -8, -8, -2, -14, -2, -14, -8, -8, -2, -14, -8, -14, -8, -8, -2, -14, -8, -14,
+  -8, -8, -2, -14, -2, -14, 0, 0, 6, -6, 6, -6, -2, -2, -8, 4, -8, 4, 6, 6, 0, 12, 0, 12,
+  6, 6, 0, 12, 6, 12, 6, 6, 0, 12, 6, 12, 6, 6, 0, 12, 0, 12, -2, -2, -8, 4, -8, 4,
+];
 
 export interface SudarsanaHouse { house: number; sign: number; bodies: ChakraBody[] }
 export interface SudarsanaRing { ref: (typeof SUDARSANA_RINGS)[number]; startSign: number; houses: SudarsanaHouse[] }

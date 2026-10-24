@@ -1,6 +1,7 @@
 // Kota Chakra drawing in JHora's layout (FUN_00457b40): 9x9 grid, four nested
 // zones, 28 stars from the natal Moon's star, Sun..Ketu in their stars, Kota
-// Swami (left) and Kota Pala (right) above the grid.
+// Swami (left-aligned at column 1) and Kota Pala (right-aligned at column 8)
+// above the grid.
 import { kotaChakra, KOTA_BENEFIC, KOTA_SLOT_X, KOTA_SLOT_Y, KOTA_ZONE_LABEL_POS, KOTA_ZONE_LABELS } from '../../core/chakras/kota';
 import { bodyClass, ChakraSvg, type ChakraViewProps } from './common';
 import './kota.css';
@@ -12,8 +13,8 @@ export function KotaChakraView({ chart, transit }: ChakraViewProps) {
   const W = C * N, H = TOP + C * N;
   return (
     <ChakraSvg w={W} h={H} title="Kota Chakra">
-      <text x={4} y={18} className="ck-label">{k.swamiText}</text>
-      <text x={W - 4} y={18} className="ck-label" textAnchor="end">{k.palaText}</text>
+      <text x={C} y={18} className="ck-label kota-swami">{k.swamiText}</text>
+      <text x={W - C} y={18} className="ck-label kota-pala" textAnchor="end">{k.palaText}</text>
       <rect x={1} y={TOP + 1} width={W - 2} height={C * N - 2} className="kota-bahya" />
       <rect x={C} y={TOP + C} width={C * 7} height={C * 7} className="kota-praakaara" />
       <rect x={2 * C} y={TOP + 2 * C} width={C * 5} height={C * 5} className="kota-durgantara" />

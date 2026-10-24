@@ -10,6 +10,7 @@
 .chakra .sbc-latta { fill: #2a50c8; }
 .chakra .sbc-th { font-size: 12px; font-weight: 600; fill: var(--accent); }
 .chakra .sbc-td { font-size: 12px; fill: var(--ink); }
+.chakra .sbc-td.sbc-name { fill: var(--lagna); }
 .chakra rect.sbc-hit { fill: transparent; cursor: pointer; }
 .sbc-bar { display: flex; gap: 8px; align-items: center; flex-wrap: wrap; margin: 4px 0; font-size: .9rem; }
 @media (prefers-color-scheme: dark) { .chakra .sbc-drishti { fill: #ff7ac0; } .chakra .sbc-latta { fill: #8fb0ff; } }

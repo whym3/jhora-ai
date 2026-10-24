@@ -27,11 +27,12 @@ function CellText({ cell }: { cell: SbcCell }) {
     case 'nakshatra':
       return <text x={x + C / 2} y={y + 12} textAnchor="middle" className="ck-star">{cell.label}</text>;
     case 'tithi':
+      // JHora centres the group in the top half, the first weekday in [C/4, C], Tue/Wed in [5C/8, C]
       return (
         <>
-          <text x={x + C / 2} y={y + 14} textAnchor="middle" className="sbc-tithi">{cell.label}</text>
+          <text x={x + C / 2} y={y + C / 4 + 4} textAnchor="middle" className="sbc-tithi">{cell.label}</text>
           {cell.weekdays!.map((w, i) => (
-            <text key={w} x={x + C / 2} y={y + 30 + i * 13} textAnchor="middle" className="sbc-vaara">{SBC_WEEKDAYS[w]}</text>
+            <text key={w} x={x + C / 2} y={y + (C * (i ? 13 : 10)) / 16 + 4} textAnchor="middle" className="sbc-vaara">{SBC_WEEKDAYS[w]}</text>
           ))}
         </>
       );
@@ -92,7 +93,7 @@ export function SarvatobhadraView({ chart, transit }: ChakraViewProps) {
           <text x={TX + 210} y={70} className="sbc-th">From Lagna</text>
           {sbc.special.map((s, i) => (
             <g key={s.name}>
-              <text x={TX} y={110 + i * 30} className="sbc-td">{s.name}</text>
+              <text x={TX} y={110 + i * 30} className="sbc-td sbc-name">{s.name}</text>
               <text x={TX + 120} y={110 + i * 30} className="sbc-td">{s.fromMoon}</text>
               <text x={TX + 210} y={110 + i * 30} className="sbc-td">{s.fromLagna}</text>
             </g>
