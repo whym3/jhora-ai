@@ -1,0 +1,593 @@
+{
+ "_comment": "Progressions only, in the safe order (see views-misc.json); output merged into golden/jhora-misc.",
+ "tabs": [
+  {
+   "top": "Miscellany",
+   "sub": "Progressions",
+   "label": "Progression: Solar Rasi",
+   "form": [
+    [
+     "combo",
+     1007,
+     0
+    ],
+    [
+     "combo",
+     1013,
+     2
+    ],
+    [
+     "combo",
+     1014,
+     0
+    ],
+    [
+     "combo",
+     1003,
+     5
+    ],
+    [
+     "edit",
+     100,
+     "15"
+    ],
+    [
+     "edit",
+     101,
+     "2010"
+    ],
+    [
+     "edit",
+     1004,
+     "12"
+    ],
+    [
+     "edit",
+     1005,
+     "0"
+    ],
+    [
+     "edit",
+     1006,
+     "0"
+    ],
+    [
+     "click",
+     1001,
+     4.0
+    ]
+   ]
+  },
+  {
+   "top": "Basics",
+   "sub": "Key Info",
+   "lists": true,
+   "copies": {
+    "key_info": 32974
+   },
+   "pane_copies": [
+    "key_info"
+   ],
+   "modes": [
+    [
+     "Progression: Solar Rasi",
+     32822
+    ]
+   ]
+  },
+  {
+   "top": "Dasas",
+   "sub": "Nakshatra dasas",
+   "copies": {
+    "dasa": 32972
+   },
+   "modes": [
+    [
+     "Progression: Solar Rasi",
+     32846
+    ]
+   ]
+  },
+  {
+   "top": "Miscellany",
+   "sub": "Progressions",
+   "form": [
+    [
+     "click",
+     1000,
+     2.0
+    ]
+   ]
+  },
+  {
+   "top": "Miscellany",
+   "sub": "Progressions",
+   "label": "Progression: Solar D-10",
+   "form": [
+    [
+     "combo",
+     1007,
+     9
+    ],
+    [
+     "combo",
+     1013,
+     2
+    ],
+    [
+     "combo",
+     1014,
+     0
+    ],
+    [
+     "combo",
+     1003,
+     5
+    ],
+    [
+     "edit",
+     100,
+     "15"
+    ],
+    [
+     "edit",
+     101,
+     "2010"
+    ],
+    [
+     "edit",
+     1004,
+     "12"
+    ],
+    [
+     "edit",
+     1005,
+     "0"
+    ],
+    [
+     "edit",
+     1006,
+     "0"
+    ],
+    [
+     "click",
+     1001,
+     4.0
+    ]
+   ]
+  },
+  {
+   "top": "Basics",
+   "sub": "Key Info",
+   "lists": true,
+   "copies": {
+    "key_info": 32974
+   },
+   "pane_copies": [
+    "key_info"
+   ],
+   "modes": [
+    [
+     "Progression: Solar D-10",
+     32822
+    ]
+   ]
+  },
+  {
+   "top": "Dasas",
+   "sub": "Nakshatra dasas",
+   "copies": {
+    "dasa": 32972
+   },
+   "modes": [
+    [
+     "Progression: Solar D-10",
+     32846
+    ]
+   ]
+  },
+  {
+   "top": "Miscellany",
+   "sub": "Progressions",
+   "form": [
+    [
+     "click",
+     1000,
+     2.0
+    ]
+   ]
+  },
+  {
+   "top": "Miscellany",
+   "sub": "Progressions",
+   "label": "Progression: Bhrigu Rasi",
+   "form": [
+    [
+     "combo",
+     1007,
+     0
+    ],
+    [
+     "combo",
+     1013,
+     2
+    ],
+    [
+     "combo",
+     1014,
+     0
+    ],
+    [
+     "combo",
+     1003,
+     5
+    ],
+    [
+     "edit",
+     100,
+     "15"
+    ],
+    [
+     "edit",
+     101,
+     "2010"
+    ],
+    [
+     "edit",
+     1004,
+     "12"
+    ],
+    [
+     "edit",
+     1005,
+     "0"
+    ],
+    [
+     "edit",
+     1006,
+     "0"
+    ],
+    [
+     "click",
+     1012,
+     4.0
+    ]
+   ]
+  },
+  {
+   "top": "Basics",
+   "sub": "Key Info",
+   "lists": true,
+   "copies": {
+    "key_info": 32974
+   },
+   "pane_copies": [
+    "key_info"
+   ],
+   "modes": [
+    [
+     "Progression: Bhrigu Rasi",
+     32822
+    ]
+   ]
+  },
+  {
+   "top": "Dasas",
+   "sub": "Nakshatra dasas",
+   "copies": {
+    "dasa": 32972
+   },
+   "modes": [
+    [
+     "Progression: Bhrigu Rasi",
+     32846
+    ]
+   ]
+  },
+  {
+   "top": "Miscellany",
+   "sub": "Progressions",
+   "form": [
+    [
+     "click",
+     1000,
+     2.0
+    ]
+   ]
+  },
+  {
+   "top": "Miscellany",
+   "sub": "Progressions",
+   "label": "Progression: NakshatraDasa Rasi Moon Vimsottari",
+   "form": [
+    [
+     "combo",
+     1007,
+     0
+    ],
+    [
+     "combo",
+     1013,
+     2
+    ],
+    [
+     "combo",
+     1014,
+     0
+    ],
+    [
+     "combo",
+     1003,
+     5
+    ],
+    [
+     "edit",
+     100,
+     "15"
+    ],
+    [
+     "edit",
+     101,
+     "2010"
+    ],
+    [
+     "edit",
+     1004,
+     "12"
+    ],
+    [
+     "edit",
+     1005,
+     "0"
+    ],
+    [
+     "edit",
+     1006,
+     "0"
+    ],
+    [
+     "click",
+     1009,
+     4.0
+    ]
+   ]
+  },
+  {
+   "top": "Basics",
+   "sub": "Key Info",
+   "lists": true,
+   "copies": {
+    "key_info": 32974
+   },
+   "pane_copies": [
+    "key_info"
+   ],
+   "modes": [
+    [
+     "Progression: NakshatraDasa Rasi Moon Vimsottari",
+     32822
+    ]
+   ]
+  },
+  {
+   "top": "Dasas",
+   "sub": "Nakshatra dasas",
+   "copies": {
+    "dasa": 32972
+   },
+   "modes": [
+    [
+     "Progression: NakshatraDasa Rasi Moon Vimsottari",
+     32846
+    ]
+   ]
+  },
+  {
+   "top": "Miscellany",
+   "sub": "Progressions",
+   "form": [
+    [
+     "click",
+     1000,
+     2.0
+    ]
+   ]
+  },
+  {
+   "top": "Miscellany",
+   "sub": "Progressions",
+   "label": "Progression: NakshatraDasa Navamsa Lagna Yogini",
+   "form": [
+    [
+     "combo",
+     1007,
+     1
+    ],
+    [
+     "combo",
+     1013,
+     0
+    ],
+    [
+     "combo",
+     1014,
+     3
+    ],
+    [
+     "combo",
+     1003,
+     5
+    ],
+    [
+     "edit",
+     100,
+     "15"
+    ],
+    [
+     "edit",
+     101,
+     "2010"
+    ],
+    [
+     "edit",
+     1004,
+     "12"
+    ],
+    [
+     "edit",
+     1005,
+     "0"
+    ],
+    [
+     "edit",
+     1006,
+     "0"
+    ],
+    [
+     "click",
+     1009,
+     4.0
+    ]
+   ]
+  },
+  {
+   "top": "Basics",
+   "sub": "Key Info",
+   "lists": true,
+   "copies": {
+    "key_info": 32974
+   },
+   "pane_copies": [
+    "key_info"
+   ],
+   "modes": [
+    [
+     "Progression: NakshatraDasa Navamsa Lagna Yogini",
+     32822
+    ]
+   ]
+  },
+  {
+   "top": "Dasas",
+   "sub": "Nakshatra dasas",
+   "copies": {
+    "dasa": 32972
+   },
+   "modes": [
+    [
+     "Progression: NakshatraDasa Navamsa Lagna Yogini",
+     32846
+    ]
+   ]
+  },
+  {
+   "top": "Miscellany",
+   "sub": "Progressions",
+   "form": [
+    [
+     "click",
+     1000,
+     2.0
+    ]
+   ]
+  },
+  {
+   "top": "Miscellany",
+   "sub": "Progressions",
+   "label": "Progression: Sudarsana Rasi",
+   "form": [
+    [
+     "combo",
+     1007,
+     0
+    ],
+    [
+     "combo",
+     1013,
+     2
+    ],
+    [
+     "combo",
+     1014,
+     0
+    ],
+    [
+     "combo",
+     1003,
+     5
+    ],
+    [
+     "edit",
+     100,
+     "15"
+    ],
+    [
+     "edit",
+     101,
+     "2010"
+    ],
+    [
+     "edit",
+     1004,
+     "12"
+    ],
+    [
+     "edit",
+     1005,
+     "0"
+    ],
+    [
+     "edit",
+     1006,
+     "0"
+    ],
+    [
+     "click",
+     1008,
+     4.0
+    ]
+   ]
+  },
+  {
+   "top": "Basics",
+   "sub": "Key Info",
+   "lists": true,
+   "copies": {
+    "key_info": 32974
+   },
+   "pane_copies": [
+    "key_info"
+   ],
+   "modes": [
+    [
+     "Progression: Sudarsana Rasi",
+     32822
+    ]
+   ]
+  },
+  {
+   "top": "Dasas",
+   "sub": "Nakshatra dasas",
+   "copies": {
+    "dasa": 32972
+   },
+   "modes": [
+    [
+     "Progression: Sudarsana Rasi",
+     32846
+    ]
+   ]
+  },
+  {
+   "top": "Miscellany",
+   "sub": "Progressions",
+   "form": [
+    [
+     "click",
+     1000,
+     2.0
+    ]
+   ]
+  }
+ ]
+}
