@@ -178,6 +178,14 @@ export class Sweph {
     if (this.deltaTModel) this.setDeltaTUserdef(this.deltaTModel(jdUt));
   }
 
+  /**
+   * Pin the delta-T Swiss uses internally to the model's value at `jdUt`, as every
+   * UT-based wrapper here does, for raw Swiss calls (eclipse searches); no-op without a model.
+   */
+  pinDeltaT(jdUt: number): void {
+    this.ut(jdUt);
+  }
+
   setSidMode(mode: number, t0 = 0, ayanT0 = 0): void {
     this.m._swe_set_sid_mode(mode, t0, ayanT0);
   }

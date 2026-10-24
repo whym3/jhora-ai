@@ -4,6 +4,7 @@
 import type { AsyncTableFn } from './common';
 import { derivedTable, whenText } from './common';
 import { formatLongitude } from '../zodiac';
+import { computeChart } from '../chart';
 import { PROG_BODIES, PROG_VARGA_LABELS, progression, progressedVargaLongitudes, vargaNameOf, type ProgressionInput } from './progression';
 import { angularReturn, type AngularReturnInput } from './angularReturn';
 
@@ -17,8 +18,10 @@ export const PROGRESSION_JOBS: Record<string, AsyncTableFn> = {
     const p = progression(swe, natal, inp);
     await swe.ensureEphemeris(p.chartJd);
     const v = vargaNameOf(p.n);
-    const d1 = progressedVargaLongitudes(natal, p, 'D1');
-    const dv = progressedVargaLongitudes(natal, p, v);
+    // solar and Bhrigu charts are cast for their own moment; the shifted ones only need the natal chart
+    const cast = p.shift === undefined ? await computeChart(swe, p.birth, natal.ini) : undefined;
+    const d1 = progressedVargaLongitudes(natal, p, 'D1', cast);
+    const dv = progressedVargaLongitudes(natal, p, v, cast);
     const vl = PROG_VARGA_LABELS[inp.varga] ?? 'Rasi';
     const notes = [`Progression date: ${whenText(swe, natal, p.jd)}; solar arc ${p.arc.toFixed(4)} deg (${(p.arc / 360).toFixed(4)} years)`];
     if (p.kind === 'solar') notes.push(`Chart cast for ${whenText(swe, natal, p.chartJd)} (1 sign per year in D-${p.n})`);

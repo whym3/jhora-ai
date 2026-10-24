@@ -12,7 +12,8 @@
 // moon, KaalaInDayNightSeparate=1, WeekdayDefinition=0, WeekdayDefinitionKaala=1).
 import type { Sweph } from '../sweph';
 import type { Chart } from './chart';
-import { siderealLongitude, norm360 } from './positions';
+import { castBirth } from './jhd';
+import { computePositions, siderealLongitude, norm360 } from './positions';
 import { calcSettingsFromIni, type Settings } from './settings';
 
 // ---- JHora's name tables (runtime-initialised CStrings, filled at 0x4f0e00-0x4f8a00) ----
@@ -176,7 +177,7 @@ export function lunarYearMonth(swe: Sweph, chart: Chart, s: Settings = calcSetti
     const prev = newMoon(swe, nm.jd - 0.0035, -1, s);
     if (Math.floor(prev.moon / 30) % 12 === moonSign) adhika = 1;
   }
-  const b = chart.birth;
+  const b = castBirth(chart.birth);
   let year = b.year;
   if (b.month < 6 && month >= 6 && month <= 10) year--;
   const samvatsara = (year + 0x37fd) % 60;
@@ -207,7 +208,7 @@ function frame(jd: number, start: number, mid: number, end: number): Frame {
 
 /** 12-hour frame starting at local clock hour `t` on the birth's (or the previous) day. */
 function fixedFrame(swe: Sweph, chart: Chart, t: number): Frame {
-  const b = chart.birth;
+  const b = castBirth(chart.birth);
   let jd = chart.positions.jdUt;
   if (b.hour < t) jd -= 1;
   const d = swe.revjul(jd + b.tzHours / 24);
@@ -240,7 +241,7 @@ export interface FrameLords { weekday: number; hora: number; sign5: number; kaal
 
 /** Weekday (0 = Sunday), hora lord, 5 min sign and kaala lord of one frame. `part` overrides the kaala part. */
 function frameLords(swe: Sweph, chart: Chart, f: Frame, part: number): FrameLords {
-  const b = chart.birth;
+  const b = castBirth(chart.birth);
   let dayNum = trunc(swe.julday(b.year, b.month, b.day, b.hour) - 0.5) - 0x7f5;
   if (b.hour < 12 && !f.isDay) dayNum--;
   let weekday = (pmod(dayNum, 7) + 2) % 7;
@@ -286,6 +287,8 @@ function localTime(swe: Sweph, jdUt: number, tz: number) {
   return swe.revjul(jdUt + tz / 24);
 }
 
+// FUN_004b1400 (0x4b1b75): " (Month d)" when the event's day of month differs from
+// the day on the Date line (for a progression, the progression date's)
 function eventText(swe: Sweph, chart: Chart, jdUt: number): string {
   const t = localTime(swe, jdUt, chart.birth.tzHours);
   const time = formatHms(t.hour);
@@ -315,8 +318,9 @@ export function keyInfoText(swe: Sweph, chart: Chart): string[] {
   const b = chart.birth;
   const p = chart.positions;
   const s = calcSettingsFromIni(chart.ini);
-  const sun = p.grahas.Sun.lon, moon = p.grahas.Moon.lon;
-  const lagnaSign = Math.floor(p.ascendant / 30) % 12;
+  const pp = b.override?.afterPanchanga ? computePositions(swe, p.jdUt, { lat: b.lat, lon: b.lon, alt: b.altitudeM }, s) : p;
+  const sun = pp.grahas.Sun.lon, moon = pp.grahas.Moon.lon;
+  const lagnaSign = Math.floor(pp.ascendant / 30) % 12;
   const t = tithi(sun, moon), n = nakshatra(moon), y = yoga(sun, moon), k = karana(sun, moon, lagnaSign);
   const ly = lunarYearMonth(swe, chart, s);
   const frames = keyFrames(swe, chart);

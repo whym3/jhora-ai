@@ -23,7 +23,7 @@ import { birthAt, type AsyncTableFn } from './common';
 import {
   ardraPravesha, aspectMoment, ASPECTS, contactTime, ctxOf, divisionName, eclipse, ECLIPSE_NOTES, fortnight, lifecycleMoment,
   lunarNewMonth, lunarNewYear, BODY_SHORT, MUNDANE_BODIES, mundaneDasa, newLunarDay, solarNewMonth, solarNewYear, lunarSolarOptions,
-  stationaryChange, swearingInLabel, transitChange, type EclipseType,
+  recordJd, stationaryChange, swearingInLabel, transitChange, type EclipseType,
 } from './mundane';
 
 const STEP = 0.0035;
@@ -38,8 +38,9 @@ async function find(natal: Chart, params: Record<string, unknown>, swe: Sweph): 
   const current = params.current ? await computeChart(swe, params.current as BirthData, natal.ini) : natal;
   const derived = !!params.current;
   const after = bool(params.after), next = bool(params.next);
-  const base = current.positions.jdUt + (derived ? (after ? STEP : -STEP) : 0);
   const c = ctxOf(swe, current);
+  // FUN_00409780 / FUN_004099b0 / FUN_0040aae0 store the moved moment as a record (FUN_0049d250)
+  const base = derived ? recordJd(c, current.positions.jdUt + (after ? STEP : -STEP)) : current.positions.jdUt;
   switch (mode) {
     case 'swearingIn': {
       const periodDays = num(params.years) * 365.24219 + num(params.days);

@@ -2,6 +2,7 @@
 // them (strength object built by FUN_004bbd50 and its helpers; offsets quoted
 // in comments are into that object). Numbers are virupas unless noted.
 import type { Chart } from './chart';
+import { castBirth } from './jhd';
 import type { Graha } from './positions';
 import { norm360 } from './positions';
 import { SIGN_LORD } from './lords';
@@ -135,7 +136,7 @@ export function computeShadbala(chart: Chart, opts: ShadbalaOptions = { gradedAs
   const ghatis = day.ghatis;
   const dayLen = (day.sunset - day.sunrise) * 60, nightLen = (day.nextSunrise - day.sunset) * 60;
   const hours = ghatis * 0.4;
-  const birth = chart.birth;
+  const birth = castBirth(chart.birth);
   // JHora's day count: local civil date number minus 2037, one less for a night birth before noon
   const D = Math.floor(p.jdUt + birth.tzHours / 24 - 0.5) - 2037 - (!day.isDay && birth.hour < 12 ? 1 : 0);
   const w7 = (x: number) => { const r = ((x % 7) + 7) % 7; return r === 0 ? 7 : r; };

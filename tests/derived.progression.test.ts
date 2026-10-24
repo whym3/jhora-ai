@@ -9,6 +9,7 @@ import { angularReturn, lagnaAt } from '../src/core/derived/angularReturn';
 import { BHRIGU_YEARS, progression, progressedSeed, progressedVargaLongitudes, solarArc, solarLabel } from '../src/core/derived/progression';
 import { ANGULAR_JOBS, PROGRESSION_JOBS } from '../src/core/derived/progressionJobs';
 import type { BirthData } from '../src/core/jhd';
+import { keyInfoText } from '../src/core/keyInfo';
 
 const wrap = (x: number) => { let d = x % 360; if (d > 180) d -= 360; else if (d < -180) d += 360; return d; };
 
@@ -40,15 +41,32 @@ describe('Progressions and angular return', async () => {
     expect(solarLabel(30 / 7)).toBe('Progressed (4:17 deg)');
   });
 
-  it('Bhrigu progression moves Sun..Saturn by arc/k, keeps lagna and nodes', async () => {
+  it('Bhrigu progression moves Sun..Saturn by arc/k; lagna and nodes are of the progression date', async () => {
     const p = progression(swe, natal, { kind: 'bhrigu', varga: 0, ...date });
     const c = await computeChart(swe, p.birth, natal.ini);
     for (const [g, k] of Object.entries(BHRIGU_YEARS)) {
       const lon = c.positions.grahas[g as keyof typeof BHRIGU_YEARS].lon;
       expect(Math.abs(wrap(lon - natal.positions.grahas[g as keyof typeof BHRIGU_YEARS].lon - p.arc / k))).toBeLessThan(1e-9);
     }
-    expect(c.positions.ascendant).toBeCloseTo(natal.positions.ascendant, 9);
-    expect(c.positions.grahas.Rahu.lon).toBeCloseTo(natal.positions.grahas.Rahu.lon, 9);
+    // JHora (golden/jhora-misc "Progression: Bhrigu Rasi") casts the chart for the progression date
+    const at = await computeChart(swe, { ...p.birth, override: null }, natal.ini);
+    expect(c.positions.jdUt).toBeCloseTo(p.jd, 9);
+    expect(c.positions.ascendant).toBeCloseTo(at.positions.ascendant, 9);
+    expect(c.positions.grahas.Rahu.lon).toBeCloseTo(at.positions.grahas.Rahu.lon, 9);
+  });
+
+  it('SCD progression shows the progression date but keeps the natal calculations', async () => {
+    const p = progression(swe, natal, { kind: 'scd', varga: 0, ...date });
+    expect([p.birth.year, p.birth.month, p.birth.day, p.birth.hour]).toEqual([date.year, date.month, date.day, date.hour]);
+    const c = await computeChart(swe, p.birth, natal.ini);
+    expect(c.positions.jdUt).toBe(natal.positions.jdUt);
+    expect(c.day.sunrise).toBe(natal.day.sunrise);
+    expect(Math.abs(wrap(c.positions.grahas.Moon.lon - natal.positions.grahas.Moon.lon - p.shift!))).toBeLessThan(1e-9);
+    // Key Info: progression Date/Time over the natal panchanga (sunrise/sunset may gain
+    // a " (Month d)" suffix, as their day differs from the progression date's)
+    const ki = keyInfoText(swe, c), kn = keyInfoText(swe, natal);
+    const changed = ki.filter((l, i) => l !== kn[i] && !/^Sun(rise|set):/.test(l));
+    expect(changed.map((l) => l.slice(0, 5))).toEqual(['Date:', 'Time:']);
   });
 
   it('SCD progression: one sign per year in every varga', () => {

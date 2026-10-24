@@ -44,6 +44,14 @@ export interface BirthData {
    * chart is computed for the birth moment first, then these are substituted.
    */
   override?: PositionOverride | null;
+  /**
+   * Derived charts only (never in .jhd files): the local date and time (same zone)
+   * the chart is computed for when it differs from the date it shows.  JHora's
+   * Sudarsana and nakshatra dasa progressions show the progression date while
+   * FUN_00403120 computes the chart from the natal date, time and zone (record
+   * flag +0x275c8), so everything but the Date/Time lines stays natal.
+   */
+  castAt?: { year: number; month: number; day: number; hour: number } | null;
 }
 
 /** Longitudes (sidereal degrees) a derived chart substitutes; see BirthData.override. */
@@ -51,6 +59,13 @@ export interface PositionOverride {
   ascendant?: number;
   /** keyed by graha name (Sun..Ketu) */
   grahas?: Partial<Record<'Sun' | 'Moon' | 'Mars' | 'Mercury' | 'Jupiter' | 'Venus' | 'Saturn' | 'Rahu' | 'Ketu', number>>;
+  /**
+   * The longitudes replace the computed ones only after the panchanga is worked out
+   * (JHora's shifted progressions, record flag +0x275ca: FUN_004a0520 adds the shift
+   * at its very end), so Key Info's tithi, nakshatra, yoga and karana use the computed
+   * positions; otherwise (Prasna) they use these.
+   */
+  afterPanchanga?: boolean;
 }
 
 /** Decode JHora's H.MMSS / D.MMSS number to decimal units, keeping the sign. */
@@ -147,7 +162,13 @@ export function writeJhd(b: BirthData): string {
   return lines.join('\r\n') + '\r\n';
 }
 
-/** Julian day (UT) of the birth moment, given a julday function for the calendar. */
+/** The birth data with the date and time the chart is computed for (BirthData.castAt). */
+export function castBirth(b: BirthData): BirthData {
+  return b.castAt ? { ...b, ...b.castAt, castAt: null } : b;
+}
+
+/** Julian day (UT) of the moment the chart is computed for, given a julday function for the calendar. */
 export function birthJdUt(b: BirthData, julday: (y: number, m: number, d: number, h: number) => number): number {
-  return julday(b.year, b.month, b.day, b.hour - b.tzHours);
+  const c = castBirth(b);
+  return julday(c.year, c.month, c.day, c.hour - c.tzHours);
 }

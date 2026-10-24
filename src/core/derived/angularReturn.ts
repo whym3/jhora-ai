@@ -16,15 +16,15 @@
 //   DAT_005922b0 = end - start (span used for dasa compression, like Tajaka)
 //   label  = "Ang Ret %s-%s" (string 0x5747f0) with the body names of A and B;
 //   chart kind doc+0x76d04 = 5; the chart keeps the natal place and zone.
-// JHora's root finder stops at a 1-second bracket and returns its later end; we
-// refine to ~1e-8 day, so JHora's time can be up to ~1 s later.
+//   (struct: +0 A, +4 B, +0x10 angle0, +0x18 two bodies, +0x1b before; tajaka/search.ts
+//   jhoraBodySearch); the entered date is first stored as a record in the natal zone.
 import type { Sweph } from '../../sweph';
 import type { Chart } from '../chart';
-import { ayanamsa, norm360, siderealLongitude, type Graha } from '../positions';
-import { calcSettingsFromIni, type Settings } from '../settings';
-import { jhoraDeltaT } from '../deltat';
-import { birthAt, scanCrossing } from './common';
-import { BODY_SHORT } from './mundane';
+import { norm360, siderealAscendant } from '../positions';
+import type { Settings } from '../settings';
+import { jhoraBodySearch } from '../tajaka/search';
+import { birthAt } from './common';
+import { BODY_SHORT, bodyLon, ctxOf, recordJd } from './mundane';
 import type { BirthData } from '../jhd';
 
 export const ANGRET_BODIES = ['Lagna', 'Sun', 'Moon', 'Mars', 'Mercury', 'Jupiter', 'Venus', 'Saturn', 'Rahu', 'Ketu'] as const;
@@ -52,21 +52,7 @@ export interface AngularReturn {
 
 /** Sidereal lagna at jd for the natal place (as computePositions does it). */
 export function lagnaAt(swe: Sweph, jd: number, geo: { lat: number; lon: number }, s: Settings): number {
-  const jdEt = jd + (jhoraDeltaT(jd) ?? swe.deltaT(jd));
-  const ay = ayanamsa(swe, jd, jdEt, s);
-  return norm360(swe.houses(jd, 0, geo.lat, geo.lon, 'P').ascmc[0] - ay.mean);
-}
-
-function bodyLon(swe: Sweph, natal: Chart, body: AngRetBody, s: Settings): (jd: number) => number {
-  if (body === 'Lagna') return (jd) => lagnaAt(swe, jd, natal.birth, s);
-  return (jd) => siderealLongitude(swe, jd, body as Graha, s).lon;
-}
-
-/** Scan step (days) small enough not to skip a crossing of the A-B angle. */
-function stepFor(a: AngRetBody, b: AngRetBody): number {
-  if (a === 'Lagna' || b === 'Lagna') return 1 / 96;
-  if (a === 'Moon' || b === 'Moon') return 0.25;
-  return 1;
+  return siderealAscendant(swe, jd, geo, s);
 }
 
 /** FUN_004075e0: the angular return chart of bodies A and B. */
@@ -74,17 +60,13 @@ export function angularReturn(swe: Sweph, natal: Chart, inp: AngularReturnInput)
   if (inp.a === inp.b) throw new Error('Please select two DIFFERENT planets and then try to find the angular return chart.');
   const A = ANGRET_BODIES[inp.a], B = ANGRET_BODIES[inp.b];
   if ((A === 'Rahu' && B === 'Ketu') || (A === 'Ketu' && B === 'Rahu')) throw new Error('Rahu and Ketu are always 180 degrees apart: no angular return.');
-  const s = calcSettingsFromIni(natal.ini);
-  const fa = bodyLon(swe, natal, A, s), fb = bodyLon(swe, natal, B, s);
-  const f = (jd: number) => norm360(fa(jd) - fb(jd));
-  const angle = f(natal.positions.jdUt);
-  const from = swe.julday(inp.year, inp.month, inp.day, inp.hour - inp.tzHours);
-  const step = stepFor(A, B);
-  const limit = 366 * 300;
-  const start = scanCrossing(f, angle, from, inp.before ? -1 : 1, step, limit);
-  if (start === null) throw new Error('angular return not found within 300 years');
-  const end = scanCrossing(f, angle, start + 0.0035, 1, step, limit);
-  if (end === null) throw new Error('next angular return not found within 300 years');
+  const c = ctxOf(swe, natal);
+  const lon = (b: number, jd: number) => bodyLon(c, b, jd);
+  const angle = norm360(lon(inp.a, natal.positions.jdUt) - lon(inp.b, natal.positions.jdUt));
+  const spec = { lon, b1: inp.a, b2: inp.b, offset: angle };
+  // the entered moment is stored as a record in the natal zone, then searched from
+  const from = recordJd(c, swe.julday(inp.year, inp.month, inp.day, inp.hour - inp.tzHours));
+  const start = recordJd(c, jhoraBodySearch({ ...spec, backward: inp.before }, from));
+  const end = recordJd(c, jhoraBodySearch({ ...spec, backward: false }, recordJd(c, start + 0.0035)));
   return { label: `Ang Ret ${BODY_SHORT[inp.a]}-${BODY_SHORT[inp.b]}`, angle, start, end, birth: birthAt(swe, natal, start) };
 }
-

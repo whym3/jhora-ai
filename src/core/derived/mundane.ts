@@ -32,9 +32,12 @@
 // currently shown, moved by 0.0035 day backward/forward when it is a derived chart
 // (so repeated clicks step); eclipses start from the chart shown; the lunar and
 // solar charts and Ardra Pravesha always start from the natal (base) chart.
-// Root finding is JHora's FUN_0049c0d0 -> FUN_0049c130: step (lagna 1/12 day,
-// Moon 3 days, others 10) until (lon - target) mod 360 jumps between the >240 and
-// <120 bands, then bisection to a 1-second bracket, taking its later end.
+// Root finding is JHora's FUN_0049c0d0 -> FUN_0049c130 (ported in tajaka/search.ts:
+// steps of 1/12 day with the lagna, 3 days with the Moon, else 10, then regula falsi
+// and bisection to a 1-second bracket, its later end kept) and, for stations,
+// FUN_0049c930 (20-day steps on the retrograde flag, bisection to 1 s).  Every result
+// is stored as a chart record (FUN_0049d250) and later searches start from such
+// records, so the JDs pass through swe_revjul / swe_julday (recordJd).
 //
 // Defaults (golden/jhora-defaults.ini): LunarYrDef=2 (amanta, sidereal: 0/1 purnimanta,
 // 2/3 amanta, 4/5 solar; odd = tropical), LunarYrSign=11 (lunar year starts with the first
@@ -54,7 +57,9 @@
 import type { Sweph } from '../../sweph';
 import { SE } from '../../sweph';
 import type { Chart } from '../chart';
-import { calcFlags, computePositions, siderealLongitude, GRAHAS, type Graha } from '../positions';
+import { calcFlags, siderealAscendant, siderealLongitude, GRAHAS, type Graha } from '../positions';
+import { jhoraDeltaT } from '../deltat';
+import { jhoraBodySearch, jhoraStation, type BodySearch } from '../tajaka/search';
 import { calcSettingsFromIni, type Settings } from '../settings';
 import { vimsottari, type Period } from '../dasas/vimsottari';
 import { dasaClock, type DasaClock } from '../dasas/time';
@@ -95,122 +100,113 @@ export function divisionArc(code: number): number {
 export const divisionName = (code: number) => DIVISION_NAMES[code] ?? `D-${code}`;
 
 // ---------------------------------------------------------------------------
-// longitudes and JHora's root finder
+// longitudes and JHora's searches
 
 export interface Ctx {
   swe: Sweph;
   settings: Settings;
   geo: { lat: number; lon: number; alt: number };
+  /** the chart's zone (east-positive hours), kept by every record a search makes */
+  tz: number;
 }
 
 export function ctxOf(swe: Sweph, chart: Chart, tropical = false): Ctx {
   let settings = calcSettingsFromIni(chart.ini);
   if (tropical) settings = { ...settings, ayanamsa: 'tropical', ayanamsaDelta: 0 };
-  return { swe, settings, geo: { lat: chart.birth.lat, lon: chart.birth.lon, alt: chart.birth.altitudeM } };
+  return { swe, settings, geo: { lat: chart.birth.lat, lon: chart.birth.lon, alt: chart.birth.altitudeM }, tz: chart.birth.tzHours };
 }
 
-/** Longitude of a JHora body index (0 = lagna) at a UT moment. */
+/** Longitude of a JHora body index (0 = lagna) at a UT moment (FUN_0049aaa0). */
 export function bodyLon(c: Ctx, body: number, jd: number): number {
-  if (body === 0) return computePositions(c.swe, jd, c.geo, c.settings).ascendant;
+  if (body === 0) return siderealAscendant(c.swe, jd, c.geo, c.settings);
   return siderealLongitude(c.swe, jd, GRAHAS[body - 1], c.settings).lon;
 }
 
-export function bodySpeed(c: Ctx, body: number, jd: number): number {
-  return siderealLongitude(c.swe, jd, GRAHAS[body - 1], c.settings).speed;
-}
-
-const stepOf = (body: number) => (body === 0 ? 1 / 12 : body === 2 ? 3 : 10);
-const SECOND = 1 / 86400;
+const SWE_BODY = [SE.SUN, SE.MOON, SE.MARS, SE.MERCURY, SE.JUPITER, SE.VENUS, SE.SATURN];
 
 /**
- * FUN_0049c130: first moment from `from` in direction `dir` at which f crosses `target`
- * (f an angle), bracketed by `step` and bisected to 1 s; returns the later bracket end.
+ * The longitude speed behind FUN_0049aaa0's retrograde flag: swe_calc of Swiss 2.02
+ * with SEFLG_SIDEREAL (Lahiri) computes it without nutation and does not subtract the
+ * ayanamsa's rate, i.e. it is the tropical speed with SEFLG_NONUT.
  */
-export function crossing(f: (jd: number) => number, target: number, from: number, dir: 1 | -1, step: number, tol = SECOND): number {
-  const g = (t: number) => n360(f(t) - target);
-  let a = from, ga = g(a);
-  for (let i = 0; i < 40000; i++) {
-    const b = a + dir * step, gb = g(b);
-    if ((ga > 240 && gb < 120) || (ga < 120 && gb > 240)) {
-      let lo = a, hi = b, glo = ga;
-      while (Math.abs(hi - lo) > tol) {
-        const m = (lo + hi) / 2, gm = g(m);
-        if ((glo > 180) === (gm > 180)) { lo = m; glo = gm; } else hi = m;
-      }
-      return Math.max(lo, hi);
-    }
-    a = b; ga = gb;
-  }
-  throw new Error('crossing not found');
+export function bodySpeed(c: Ctx, body: number, jd: number): number {
+  const jdEt = jd + (jhoraDeltaT(jd) ?? c.swe.deltaT(jd));
+  const id = body >= 8 ? (c.settings.trueNodes ? SE.TRUE_NODE : SE.MEAN_NODE) : SWE_BODY[body - 1];
+  return c.swe.calcEt(jdEt, id, calcFlags(c.settings) | SE.FLG_NONUT).speedLon;
 }
 
-/** First zero of a body's longitude speed (station) from `from` in direction `dir` (FUN_0049c930). */
-export function station(c: Ctx, body: number, from: number, dir: 1 | -1): number {
-  const step = body >= 8 ? 0.25 : 1;
-  let a = from, sa = bodySpeed(c, body, a);
-  for (let i = 0; i < 400000; i++) {
-    const b = a + dir * step, sb = bodySpeed(c, body, b);
-    if ((sa < 0) !== (sb < 0)) {
-      let lo = a, hi = b, slo = sa;
-      while (Math.abs(hi - lo) > SECOND) {
-        const m = (lo + hi) / 2, sm = bodySpeed(c, body, m);
-        if ((sm < 0) === (slo < 0)) { lo = m; slo = sm; } else hi = m;
-      }
-      return Math.max(lo, hi);
-    }
-    a = b; sa = sb;
-  }
-  throw new Error('station not found');
+/**
+ * The JD a search starts from when `jd` is stored as a chart record first
+ * (FUN_0049d250: swe_revjul(jd + zone/24) -> date and hour; FUN_0049d210 /
+ * FUN_0049c130: swe_julday(date, hour - zone)).
+ */
+export function recordJd(c: Ctx, jd: number): number {
+  const r = c.swe.revjul(jd + c.tz * 0.041666666666666664);
+  return c.swe.julday(r.year, r.month, r.day, r.hour - c.tz);
 }
+
+/** FUN_0049c0d0 -> FUN_0049c130 from `from`: one body against `target`, or b1 against b2 + offset; the found record's JD. */
+function search(c: Ctx, s: Omit<BodySearch, 'lon'>, from: number): number {
+  return recordJd(c, jhoraBodySearch({ ...s, lon: (b, t) => bodyLon(c, b, t) }, from));
+}
+
+const NEXT_STEP = 0.0035;
 
 // ---------------------------------------------------------------------------
-// the searches; each returns the chart moment and its period of effect (days)
+// the searches; each returns the chart moment and its period of effect (days).
+// `base` is the JD of the record searched from (natal: its own moment; a derived
+// chart shown: recordJd(moment -+ 0.0035)).
 
 export interface MundaneMoment { jd: number; periodDays: number; label: string }
 
-/** FUN_0040a650: the body changes division (code = combo 1004 index, or 2000 = Ardra) before/after `base`. */
+/**
+ * FUN_0040a650: the body changes division (code = combo 1004 index, or 2000 = Ardra)
+ * before/after `base`.  t0 = trunc(lon / arc) * arc of the record's longitude; both
+ * boundaries t0 and t0 + arc are searched and the nearer kept; the period runs from it
+ * to the nearer of the next two boundaries searched forward from 0.01 day later.
+ */
 export function transitChange(c: Ctx, body: number, code: number, base: number, after: boolean): { jd: number; periodDays: number } {
   const b = body === 9 && code !== 1 ? 8 : body;         // Ketu crosses with Rahu except in nakshatras
   const arc = divisionArc(code);
-  const f = (t: number) => bodyLon(c, b, t);
-  let t0 = Math.floor(f(base) / arc) * arc;
+  let t0 = Math.trunc(bodyLon(c, b, base) / arc) * arc;
   if (code >= 1000 && code < 1012) t0 -= (1012 - code) * 30;
   if (code === 2000) t0 += 66.66666666666667;
-  const dir = after ? 1 : -1;
-  const step = stepOf(b);
-  const A = crossing(f, t0, base, dir, step), B = crossing(f, t0 + arc, base, dir, step);
+  if (body === 9 && code === 1) t0 += 180;
+  const A = search(c, { b1: b, target: t0, backward: !after }, base);
+  const B = search(c, { b1: b, target: t0 + arc, backward: !after }, base);
   const useB = after ? A > B : A < B;
   const jd = useB ? B : A;
-  const lower = useB ? t0 + (after ? arc : 0) : t0 - (after ? arc : 0);
-  const from = jd + 0.01;
-  const next = Math.min(crossing(f, lower, from, 1, step), crossing(f, lower + arc, from, 1, step));
-  return { jd, periodDays: next - jd };
+  const lower = useB ? (after ? 1 : 0) * arc + t0 : t0 - (after ? 1 : 0) * arc;
+  const from = recordJd(c, jd + 0.01);
+  const C = search(c, { b1: b, target: lower, backward: false }, from);
+  const D = search(c, { b1: b, target: lower + arc, backward: false }, from);
+  return { jd, periodDays: Math.min(C, D) - jd };
 }
 
-/** FUN_0040a9d0: the body (3..9) becomes stationary before/after `base`; period until the next station. */
+/**
+ * FUN_0040a9d0: the body (3..9; Ketu searched as Rahu) becomes stationary before/after
+ * `base` (FUN_0049c930); the period runs to the next station searched forward from it.
+ */
 export function stationaryChange(c: Ctx, body: number, base: number, after: boolean): { jd: number; periodDays: number } {
-  const jd = station(c, body, base, after ? 1 : -1);
-  const next = station(c, body, jd + 0.01, 1);
+  const b = body === 9 ? 8 : body;
+  const retro = (t: number) => bodySpeed(c, b, t) < 0;
+  const jd = recordJd(c, jhoraStation(retro, base, after));
+  const next = recordJd(c, jhoraStation(retro, jd, true));
   return { jd, periodDays: next - jd };
 }
 
-/** FUN_0040aeb0: lon(p1) - lon(p2) = angle before/after `base`; period until it recurs. */
+/** FUN_0040aeb0: lon(p1) - lon(p2) = angle before/after `base`; period until it recurs (searched from 0.0035 day later). */
 export function aspectMoment(c: Ctx, p1: number, p2: number, angle: number, base: number, after: boolean): { jd: number; periodDays: number } {
-  const f = (t: number) => bodyLon(c, p1, t) - bodyLon(c, p2, t);
-  const step = Math.min(stepOf(p1), stepOf(p2));
-  const jd = crossing(f, angle, base, after ? 1 : -1, step);
-  const next = crossing(f, angle, jd + 0.0035, 1, step);
+  const jd = search(c, { b1: p1, b2: p2, offset: angle, backward: !after }, base);
+  const next = search(c, { b1: p1, b2: p2, offset: angle, backward: false }, recordJd(c, jd + NEXT_STEP));
   return { jd, periodDays: next - jd };
 }
 
 /** FUN_0040acd0: the Sun reaches `start` (prev: backward, next: forward), then `end` after that. */
 export function solarSpan(c: Ctx, start: number, end: number, base: number, next: boolean): { jd: number; end: number } {
-  const f = (t: number) => bodyLon(c, 1, t);
-  const jd = crossing(f, start, base, next ? 1 : -1, 10);
-  return { jd, end: crossing(f, end, jd + 0.0035, 1, 10) };
+  const jd = search(c, { b1: 1, target: start, backward: !next }, base);
+  return { jd, end: search(c, { b1: 1, target: end, backward: false }, recordJd(c, jd + NEXT_STEP)) };
 }
-
-const elongation = (c: Ctx) => (t: number) => bodyLon(c, 2, t) - bodyLon(c, 1, t);
 
 export interface LunarSolarOptions {
   /** LunarYrDef: 0/1 purnimanta, 2/3 amanta, 4/5 solar; odd = tropical */
@@ -237,9 +233,9 @@ export function solarNewYear(swe: Sweph, natal: Chart, next: boolean, o = lunarS
 export function solarNewMonth(swe: Sweph, natal: Chart, next: boolean, tropical: boolean, label = 'Solar Month'): MundaneMoment {
   const c = ctxOf(swe, natal, tropical);
   const sun = bodyLon(c, 1, natal.positions.jdUt);
-  let start = Math.floor(sun / 30) * 30;
+  let start = Math.trunc(sun / 30) * 30;
   if (next) start += 30;
-  const s = solarSpan(c, n360(start), n360(start + 30), natal.positions.jdUt, next);
+  const s = solarSpan(c, start, n360(start + 30), natal.positions.jdUt, next);
   return { jd: s.jd, periodDays: s.end - s.jd, label };
 }
 
@@ -249,44 +245,54 @@ export function ardraPravesha(swe: Sweph, natal: Chart, next: boolean): MundaneM
   return { ...r, label: 'Meteorological Yr' };
 }
 
-/** FUN_00409e30: lunar year (first new/full moon after the Sun enters LunarYrSign); label "Lunar Year". */
+/**
+ * FUN_00409e30: lunar year: FUN_0040acd0 finds the Sun entering LunarYrSign and the
+ * next such ingress; amanta / purnimanta years then start at the first new / full
+ * moon searched forward from each of the two records.  Label "Lunar Year".
+ */
 export function lunarNewYear(swe: Sweph, natal: Chart, next: boolean, o = lunarSolarOptions(natal.ini)): MundaneMoment {
   const tropical = o.lunarYrDef % 2 === 1;
-  const c = ctxOf(swe, natal, tropical);
   const t = o.lunarYrSign * 30;
-  const s = solarSpan(c, t, t, natal.positions.jdUt, next);
+  const s = solarSpan(ctxOf(swe, natal, tropical), t, t, natal.positions.jdUt, next);
   if (o.lunarYrDef >= 4) return { jd: s.jd, periodDays: s.end - s.jd, label: 'Lunar Year' };
-  const angle = o.lunarYrDef <= 1 ? 180 : 0;
-  const f = elongation(ctxOf(swe, natal));
-  const a = crossing(f, angle, s.jd, 1, 3), b = crossing(f, angle, s.end, 1, 3);
+  const c = ctxOf(swe, natal);
+  const moon = { b1: 2, b2: 1, offset: o.lunarYrDef <= 1 ? 180 : 0, backward: false };
+  const a = search(c, moon, s.jd), b = search(c, moon, s.end);
   return { jd: a, periodDays: b - a, label: 'Lunar Year' };
 }
 
-/** FUN_0040a1c0: lunar month from the natal moment (new or full moon; solar months for LunarYrDef 4/5). */
+/** FUN_0040a1c0: lunar month from the natal moment (FUN_0040aeb0 with the Moon and Sun; solar months for LunarYrDef 4/5). */
 export function lunarNewMonth(swe: Sweph, natal: Chart, next: boolean, o = lunarSolarOptions(natal.ini)): MundaneMoment {
   if (o.lunarYrDef >= 4) return solarNewMonth(swe, natal, next, o.lunarYrDef === 5, 'Lunar Month');
   const r = aspectMoment(ctxOf(swe, natal), 2, 1, o.lunarYrDef <= 1 ? 180 : 0, natal.positions.jdUt, next);
   return { ...r, label: 'Lunar Month' };
 }
 
-/** FUN_0040b050: the last / next new or full moon from the natal moment; period until the next one. */
+/**
+ * FUN_0040a3b0 -> FUN_0040b050: the last / next new or full moon from the natal moment
+ * (both searched, the nearer kept); the period runs to the other phase searched
+ * forward from 0.0035 day later.
+ */
 export function fortnight(swe: Sweph, natal: Chart, next: boolean): MundaneMoment {
-  const f = elongation(ctxOf(swe, natal));
-  const base = natal.positions.jdUt, dir = next ? 1 : -1;
-  const a = crossing(f, 0, base, dir, 3), b = crossing(f, 180, base, dir, 3);
-  const jd = next ? Math.min(a, b) : Math.max(a, b);
-  const end = Math.min(crossing(f, 0, jd + 0.0035, 1, 3), crossing(f, 180, jd + 0.0035, 1, 3));
+  const c = ctxOf(swe, natal);
+  const base = natal.positions.jdUt;
+  const phase = (offset: number, backward: boolean, from: number) => search(c, { b1: 2, b2: 1, offset, backward }, from);
+  const a = phase(0, !next, base), b = phase(180, !next, base);
+  const useB = next ? b < a : b > a;
+  const jd = useB ? b : a;
+  const end = phase(useB ? 0 : 180, false, recordJd(c, jd + NEXT_STEP));
   return { jd, periodDays: end - jd, label: 'Fortnight Chart' };
 }
 
 /** FUN_0040a420: start of the natal tithi (prev) or of the next tithi (next); period one tithi. */
 export function newLunarDay(swe: Sweph, natal: Chart, next: boolean): MundaneMoment {
-  const f = elongation(ctxOf(swe, natal));
+  const c = ctxOf(swe, natal);
   const base = natal.positions.jdUt;
-  let target = Math.floor(n360(f(base)) / 12) * 12;
+  const e = n360(bodyLon(c, 2, base) - bodyLon(c, 1, base));
+  let target = Math.trunc(e * 0.08333333333333333) * 12;
   if (next) target += 12;
-  const jd = crossing(f, target, base, next ? 1 : -1, 3);
-  const end = crossing(f, target + 12, jd + 0.0035, 1, 3);
+  const jd = search(c, { b1: 2, b2: 1, offset: target, backward: !next }, base);
+  const end = search(c, { b1: 2, b2: 1, offset: target + 12, backward: false }, recordJd(c, jd + NEXT_STEP));
   return { jd, periodDays: end - jd, label: 'Lunar Day' };
 }
 
@@ -353,11 +359,20 @@ export function eclipse(c: Ctx, type: EclipseType, base: number, next: boolean, 
   if (c.settings.topocentric) c.swe.setTopo(c.geo.lon, c.geo.lat, c.geo.alt);
   const flags = calcFlags(c.settings) | SE.FLG_SPEED;
   const idx = maximum ? 0 : [6, 2, 1][type];
-  const first = eclipseWhen(c.swe, type, base, flags, !next, c.geo);
+  // Swiss converts its TT results with swe_deltat; JHora's DLL (2.02) uses its own model
+  // (deltat.ts), which our build only sees pinned at one moment: search once to find the
+  // eclipse, then again with delta-T pinned at it
+  const when = (from: number, backward: boolean) => {
+    c.swe.pinDeltaT(from);
+    const r = eclipseWhen(c.swe, type, from, flags, backward, c.geo);
+    c.swe.pinDeltaT(r.tret[0]);
+    return eclipseWhen(c.swe, type, from, flags, backward, c.geo);
+  };
+  const first = when(base, !next);
   const jd = first.tret[idx];
   // FUN_0040b2a0 searches again forward from one day after the chart moment: the period of
   // effect runs until the same contact of the next eclipse
-  const again = eclipseWhen(c.swe, type, jd + 1, flags, false, c.geo);
+  const again = when(jd + 1, false);
   const contacts: [string, number][] = CONTACT_ORDER[type]
     .filter((i) => first.tret[i] !== 0 && first.tret[i] < 1e12)
     .map((i) => [CONTACT_NAMES[type][i], first.tret[i]]);

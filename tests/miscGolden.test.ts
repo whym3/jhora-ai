@@ -1,7 +1,8 @@
 // Mundane, Angular Return, Progressions and Prasna charts against JHora 8.0
 // (golden/jhora-misc, captured with tools/harness/views-misc.json). For every scenario:
-// * the chart JHora found has the same name and moment as ours (to the second; searches
-//   that JHora stops at a 1-second bracket may differ by up to `MOMENT_TOL` seconds);
+// * the chart JHora found has the same name and moment as ours, to the second (the
+//   searches reproduce jhora.exe's own root finders, tajaka/search.ts; a documented
+//   per-scenario exception may allow `MOMENT_TOL` seconds);
 // * our found chart's Key Info text equals JHora's and its ten longitudes agree to 0.01";
 // * where captured, the compressed Vimsottari of the found chart (mundane, prasna).
 import { existsSync, readdirSync, readFileSync } from 'node:fs';
@@ -90,13 +91,22 @@ describe.skipIf(!charts.length)('Mundane / Angular Return / Progressions / Prasn
       for (const [label, find] of Object.entries(SCENARIOS)) {
         const ki = g.texts.find((t) => t.mode === label && t.name === 'key_info' && t.lines);
         if (!ki) continue;
-        it(label, async () => {
+        // JHora keeps a shifted progression's flags (derived record +0x275c8..ca) and shift
+        // (+0x275d0) when the next chart is again a progression (FUN_00403120 clears them
+        // only for another chart kind): a Solar or Bhrigu progression captured after an SCD
+        // or nakshatra dasa one is computed from the natal moment plus the old shift, so its
+        // lagna repeats that progression's. Such captures depend on the click history, not
+        // on the scenario, and are skipped.
+        const lagna = (mode: string) => g.views.find((v) => v.mode === mode)?.rows[0]?.[1];
+        const stale = /^Progression: (Solar|Bhrigu)/.test(label) && lagna(label) !== undefined
+          && g.views.some((v) => /^Progression: (Sudarsana|NakshatraDasa)/.test(v.mode) && v.rows[0]?.[1] === lagna(label));
+        it.skipIf(stale)(label, async () => {
           // JHora's copy: chart file, '', chart name, '', Date ... Sidereal Time, then the natal block
           const want = ki.lines!.slice(4, ki.lines!.findIndex((l) => l.startsWith('Sidereal Time:')) + 1);
           const found = await find(natal, swe);
           expect.soft(found.label).toBe(ki.lines![2].trim());
           const dt = birthMoment(found.birth) - moment(want);
-          expect.soft(Math.abs(dt), `found ${found.birth.year}-${found.birth.month}-${found.birth.day} ${found.birth.hour}h, ${dt} s from JHora`).toBeLessThanOrEqual(MOMENT_TOL[label] ?? 1);
+          expect.soft(Math.abs(dt), `found ${found.birth.year}-${found.birth.month}-${found.birth.day} ${found.birth.hour}h, ${dt} s from JHora`).toBeLessThanOrEqual(MOMENT_TOL[label] ?? 0);
           const chart = await computeChart(swe, found.birth, natal.ini);
           const have = keyInfoText(swe, chart).slice(2);
           const diff = want.flatMap((w, i) => (w === have[i] ? [] : [`want ${w} | have ${have[i]}`]));

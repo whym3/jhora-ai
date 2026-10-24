@@ -70,7 +70,13 @@ export function ayanamsa(swe: Sweph, jdUt: number, jdEt: number, s: Settings): {
       // JHora's own Spica record (see data/sefstars.txt); Swiss 2.10's built-in
       // Spica has slightly different proper motion (~0.04" in 1863).
       const t = swe.fixstarEt(JHORA_SPICA, jdEt, flags).lon - 180;
-      const m = swe.fixstarEt(JHORA_SPICA, jdEt, flags | SE.FLG_NONUT).lon - 180;
+      // doc+0x1680 = swe_get_ayanamsa(jd) - (180 - sidereal Spica): FUN_0049aaa0 passes
+      // the UT moment where swe_get_ayanamsa expects ET, while Swiss's sidereal Spica
+      // (nutation-free) has the Lahiri ayanamsa at ET subtracted; what remains is
+      // lahiri(ET = jdUt) - lahiri(ET = jdEt), -delta-T x precession (~1e-4" today)
+      swe.setSidMode(1);
+      const lag = swe.ayanamsaUt(2 * jdUt - jdEt, SE.FLG_SWIEPH | SE.FLG_NONUT) - swe.ayanamsaUt(jdUt, SE.FLG_SWIEPH | SE.FLG_NONUT);
+      const m = swe.fixstarEt(JHORA_SPICA, jdEt, flags | SE.FLG_NONUT).lon - 180 + lag;
       return { trueEq: t + s.ayanamsaDelta, mean: m + s.ayanamsaDelta };
     }
   }
@@ -110,6 +116,12 @@ export function computePositions(
     grahas,
     outer,
   };
+}
+
+/** Sidereal lagna at a moment (as computePositions does it), for root finding. */
+export function siderealAscendant(swe: Sweph, jdUt: number, geo: { lat: number; lon: number }, s: Settings): number {
+  const jdEt = jdUt + (jhoraDeltaT(jdUt) ?? swe.deltaT(jdUt));
+  return norm360(swe.houses(jdUt, 0, geo.lat, geo.lon, 'P').ascmc[0] - ayanamsa(swe, jdUt, jdEt, s).mean);
 }
 
 /** Sidereal longitude and speed of one body (as computePositions does it), for root finding. */

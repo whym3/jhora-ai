@@ -29,9 +29,11 @@
 //   moved in time until the Sun has advanced arc*step/360 degrees:
 //   FUN_0049dac0(arc*step/360/360 years, mode 3 = true sidereal solar years).
 //   It is a real chart (all bodies valid); label from the DMS split of `step`.
-// * Bhrigu (FUN_00419230): natal chart with Sun..Saturn replaced by
-//   natal + arc / k, k = 19, 45, 14, 46, 83, 27, 30 years per revolution
-//   (stack table); lagna and nodes stay natal (doc+0x4f030 overrides, flags doc+0x4efb8).
+// * Bhrigu (FUN_00419230): the chart of the progression date (no natal swap: lagna,
+//   nodes and the rest are of that moment, as JHora's longitudes show) with Sun..Saturn
+//   replaced by natal + arc / k, k = 19, 45, 14, 46, 83, 27, 30 years per revolution
+//   (stack table; doc+0x4f030 overrides, flags doc+0x4efb8).  Its Key Info was not
+//   captured: we take the panchanga from the replaced positions.
 // * SCD (FUN_004196b0): arc reduced to (0, 4320] (12-year cycle), shift = arc/12
 //   (one sign per year) stored at chart+0x275d0 with flags 0x275c9/0x275ca, which
 //   make the varga routines (0x4a0da1, 0x4a11c2) add the shift to the
@@ -43,6 +45,10 @@
 //   with unit = one star for per-star dasas (equal arcs per sub-period, not
 //   proportional to their years). shift = progressed seed - natal seed (varga),
 //   applied like SCD (flags 0x275c8/9/a).
+// SCD and nakshatra dasa (and Yogini / KCD) set the derived record's flag +0x275c8:
+// it shows the progression date, but FUN_00403120 computes it from the natal date,
+// time and zone and FUN_004a0520 adds the shift only at its end, so Key Info is the
+// natal one under the progression date (BirthData.castAt, override.afterPanchanga).
 //
 // The derived chart is expressed with BirthData.override (rasi longitudes). For the
 // varga-space shifts (SCD, nakshatra dasa) the override carries natal + shift in the
@@ -105,7 +111,7 @@ export interface Progression {
   seed?: number;
   /** birth data of the derived chart */
   birth: BirthData;
-  /** JD the derived chart is cast for (solar: the progressed moment; others: natal) */
+  /** JD the derived chart is cast for (solar: the progressed moment; Bhrigu: the progression date; SCD, nakshatra: natal) */
   chartJd: number;
 }
 
@@ -163,7 +169,11 @@ export function progressedSeed(seedLon: number, dasaKey: string | null, years: n
   if (dasaKey && (!def || def.groups)) throw new Error(`nakshatra dasa progression: ${dasaKey} not ported`);
   const n = def ? def.lords.length : 9;
   let list = def ? nakshatraDasa(def, seedLon, 1) : vimsottari(seedLon, 1);
-  // JHora's lists cover a fixed number of cycles; extend by repetition for long spans
+  // JHora's maha dasa list covers a fixed number of cycles (one; Yogini and Shattrimsa
+  // sama three); a later date is found in it modulo its span, so the period index -
+  // and with it the progressed star - starts again from the seed's star
+  const span = list[list.length - 1].end - list[0].start;
+  while (years >= list[list.length - 1].end) years -= span;
   let lon = Math.floor(seedLon / NAK) * NAK;
   let unit = NAK;
   for (let level = 0; level < 6; level++) {
@@ -198,6 +208,22 @@ function shifted(natal: Chart, shift: number): PositionOverride {
   return { ascendant: norm360(natal.positions.ascendant + shift), grahas };
 }
 
+/**
+ * Birth data of a shifted progression (SCD, nakshatra dasa): FUN_004196b0 /
+ * FUN_00419aa0 write the progression date into the derived record and set its flags
+ * +0x275c8..ca, so FUN_00403120 computes the chart from the natal date, time and zone
+ * and FUN_004a0520 adds the shift at its end: Key Info shows the progression date
+ * with the natal panchanga, sunrise and sidereal time, the longitudes are natal + shift.
+ */
+function shiftedBirth(natal: Chart, inp: ProgressionInput, shift: number): BirthData {
+  const b = natal.birth;
+  return {
+    ...b, year: inp.year, month: inp.month, day: inp.day, hour: inp.hour, legacy: null,
+    castAt: { year: b.year, month: b.month, day: b.day, hour: b.hour },
+    override: { ...shifted(natal, shift), afterPanchanga: true },
+  };
+}
+
 /** The progressed chart for one of the four buttons. */
 export function progression(swe: Sweph, natal: Chart, inp: ProgressionInput): Progression {
   const b = natal.birth;
@@ -214,13 +240,14 @@ export function progression(swe: Sweph, natal: Chart, inp: ProgressionInput): Pr
     case 'bhrigu': {
       const grahas: PositionOverride['grahas'] = {};
       for (const [g, k] of Object.entries(BHRIGU_YEARS) as [Graha, number][]) grahas[g] = norm360(natal.positions.grahas[g].lon + arc / k);
-      return { ...base, kind: 'bhrigu', label: 'Progressed (Bhrigu)', birth: birthWithOverride(b, { grahas }), chartJd: natal.positions.jdUt };
+      const at = { ...b, year: inp.year, month: inp.month, day: inp.day, hour: inp.hour };
+      return { ...base, kind: 'bhrigu', label: 'Progressed (Bhrigu)', birth: birthWithOverride(b, { grahas }, at), chartJd: jd };
     }
     case 'scd': {
       let a = arc;
       while (a > 4320) a -= 4320;
       const shift = a / 12;
-      return { ...base, kind: 'scd', label: 'Progressed (SCD)', shift, birth: birthWithOverride(b, shifted(natal, shift)), chartJd: natal.positions.jdUt };
+      return { ...base, kind: 'scd', label: 'Progressed (SCD)', shift, birth: shiftedBirth(natal, inp, shift), chartJd: natal.positions.jdUt };
     }
     case 'nakshatra': {
       const body = PROG_BODIES[inp.body ?? 2];
@@ -228,7 +255,7 @@ export function progression(swe: Sweph, natal: Chart, inp: ProgressionInput): Pr
       const seed0 = vargaLongitude(lonOf(natal, body), ALL_VARGAS[vargaNameOf(n)]);
       const seed = progressedSeed(seed0, dasaKey, dasaYearsAt(swe, natal, jd));
       const shift = norm360(seed - seed0);
-      return { ...base, kind: 'nakshatra', label: 'Prog (NaksDasa)', shift, seed, birth: birthWithOverride(b, shifted(natal, shift)), chartJd: natal.positions.jdUt };
+      return { ...base, kind: 'nakshatra', label: 'Prog (NaksDasa)', shift, seed, birth: shiftedBirth(natal, inp, shift), chartJd: natal.positions.jdUt };
     }
   }
 }
