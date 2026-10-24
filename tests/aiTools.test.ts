@@ -83,3 +83,12 @@ describe('AI tools', async () => {
     expect(validateInput({ type: 'integer', minimum: 0 }, -1)).toMatch(/>= 0/);
   });
 });
+
+describe('OpenAI model filter', async () => {
+  const { isOpenAIChatModel } = await import('../src/ai/agent');
+  it('keeps chat models and drops the others', () => {
+    for (const id of ['gpt-5', 'gpt-4o', 'gpt-4.1-mini', 'o3', 'o4-mini', 'chatgpt-4o-latest']) expect(isOpenAIChatModel(id), id).toBe(true);
+    for (const id of ['text-embedding-3-large', 'tts-1', 'whisper-1', 'dall-e-3', 'gpt-image-1', 'omni-moderation-latest', 'gpt-4o-realtime-preview', 'gpt-4o-mini-transcribe', 'davinci-002'])
+      expect(isOpenAIChatModel(id), id).toBe(false);
+  });
+});

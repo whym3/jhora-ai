@@ -5,8 +5,8 @@ import type { ChartSpec } from '../engine/protocol';
 import { stableStringify } from '../engine/hash';
 import { useEngine } from './EngineProvider';
 import {
-  CLAUDE_MODELS, DEFAULT_SETTINGS, errorText, startConversation,
-  type AgentEvent, type AiSettings, type Conversation, type Effort,
+  CLAUDE_MODELS, DEFAULT_SETTINGS, errorText, isOpenAIChatModel, listModels, startConversation,
+  type AgentEvent, type AiSettings, type Conversation, type Effort, type ModelEntry,
 } from '../ai/agent';
 import { chartContext } from '../ai/systemPrompt';
 
@@ -70,7 +70,37 @@ function Markdown({ text }: { text: string }) {
   return <div className="ai-md">{out}</div>;
 }
 
+/** "Load models": every model the key can use (GET /v1/models), newest first. */
+function useModelList(s: AiSettings) {
+  const [models, setModels] = useState<Record<string, ModelEntry[]>>({});
+  const [status, setStatus] = useState('');
+  const key = s.provider === 'openai' ? s.openaiKey : s.anthropicKey;
+  const load = async () => {
+    setStatus('Loading models…');
+    try {
+      const list = await listModels(s.provider, key);
+      setModels((m) => ({ ...m, [s.provider]: list }));
+      setStatus(`${list.length} models`);
+    } catch (e) {
+      setStatus(errorText(e));
+    }
+  };
+  return { list: models[s.provider] ?? null, status, load, canLoad: !!key };
+}
+
+const day = (t: number) => (t ? new Date(t * 1000).toISOString().slice(0, 10) : '');
+
 function Settings({ s, set }: { s: AiSettings; set: (p: Partial<AiSettings>) => void }) {
+  const models = useModelList(s);
+  const [chatOnly, setChatOnly] = useState(true);
+  const loader = (
+    <span className="ai-models">
+      <button type="button" onClick={() => void models.load()} disabled={!models.canLoad}>Load models</button>
+      {models.status && <span className="note">{models.status}</span>}
+    </span>
+  );
+  const claudeIds = models.list?.map((m) => m.id) ?? CLAUDE_MODELS;
+  const openaiList = (models.list ?? []).filter((m) => !chatOnly || isOpenAIChatModel(m.id));
   return (
     <div className="ai-settings">
       <label>Provider
@@ -84,7 +114,7 @@ function Settings({ s, set }: { s: AiSettings; set: (p: Partial<AiSettings>) => 
           <label>Anthropic API key<input type="password" value={s.anthropicKey} placeholder="sk-ant-..." onChange={(e) => set({ anthropicKey: e.target.value.trim() })} /></label>
           <label>Model
             <select value={s.claudeModel} onChange={(e) => set({ claudeModel: e.target.value })}>
-              {CLAUDE_MODELS.map((m) => <option key={m}>{m}</option>)}
+              {[...new Set([s.claudeModel, ...claudeIds])].map((m) => <option key={m}>{m}</option>)}
             </select>
           </label>
           <label>Depth (effort)
@@ -92,17 +122,27 @@ function Settings({ s, set }: { s: AiSettings; set: (p: Partial<AiSettings>) => 
               {['low', 'medium', 'high', 'xhigh', 'max'].map((m) => <option key={m}>{m}</option>)}
             </select>
           </label>
+          {loader}
         </>
       ) : (
         <>
           <label>OpenAI API key<input type="password" value={s.openaiKey} placeholder="sk-..." onChange={(e) => set({ openaiKey: e.target.value.trim() })} /></label>
-          <label>Model<input value={s.openaiModel} onChange={(e) => set({ openaiModel: e.target.value.trim() })} /></label>
+          <label>Model
+            {models.list ? (
+              <select value={s.openaiModel} onChange={(e) => set({ openaiModel: e.target.value })}>
+                {!openaiList.some((m) => m.id === s.openaiModel) && <option value={s.openaiModel}>{s.openaiModel}</option>}
+                {openaiList.map((m) => <option key={m.id} value={m.id}>{m.id}{m.created ? ` (${day(m.created)}, ${m.owner})` : ''}</option>)}
+              </select>
+            ) : <input value={s.openaiModel} onChange={(e) => set({ openaiModel: e.target.value.trim() })} />}
+          </label>
           <label>Reasoning effort
             <select value={s.openaiReasoning} onChange={(e) => set({ openaiReasoning: e.target.value as AiSettings['openaiReasoning'] })}>
               <option value="">(not sent)</option>
               {['low', 'medium', 'high'].map((m) => <option key={m}>{m}</option>)}
             </select>
           </label>
+          {loader}
+          {models.list && <label className="ai-check"><input type="checkbox" checked={chatOnly} onChange={(e) => setChatOnly(e.target.checked)} /> chat models only ({openaiList.length} of {models.list.length})</label>}
         </>
       )}
       <p className="note">Keys are kept only in this browser and sent only to the provider you choose. Each answer is billed to your API account.</p>

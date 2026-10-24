@@ -125,3 +125,5 @@ td.rel3 { color: var(--muted); } td.rel4 { color: #c82828; } td.rel5 { color: #e
 .ai-input { display: flex; gap: 6px; padding: 8px 12px; border-top: 1px solid var(--line); }
 .ai-input textarea { flex: 1; resize: vertical; font: inherit; padding: 6px; background: var(--bg); color: var(--ink); border: 1px solid var(--line); border-radius: 4px; }
 button.active { border-color: var(--accent); color: var(--accent); }
+.ai-models { display: flex; align-items: center; gap: 6px; align-self: end; }
+.ai-settings label.ai-check { flex-direction: row; align-items: center; gap: 4px; }

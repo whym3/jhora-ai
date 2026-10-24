@@ -173,6 +173,25 @@ export function startConversation(settings: AiSettings, ctx: ToolContext): Conve
   return new ClaudeConversation(settings, ctx);
 }
 
+export interface ModelEntry { id: string; created: number; owner: string }
+
+/** Every model the key can use (GET /v1/models, all pages), newest first. */
+export async function listModels(provider: Provider, key: string): Promise<ModelEntry[]> {
+  const out: ModelEntry[] = [];
+  if (provider === 'openai') {
+    const client = new OpenAI({ apiKey: key, dangerouslyAllowBrowser: true });
+    for await (const m of client.models.list()) out.push({ id: m.id, created: m.created, owner: m.owned_by });
+  } else {
+    const client = new Anthropic({ apiKey: key, dangerouslyAllowBrowser: true });
+    for await (const m of client.models.list()) out.push({ id: m.id, created: Date.parse(m.created_at) / 1000, owner: 'anthropic' });
+  }
+  return out.sort((a, b) => b.created - a.created || a.id.localeCompare(b.id));
+}
+
+/** OpenAI ids usable with Chat Completions (drops embeddings, audio, image, moderation ...). */
+export const isOpenAIChatModel = (id: string) =>
+  /^(gpt-|o\d|chatgpt-)/.test(id) && !/(embedding|tts|whisper|transcribe|audio|realtime|image|dall-e|moderation|search|instruct)/.test(id);
+
 /** A readable message for an API error (typed SDK errors first). */
 export function errorText(e: unknown): string {
   if (e instanceof Anthropic.AuthenticationError || e instanceof OpenAI.AuthenticationError) return 'The API key was rejected - check it in the AI settings.';
