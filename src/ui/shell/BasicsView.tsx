@@ -6,6 +6,7 @@ import { TableView } from '../widgets/TableView';
 import { setView, useStore } from '../state/store';
 import { AV_MODE_LABELS, AV_MODES, KEY_INFO_MODES, OTHER_STRENGTH_MODES, VIMSOPAKA_PANE_MODES } from './tabs';
 import { NotPorted } from './NotPorted';
+import { YOGA_MODES } from '../../core/yogas';
 
 /** A sub-tab that is one fixed table (Houses, KP, ...). */
 export function TableSubView({ spec, table }: { spec: ChartSpec; table: string }) {
@@ -37,6 +38,9 @@ export function OtherStrengthsView({ spec }: { spec: ChartSpec }) {
   const job = useJob(table ? { kind: 'table' as const, chart: spec, table } : null);
   const [pane2, setPane2] = useState(VIMSOPAKA_PANE_MODES[0][1]);
   const vimsopakaJob = useJob({ kind: 'table' as const, chart: spec, table: pane2 });
+  const [yogaMode, setYogaMode] = useState(YOGA_MODES[0][0]);
+  const [yogaVarga, setYogaVarga] = useState('D1');
+  const yogaJob = useJob({ kind: 'table' as const, chart: spec, table: 'strengths.yogas', params: { mode: yogaMode, varga: yogaVarga } });
   return (
     <div className="subview">
       <div className="subview-bar">
@@ -51,6 +55,15 @@ export function OtherStrengthsView({ spec }: { spec: ChartSpec }) {
         </select>
       </div>
       <TableView job={vimsopakaJob} />
+      <div className="subview-bar">
+        <select aria-label="Yogas" value={yogaMode} onChange={(e) => setYogaMode(e.target.value)}>
+          {YOGA_MODES.map(([label]) => <option key={label} value={label}>{label}</option>)}
+        </select>
+        <select aria-label="Yoga varga" value={yogaVarga} onChange={(e) => setYogaVarga(e.target.value)}>
+          {Object.keys(ALL_VARGAS).map((v) => <option key={v} value={v}>{v}</option>)}
+        </select>
+      </div>
+      <TableView job={yogaJob} />
     </div>
   );
 }

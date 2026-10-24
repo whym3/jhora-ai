@@ -26,6 +26,7 @@ import { vimsopaka } from '../core/vimsopaka';
 import { AGES, ALERTNESS, basicAvasthas, HARSHA_CLASSES, INTENSITY, MOODS, PANCHA_CLASSES, SAYANADI, sayanadiAvasthas, tajakaBalas, VAISESHIKAMSA_GROUPS, vaiseshikamsas } from '../core/otherStrengths';
 import { AV_BODIES, ashtakavarga, prastara, type AvBody } from '../core/ashtakavarga';
 import { SEVEN } from '../core/relations';
+import { findYogas, giversText, YOGA_MODES } from '../core/yogas';
 import { fromMrityuBhaga, fromPushkaraBhaga, inPushkaramsa, MRITYU_BHAGA, within } from '../core/pushkara';
 import type { VargaCtx } from '../core/signStrength';
 import type { Table } from './protocol';
@@ -309,6 +310,16 @@ export const TABLES: Record<string, TableFn> = {
   'strengths.harsha': (chart) => {
     const t = tajakaBalas(chart);
     return { headers: ['Planet', 'Harsha Bala', 'Strength'], rows: SEVEN.map((g) => [g, String(t[g].harsha), HARSHA_CLASSES[t[g].harsha / 5]]) };
+  },
+  'strengths.yogas': (chart, params) => {
+    const varga = (String(params.varga ?? 'D1')) as VargaName;
+    const mode = String(params.mode ?? YOGA_MODES[0][0]);
+    const cat = (YOGA_MODES.find(([label]) => label === mode) ?? YOGA_MODES[0])[1];
+    const vl = `D-${varga.slice(1)}`;
+    return {
+      headers: ['Yoga', 'Varga', 'Yoga givers', 'Results ascribed to yoga', 'Brief definition of yoga'],
+      rows: findYogas(chart, cat, varga).map((r) => [r.name, vl, giversText(r), r.result, r.definition]),
+    };
   },
   'strengths.vimsopaka': (chart) => {
     const vb = vimsopaka(chart);
