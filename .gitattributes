@@ -1,0 +1,7 @@
+# Source files are LF; git converts CRLF written by Windows tools on commit.
+src/** text=auto eol=lf
+tests/** text=auto eol=lf
+tools/** text=auto eol=lf
+*.json text=auto eol=lf
+*.md text=auto eol=lf
+golden/** -text
