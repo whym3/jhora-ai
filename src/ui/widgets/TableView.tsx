@@ -1,13 +1,17 @@
 import type { Table } from '../../engine/protocol';
 import type { JobState } from '../EngineProvider';
 
-interface Props { job: JobState<Table>; title?: string; onCopy?: () => void }
+interface Props { job: JobState<Table>; title?: string; onCopy?: () => void; onRowClick?: (index: number) => void }
 
-/** List-view twin of JHora's tables: same headers, tab-separated copy. */
-export function TableView({ job, title, onCopy }: Props) {
+const TAB = String.fromCharCode(9);
+const CRLF = String.fromCharCode(13, 10);
+
+/** List-view twin of JHora's tables: same headers, tab-separated copy (or JHora's own text when the job provides it). */
+export function TableView({ job, title, onCopy, onRowClick }: Props) {
   const copy = () => {
     if (!job.data) return;
-    const text = [job.data.headers.join('\t'), ...job.data.rows.map((r) => r.join('\t'))].join('\r\n');
+    const text = job.data.text ? job.data.text.join(CRLF)
+      : [job.data.headers.join(TAB), ...job.data.rows.map((r) => r.join(TAB))].join(CRLF);
     navigator.clipboard?.writeText(text);
     onCopy?.();
   };
@@ -15,7 +19,7 @@ export function TableView({ job, title, onCopy }: Props) {
     <div className="tableview">
       {(title || job.data) && (
         <div className="tableview-bar">
-          <span>{title}</span>
+          <span>{title ?? job.data?.caption}</span>
           <button onClick={copy} disabled={!job.data}>Copy to clipboard</button>
         </div>
       )}
@@ -26,7 +30,7 @@ export function TableView({ job, title, onCopy }: Props) {
           <thead><tr>{job.data.headers.map((h, i) => <th key={i}>{h}</th>)}</tr></thead>
           <tbody>
             {job.data.rows.map((r, i) => (
-              <tr key={i}>{r.map((c, j) => <td key={j} className={/\d+ \w\w \d+'/.test(c) ? 'mono' : undefined}>{c}</td>)}</tr>
+              <tr key={i} className={onRowClick ? 'clickable' : undefined} onClick={onRowClick ? () => onRowClick(i) : undefined}>{r.map((c, j) => <td key={j} className={/\d+ \w\w \d+'/.test(c) ? 'mono' : undefined}>{c}</td>)}</tr>
             ))}
           </tbody>
         </table>

@@ -11,7 +11,14 @@ export interface ChartSpec {
   ini: Partial<JhoraIni>;
 }
 
-export interface Table { headers: string[]; rows: string[][] }
+export interface Table {
+  headers: string[];
+  rows: string[][];
+  /** text placed on the clipboard instead of the tab-separated table (JHora's own copy format) */
+  text?: string[];
+  /** heading shown above the table */
+  caption?: string;
+}
 
 export interface ChartResult { positions: Positions; bodies: ChartBody[] }
 

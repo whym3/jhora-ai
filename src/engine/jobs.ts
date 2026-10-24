@@ -1,6 +1,11 @@
 // Table and text jobs: the registry grows as features are ported. Each table id
 // matches a JHora view (the tab/mode it appears in) and its headers match JHora's.
 import type { Chart } from '../core/chart';
+import type { Sweph } from '../sweph';
+import { vimsottari, type Period } from '../core/dasas/vimsottari';
+import { NAKSHATRA_DASAS, nakshatraDasa } from '../core/dasas/nakshatra';
+import { dasaClock } from '../core/dasas/time';
+import { antarDasaText, DASA_ABBR, formatDasaTime, mahaDasaText } from '../core/dasas/format';
 import { GRAHAS } from '../core/positions';
 import { formatLongitude, formatVargaLongitude, NAK28, nakshatra28Of, nakshatraOf, NAKSHATRAS, padaOf, signOf, SIGNS } from '../core/zodiac';
 import { ALL_VARGAS, vargaLongitude, type VargaName } from '../core/vargas';
@@ -70,7 +75,7 @@ const DIV_COLUMNS: [string, VargaName | null][] = [
   ['D-81', 'D81'], ['D-108', 'D108'], ['D-144', 'D144'],
 ];
 
-type TableFn = (chart: Chart, params: Record<string, unknown>) => Table;
+type TableFn = (chart: Chart, params: Record<string, unknown>, swe?: Sweph) => Table;
 type TextFn = (chart: Chart, params: Record<string, unknown>) => string;
 
 /**
@@ -179,6 +184,28 @@ export const TABLES: Record<string, TableFn> = {
         const r = amsaRuler(byName.get(name)!);
         return [labels.get(name) ?? name, String(r.division + 1), String(r.index + 1), r.name];
       }),
+    };
+  },
+  // Dasas > Nakshatra dasas: params.system (Vimsottari or a NAKSHATRA_DASAS key), params.path (drill-down indices)
+  'dasas.nakshatra': (chart, params, swe) => {
+    if (!swe) throw new Error('dasa tables need the ephemeris');
+    const system = String(params.system ?? 'Vimsottari');
+    const path = (params.path as number[] | undefined) ?? [];
+    const levels = path.length + 1;
+    const moon = chart.positions.grahas.Moon.lon;
+    const def = NAKSHATRA_DASAS[system];
+    const title = def ? def.title : 'Vimsottari Dasa';
+    const mds = def ? nakshatraDasa(def, moon, levels) : vimsottari(moon, levels);
+    const ctx = { clock: dasaClock(swe, chart), tz: chart.birth.tzHours, revjul: (jd: number) => swe.revjul(jd) };
+    let list = mds; let parent: Period | null = null;
+    for (const i of path) { parent = list[i]; list = parent.children ?? []; }
+    const when = (y: number) => formatDasaTime(ctx.clock.toJd(y), ctx.tz, ctx.revjul);
+    const LEVEL = ['Maha Dasas', 'Antardasas', 'Pratyantardasas', 'Sookshma-antardasas', 'Prana-antardasas', 'Deha-antardasas'];
+    return {
+      caption: parent ? `${DASA_ABBR[parent.lord]}: ${when(parent.start)} - ${when(parent.end)}` : title,
+      headers: [LEVEL[path.length] ?? 'Periods', 'Start', 'End'],
+      rows: list.map((p) => [DASA_ABBR[p.lord], when(p.start), when(p.end)]),
+      text: !parent ? mahaDasaText(title, mds, ctx) : path.length === 1 ? antarDasaText(title, parent, ctx) : undefined,
     };
   },
   // Strengths > Other strengths (menu modes 0..10 of CStrengthsView)
@@ -311,10 +338,10 @@ function specialTarasTable(lon: number, from: string): Table {
 
 export const TEXTS: Record<number, TextFn> = {};
 
-export function runTable(chart: Chart, table: string, params: Record<string, unknown>): Table {
+export function runTable(chart: Chart, table: string, params: Record<string, unknown>, swe?: Sweph): Table {
   const fn = TABLES[table];
   if (!fn) throw new Error(`table not implemented: ${table}`);
-  return fn(chart, params);
+  return fn(chart, params, swe);
 }
 
 export function runText(chart: Chart, cmd: number, params: Record<string, unknown>): string {

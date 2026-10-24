@@ -53,7 +53,7 @@ async function run(req: JobRequest): Promise<unknown> {
     }
     case 'table':
       return memo<Table>(`table:${req.table}:${stableStringify(req.params ?? {})}:${stableStringify(req.chart)}`,
-        async () => runTable(await chartFor(req.chart), req.table, req.params ?? {}));
+        async () => runTable(await chartFor(req.chart), req.table, req.params ?? {}, await engine));
     case 'text':
       return memo<string>(`text:${req.cmd}:${stableStringify(req.params ?? {})}:${stableStringify(req.chart)}`,
         async () => runText(await chartFor(req.chart), req.cmd, req.params ?? {}));

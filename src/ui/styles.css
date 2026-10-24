@@ -56,3 +56,6 @@ th, td { text-align: left; padding: 4px 8px; border-bottom: 1px solid var(--line
 .note, .status { color: var(--muted); font-size: .9rem; }
 .not-ported { padding: 24px 0; }
 .error { color: var(--accent); }
+
+tr.clickable { cursor: pointer; }
+tr.clickable:hover td { background: var(--hover, rgba(127,127,127,0.12)); }
