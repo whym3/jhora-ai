@@ -1,6 +1,8 @@
 node_modules/
 .cache/
 dist/
+dist-mcp/
+charts/
 *.log
 public/ephe/
 scratch/

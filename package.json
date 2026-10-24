@@ -8,6 +8,8 @@
     "dev": "vite",
     "build": "tsc && vite build",
     "typecheck": "tsc",
+    "mcp:build": "vite build -c vite.mcp.config.ts",
+    "mcp": "node dist-mcp/jhora-mcp.mjs",
     "atlas": "node tools/atlas/install.mjs",
     "parity": "node tools/parity-report.mjs"
   },
@@ -27,6 +29,7 @@
   },
   "dependencies": {
     "@anthropic-ai/sdk": "^1.3.0",
+    "@modelcontextprotocol/sdk": "1.32.1",
     "openai": "^7.43.0",
     "react": "^19.3.1",
     "react-dom": "^19.3.1"
