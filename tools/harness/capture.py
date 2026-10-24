@@ -108,7 +108,10 @@ class Session:
             if Clipboard.seq() != seq:
                 time.sleep(0.1)
                 text = Clipboard.read()
-                return text, self.dismiss_dialogs()
+                dialogs = self.dismiss_dialogs()
+                time.sleep(0.3)
+                dialogs += self.dismiss_dialogs()
+                return text, dialogs
         return "", self.dismiss_dialogs()
 
     def copy_from_panes(self, cmd):
@@ -176,7 +179,16 @@ def capture_chart(root, chart, manifest, ini_overrides):
         for tab in manifest["tabs"]:
             top, sub = tab["top"], tab["sub"]
             try:
-                s.tabs.activate(top, sub)
+                for _ in range(5):          # copies can leave a modal "copied" message box behind
+                    if not s.dismiss_dialogs():
+                        break
+                    time.sleep(0.3)
+                try:
+                    s.tabs.activate(top, sub)
+                except TabError:
+                    time.sleep(1.0)
+                    s.dismiss_dialogs()
+                    s.tabs.activate(top, sub)
             except TabError as e:
                 result["texts"].append({"top": top, "sub": sub, "error": str(e)})
                 print("   !!", top, sub, e)
@@ -249,7 +261,20 @@ def main():
         t = time.time()
         name = os.path.splitext(os.path.basename(chart))[0]
         print(name)
-        result = capture_chart(args.jhora, os.path.abspath(chart), manifest, overrides)
+        result = None
+        for attempt in range(3):
+            try:
+                result = capture_chart(args.jhora, os.path.abspath(chart), manifest, overrides)
+                break
+            except Exception as e:
+                if "network connection" in str(e):
+                    raise           # never relaunch JHora after it tried to go online
+                print(f"   attempt {attempt + 1} failed: {e}")
+                subprocess.run(["taskkill", "/F", "/IM", "jhora.exe"], capture_output=True)
+                time.sleep(3)
+        if result is None:
+            print("   giving up on this chart")
+            continue
         with open(os.path.join(args.out, name + ".json"), "w", encoding="utf-8") as f:
             json.dump(result, f, ensure_ascii=False, indent=1)
         n_lists = len(result["views"]); n_texts = len([t for t in result["texts"] if "lines" in t])
