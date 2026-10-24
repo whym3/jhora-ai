@@ -1,0 +1,187 @@
+{
+ "_comment": "Rasi and other dasas (menu resource 108 ids), plus views added after v3. Run with capture.py --views views-dasas.json.",
+ "tabs": [
+  {
+   "top": "Dasas",
+   "sub": "Rasi dasas",
+   "copies": {
+    "dasa": 32972,
+    "dasa_dates": 33236
+   },
+   "modes": [
+    [
+     "Narayana",
+     32849
+    ],
+    [
+     "Lagnamsaka",
+     33201
+    ],
+    [
+     "Padanaathaamsa",
+     33202
+    ],
+    [
+     "Sudasa",
+     32850
+    ],
+    [
+     "Drigdasa",
+     32851
+    ],
+    [
+     "Lagna Kendradi",
+     32868
+    ],
+    [
+     "AK Kendradi Rasi",
+     32869
+    ],
+    [
+     "Trikona",
+     32870
+    ],
+    [
+     "Chara (Parasara)",
+     32871
+    ],
+    [
+     "Chara (KN Rao)",
+     33024
+    ],
+    [
+     "Chara (Rangacharya)",
+     33165
+    ],
+    [
+     "Yogardha",
+     32872
+    ],
+    [
+     "Paryaaya",
+     32873
+    ],
+    [
+     "Shoola",
+     32876
+    ],
+    [
+     "Niryaana shoola",
+     32877
+    ],
+    [
+     "Brahma",
+     32878
+    ],
+    [
+     "Sthira",
+     32879
+    ],
+    [
+     "Mandooka D-11",
+     32880
+    ],
+    [
+     "Mandooka (KN Rao)",
+     33251
+    ],
+    [
+     "Navamsa",
+     32881
+    ],
+    [
+     "Varnada",
+     32867
+    ]
+   ],
+   "dasa_levels": true,
+   "dasa_level_rows": 2
+  },
+  {
+   "top": "Dasas",
+   "sub": "Other dasas",
+   "copies": {
+    "dasa": 32972,
+    "dasa_dates": 33236
+   },
+   "modes": [
+    [
+     "Moola",
+     32853
+    ],
+    [
+     "Naisargika",
+     33164
+    ],
+    [
+     "Tara",
+     33106
+    ],
+    [
+     "Kaala",
+     33266
+    ],
+    [
+     "Chakra",
+     33288
+    ],
+    [
+     "AK Kendradi Graha",
+     32864
+    ],
+    [
+     "Patyayini",
+     32852
+    ],
+    [
+     "Sudarsana Chakra",
+     33128
+    ],
+    [
+     "Buddhi gati",
+     33235
+    ],
+    [
+     "RBV",
+     32863
+    ],
+    [
+     "Karaka",
+     33267
+    ],
+    [
+     "Tithi Ashtottari",
+     32865
+    ],
+    [
+     "Yoga Vimsottari",
+     33203
+    ],
+    [
+     "Karana Chaturaseeti",
+     33204
+    ],
+    [
+     "Tithi Yogini",
+     32866
+    ]
+   ],
+   "dasa_levels": true,
+   "dasa_level_rows": 2
+  },
+  {
+   "top": "Basics",
+   "sub": "Key Info",
+   "lists": true,
+   "copies": {
+    "table": 32975
+   },
+   "modes": [
+    [
+     "Planetary Aspect Evaluation",
+     33296
+    ]
+   ]
+  }
+ ]
+}

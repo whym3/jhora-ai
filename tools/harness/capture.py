@@ -218,7 +218,7 @@ def capture_chart(root, chart, manifest, ini_overrides):
                         else:   # rasi/other dasas have no command id: toggle the sub-tab to rebuild the view
                             other = next(x for x in SUB_TABS[top] if x != sub)
                             s.tabs.activate(top, other); s.tabs.activate(top, sub)
-                    capture_dasa_levels(s, result, top, sub, label, tab["copies"], reset)
+                    capture_dasa_levels(s, result, top, sub, label, tab["copies"], reset, tab.get("dasa_level_rows", 12))
             # leave the view in its first mode for the next chart's sake
             if modes[0][1]:
                 s.command(modes[0][1])
