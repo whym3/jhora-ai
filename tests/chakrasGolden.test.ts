@@ -285,7 +285,7 @@ function vargaBoxes(events: GdiEvent[]): VargaBox[] {
     }
     const box = boxes[boxes.length - 1];
     if (!box || e.fn !== 'DrawText' || !e.text?.trim() || !e.rect) continue;
-    const s = e.text.trim();
+    const s = e.text.trim().replace(/^\((\w\w)\)$/, '$1');   // retrograde planets are drawn as "(Sa)"
     if ((e.fmt ?? 0) & DT_CENTER) box.caption.push(s);
     else if (GRAHA_LABELS.includes(s)) {
       const c = (box.rect[2] - box.rect[0]) / 4;

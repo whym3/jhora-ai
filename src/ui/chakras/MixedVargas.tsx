@@ -27,7 +27,7 @@ function SubBox({ bodies, x, y }: { bodies: ChakraBody[]; x: number; y: number }
     <>
       {bodies.map((b, i) => (
         <text key={`${b.transit ? 't' : 'n'}${b.index}-${b.label}-${i}`} x={x + slots[i][0] * CELL + 2} y={y + slots[i][1] * CELL + 11} className={bodyClass(b) + kindClass(b.index)}>
-          {b.label}{b.retrograde ? <tspan className="retro">R</tspan> : null}
+          {b.retrograde ? `(${b.label})` : b.label}
         </text>
       ))}
     </>

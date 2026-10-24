@@ -28,8 +28,11 @@ export const SHORT_LABEL: Record<Graha | 'Lagna', string> = {
   Venus: 'Ve', Saturn: 'Sa', Rahu: 'Ra', Ketu: 'Ke',
 };
 
-export async function computeChart(swe: Sweph, birth: BirthData, iniOverrides: Partial<JhoraIni> = {}): Promise<Chart> {
+export async function computeChart(swe: Sweph, input: BirthData, iniOverrides: Partial<JhoraIni> = {}): Promise<Chart> {
   const ini: JhoraIni = { ...DEFAULTS, ...iniOverrides };
+  // a file without an altitude field gets DefaultAltitude, in the calculations too (it moves
+  // e.g. a local eclipse's contacts: 0.16 s for 425 m)
+  const birth = input.altitudeGiven === false ? { ...input, altitudeM: ini.DefaultAltitude } : input;
   const jd = birthJdUt(birth, (y, m, d, h) => swe.julday(y, m, d, h));
   await swe.ensureEphemeris(jd);
   const geo = { lat: birth.lat, lon: birth.lon, alt: birth.altitudeM };
