@@ -1,0 +1,30 @@
+{
+ "_comment": "Run with --ini Siddhanta=1 (and optionally --ini UserSelectedAyanamsa=18); restore Siddhanta=0 afterwards.",
+ "tabs": [
+  {
+   "top": "Basics",
+   "sub": "Key Info",
+   "lists": true,
+   "copies": {
+    "key_info": 32974,
+    "table": 32975
+   },
+   "pane_copies": [
+    "key_info"
+   ],
+   "modes": [
+    [
+     "Longitudes & Basic Info",
+     32822
+    ]
+   ]
+  },
+  {
+   "top": "Chakras",
+   "sub": "Many Vargas",
+   "copies": {
+    "chart_text": 32985
+   }
+  }
+ ]
+}
