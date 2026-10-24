@@ -5,6 +5,7 @@ import { EngineProvider, useEngine, useJob } from './EngineProvider';
 import { BirthForm } from './BirthForm';
 import type { ChartStyle } from './ChartDiagram';
 import { ChartPane } from './shell/ChartPane';
+import { TajakaView } from './shell/TajakaView';
 import { AshtakavargaView, KeyInfoView, OtherStrengthsView, TableSubView } from './shell/BasicsView';
 import { NakshatraDasasView, OtherDasasView, RasiDasasView } from './shell/DasasView';
 import { NotPorted } from './shell/NotPorted';
@@ -65,7 +66,8 @@ import { setState as useStoreSet } from './state/store';
 
 const FIXED_TABLES: Record<string, string> = { 'Basics/Houses': 'basics.houses', 'Basics/Amsa rulers': 'basics.amsaRulers', 'Basics/KP': 'basics.kp' };
 
-function SubView({ top, sub, spec }: { top: TopTab; sub: string | null; spec: ChartSpec }) {
+function SubView({ top, sub, spec, natalSpec, docId }: { top: TopTab; sub: string | null; spec: ChartSpec; natalSpec: ChartSpec; docId: string }) {
+  if (top === 'Tajaka') return <TajakaView natalSpec={natalSpec} docId={docId} />;
   if (top === 'Basics' && sub === 'Key Info') return <KeyInfoView spec={spec} />;
   if (top === 'Strengths' && sub === 'Ashtakavarga') return <AshtakavargaView spec={spec} />;
   if (top === 'Strengths' && sub === 'Other strengths') return <OtherStrengthsView spec={spec} />;
@@ -82,7 +84,9 @@ function Workspace() {
   const ini = useStore((s) => s.ini);
   const view = useStore((s) => s.view);
   const { ready, error } = useEngine();
-  const spec = useMemo<ChartSpec | null>(() => (doc ? { birth: doc.birth, ini: { ...diffIni(ini), ...doc.ini } } : null), [doc, ini]);
+  const natalSpec = useMemo<ChartSpec | null>(() => (doc ? { birth: doc.birth, ini: { ...diffIni(ini), ...doc.ini } } : null), [doc, ini]);
+  // a derived chart (Tajaka etc.) replaces the natal one in every view, as in JHora
+  const spec = useMemo<ChartSpec | null>(() => (natalSpec && doc?.derived ? { ...natalSpec, birth: doc.derived.birth } : natalSpec), [natalSpec, doc?.derived]);
   const chart = useJob(spec ? { kind: 'chart' as const, chart: spec } : null);
   const sub = currentSubTab(view, view.topTab);
 
@@ -94,6 +98,12 @@ function Workspace() {
         <summary>Birth data — {doc.title}, {doc.birth.year}-{doc.birth.month}-{doc.birth.day} {doc.birth.city}</summary>
         <BirthForm key={doc.id + JSON.stringify(doc.birth)} initial={doc.birth} onSubmit={(b: BirthData) => updateChart(doc.id, { birth: b })} />
       </details>
+      {doc.derived && (
+        <div className="derived-bar">
+          <span>Showing the {doc.derived.label} chart ({doc.derived.birth.year}-{doc.derived.birth.month}-{doc.derived.birth.day})</span>
+          <button onClick={() => updateChart(doc.id, { derived: null })}>Back to Natal Chart</button>
+        </div>
+      )}
       <TabBar level="top" tabs={TOP_TABS} active={view.topTab} onSelect={(t) => setTopTab(t as TopTab)} />
       <div className="workspace">
         <ChartPane chart={chart.data} spec={spec} />
@@ -101,7 +111,7 @@ function Workspace() {
           {SUB_TABS[view.topTab] && (
             <TabBar level="sub" tabs={SUB_TABS[view.topTab]!} active={sub!} onSelect={(s) => setSubTab(view.topTab, s)} />
           )}
-          {spec && <SubView top={view.topTab} sub={sub} spec={spec} />}
+          {spec && natalSpec && <SubView top={view.topTab} sub={sub} spec={spec} natalSpec={natalSpec} docId={doc.id} />}
         </div>
       </div>
     </>

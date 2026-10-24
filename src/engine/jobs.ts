@@ -28,6 +28,8 @@ import { AV_BODIES, ashtakavarga, prastara, type AvBody } from '../core/ashtakav
 import { SEVEN } from '../core/relations';
 import { findYogas, giversText, YOGA_MODES } from '../core/yogas';
 import { aspectPercent } from '../core/aspects';
+import { birthAt, computeTajakaChart, tajakaWindow, type TajakaSelection, type TajakaVariant } from '../core/tajaka/annual';
+import { muddaDasa } from '../core/tajaka/mudda';
 import { formatSpan, signChange } from '../core/signChange';
 import { compoundRelation } from '../core/relations';
 import { SIGN_LORD } from '../core/lords';
@@ -53,8 +55,8 @@ const AV_MODES = ['BAVs and SAV', 'SoAV', ...AV_BODIES.slice(1).map((b) => `PAV 
 const DASA_LEVEL = ['Maha Dasas', 'Antardasas', 'Pratyantardasas', 'Sookshma-antardasas', 'Prana-antardasas', 'Deha-antardasas'];
 
 /** A dasa level as a table: the periods under `path`, with JHora's copy text for the top two levels. */
-function dasaTable(chart: Chart, swe: Sweph, title: string, mds: Period[], path: number[], drill = true): Table {
-  const ctx = { clock: dasaClock(swe, chart), tz: chart.birth.tzHours, revjul: (jd: number) => swe.revjul(jd) };
+function dasaTable(chart: Chart, swe: Sweph, title: string, mds: Period[], path: number[], drill = true, clock = dasaClock(swe, chart)): Table {
+  const ctx = { clock, tz: chart.birth.tzHours, revjul: (jd: number) => swe.revjul(jd) };
   let list = mds; let parent: Period | null = null;
   for (const i of path) { parent = list[i]; list = parent.children ?? []; }
   const when = (y: number) => formatDasaTime(ctx.clock.toJd(y), ctx.tz, ctx.revjul);
@@ -509,6 +511,33 @@ function specialTarasTable(lon: number, from: string): Table {
 }
 
 export const TEXTS: Record<number, TextFn> = {};
+
+/**
+ * Tables that need more than the one chart (e.g. the natal chart behind a Tajaka
+ * chart); they compute it themselves, so they are asynchronous.
+ */
+export const ASYNC_TABLES: Record<string, (chart: Chart, params: Record<string, unknown>, swe: Sweph) => Promise<Table>> = {
+  // Tajaka tab, "Find Tajaka Chart" / "Find Tajaka Sunrise Chart" (buttons 1000/1014): the chart's moment.
+  // The job runs on the natal chart; `text` holds the Tajaka chart's birth data as JSON.
+  'tajaka.find': async (natal, params, swe) => {
+    const sel = params.selection as TajakaSelection;
+    const variant = (params.variant ?? 'exact') as TajakaVariant;
+    await swe.ensureEphemeris(natal.positions.jdUt + (sel.year - natal.birth.year) * 365.25);
+    const w = tajakaWindow(swe, natal, sel, variant);
+    const when = (jd: number) => formatDasaTime(jd, natal.birth.tzHours, (x) => swe.revjul(x));
+    return {
+      caption: w.label, headers: ['', 'Start', 'End'], rows: [[w.label, when(w.start), when(w.end)]],
+      text: [JSON.stringify({ birth: birthAt(swe, natal, w.start), label: w.label })],
+    };
+  },
+  // Tajaka tab, "Mudda" (button 1008): Vimsottari compressed into the Tajaka period, runs on the natal chart
+  'tajaka.mudda': async (natal, params, swe) => {
+    const path = (params.path as number[] | undefined) ?? [];
+    const t = await computeTajakaChart(swe, natal, params.selection as TajakaSelection, (params.variant ?? 'exact') as TajakaVariant);
+    const m = muddaDasa(swe, t, { levels: path.length + 1 });
+    return dasaTable(t.chart, swe, m.title, m.periods, path, true, m.clock);
+  },
+};
 
 export function runTable(chart: Chart, table: string, params: Record<string, unknown>, swe?: Sweph): Table {
   const fn = TABLES[table];

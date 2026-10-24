@@ -4,7 +4,7 @@ import type { Sweph } from '../sweph';
 import { computeChart, type Chart } from '../core/chart';
 import { stableStringify } from './hash';
 import type { ChartSpec, FromWorker, JobRequest, Table, ToWorker } from './protocol';
-import { runTable, runText } from './jobs';
+import { ASYNC_TABLES, runTable, runText } from './jobs';
 
 const post = (m: FromWorker) => (self as unknown as Worker).postMessage(m);
 
@@ -53,7 +53,11 @@ async function run(req: JobRequest): Promise<unknown> {
     }
     case 'table':
       return memo<Table>(`table:${req.table}:${stableStringify(req.params ?? {})}:${stableStringify(req.chart)}`,
-        async () => runTable(await chartFor(req.chart), req.table, req.params ?? {}, await engine));
+        async () => {
+          const chart = await chartFor(req.chart);
+          const asyncTable = ASYNC_TABLES[req.table];
+          return asyncTable ? asyncTable(chart, req.params ?? {}, await engine) : runTable(chart, req.table, req.params ?? {}, await engine);
+        });
     case 'text':
       return memo<string>(`text:${req.cmd}:${stableStringify(req.params ?? {})}:${stableStringify(req.chart)}`,
         async () => runText(await chartFor(req.chart), req.cmd, req.params ?? {}));

@@ -12,6 +12,19 @@ export interface ChartDoc {
   birth: BirthData;
   /** per-chart setting overrides (JHora keeps a few options per chart) */
   ini: Partial<JhoraIni>;
+  /**
+   * A chart derived from this one (Tajaka annual chart etc.) that JHora shows in
+   * every view until "Back to Natal Chart".
+   */
+  derived?: DerivedChart | null;
+}
+
+export interface DerivedChart {
+  kind: 'tajaka';
+  label: string;
+  birth: BirthData;
+  /** the form input that produced it (Tajaka: TajakaSelection and variant) */
+  params: Record<string, unknown>;
 }
 
 export interface ViewState {
