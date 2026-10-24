@@ -6,11 +6,12 @@ import { BirthForm } from './BirthForm';
 import type { ChartStyle } from './ChartDiagram';
 import { ChartPane } from './shell/ChartPane';
 import { Preferences } from './Preferences';
+import { MatchingView } from './shell/MatchingView';
 import { TajakaView } from './shell/TajakaView';
 import { DERIVED_VIEWS, type DerivedViewKey } from './shell/derivedViews';
 import { TRANSIT_VIEWS } from './shell/TransitsView';
 import { CHAKRA_VIEWS, type ChakraSubTab } from './chakras';
-import { AshtakavargaView, KeyInfoView, OtherStrengthsView, TableSubView } from './shell/BasicsView';
+import { AshtakavargaView, HousesView, KeyInfoView, KpView, OtherStrengthsView, TableSubView } from './shell/BasicsView';
 import { NakshatraDasasView, OtherDasasView, RasiDasasView } from './shell/DasasView';
 import { NotPorted } from './shell/NotPorted';
 import { SUB_TABS, TOP_TABS, type TopTab } from './shell/tabs';
@@ -29,6 +30,9 @@ function Toolbar() {
   const doc = useActiveDoc();
   const style = useStore((s) => s.view.chartStyle);
   const [prefs, setPrefs] = useState(false);
+  // toolbar button 33320 (FUN_004e8db0): matching against a nakshatra/pada or another open chart
+  const [matching, setMatching] = useState(false);
+  const ini = useStore((s) => s.ini);
   const openFile = async (f: File) => openChart(parseJhd(await f.text()), f.name.replace(/\.jhd$/i, ''));
   const save = () => {
     if (!doc) return;
@@ -48,8 +52,17 @@ function Toolbar() {
         <option value="south">South Indian</option>
         <option value="north">North Indian</option>
       </select>
+      <button onClick={() => setMatching(true)} disabled={!doc}>Horoscope Matching</button>
       <button onClick={() => setPrefs(true)}>Preferences…</button>
       {prefs && <Preferences onClose={() => setPrefs(false)} />}
+      {matching && doc && (
+        <div className="modal-backdrop" onClick={() => setMatching(false)}>
+          <div className="modal" role="dialog" aria-label="Horoscope Matching" onClick={(e) => e.stopPropagation()}>
+            <div className="note-bar"><strong>Horoscope Matching for Marriage</strong><button onClick={() => setMatching(false)}>Close</button></div>
+            <MatchingView spec={{ birth: doc.birth, ini: { ...diffIni(ini), ...doc.ini } }} />
+          </div>
+        </div>
+      )}
     </div>
   );
 }
@@ -89,6 +102,8 @@ function SubView({ top, sub, spec, natalSpec, docId, chart }: { top: TopTab; sub
     return <View natalSpec={natalSpec} docId={docId} spec={spec} />;
   }
   if (top === 'Basics' && sub === 'Key Info') return <KeyInfoView spec={spec} />;
+  if (top === 'Basics' && sub === 'Houses') return <HousesView spec={spec} />;
+  if (top === 'Basics' && sub === 'KP') return <KpView spec={spec} />;
   if (top === 'Strengths' && sub === 'Ashtakavarga') return <AshtakavargaView spec={spec} />;
   if (top === 'Strengths' && sub === 'Other strengths') return <OtherStrengthsView spec={spec} />;
   if (top === 'Dasas' && sub === 'Nakshatra dasas') return <NakshatraDasasView spec={spec} />;

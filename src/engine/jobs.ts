@@ -12,8 +12,10 @@ import { antarDasaText, formatDasaTime, mahaDasaText, periodLabel } from '../cor
 import { GRAHAS } from '../core/positions';
 import { formatLongitude, formatVargaLongitude, NAK28, nakshatra28Of, nakshatraOf, NAKSHATRAS, padaOf, signOf, SIGNS } from '../core/zodiac';
 import { ALL_VARGAS, vargaLongitude, type VargaName } from '../core/vargas';
-import { charaKarakas, drekkanaType, equalHousesMiddle, grahaYuddha, isCombust, lordLabel, nakshatraAspects, navaTaras, ORDINAL, SHORT, specialTaras, specialTithis, yogiPoints } from '../core/basics';
+import { charaKarakas, drekkanaType, grahaYuddha, isCombust, lordLabel, nakshatraAspects, navaTaras, ORDINAL, SHORT, specialTaras, specialTithis, yogiPoints } from '../core/basics';
 import { kpLords } from '../core/kp';
+import { houseOptions, houseRows, KP_LEVEL_HEADERS, kpOccupants, kpPoints } from '../core/kpHouses';
+import { defaultOtherIsGroom, MATCH_TITLE, matchHoroscopes, nakshatraPada } from '../core/matching';
 import { varnada } from '../core/bodies';
 import { norm360, type Graha } from '../core/positions';
 import type { NamedBody } from '../core/longitudes';
@@ -446,25 +448,32 @@ export const TABLES: Record<string, TableFn> = {
       return [g, `${p.lon.toFixed(3)} deg`, `${p.speed.toFixed(3)} deg/day`, `${p.lat.toFixed(3)} deg`, ''];
     }),
   }),
-  // Basics > Houses (menu 145; default equal houses, lagna in the middle)
-  'basics.houses': (chart) => ({
+  // Basics > Houses (menu 145): house system and lagna-in-middle from the ini (HouseTypeWanted,
+  // HouseCuspsInMiddle; default equal houses, lagna in the middle). See src/core/kpHouses.ts.
+  'basics.houses': (chart, _params, swe) => ({
     headers: ['House', 'Start', 'Cusp', 'End', 'Planets in it'],
-    rows: equalHousesMiddle(chart.positions).map((h, i) => [ORDINAL[i], formatLongitude(h.start), formatLongitude(h.cusp), formatLongitude(h.end), h.bodies.join(', ')]),
+    rows: houseRows(chart, houseOptions(chart), swe).map((h, i) => [ORDINAL[i], formatLongitude(h.start), formatLongitude(h.cusp), formatLongitude(h.end), h.bodies.join(', ')]),
   }),
-  // Basics > KP (menu 146 id 33011)
-  'basics.kp': (chart) => {
-    const p = chart.positions;
-    const houses = equalHousesMiddle(p);
-    const rows: [string, number][] = [
-      ['As', p.ascendant],
-      ...GRAHAS.map((g): [string, number] => [SHORT[g], p.grahas[g].lon]),
-      ...(['Uranus', 'Neptune', 'Pluto'] as const).map((o): [string, number] => [SHORT[o], p.outer[o].lon]),
-      ...houses.map((h, i): [string, number] => [`${ORDINAL[i]} house`, h.cusp]),
-    ];
-    return {
-      headers: ['Body/Cusp', 'Nakshatra lord', 'Sub lord', 'Prati-sub', 'Sookshma-sub', 'Praana-sub', 'Deha-sub'],
-      rows: rows.map(([label, lon]) => [label, ...kpLords(lon, 6).map((g) => SHORT[g])]),
-    };
+  // Basics > KP (menu 146 id 33011); house rows follow the Houses settings (Placidus = KP cusps)
+  'basics.kp': (chart, _params, swe) => ({
+    headers: ['Body/Cusp', 'Nakshatra lord', 'Sub lord', 'Prati-sub', 'Sookshma-sub', 'Praana-sub', 'Deha-sub'],
+    rows: kpPoints(chart, houseOptions(chart), swe).map((pt) => [pt.label, ...kpLords(pt.lon, 6).map((g) => SHORT[g])]),
+  }),
+  // Basics > KP, "Planets occupying each planet's nakshatra / sub / ..." (33012, 33014..33018): params.level 0..5
+  'basics.kpOccupants': (chart, params, swe) => {
+    const level = Math.max(0, Math.min(5, Number(params.level ?? 0)));
+    const occ = kpOccupants(chart, level, houseOptions(chart), swe);
+    return { headers: ['Planet', KP_LEVEL_HEADERS[level]], rows: GRAHAS.map((g) => [SHORT[g], occ[g].join(', ')]) };
+  },
+  // Horoscope matching (command 33320, FUN_004e8db0): the native's Moon against another
+  // person's nakshatra and 0-based pada (params.otherNak, params.otherPada); params.otherIsGroom
+  // defaults to "Bridegroom" for a female native. JHora shows only its message (`text`).
+  'matching.result': (chart, params) => {
+    const native = nakshatraPada(chart.positions.grahas.Moon.lon);
+    const other = { nak: Number(params.otherNak ?? 0), pada: Number(params.otherPada ?? 0) };
+    const otherIsGroom = params.otherIsGroom === undefined ? defaultOtherIsGroom(chart.birth.field18) : Boolean(params.otherIsGroom);
+    const m = matchHoroscopes({ native, other, otherIsGroom });
+    return { caption: MATCH_TITLE, text: m.text, headers: ['Result'], rows: m.text.filter((l) => l.trim()).map((l) => [l]) };
   },
   'basics.charaKarakas': (chart) => ({
     headers: ['Chara karaka', 'Planet', 'Meaning of portfolio'],
