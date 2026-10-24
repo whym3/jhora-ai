@@ -4,8 +4,9 @@ import { jhoraDeltaT } from './deltat';
 
 /**
  * JHora 8.0 ships Swiss Ephemeris 2.02.01 (version string in swedll32.dll).
- * Swiss 2.10 can emulate that release's delta-T, precession and nutation
- * models, which keeps the Moon within ~0.05" of JHora for 19th-century dates.
+ * Swiss 2.10 emulates that release's precession and nutation models; its
+ * delta-T is replaced by the DLL's own table (deltat.ts) and the Moon's frame
+ * rotation by tools/sweph-patches, so positions match the DLL to ~1e-7".
  */
 export const JHORA_SWISS_MODELS = 'SE2.02.01';
 

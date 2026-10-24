@@ -1,0 +1,30 @@
+diff --git a/sweph.c b/sweph.c
+index 350c605..a07ec78 100644
+--- a/sweph.c
++++ b/sweph.c
+@@ -4971,12 +4971,21 @@ static void rot_back(int ipli)
+   double xrot, yrot, zrot;
+   double *chcfx, *chcfy, *chcfz;
+   double *refepx, *refepy;
+-  // epsilon as used in chopt.c
+-  // double eps2000 = 0.409092804;       	// eps 2000 in radians 
+-  double seps2000 = 0.39777715572793088;  	// sin(eps2000) 
+-  double ceps2000 = 0.91748206215761929;	// cos(eps2000) 
++  // jhora-web: rotate the Moon to the J2000 equator with the obliquity of the
++  // precession model (swed.oec2000), as Swiss Ephemeris did up to 2.10.01
++  // (e.g. 2.02.01 in JHora's swedll32.dll), instead of the IAU 1976 value
++  // 84381.448" used by chopt.c and hard-coded here since 2.10.02.
++  double seps2000, ceps2000;
+   struct plan_data *pdp = &swed.pldat[ipli];
+   int nco = pdp->ncoe;
++  if (swed.oec2000.teps == J2000) {
++    seps2000 = swed.oec2000.seps;
++    ceps2000 = swed.oec2000.ceps;
++  } else {
++    double eps2000 = swi_epsiln(J2000, 0);
++    seps2000 = sin(eps2000);
++    ceps2000 = cos(eps2000);
++  }
+   t = pdp->tseg0 + pdp->dseg / 2;
+   chcfx = pdp->segp;
+   chcfy = chcfx + nco;

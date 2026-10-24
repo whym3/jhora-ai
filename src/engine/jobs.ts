@@ -352,11 +352,11 @@ export const TABLES: Record<string, TableFn> = {
       if (i > 9) return;
       const step = b.name === 'Rahu' || b.name === 'Ketu' ? -30 : 30;
       for (let h = 1; h < 12; h++) {
-        const x = norm360(lon + h * step);
-        rows.push([`${ORDINAL[h]} from ${b.name}`, formatLongitude(x), ...cells(x)]);
+        // JHora passes the unreduced lon + 30h to FUN_004b2b00 (it matters on exact boundaries)
+        rows.push([`${ORDINAL[h]} from ${b.name}`, formatLongitude(norm360(lon + h * step)), ...cells(lon + h * step)]);
       }
     });
-    const vname = (v: VargaName) => (v === 'D1' ? 'Rasi' : v.replace('D', 'D-'));
+    const vname = (v: VargaName) => v.replace('D', 'D-');
     return { headers: ['Aspected Body', `Longitude (in ${vname(String(params.aspectedVarga ?? 'D1') as VargaName)})`, ...GRAHAS], rows };
   },
   // Aspect Table with Relationships (menu 33387, CAspectTableView FUN_004286c0)

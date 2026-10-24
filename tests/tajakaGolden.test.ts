@@ -45,7 +45,7 @@ function suite(title: string, charts: Captured[], sel: TajakaSelection, variant:
             expect(d, `${table.rows[i][0]}: ${ours.rows[i][1]} vs ${table.rows[i][1]}`).toBeLessThan(0.5);
           }
         });
-        it('Mudda dasa (times within 5 s: ~0.004" Moon differences on old charts)', () => {
+        it('Mudda dasa (times within 5 s)', () => {
           const want = g.texts.find((x) => x.mode === 'Vimsottari' && x.name === 'dasa')!.lines!;
           const m = muddaDasa(swe, t);
           expect(sameTimes(mahaDasaText(m.title, m.periods, ctx(m.clock)), want, 5)).toEqual([]);

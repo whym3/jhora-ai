@@ -10,10 +10,8 @@ import { NAKSHATRAS } from '../src/core/zodiac';
 import { kalachakraDasa } from '../src/core/dasas/kalachakra';
 
 /**
- * Compare dasa texts line by line; times may differ by `tolSec` seconds. The
- * residual is a constant shift per chart, about 2 s per year of the first dasa:
- * a ~0.004" difference in the Moon (Swiss 2.02 vs 2.10), far below what the
- * longitude tables show.
+ * Compare dasa texts line by line; times may differ by `tolSec` seconds (the
+ * Moon matches JHora's DLL to ~1e-7"; what remains is rounding in the dates).
  */
 function compareDasaText(have: string[], want: string[], tolSec: number): string[] {
   const bad: string[] = [];

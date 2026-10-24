@@ -20,7 +20,30 @@ export function grahaAspects(p: Graha, from: number, to: number): boolean {
   return false;
 }
 
-const n360 = (x: number) => ((x % 360) + 360) % 360;
+/** x + y as hi + lo, exactly (Knuth's two-sum). */
+function twoSum(x: number, y: number): [number, number] {
+  const s = x + y, b = s - x;
+  return [s, (x - (s - b)) + (y - b)];
+}
+
+/**
+ * lonTarget - lonAspector reduced to [0, 360) the way FUN_004b2b00 does it on the x87:
+ * in 80-bit precision, where the difference of two doubles and the +-360 steps are
+ * exact. Kept as hi + lo so a target exactly on a boundary (the "Nth from" rows add
+ * whole signs) lands on the same side as in JHora, which prints "-" only for exactly 0.
+ */
+function angle(lonTarget: number, lonAspector: number): [number, number] {
+  let [hi, lo] = twoSum(lonTarget, -lonAspector);
+  const add = (k: number) => {
+    const [s, e] = twoSum(hi, k);
+    const t = s + (lo + e);
+    lo = (lo + e) - (t - s);
+    hi = t;
+  };
+  while (hi < 0 || (hi === 0 && lo < 0)) add(360);
+  while (hi > 360 || (hi === 360 && lo >= 0)) add(-360);
+  return [hi, lo];
+}
 const SPECIAL_WINDOWS: Partial<Record<Graha, [number, number, number]>> = { Mars: [90, 210, 15], Jupiter: [120, 240, 30], Saturn: [60, 270, 45] };
 
 /**
@@ -31,16 +54,20 @@ const SPECIAL_WINDOWS: Partial<Record<Graha, [number, number, number]>> = { Mars
  * whole-sign windows. Rahu and Ketu have the base curve only.
  */
 export function aspectPercent(lonTarget: number, lonAspector: number, planet: Graha, parasara = true): number {
-  const d = n360(lonTarget - lonAspector);
+  const [hi, lo] = angle(lonTarget, lonAspector);
+  const ge = (c: number) => hi > c || (hi === c && lo >= 0);
+  const from = (c: number) => (hi - c) + lo;   // d - c, exact near c
   let v: number;
-  if (d >= 300) v = 0;
-  else if (d >= 180) v = (300 - d) * 0.5;
-  else if (d >= 150) v = (d - 150) * 2;
-  else if (d >= 120) v = 150 - d;
-  else if (d >= 90) v = (120 - d) * 0.5 + 30;
-  else if (d >= 60) v = d - 60 + 15;
-  else if (d >= 30) v = (d - 30) * 0.5;
+  if (ge(300)) v = 0;
+  else if (ge(180)) v = -from(300) * 0.5;
+  else if (ge(150)) v = from(150) * 2;
+  else if (ge(120)) v = -from(150);
+  else if (ge(90)) v = -from(120) * 0.5 + 30;
+  else if (ge(60)) v = from(60) + 15;
+  else if (ge(30)) v = from(30) * 0.5;
   else v = 0;
+  // the special-aspect formulas work on the angle rounded to a double (local_b0)
+  const d = hi + lo;
   if (!parasara) {
     const w = SPECIAL_WINDOWS[planet];
     if (w) for (const s of [w[0], w[1]]) if (d >= s && d < s + 30) v += w[2];

@@ -41,6 +41,7 @@ export class Sweph {
   private ibuf: number;  // scratch: 16 ints
   private serr: number;  // 256-byte error string
   private deltaTModel: ((jdUt: number) => number | null) | null = null;
+  private astroModels: string | null = null;
 
   constructor(module: any, fetcher: FileFetcher) {
     this.m = module;
@@ -57,6 +58,7 @@ export class Sweph {
    * Ephemeris release, e.g. "SE2.02.01" (the DLL bundled with JHora 8.0).
    */
   setAstroModels(spec: string): void {
+    this.astroModels = spec;
     this.withString(spec, (p) => this.m._swe_set_astro_models(p, 0));
   }
 
@@ -81,6 +83,8 @@ export class Sweph {
     this.loaded.add(name);
     this.m._swe_close();
     this.withString(EPHE_DIR, (p) => this.m._swe_set_ephe_path(p));
+    // swe_close() resets the astro models
+    if (this.astroModels) this.setAstroModels(this.astroModels);
   }
 
   /**

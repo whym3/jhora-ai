@@ -15,6 +15,16 @@ if [ ! -d "$SRC" ]; then
 fi
 mkdir -p "$OUT"
 
+# Local patches (tools/sweph-patches/*.patch), applied to a pristine checkout:
+#   0001  Moon: J2000 ecliptic->equator rotation with the precession model's
+#         obliquity, as in SE <= 2.10.01 (JHora's swedll32.dll is 2.02.01).
+git -C "$SRC" checkout -q -- .
+for p in "$ROOT"/tools/sweph-patches/*.patch; do
+  [ -e "$p" ] || continue
+  git -C "$SRC" apply --ignore-whitespace "$p"
+  echo "applied $(basename "$p")"
+done
+
 FUNCS='["_malloc","_free",
 "_swe_version","_swe_set_ephe_path","_swe_close","_swe_set_astro_models","_swe_set_tid_acc","_swe_get_tid_acc","_swe_deltat",
 "_swe_julday","_swe_revjul","_swe_utc_to_jd","_swe_deltat_ex","_swe_set_delta_t_userdef",
