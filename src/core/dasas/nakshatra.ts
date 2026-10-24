@@ -17,7 +17,7 @@ export interface NakshatraDasaDef {
   dir?: 1 | -1;
   /** count without wrapping at 27 first (Yogini: (star + 3) mod 8) */
   noWrap?: boolean;
-  /** grouped systems: [first star, number of stars] per lord, in sequence order */
+  /** grouped systems: [start, end) longitude of each lord's group, in sequence order */
   groups?: [number, number][];
   /** how many cycles of maha dasas JHora lists */
   cycles?: number;
@@ -36,7 +36,7 @@ export const NAKSHATRA_DASAS: Record<string, NakshatraDasaDef> = {
     // Ardra.. Sun 4, Magha.. Moon 3, Hasta.. Mars 4, Anuradha.. Mercury 3,
     // P.Ashadha..Sravana Saturn (4 with Abhijit), Dhanishtha.. Jupiter 3,
     // U.Bhadra..Bharani Rahu 4, Krittika..Mrigasira Venus 3
-    groups: [[5, 4], [9, 3], [12, 4], [16, 3], [19, 3], [22, 3], [25, 4], [2, 3]],
+    groups: stars([5, 4], [9, 3], [12, 4], [16, 3], [19, 3], [22, 3], [25, 4], [2, 3]),
   },
   Yogini: { title: 'Yogini Dasa (with planets replacing Yoginis)', lords: L('Mo:1 Su:2 Ju:3 Ma:4 Me:5 Sa:6 Ve:7 Ra:8'), startStar: -3, noWrap: true, cycles: 3 },
   'Dwisaptati sama': { title: 'Dwi-saptati sama dasa (applicable if lagna lord is in 7th or 7th lord is in lagna)', lords: L('Su:9 Mo:9 Ma:9 Me:9 Ju:9 Ve:9 Sa:9 Ra:9'), startStar: 18 },
@@ -45,10 +45,21 @@ export const NAKSHATRA_DASAS: Record<string, NakshatraDasaDef> = {
   'Chaturaseeti sama': { title: 'Chaturaseeti sama dasa (applicable if 10th lord is in 10th)', lords: L('Su:12 Mo:12 Ma:12 Me:12 Ju:12 Ve:12 Sa:12'), startStar: 14 },
   Sataabdika: { title: 'Sataabdika dasa (applicable if lagna is in vargottama)', lords: L('Su:5 Mo:5 Ve:10 Me:10 Ju:20 Ma:20 Sa:30'), startStar: 26 },
   Shodasottari: { title: 'Shodasottari dasa (applicable if lagna in Moon\'s hora in Krishna paksha or in Sun\'s hora in Sukla paksha)', lords: L('Su:11 Ma:12 Ju:13 Sa:14 Ke:15 Mo:16 Me:17 Ve:18'), startStar: 7 },
+  // 28-star groups (3 and 4 stars); JHora's Abhijit runs from 6 40 to 10 00 Capricorn
+  Shashtihayani: {
+    title: 'Shashti-hayani Dasa (applicable if Sun is in lagna)',
+    lords: L('Ju:10 Su:10 Ma:10 Mo:6 Me:6 Ve:6 Sa:6 Ra:6'),
+    groups: [[0, 40], [40, 280 / 3], [280 / 3, 400 / 3], [400 / 3, 560 / 3], [560 / 3, 680 / 3], [680 / 3, 830 / 3], [830 / 3, 920 / 3], [920 / 3, 360]],
+  },
   Panchottari: { title: 'Panchottari dasa (applicable if lagna is in Cancer in rasi and dwadasamsa)', lords: L('Su:12 Me:13 Sa:14 Ma:15 Ve:16 Mo:17 Ju:18'), startStar: 16 },
 };
 
 const mod = (a: number, n: number) => ((a % n) + n) % n;
+
+/** star groups given as [first star, number of stars] */
+function stars(...g: [number, number][]): [number, number][] {
+  return g.map(([s, c]) => [s * NAK, (s + c) * NAK]);
+}
 
 /** Maha dasas (in dasa years from birth) with `levels` levels of sub-periods. */
 export function nakshatraDasa(def: NakshatraDasaDef, moonLon: number, levels = 2): Period[] {
@@ -57,9 +68,9 @@ export function nakshatraDasa(def: NakshatraDasaDef, moonLon: number, levels = 2
   const nak = Math.floor(moonLon / NAK);
   let first: number, elapsed: number;
   if (def.groups) {
-    first = def.groups.findIndex(([s, c]) => mod(nak - s, 27) < c);
-    const [s, c] = def.groups[first];
-    elapsed = (mod(moonLon - s * NAK, 360) / (c * NAK)) * def.lords[first][1];
+    first = def.groups.findIndex(([a, b]) => mod(moonLon - a, 360) < b - a);
+    const [a, b] = def.groups[first];
+    elapsed = (mod(moonLon - a, 360) / (b - a)) * def.lords[first][1];
   } else {
     // stars are counted around the 27 from the starting star, then reduced mod n
     const count = (def.dir ?? 1) * (nak - def.startStar!);
@@ -89,4 +100,19 @@ function split(p: Period, def: NakshatraDasaDef, total: number, levels: number):
     t += sub;
   }
   return { ...p, children };
+}
+
+/**
+ * Saptarshi nakshatra dasa: from the lagna's star backwards, 10 years per star
+ * starting at birth; antardasas are the next ten stars backwards, a year each.
+ */
+export const SAPTARSHI_TITLE = 'Saptarshi nakshatra dasa';
+export function saptarshiDasa(lagnaLon: number, levels = 2, starNames: readonly string[]): Period[] {
+  const star0 = Math.floor(lagnaLon / NAK);
+  const make = (star: number, start: number, len: number, depth: number): Period => {
+    const p: Period = { lord: 'Sun', label: starNames[mod(star, 27)], start, end: start + len };
+    if (depth > 1) p.children = Array.from({ length: 10 }, (_, i) => make(star - i, start + (i * len) / 10, len / 10, depth - 1));
+    return p;
+  };
+  return Array.from({ length: 10 }, (_, i) => make(star0 - i, i * 10, 10, levels));
 }

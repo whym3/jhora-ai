@@ -6,7 +6,7 @@ import { TableView } from '../widgets/TableView';
 /** Nakshatra dasa systems in JHora's menu order. */
 export const NAKSHATRA_DASA_SYSTEMS = [
   'Vimsottari', 'Ashtottari', 'Yogini', 'Dwisaptati sama', 'Shattrimsa sama', 'Dwadasottari',
-  'Chaturaseeti sama', 'Sataabdika', 'Shodasottari', 'Panchottari',
+  'Chaturaseeti sama', 'Sataabdika', 'Shodasottari', 'Panchottari', 'Shashtihayani', 'Saptarshi nakshatra',
 ] as const;
 
 const MAX_DEPTH = 6;

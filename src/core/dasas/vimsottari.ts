@@ -3,7 +3,14 @@
 import type { Graha } from '../positions';
 import { NAK_LORD, VIMSOTTARI_YEARS } from '../lords';
 
-export interface Period { lord: Graha; start: number; end: number; children?: Period[] }
+export interface Period {
+  lord: Graha;
+  /** label shown instead of the lord (nakshatra or rasi dasas) */
+  label?: string;
+  start: number;
+  end: number;
+  children?: Period[];
+}
 
 const NAK = 360 / 27;
 

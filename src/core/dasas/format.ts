@@ -19,13 +19,15 @@ export function formatDasaTime(jdUt: number, tzHours: number, revjul: (jd: numbe
 
 export interface DasaTextCtx { clock: DasaClock; tz: number; revjul: (jd: number) => { year: number; month: number; day: number; hour: number } }
 
+export const periodLabel = (p: Period) => p.label ?? DASA_ABBR[p.lord];
+
 const span = (p: Period, c: DasaTextCtx) => `${formatDasaTime(c.clock.toJd(p.start), c.tz, c.revjul)} - ${formatDasaTime(c.clock.toJd(p.end), c.tz, c.revjul)}`;
 
 export function mahaDasaText(title: string, periods: Period[], c: DasaTextCtx): string[] {
-  return [`${title}:`, '', ' Maha Dasas:', '', ...periods.map((p) => ` ${DASA_ABBR[p.lord]}: ${span(p, c)}`), '', ''];
+  return [`${title}:`, '', ' Maha Dasas:', '', ...periods.map((p) => ` ${periodLabel(p)}: ${span(p, c)}`), '', ''];
 }
 
 export function antarDasaText(title: string, md: Period, c: DasaTextCtx): string[] {
-  return [`${title}:`, '', ` ${DASA_ABBR[md.lord]} MD: ${span(md, c)}`, '', '  Antardasas in this MD:', '',
-    ...(md.children ?? []).map((p) => `  ${DASA_ABBR[p.lord]}: ${span(p, c)}`), '', ''];
+  return [`${title}:`, '', ` ${periodLabel(md)} MD: ${span(md, c)}`, '', '  Antardasas in this MD:', '',
+    ...(md.children ?? []).map((p) => `  ${periodLabel(p)}: ${span(p, c)}`), '', ''];
 }

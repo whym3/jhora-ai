@@ -5,7 +5,8 @@ import { computeChart } from '../src/core/chart';
 import { vimsottari } from '../src/core/dasas/vimsottari';
 import { dasaClock } from '../src/core/dasas/time';
 import { antarDasaText, mahaDasaText } from '../src/core/dasas/format';
-import { NAKSHATRA_DASAS, nakshatraDasa } from '../src/core/dasas/nakshatra';
+import { NAKSHATRA_DASAS, nakshatraDasa, SAPTARSHI_TITLE, saptarshiDasa } from '../src/core/dasas/nakshatra';
+import { NAKSHATRAS } from '../src/core/zodiac';
 
 /**
  * Compare dasa texts line by line; times may differ by `tolSec` seconds. The
@@ -71,5 +72,27 @@ describe('nakshatra dasas match JHora 8.0', async () => {
         expect(bad.slice(0, 6), bad.slice(0, 6).join('\n')).toEqual([]);
       });
     }
+  }
+});
+
+describe('Saptarshi nakshatra dasa matches JHora 8.0', async () => {
+  const swe = await nodeSweph();
+  for (const chart of goldenV2Charts()) {
+    const texts = chart.texts.filter((t) => t.sub === 'Nakshatra dasas' && t.mode === 'Saptarshi nakshatra' && t.lines);
+    if (!texts.length) continue;
+    it(chart.name, async () => {
+      const c = await computeChart(swe, chart.birth);
+      const ctx = { clock: dasaClock(swe, c), tz: chart.birth.tzHours, revjul: (jd: number) => swe.revjul(jd) };
+      const mds = saptarshiDasa(c.positions.ascendant, 2, NAKSHATRAS);
+      const bad: string[] = [];
+      for (const t of texts) {
+        let have: string[] | null = null;
+        if (t.name === 'dasa') have = mahaDasaText(SAPTARSHI_TITLE, mds, ctx);
+        const m = /^dasa_level2_(\d+)$/.exec(t.name);
+        if (m) have = antarDasaText(SAPTARSHI_TITLE, mds[+m[1]], ctx);
+        if (have) bad.push(...compareDasaText(have, t.lines, 2).map((b) => `${t.name} ${b}`));
+      }
+      expect(bad.slice(0, 6), bad.slice(0, 6).join(' | ')).toEqual([]);
+    });
   }
 });

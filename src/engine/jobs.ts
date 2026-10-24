@@ -3,9 +3,9 @@
 import type { Chart } from '../core/chart';
 import type { Sweph } from '../sweph';
 import { vimsottari, type Period } from '../core/dasas/vimsottari';
-import { NAKSHATRA_DASAS, nakshatraDasa } from '../core/dasas/nakshatra';
+import { NAKSHATRA_DASAS, nakshatraDasa, SAPTARSHI_TITLE, saptarshiDasa } from '../core/dasas/nakshatra';
 import { dasaClock } from '../core/dasas/time';
-import { antarDasaText, DASA_ABBR, formatDasaTime, mahaDasaText } from '../core/dasas/format';
+import { antarDasaText, formatDasaTime, mahaDasaText, periodLabel } from '../core/dasas/format';
 import { GRAHAS } from '../core/positions';
 import { formatLongitude, formatVargaLongitude, NAK28, nakshatra28Of, nakshatraOf, NAKSHATRAS, padaOf, signOf, SIGNS } from '../core/zodiac';
 import { ALL_VARGAS, vargaLongitude, type VargaName } from '../core/vargas';
@@ -194,17 +194,18 @@ export const TABLES: Record<string, TableFn> = {
     const levels = path.length + 1;
     const moon = chart.positions.grahas.Moon.lon;
     const def = NAKSHATRA_DASAS[system];
-    const title = def ? def.title : 'Vimsottari Dasa';
-    const mds = def ? nakshatraDasa(def, moon, levels) : vimsottari(moon, levels);
+    const saptarshi = system === 'Saptarshi nakshatra';
+    const title = def ? def.title : saptarshi ? SAPTARSHI_TITLE : 'Vimsottari Dasa';
+    const mds = def ? nakshatraDasa(def, moon, levels) : saptarshi ? saptarshiDasa(chart.positions.ascendant, levels, NAKSHATRAS) : vimsottari(moon, levels);
     const ctx = { clock: dasaClock(swe, chart), tz: chart.birth.tzHours, revjul: (jd: number) => swe.revjul(jd) };
     let list = mds; let parent: Period | null = null;
     for (const i of path) { parent = list[i]; list = parent.children ?? []; }
     const when = (y: number) => formatDasaTime(ctx.clock.toJd(y), ctx.tz, ctx.revjul);
     const LEVEL = ['Maha Dasas', 'Antardasas', 'Pratyantardasas', 'Sookshma-antardasas', 'Prana-antardasas', 'Deha-antardasas'];
     return {
-      caption: parent ? `${DASA_ABBR[parent.lord]}: ${when(parent.start)} - ${when(parent.end)}` : title,
+      caption: parent ? `${periodLabel(parent)}: ${when(parent.start)} - ${when(parent.end)}` : title,
       headers: [LEVEL[path.length] ?? 'Periods', 'Start', 'End'],
-      rows: list.map((p) => [DASA_ABBR[p.lord], when(p.start), when(p.end)]),
+      rows: list.map((p) => [periodLabel(p), when(p.start), when(p.end)]),
       text: !parent ? mahaDasaText(title, mds, ctx) : path.length === 1 ? antarDasaText(title, parent, ctx) : undefined,
     };
   },
