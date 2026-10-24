@@ -24,8 +24,16 @@ const NATURAL_RAW = [
 
 export type Relation = -2 | -1 | 0 | 1 | 2;
 
+/**
+ * The rows JHora uses at run time for Rahu and Ketu towards the seven planets
+ * (fitted exactly from its vimsopaka output on 8 charts; the static table above
+ * makes Mercury a friend and, for Ketu, Venus neutral).
+ */
+const NODE_ROW: Record<string, -1 | 0 | 1> = { Sun: -1, Moon: -1, Mars: -1, Mercury: 0, Jupiter: 0, Venus: 1, Saturn: 1 };
+
 /** Natural relationship of p towards q: 1 friend, 0 neutral, -1 enemy. */
 export function naturalRelation(p: Graha, q: Graha): -1 | 0 | 1 {
+  if ((p === 'Rahu' || p === 'Ketu') && q in NODE_ROW) return NODE_ROW[q];
   const v = NATURAL_RAW[NINE.indexOf(p)][NINE.indexOf(q)];
   return v === 2 ? 1 : v === 4 ? -1 : 0;
 }

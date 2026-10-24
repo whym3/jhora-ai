@@ -42,6 +42,10 @@ class Clipboard:
                 if win32clipboard.IsClipboardFormatAvailable(win32clipboard.CF_TEXT):
                     return win32clipboard.GetClipboardData(win32clipboard.CF_TEXT).decode("latin-1")
                 return ""
+            except Exception:
+                # the owner may still be rendering (error 1460 = timeout); retry
+                time.sleep(0.2)
+                continue
             finally:
                 win32clipboard.CloseClipboard()
         return ""
@@ -85,8 +89,14 @@ class Session:
                 time.sleep(0.2)
         return texts
 
-    def command(self, cmd, settle=0.25):
+    def command(self, cmd, settle=0.25, to_panes=False):
         self.main.post_message(WM_COMMAND, cmd, 0)
+        if to_panes:
+            # pages with several list panes (Other strengths) route menu commands to
+            # the active pane only; post to every visible pane (ids are unique)
+            for w in self.main.descendants(class_name="AfxFrameOrView42s"):
+                if w.is_visible():
+                    w.post_message(WM_COMMAND, cmd, 0)
         time.sleep(settle)
         return self.dismiss_dialogs()
 
@@ -165,7 +175,7 @@ def capture_chart(root, chart, manifest, ini_overrides):
             s.guard()
             modes = tab.get("modes") or [[None, None]]
             for label, cmd in modes:
-                popups = s.command(cmd) if cmd else []
+                popups = s.command(cmd, to_panes=tab.get("pane_modes", False)) if cmd else []
                 if tab.get("lists"):
                     for lv in s.visible_lists():
                         result["views"].append({"top": top, "sub": sub, "mode": label, "control_id": lv["id"], "headers": lv["headers"], "rows": lv["rows"]})

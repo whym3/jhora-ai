@@ -33,6 +33,7 @@ export function OtherStrengthsView({ spec }: { spec: ChartSpec }) {
   const entry = OTHER_STRENGTH_MODES.find((m) => m[1] === mode) ?? OTHER_STRENGTH_MODES[0];
   const table = entry[2];
   const job = useJob(table ? { kind: 'table' as const, chart: spec, table } : null);
+  const vimsopakaJob = useJob({ kind: 'table' as const, chart: spec, table: 'strengths.vimsopaka' });
   return (
     <div className="subview">
       <div className="subview-bar">
@@ -41,6 +42,7 @@ export function OtherStrengthsView({ spec }: { spec: ChartSpec }) {
         </select>
       </div>
       {table ? <TableView job={job} /> : <NotPorted name={entry[0]} />}
+      <TableView job={vimsopakaJob} />
     </div>
   );
 }

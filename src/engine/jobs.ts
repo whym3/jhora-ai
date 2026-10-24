@@ -14,6 +14,7 @@ import { sahamas } from '../core/sahamas';
 import { brahmaRudraMaheswara } from '../core/deities';
 import { amsaRuler } from '../core/amsaRulers';
 import { computeShadbala, type Seven } from '../core/shadbala';
+import { vimsopaka } from '../core/vimsopaka';
 import { SEVEN } from '../core/relations';
 import { fromMrityuBhaga, fromPushkaraBhaga, inPushkaramsa, MRITYU_BHAGA, within } from '../core/pushkara';
 import type { VargaCtx } from '../core/signStrength';
@@ -195,6 +196,14 @@ export const TABLES: Record<string, TableFn> = {
   }),
   'strengths.ishtaKashta': (chart) => shadbalaRows(chart, ['Planet', 'Ishta Phala', 'Kashta Phala', 'Shadbala'], (b) => [b.ishta, b.kashta, b.rupas]),
   'strengths.rashmis': (chart) => shadbalaRows(chart, ['Planet', 'Uchcha Rashmi', 'Cheshta Rashmi', 'Subha Rashmi', 'Asubha Rashmi', 'Ishta (Parasara)', 'Kashta (Parasara)'], (b) => [b.uchchaRashmi, b.cheshtaRashmi, b.subhaRashmi, b.asubhaRashmi, b.ishtaParasara, b.kashtaParasara]),
+  'strengths.vimsopaka': (chart) => {
+    const vb = vimsopaka(chart);
+    const cell = (x: number) => `${f2(x)}  (${f2(x * 5)}%)`;
+    return {
+      headers: ['Vimsopaka', 'Dasa Varga (10)', 'Shodasa Varga (16)', 'Sapta Varga (7)', 'Shad Varga (6)'],
+      rows: GRAHAS.map((g) => [g, cell(vb[g].dasa), cell(vb[g].shodasa), cell(vb[g].sapta), cell(vb[g].shad)]),
+    };
+  },
   'basics.drekkanas': (chart) => ({
     headers: ['Body', 'Drekkana occupied'],
     rows: bhagaBodies(chart).map(([name, lon]) => [name, drekkanaType(lon)]),

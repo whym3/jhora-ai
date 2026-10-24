@@ -33,3 +33,21 @@ describe('shadbala tables match JHora 8.0', async () => {
     }
   }
 });
+
+describe('vimsopaka balas match JHora 8.0', async () => {
+  const swe = await nodeSweph();
+  for (const chart of goldenV2Charts()) {
+    const golden = chart.views.find((v) => v.headers[0] === 'Vimsopaka');
+    if (!golden) continue;
+    it(chart.name, async () => {
+      const got = runTable(await computeChart(swe, chart.birth), 'strengths.vimsopaka', {});
+      expect(got.headers).toEqual(golden.headers);
+      const bad: string[] = [];
+      golden.rows.forEach((r, i) => r.slice(1).forEach((cell, j) => {
+        const have = got.rows[i][j + 1];
+        if (Math.abs(parseFloat(have) - parseFloat(cell)) > 0.011) bad.push(`${r[0]} ${golden.headers[j + 1]}: ${have} vs ${cell}`);
+      }));
+      expect(bad, bad.join('\n')).toEqual([]);
+    });
+  }
+});
