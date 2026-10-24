@@ -22,7 +22,11 @@ import { aspectPercent } from '../aspects';
 import { norm360, type Graha } from '../positions';
 import { ALL_VARGAS, vargaLongitude } from '../vargas';
 import { formatLongitude } from '../zodiac';
-import { arudhaLongitudes, bodyLon, BODY_NAMES, graha, VARGA_LABEL, VARGA_ORDER, type TransitDate } from './common';
+import { arudhaLongitudes, bodyLon, BODY_NAMES, graha, VARGA_ORDER, type TransitDate } from './common';
+
+/** Varga names of this list (the "(Trd)"/"(US)" table, as in the Rasis-in-vargas columns), by JHora varga index. */
+export const CORRELATION_VARGA_LABEL = ['D-1', 'D-9', 'D-2 (US)', 'D-3 (Trd)', 'D-4', 'D-5', 'D-6', 'D-7 (Trd)', 'D-8', 'D-10 (Trd)', 'D-11', 'D-12 (Trd)', 'D-16 (Trd)',
+  'D-20 (Trd)', 'D-24 (Trd)', 'D-27 (Trd)', 'D-30', 'D-40', 'D-45', 'D-60 (Trd)', 'D-81', 'D-108', 'D-144'];
 
 export const CORRELATION_PLANETS = [5, 7, 8, 9, 3, 1, 6, 4, 2];
 /** Mean daily motion used for the "Speed" column (speed / mean). */
@@ -40,6 +44,12 @@ export interface CorrelationOptions {
   orbAspect?: number;
   orbQuadrant?: number;
   orbTrine?: number;
+  /**
+   * Speeds (deg/day) by body index for the "Speed" column. JHora's stored speeds
+   * (chart+0x1530, FUN_0049aaa0) carry no nutation rate (they equal swe_calc speeds
+   * with SEFLG_NONUT, checked on the goldens); default: the chart's own speeds.
+   */
+  speeds?: number[];
 }
 
 /** FUN_004b3120: named aspect of body b at T on N within `orb`; returns [orb, name]. */
@@ -74,16 +84,25 @@ export function windowOrb(N: number, T: number, b: number, orb: number, windows:
 export interface CorrelationMatch { point: string; varga: number; natalLon: number; value: number; name?: string }
 export interface CorrelationRow { planet: number; lon: number; speed: number; matches: CorrelationMatch[] }
 
-/** Natal point longitudes (D-1), in NATAL_POINTS order. */
+/**
+ * Natal point longitudes (D-1), in NATAL_POINTS order. JHora only stores bhava
+ * arudha longitudes when DivLongsInBhavaArudhas is on (default off); otherwise the
+ * slots hold 0 (0 Ar 00', mapped through the vargas as such - see the goldens).
+ */
 export function natalPoints(natal: Chart): number[] {
   const p = natal.positions;
   const named = (n: string) => natal.longitudes.find((x) => x.name === n)!.lon;
-  return [...BODY_NAMES.map((_, b) => bodyLon(p, b)), ...arudhaLongitudes(natal), named('Bhava Lagna'), named('Hora Lagna'), named('Ghati Lagna')];
+  const arudhas = natal.ini.DivLongsInBhavaArudhas ? arudhaLongitudes(natal) : Array<number>(12).fill(0);
+  return [...BODY_NAMES.map((_, b) => bodyLon(p, b)), ...arudhas, named('Bhava Lagna'), named('Hora Lagna'), named('Ghati Lagna')];
 }
 
 export function longitudeCorrelation(natal: Chart, transit: Chart, o: CorrelationOptions = {}): CorrelationRow[] {
   const mode = o.mode ?? 0;
   const points = natalPoints(natal);
+  // FUN_004a1260(v) returns the natal chart itself for D-1 but builds every other
+  // varga chart from the chart just computed (the transit chart), so for v > 0 the
+  // "natal" points are the transit chart's (bug-compatible; matches the goldens).
+  const transitPoints = natalPoints(transit);
   return CORRELATION_PLANETS.map((b) => {
     const g: Graha = graha(b);
     const T = transit.positions.grahas[g].lon;
@@ -91,7 +110,7 @@ export function longitudeCorrelation(natal: Chart, transit: Chart, o: Correlatio
     for (let k = 0; k < points.length && matches.length < 100; k++) {
       for (const v of CORRELATION_VARGAS) {
         if (matches.length >= 100) break;
-        const N = vargaLongitude(points[k], ALL_VARGAS[VARGA_ORDER[v]]);
+        const N = v === 0 ? points[k] : vargaLongitude(transitPoints[k], ALL_VARGAS[VARGA_ORDER[v]]);
         const m = { point: NATAL_POINTS[k], varga: v, natalLon: N };
         if (mode === 0) {
           const pct = aspectPercent(N, T, g);
@@ -105,7 +124,7 @@ export function longitudeCorrelation(natal: Chart, transit: Chart, o: Correlatio
         }
       }
     }
-    return { planet: b, lon: T, speed: transit.positions.grahas[g].speed / MEAN_SPEED[b], matches };
+    return { planet: b, lon: T, speed: (o.speeds?.[b] ?? transit.positions.grahas[g].speed) / MEAN_SPEED[b], matches };
   });
 }
 
@@ -116,7 +135,7 @@ export function correlationTable(rows: CorrelationRow[], mode = 0): Table {
     r.matches.forEach((m, i) => {
       const value = mode === 0 ? m.value.toFixed(2) : mode === 1 ? `${m.value.toFixed(1)} (${m.name})` : m.value.toFixed(1);
       out.push([i === 0 ? BODY_NAMES[r.planet] : '', i === 0 ? formatLongitude(r.lon) : '', i === 0 ? r.speed.toFixed(4) : '',
-        `${m.point} in ${VARGA_LABEL[m.varga]}`, value, formatLongitude(m.natalLon)]);
+        `${m.point} in ${CORRELATION_VARGA_LABEL[m.varga]}`, value, formatLongitude(m.natalLon)]);
     });
   }
   return { headers: ['Transit Planet', 'Transit Longitude', 'Speed', 'Natal Point', mode === 0 ? 'Aspect %' : 'Aspect Orb (deg)', 'Natal Longitude'], rows: out };

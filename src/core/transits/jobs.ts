@@ -20,6 +20,9 @@ import { basicTransitTable, type BasicOptions } from './basic';
 import { calendarTable, transitCalendar } from './calendar';
 import { correlationTable, longitudeCorrelation, type CorrelationOptions } from './correlation';
 import { murthis } from './murthi';
+import { calcSettingsFromIni } from '../settings';
+import { calcFlags } from '../positions';
+import { SE } from '../../sweph';
 import { specialSearch, type SpecialSearch } from './search';
 import { bodySign, computeTransitChart, transitBirth, type NatalRef, type TransitDate } from './common';
 
@@ -83,10 +86,21 @@ export const TRANSIT_JOBS: Record<string, AsyncTableFn> = {
     const opts: CorrelationOptions = {
       mode: num(params.mode), minPercent: num(params.minPercent, 80), orbAspect: num(params.orbAspect, 4),
       orbQuadrant: num(params.orbQuadrant, 4), orbTrine: num(params.orbTrine, 4),
+      speeds: meanEquinoxSpeeds(swe, transit),
     };
     return correlationTable(longitudeCorrelation(natal, transit, opts), opts.mode);
   },
 };
+
+/** Speeds by body index without the nutation rate (SEFLG_NONUT), as JHora stores them (FUN_0049aaa0). */
+function meanEquinoxSpeeds(swe: Sweph, c: Chart): number[] | undefined {
+  const s = calcSettingsFromIni(c.ini);
+  if (s.sss) return undefined;
+  const ids = [0, SE.SUN, SE.MOON, SE.MARS, SE.MERCURY, SE.JUPITER, SE.VENUS, SE.SATURN, s.trueNodes ? SE.TRUE_NODE : SE.MEAN_NODE];
+  const out = ids.map((id, b) => (b === 0 ? 0 : swe.calcEt(c.positions.jdEt, id, calcFlags(s) | SE.FLG_NONUT).speedLon));
+  out.push(out[8]);
+  return out;
+}
 
 function formatDate(d: TransitDate): string {
   const h = Math.floor(d.hour), mf = (d.hour - h) * 60, m = Math.floor(mf), s = Math.round((mf - m) * 60);

@@ -29,6 +29,7 @@ const GOLDEN = {
   'dasaGolden.test.ts': 'every rasi and other dasa, maha dasas and two antardasa lists',
   'tajakaGolden.test.ts': 'Tajaka charts: longitudes, Mudda and Patyayini dasas, Tajaka balas',
   'derivedGolden.test.ts': 'Tithi Pravesha chart, key info and dasa; monthly panchanga text',
+  'transitsGolden.test.ts': 'Basic Transit Results (9 modes) and Longitude Correlation',
   'sssGolden.test.ts': 'Sri Surya Siddhanta model (Siddhanta=1): lagna and planet longitudes',
   'kpMatching.test.ts': 'Houses view and all KP modes (matching itself: table checks only)',
 };
