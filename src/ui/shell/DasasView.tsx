@@ -20,7 +20,7 @@ export function NakshatraDasasView({ spec }: { spec: ChartSpec }) {
 }
 
 /** Rasi dasa systems ported so far. */
-export const RASI_DASA_SYSTEMS = ['Narayana'] as const;
+export const RASI_DASA_SYSTEMS = ['Narayana', 'Sudasa'] as const;
 
 export function RasiDasasView({ spec }: { spec: ChartSpec }) {
   return <DasaPane spec={spec} table="dasas.rasi" systems={RASI_DASA_SYSTEMS} />;

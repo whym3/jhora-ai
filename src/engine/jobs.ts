@@ -7,6 +7,7 @@ import { NAKSHATRA_DASAS, nakshatraDasa, SAPTARSHI_TITLE, saptarshiDasa } from '
 import { kalachakraDasa } from '../core/dasas/kalachakra';
 import { narayanaDasa } from '../core/dasas/narayana';
 import { MOOLA_TITLE, moolaDasa } from '../core/dasas/moola';
+import { SUDASA_TITLE, sudasa, type SudasaCtx } from '../core/dasas/sudasa';
 import { dasaClock } from '../core/dasas/time';
 import { antarDasaText, formatDasaTime, mahaDasaText, periodLabel } from '../core/dasas/format';
 import { GRAHAS } from '../core/positions';
@@ -233,6 +234,11 @@ export const TABLES: Record<string, TableFn> = {
     const path = (params.path as number[] | undefined) ?? [];
     const p = chart.positions;
     const ctx: VargaCtx = { sign: (g) => signOf(p.grahas[g].lon), degree: (g) => p.grahas[g].lon % 30 };
+    if (params.system === 'Sudasa') {
+      const sctx: SudasaCtx = { ...ctx, lagnaSign: signOf(p.ascendant), lagnaDegree: p.ascendant % 30 };
+      const sl = chart.longitudes.find((x) => x.name === 'Sree Lagna')!.lon;
+      return dasaTable(chart, swe, SUDASA_TITLE, sudasa(sl, sctx, path.length + 1), path);
+    }
     const n = narayanaDasa(signOf(p.ascendant), ctx, 'D-1', path.length + 1);
     return dasaTable(chart, swe, n.title, n.periods, path);
   },

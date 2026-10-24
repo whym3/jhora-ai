@@ -57,21 +57,21 @@ export function narayanaDasa(lagna: number, ctx: VargaCtx, varga = 'D-1', levels
   for (let cycle = 0; cycle < 2; cycle++) {
     seq.forEach((s, i) => {
       const years = cycle === 0 ? first[i] : 12 - first[i];
-      periods.push(antardasas({ lord: 'Sun', label: SIGNS[s], start: t, end: t + years }, s, ctx, levels - 1));
+      periods.push(narayanaAntardasas({ lord: 'Sun', label: SIGNS[s], start: t, end: t + years }, s, ctx, levels - 1));
       t += years;
     });
   }
   return { title: `Narayana Dasa of ${varga} chart (a versatile phalita rasi dasa)`, periods };
 }
 
-function antardasas(p: Period, sign: number, ctx: VargaCtx, levels: number): Period {
+export function narayanaAntardasas(p: Period, sign: number, ctx: VargaCtx, levels: number): Period {
   if (levels <= 0) return p;
   const from = ctx.sign(signLordJaimini(sign, ctx));
   const dir = from % 2 === 0 ? 1 : -1;
   const len = (p.end - p.start) / 12;
   const children = Array.from({ length: 12 }, (_, i) => {
     const s = mod12(from + dir * i);
-    return antardasas({ lord: 'Sun', label: SIGNS[s], start: p.start + i * len, end: p.start + (i + 1) * len }, s, ctx, levels - 1);
+    return narayanaAntardasas({ lord: 'Sun', label: SIGNS[s], start: p.start + i * len, end: p.start + (i + 1) * len }, s, ctx, levels - 1);
   });
   return { ...p, children };
 }
