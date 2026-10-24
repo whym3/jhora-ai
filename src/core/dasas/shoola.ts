@@ -11,9 +11,9 @@ import type { Chart } from '../chart';
 import type { Period } from './vimsottari';
 import { buildRasiDasa, dasaLord, mod12, rasiCtx, run, strong7 } from './rasiCommon';
 
-export const SHOOLA_TITLE = 'Shoola dasa';
+export const SHOOLA_TITLE = 'Shoola dasa (troubles and death)';
 /** Title with the DAT_00597ed0 option; `houseName` is JHora's house name string (0x8a2718 table). */
-export const shoolaTitle = (fromHouse = 0, houseName = '') => (fromHouse === 0 ? SHOOLA_TITLE : `Shoola dasa from ${houseName} house`);
+export const shoolaTitle = (fromHouse = 0, houseName = '') => (fromHouse === 0 ? SHOOLA_TITLE : `Shoola dasa from ${houseName} house (troubles and death)`);
 
 /**
  * @param fromHouse  DAT_00597ed0: houses counted from the lagna (default 0)

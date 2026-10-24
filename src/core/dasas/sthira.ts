@@ -13,7 +13,7 @@ import { sequenceDirection } from './narayana';
 import { brahmaSign } from './brahma';
 import { buildRasiDasa, lordOfStrong7Run, rasiCtx, run, sthiraYears } from './rasiCommon';
 
-export const STHIRA_TITLE = 'Sthira dasa';
+export const STHIRA_TITLE = 'Sthira dasa (an ayur dasa that shows death)';
 
 export function sthiraDasa(chart: Chart, levels = 2): Period[] {
   const ctx = rasiCtx(chart, 0);

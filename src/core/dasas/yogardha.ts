@@ -16,7 +16,7 @@ import type { Period } from './vimsottari';
 import { sequenceDirection } from './narayana';
 import { buildRasiDasa, JHORA_VARGA_NAMES, lordOfStrong7Run, narayanaYearsWithLord, rasiCtx, run, sthiraYears, strong7 } from './rasiCommon';
 
-export const yogardhaTitle = (vargaIndex = 0) => `Yogardha dasa of ${JHORA_VARGA_NAMES[vargaIndex]}`;
+export const yogardhaTitle = (vargaIndex = 0) => `Yogardha dasa of ${JHORA_VARGA_NAMES[vargaIndex]} (a rasi dasa based on chara and sthira dasas)`;
 export const YOGARDHA_TITLE = yogardhaTitle(0);
 
 /** @param vargaIndex JHora varga index of the dasa chart (0 = D-1, the default). */

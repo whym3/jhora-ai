@@ -13,7 +13,7 @@ import type { Period } from './vimsottari';
 import { strongerSign } from '../signStrength';
 import { bodySign, buildRasiDasa, mod12, rasiCtx, run } from './rasiCommon';
 
-export const VARNADA_TITLE = 'Varnada dasa';
+export const VARNADA_TITLE = 'Varnada dasa (troubles and death)';
 
 const parity = (s: number) => (s % 2 === 0 ? 1 : -1);
 

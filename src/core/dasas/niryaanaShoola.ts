@@ -12,7 +12,7 @@ import type { Period } from './vimsottari';
 import { sequenceDirection } from './narayana';
 import { buildRasiDasa, lordOfStrong7Run, mod12, rasiCtx, run, sthiraYears, strong7 } from './rasiCommon';
 
-export const NIRYAANA_SHOOLA_TITLE = 'Niryana Shoola Dasa';
+export const NIRYAANA_SHOOLA_TITLE = 'Niryana Shoola Dasa (death)';
 
 export function niryaanaShoolaDasa(chart: Chart, levels = 2): Period[] {
   const ctx = rasiCtx(chart, 0);

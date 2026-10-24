@@ -74,3 +74,13 @@ export function goldenV3Charts(): GoldenChartV2[] {
     return { name, birth: parseJhd(readFileSync(`golden/charts/${name}.jhd`, 'latin1')), views: g.views, texts: g.texts };
   });
 }
+
+/** Rasi/other dasa captures (harness views-dasas.json), same layout as v2/v3. */
+export function goldenDasaCharts(): GoldenChartV2[] {
+  if (!existsSync('golden/jhora-dasas')) return [];
+  return readdirSync('golden/jhora-dasas').filter((f) => f.endsWith('.json')).map((f) => {
+    const name = f.replace(/\.json$/, '');
+    const g = JSON.parse(readFileSync(`golden/jhora-dasas/${f}`, 'utf8'));
+    return { name, birth: parseJhd(readFileSync(`golden/charts/${name}.jhd`, 'latin1')), views: g.views, texts: g.texts };
+  });
+}

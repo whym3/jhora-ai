@@ -16,7 +16,7 @@ import { brahmaRudraMaheswara } from '../deities';
 import { charaKarakas } from '../basics';
 import { buildRasiDasa, dasaLord, mod12, rasiCtx, run } from './rasiCommon';
 
-export const BRAHMA_TITLE = 'Brahma dasa';
+export const BRAHMA_TITLE = 'Brahma dasa (cycle of life, death and life)';
 
 /** Sign of JHora's Brahma in the rasi chart. */
 export function brahmaSign(chart: Chart): number {

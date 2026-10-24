@@ -16,7 +16,7 @@ import { SIGN_LORD } from '../lords';
 import type { VargaCtx } from '../signStrength';
 import { buildRasiDasa, mod12, rasiCtx } from './rasiCommon';
 
-export const MANDOOKA_KN_RAO_TITLE = 'Mandooka dasa of K.N. Rao';
+export const MANDOOKA_KN_RAO_TITLE = 'Mandooka dasa of K.N. Rao (a conditional phalita rasi dasa)';
 const KENDRAS = [0, 3, 6, 9, 1, 4, 7, 10, 2, 5, 8, 11];
 
 /** FUN_004ad090. */

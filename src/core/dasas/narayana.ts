@@ -14,7 +14,7 @@
 import type { Graha } from '../positions';
 import type { Period } from './vimsottari';
 import { SIGNS } from '../zodiac';
-import { DEBILITATION, EXALTATION, signLordJaimini, strongerSign, type VargaCtx } from '../signStrength';
+import { DEBILITATION, EXALTATION, signLordByDistance, strongerSign, type VargaCtx } from '../signStrength';
 import { strongerByDignity } from '../deities';
 import { narayanaTypeSequence } from './rasiCommon';
 
@@ -22,7 +22,7 @@ const mod12 = (x: number) => ((x % 12) + 12) % 12;
 const ODD_FOOTED = new Set([0, 1, 2, 6, 7, 8]);
 
 export function narayanaYears(sign: number, ctx: VargaCtx): number {
-  const lord: Graha = signLordJaimini(sign, ctx);
+  const lord: Graha = signLordByDistance(sign, ctx);
   const ls = ctx.sign(lord);
   if (ls === sign) return 12;
   let n = ODD_FOOTED.has(sign) ? mod12(ls - sign) : mod12(sign - ls);
@@ -53,7 +53,7 @@ export function narayanaAntardasas(p: Period, sign: number, ctx: VargaCtx, level
   if (levels <= 0) return p;
   const low = sign % 6;
   const strong = strongerSign(low, low + 6, ctx);
-  const from = ctx.sign(signLordJaimini(strong, ctx));
+  const from = ctx.sign(signLordByDistance(strong, ctx));
   const dir = sequenceDirection(from, ctx, strong);
   const len = (p.end - p.start) / 12;
   const children = Array.from({ length: 12 }, (_, i) => {

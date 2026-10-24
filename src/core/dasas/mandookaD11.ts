@@ -14,7 +14,7 @@ import type { Period } from './vimsottari';
 import { sequenceDirection } from './narayana';
 import { buildRasiDasa, lordOfStrong7Run, mod12, rasiCtx, sthiraYears } from './rasiCommon';
 
-export const MANDOOKA_D11_TITLE = 'Mandooka dasa of D-11';
+export const MANDOOKA_D11_TITLE = 'Mandooka dasa of D-11 (an ayur dasa showing wars and destruction)';
 const D11 = 10;
 
 export function mandookaD11Dasa(chart: Chart, levels = 2): Period[] {

@@ -10,7 +10,7 @@ import type { Period } from './vimsottari';
 import type { VargaCtx } from '../signStrength';
 import { buildRasiDasa, rasiCtx, run, strong7 } from './rasiCommon';
 
-export const NAVAMSA_TITLE = 'Navamsa dasa';
+export const NAVAMSA_TITLE = 'Navamsa dasa (death)';
 /** The builder's local table (only the odd indices = even signs are used). */
 const EVEN_MAP = [7, 6, 5, 10, 9, 2, 1, 0, 11, 4, 3, 8];
 

@@ -25,7 +25,7 @@ import { buildRasiDasa, JHORA_VARGA_NAMES, lordOfStrong7Run, mod12, narayanaYear
 export type ParyaayaKind = 'Chara' | 'Sthira' | 'Ubhaya';
 export const PARYAAYA_DEFAULT_VARGA = 6;
 export const paryaayaTitleOf = (kind: ParyaayaKind, vargaIndex = PARYAAYA_DEFAULT_VARGA) =>
-  `${kind} Paryaya dasa of ${JHORA_VARGA_NAMES[vargaIndex]} chart`;
+  `${kind} Paryaya dasa of ${JHORA_VARGA_NAMES[vargaIndex]} chart (illnesses, litigations && worries)`;
 /** The title depends on the chart (use paryaayaDasa(...).title); this is the Chara variant. */
 export const PARYAAYA_TITLE = paryaayaTitleOf('Chara');
 
