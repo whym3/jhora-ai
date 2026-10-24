@@ -6,8 +6,7 @@ import { vimsottari, type Period } from '../core/dasas/vimsottari';
 import { NAKSHATRA_DASAS, nakshatraDasa, SAPTARSHI_TITLE, saptarshiDasa } from '../core/dasas/nakshatra';
 import { kalachakraDasa } from '../core/dasas/kalachakra';
 import { narayanaDasa } from '../core/dasas/narayana';
-import { MOOLA_TITLE, moolaDasa } from '../core/dasas/moola';
-import { SUDASA_TITLE, sudasa, type SudasaCtx } from '../core/dasas/sudasa';
+import { OTHER_DASAS, RASI_DASAS } from '../core/dasas/registry';
 import { dasaClock } from '../core/dasas/time';
 import { antarDasaText, formatDasaTime, mahaDasaText, periodLabel } from '../core/dasas/format';
 import { GRAHAS } from '../core/positions';
@@ -237,23 +236,17 @@ export const TABLES: Record<string, TableFn> = {
   'dasas.rasi': (chart, params, swe) => {
     if (!swe) throw new Error('dasa tables need the ephemeris');
     const path = (params.path as number[] | undefined) ?? [];
-    const p = chart.positions;
-    const ctx: VargaCtx = { sign: (g) => signOf(p.grahas[g].lon), degree: (g) => p.grahas[g].lon % 30 };
-    if (params.system === 'Sudasa') {
-      const sctx: SudasaCtx = { ...ctx, lagnaSign: signOf(p.ascendant), lagnaDegree: p.ascendant % 30 };
-      const sl = chart.longitudes.find((x) => x.name === 'Sree Lagna')!.lon;
-      return dasaTable(chart, swe, SUDASA_TITLE, sudasa(sl, sctx, path.length + 1), path);
-    }
-    const n = narayanaDasa(signOf(p.ascendant), ctx, 'D-1', path.length + 1);
-    return dasaTable(chart, swe, n.title, n.periods, path);
+    const build = RASI_DASAS[String(params.system ?? 'Narayana')] ?? RASI_DASAS.Narayana;
+    const d = build(chart, path.length + 1);
+    return dasaTable(chart, swe, d.title, d.periods, path);
   },
-  // Dasas > Other dasas: params.system ('Moola'), params.path
+  // Dasas > Other dasas: params.system (an OTHER_DASAS key), params.path
   'dasas.other': (chart, params, swe) => {
     if (!swe) throw new Error('dasa tables need the ephemeris');
     const path = (params.path as number[] | undefined) ?? [];
-    const p = chart.positions;
-    const ctx: VargaCtx = { sign: (g) => signOf(p.grahas[g].lon), degree: (g) => p.grahas[g].lon % 30 };
-    return dasaTable(chart, swe, MOOLA_TITLE, moolaDasa(signOf(p.ascendant), ctx, path.length + 1), path);
+    const build = OTHER_DASAS[String(params.system ?? 'Moola')] ?? OTHER_DASAS.Moola;
+    const d = build(chart, path.length + 1);
+    return dasaTable(chart, swe, d.title, d.periods, path);
   },
   // Strengths > Other strengths (menu modes 0..10 of CStrengthsView)
   'strengths.shadbalaSummary': (chart) => shadbalaRows(chart, ['Planet', 'Shadbala', 'In rupas', '% Strength', 'IshtaPhala', 'KashtaPhala'], (b) => [b.total, b.rupas, b.percent, b.ishta, b.kashta]),

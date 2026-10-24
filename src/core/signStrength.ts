@@ -185,3 +185,61 @@ export function sortByStrength<T>(items: T[], stronger: (x: T, y: T) => T): T[] 
   }
   return out;
 }
+
+/** Co-owned sign of a co-lord as JHora's co-lord comparisons set it (Saturn/Rahu Aq, Mars/Ketu Sc). */
+const coOwn = (g: Graha) => (g === 'Saturn' || g === 'Rahu' ? 10 : g === 'Mars' || g === 'Ketu' ? 7 : 0);
+
+/**
+ * Stronger co-lord as FUN_004ac420 decides (KN Rao's chara dasa, table
+ * chart+0x179b4/0x17b84): the one outside the co-owned sign when the other is
+ * in it, then more planets in its sign, finally the higher rasi-chart degree
+ * in the sign (nodes not reversed). Ties go to p.
+ */
+export function strongerPlanetByDegree(p: Graha, q: Graha, ctx: VargaCtx): Graha {
+  const sp = ctx.sign(p), sq = ctx.sign(q);
+  if (sp === coOwn(p)) { if (sq !== coOwn(q)) return q; } else if (sq === coOwn(q)) return p;
+  const np = occupants(sp, ctx), nq = occupants(sq, ctx);
+  if (np > nq) return p;
+  if (nq > np) return q;
+  return ctx.degree(p) < ctx.degree(q) ? q : p;
+}
+
+/**
+ * Stronger co-lord as FUN_004ac5a0 decides (Parasara chara dasa, table
+ * chart+0x17a28/0x17bf8): co-owned-sign rule, more planets, then the sign of
+ * LOWER modality (movable beats fixed beats dual - JHora's code compares this
+ * way round), finally the count from the co-owned sign of FUN_004ac110 (+1
+ * exalted, -1 debilitated), the larger winning. Ties go to p.
+ */
+export function strongerPlanetByModality(p: Graha, q: Graha, ctx: VargaCtx): Graha {
+  const sp = ctx.sign(p), sq = ctx.sign(q);
+  if (sp === coOwn(p)) { if (sq !== coOwn(q)) return q; } else if (sq === coOwn(q)) return p;
+  const np = occupants(sp, ctx), nq = occupants(sq, ctx);
+  if (np > nq) return p;
+  if (nq > np) return q;
+  if (sq % 3 > sp % 3) return p;
+  if (sp % 3 > sq % 3) return q;
+  const count = (g: Graha) => {
+    const o = coOwn(g), s = ctx.sign(g);
+    const d = Math.floor(o / 3) % 2 === 0 ? s - o : o - s;
+    let n = mod12(d) === 0 ? 12 : mod12(d);
+    if (EXALTATION[g] === s && n < 12) n++;
+    if (DEBILITATION[g] === s && n > 0) n--;
+    return n;
+  };
+  return count(q) <= count(p) ? p : q;
+}
+
+/** Lord of a sign with the co-lords decided by FUN_004ac420 (FUN_004ad430). */
+export function signLordByDegree(sign: number, ctx: VargaCtx): Graha {
+  if (sign === 10) return strongerPlanetByDegree('Saturn', 'Rahu', ctx);
+  if (sign === 7) return strongerPlanetByDegree('Mars', 'Ketu', ctx);
+  return SIGN_LORD[sign];
+}
+
+/** Lord of a sign with the co-lords decided by FUN_004ac5a0 (FUN_004ad470). */
+export function signLordByModality(sign: number, ctx: VargaCtx): Graha {
+  if (sign === 10) return strongerPlanetByModality('Saturn', 'Rahu', ctx);
+  if (sign === 7) return strongerPlanetByModality('Mars', 'Ketu', ctx);
+  return SIGN_LORD[sign];
+}

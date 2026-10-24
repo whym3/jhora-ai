@@ -2,6 +2,7 @@ import { useState } from 'react';
 import type { ChartSpec } from '../../engine/protocol';
 import { useJob } from '../EngineProvider';
 import { TableView } from '../widgets/TableView';
+import { OTHER_DASAS, RASI_DASAS } from '../../core/dasas/registry';
 
 /** Nakshatra dasa systems in JHora's menu order. */
 export const NAKSHATRA_DASA_SYSTEMS = [
@@ -19,15 +20,15 @@ export function NakshatraDasasView({ spec }: { spec: ChartSpec }) {
   return <DasaPane spec={spec} table="dasas.nakshatra" systems={NAKSHATRA_DASA_SYSTEMS} />;
 }
 
-/** Rasi dasa systems ported so far. */
-export const RASI_DASA_SYSTEMS = ['Narayana', 'Sudasa'] as const;
+/** Rasi dasa systems ported so far, in JHora's menu order. */
+export const RASI_DASA_SYSTEMS = Object.keys(RASI_DASAS);
 
 export function RasiDasasView({ spec }: { spec: ChartSpec }) {
   return <DasaPane spec={spec} table="dasas.rasi" systems={RASI_DASA_SYSTEMS} />;
 }
 
-/** Other (graha) dasa systems ported so far. */
-export const OTHER_DASA_SYSTEMS = ['Moola'] as const;
+/** Other (graha) dasa systems, in JHora's menu order. */
+export const OTHER_DASA_SYSTEMS = Object.keys(OTHER_DASAS);
 
 export function OtherDasasView({ spec }: { spec: ChartSpec }) {
   return <DasaPane spec={spec} table="dasas.other" systems={OTHER_DASA_SYSTEMS} />;
