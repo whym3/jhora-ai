@@ -38,6 +38,19 @@ export interface BirthData {
   field18: number | null;
   /** older files: saved sidereal longitudes Sun..Rahu and Lagna, plus a flag string */
   legacy: { longitudes: number[]; ascendant: number; flags: string } | null;
+  /**
+   * Derived charts only (never read from or written to .jhd files): sidereal
+   * longitudes that replace the computed ones (Prasna lagna, progressions). The
+   * chart is computed for the birth moment first, then these are substituted.
+   */
+  override?: PositionOverride | null;
+}
+
+/** Longitudes (sidereal degrees) a derived chart substitutes; see BirthData.override. */
+export interface PositionOverride {
+  ascendant?: number;
+  /** keyed by graha name (Sun..Ketu) */
+  grahas?: Partial<Record<'Sun' | 'Moon' | 'Mars' | 'Mercury' | 'Jupiter' | 'Venus' | 'Saturn' | 'Rahu' | 'Ketu', number>>;
 }
 
 /** Decode JHora's H.MMSS / D.MMSS number to decimal units, keeping the sign. */

@@ -6,6 +6,8 @@ import { BirthForm } from './BirthForm';
 import type { ChartStyle } from './ChartDiagram';
 import { ChartPane } from './shell/ChartPane';
 import { TajakaView } from './shell/TajakaView';
+import { DERIVED_VIEWS, type DerivedViewKey } from './shell/derivedViews';
+import { TRANSIT_VIEWS } from './shell/TransitsView';
 import { CHAKRA_VIEWS, type ChakraSubTab } from './chakras';
 import { AshtakavargaView, KeyInfoView, OtherStrengthsView, TableSubView } from './shell/BasicsView';
 import { NakshatraDasasView, OtherDasasView, RasiDasasView } from './shell/DasasView';
@@ -73,6 +75,15 @@ function SubView({ top, sub, spec, natalSpec, docId, chart }: { top: TopTab; sub
     return chart ? <div className="subview chakra-view"><View chart={chart} /></div> : <p className="status">Calculating…</p>;
   }
   if (top === 'Tajaka') return <TajakaView natalSpec={natalSpec} docId={docId} />;
+  if (top === 'Transits' && sub && sub in TRANSIT_VIEWS) {
+    const View = TRANSIT_VIEWS[sub as keyof typeof TRANSIT_VIEWS];
+    return <View spec={natalSpec} />;
+  }
+  const derivedKey = (sub ? `${top}/${sub}` : top) as DerivedViewKey;
+  if (derivedKey in DERIVED_VIEWS) {
+    const View = DERIVED_VIEWS[derivedKey];
+    return <View natalSpec={natalSpec} docId={docId} spec={spec} />;
+  }
   if (top === 'Basics' && sub === 'Key Info') return <KeyInfoView spec={spec} />;
   if (top === 'Strengths' && sub === 'Ashtakavarga') return <AshtakavargaView spec={spec} />;
   if (top === 'Strengths' && sub === 'Other strengths') return <OtherStrengthsView spec={spec} />;

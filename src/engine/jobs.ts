@@ -39,6 +39,11 @@ import { fromMrityuBhaga, fromPushkaraBhaga, inPushkaramsa, MRITYU_BHAGA, within
 import type { VargaCtx } from '../core/signStrength';
 import { keyInfoText } from '../core/keyInfo';
 import type { Table } from './protocol';
+import { MUNDANE_JOBS } from '../core/derived/mundaneJobs';
+import { ANGULAR_JOBS, PROGRESSION_JOBS } from '../core/derived/progressionJobs';
+import { LAGHU_TABLES, PANCHANGA_JOBS } from '../core/derived/panchangaJobs';
+import { PRASNA_JOBS, TP_JOBS } from '../core/derived/tpPrasnaJobs';
+import { TRANSIT_JOBS } from '../core/transits/jobs';
 
 const yes = (b: boolean) => (b ? 'Yes' : '-');
 
@@ -496,6 +501,8 @@ export const TABLES: Record<string, TableFn> = {
     }
     return { headers: ['Malicious Division', 'Lord'], rows };
   },
+  // Miscellany > Laghu Parasari (src/core/derived/laghuParasari.ts)
+  ...LAGHU_TABLES,
 };
 
 function navaTarasTable(lon: number, from: string): Table {
@@ -544,6 +551,15 @@ export const ASYNC_TABLES: Record<string, (chart: Chart, params: Record<string, 
     const m = muddaDasa(swe, t, { levels: path.length + 1 });
     return dasaTable(t.chart, swe, m.title, m.periods, path, true, m.clock);
   },
+  // Derived-chart tabs (src/core/derived): Tithi Pravesha, Mundane, Miscellany sub-tabs
+  ...TP_JOBS,
+  ...MUNDANE_JOBS,
+  ...PROGRESSION_JOBS,
+  ...ANGULAR_JOBS,
+  ...PRASNA_JOBS,
+  ...PANCHANGA_JOBS,
+  // Transits tab (src/core/transits): basic results, calendar, special search, longitude correlation
+  ...TRANSIT_JOBS,
 };
 
 export function runTable(chart: Chart, table: string, params: Record<string, unknown>, swe?: Sweph): Table {

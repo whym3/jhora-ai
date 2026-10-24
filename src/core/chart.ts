@@ -34,7 +34,7 @@ export async function computeChart(swe: Sweph, birth: BirthData, iniOverrides: P
   await swe.ensureEphemeris(jd);
   const geo = { lat: birth.lat, lon: birth.lon, alt: birth.altitudeM };
   const settings = calcSettingsFromIni(ini);
-  const positions = computePositions(swe, jd, geo, settings);
+  const positions = applyOverride(computePositions(swe, jd, geo, settings), birth);
   const day = dayFrame(swe, jd, geo, settings, ini.SunriseDefinition);
   const longitudes = allBodies(swe, positions, geo, birth.tzHours, settings, ini, day);
   const bodies: ChartBody[] = [
@@ -45,6 +45,18 @@ export async function computeChart(swe: Sweph, birth: BirthData, iniOverrides: P
     })),
   ];
   return { birth, ini, positions, bodies, longitudes, day };
+}
+
+/** Substitute a derived chart's fixed longitudes (BirthData.override) into computed positions. */
+export function applyOverride(p: Positions, birth: BirthData): Positions {
+  const o = birth.override;
+  if (!o) return p;
+  const grahas = { ...p.grahas };
+  for (const [g, lon] of Object.entries(o.grahas ?? {}) as [Graha, number][]) {
+    if (lon === undefined) continue;
+    grahas[g] = { ...grahas[g], lon: ((lon % 360) + 360) % 360 };
+  }
+  return { ...p, grahas, ascendant: o.ascendant === undefined ? p.ascendant : ((o.ascendant % 360) + 360) % 360 };
 }
 
 /** Bodies grouped by the sign they occupy in a varga (index 0 = Aries). */

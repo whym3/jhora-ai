@@ -19,8 +19,11 @@ export interface ChartDoc {
   derived?: DerivedChart | null;
 }
 
+/** Derived chart kinds: one per form tab that replaces the natal chart (extend additively). */
+export type DerivedKind = 'tajaka' | 'tithiPravesha' | 'angularReturn' | 'prasna' | 'progression' | 'mundane';
+
 export interface DerivedChart {
-  kind: 'tajaka';
+  kind: DerivedKind;
   label: string;
   birth: BirthData;
   /** the form input that produced it (Tajaka: TajakaSelection and variant) */
