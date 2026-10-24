@@ -32,7 +32,7 @@ const STARTERS = [
 ];
 
 /** Small markdown subset: headings, bold/italics, bullet and numbered lists, tables, paragraphs. */
-function Markdown({ text }: { text: string }) {
+export function Markdown({ text }: { text: string }) {
   const inline = (s: string, key: number): ReactNode => {
     const parts = s.split(/(\*\*[^*]+\*\*|\*[^*]+\*|`[^`]+`)/g);
     return <Fragment key={key}>{parts.map((p, i) => (p.startsWith('**') && p.endsWith('**') && p.length > 4 ? <strong key={i}>{p.slice(2, -2)}</strong>
@@ -45,10 +45,11 @@ function Markdown({ text }: { text: string }) {
     const l = lines[i];
     const h = /^(#{1,4})\s+(.*)$/.exec(l);
     if (h) { const H = `h${Math.min(6, h[1].length + 2)}` as 'h3'; out.push(<H key={i}>{inline(h[2], 0)}</H>); i++; continue; }
-    if (/^\s*\|.*\|\s*$/.test(l)) {
+    // a row needs no closing pipe: models sometimes omit it, and a streamed row lacks it until it is complete
+    if (/^\s*\|/.test(l)) {
       const rows: string[][] = [];
-      while (i < lines.length && /^\s*\|.*\|\s*$/.test(lines[i])) {
-        if (!/^\s*\|[\s:|-]+\|\s*$/.test(lines[i])) rows.push(lines[i].trim().slice(1, -1).split('|').map((c) => c.trim()));
+      while (i < lines.length && /^\s*\|/.test(lines[i])) {
+        if (!/^\s*\|[\s:|-]*$/.test(lines[i])) rows.push(lines[i].trim().replace(/^\|/, '').replace(/\|$/, '').split('|').map((c) => c.trim()));
         i++;
       }
       out.push(<table key={i} className="ai-table"><tbody>{rows.map((r, k) => <tr key={k}>{r.map((c, j) => (k === 0 ? <th key={j}>{inline(c, j)}</th> : <td key={j}>{inline(c, j)}</td>))}</tr>)}</tbody></table>);
@@ -63,7 +64,8 @@ function Markdown({ text }: { text: string }) {
       continue;
     }
     if (l.trim() === '') { i++; continue; }
-    const para: string[] = [];
+    // the first line is always taken, so every pass of the outer loop advances
+    const para: string[] = [lines[i++]];
     while (i < lines.length && lines[i].trim() !== '' && !/^(#{1,4}\s|\s*\||\s*([-*]|\d+\.)\s)/.test(lines[i])) para.push(lines[i++]);
     out.push(<p key={i}>{para.map((p, k) => <Fragment key={k}>{k > 0 && <br />}{inline(p, k)}</Fragment>)}</p>);
   }
