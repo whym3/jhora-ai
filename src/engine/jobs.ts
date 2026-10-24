@@ -228,11 +228,10 @@ export const TABLES: Record<string, TableFn> = {
     const moon = chart.positions.grahas.Moon.lon;
     const def = NAKSHATRA_DASAS[system];
     const saptarshi = system === 'Saptarshi nakshatra';
-    // Kalachakra: maha dasas only (JHora's antardasa rule is not ported yet)
-    const kc = system === 'Kalachakra' ? kalachakraDasa(moon, 9, chart.ini.KCDRohini4NavamsaInLeo !== 0) : null;
+    const kc = system === 'Kalachakra' ? kalachakraDasa(moon, 9, chart.ini.KCDRohini4NavamsaInLeo !== 0, levels) : null;
     const title = kc ? kc.title : def ? def.title : saptarshi ? SAPTARSHI_TITLE : 'Vimsottari Dasa';
     const mds = kc ? kc.periods : def ? nakshatraDasa(def, moon, levels) : saptarshi ? saptarshiDasa(chart.positions.ascendant, levels, NAKSHATRAS) : vimsottari(moon, levels);
-    return dasaTable(chart, swe, title, mds, path, !kc);
+    return dasaTable(chart, swe, title, mds, path, !kc || levels < 3);
   },
   // Dasas > Rasi dasas: params.system ('Narayana'), params.path
   'dasas.rasi': (chart, params, swe) => {

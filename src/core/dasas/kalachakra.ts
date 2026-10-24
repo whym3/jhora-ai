@@ -3,6 +3,10 @@
 // chakra table read straight through, so successive padas give successive
 // dasas; the Moon's pada starts with the elapsed fraction of the pada. The
 // header's Deha/Jiva come from the classical row of the Moon's pada.
+// Antardasas (KalachakraDasaCalculation 5): the nine signs of the maha pada's
+// own row, labelled with the pada each entry stands for, each lasting the maha
+// times its sign years over the row's total; a sub-period with id t < 108 is
+// divided by row t, otherwise by the reversed row of its mirror pada.
 import type { Period } from './vimsottari';
 import { NAKSHATRAS, SIGNS } from '../zodiac';
 
@@ -32,7 +36,33 @@ const padaRow = (p: number, rohini4InLeo: boolean) => {
 
 export interface Kalachakra { title: string; periods: Period[] }
 
-export function kalachakraDasa(moonLon: number, count = 9, rohini4InLeo = true): Kalachakra {
+/** Pada an entry of the 216-entry table stands for (the naming loop's mirror). */
+const padaOf = (t: number) => (t < 108 ? t : t < 180 ? 179 - t : 287 - t);
+const padaLabel = (t: number, sign: number) => { const q = padaOf(t); return `${SIGNS[sign]} (${NAKSHATRAS[Math.floor(q / 4)]}${(q % 4) + 1})`; };
+
+/** Table entries dividing the period with id `t` (a pada for mahas, a table index below). */
+function subEntries(t: number, rohini4InLeo: boolean, maha: boolean): number[] {
+  if (maha || t < 108) { const base = 9 * padaRow(t, rohini4InLeo); return Array.from({ length: 9 }, (_, j) => base + j); }
+  const base = 9 * padaRow(padaOf(t), rohini4InLeo);
+  return Array.from({ length: 9 }, (_, j) => base + 8 - j);
+}
+
+function divide(p: Period, id: number, maha: boolean, levels: number, rohini4InLeo: boolean): Period {
+  if (levels <= 0) return p;
+  const entries = subEntries(id, rohini4InLeo, maha);
+  const total = entries.reduce((a, t) => a + KALACHAKRA_YEARS[SEQ[t]], 0);
+  let t0 = p.start;
+  const len = p.end - p.start;
+  const children = entries.map((t) => {
+    const end = t0 + (len * KALACHAKRA_YEARS[SEQ[t]]) / total;
+    const q = divide({ lord: 'Sun', label: padaLabel(t, SEQ[t]), start: t0, end }, t, false, levels - 1, rohini4InLeo);
+    t0 = end;
+    return q;
+  });
+  return { ...p, children };
+}
+
+export function kalachakraDasa(moonLon: number, count = 9, rohini4InLeo = true, levels = 2): Kalachakra {
   const PADA = 360 / 108;
   const p0 = Math.floor(moonLon / PADA);
   const frac = (moonLon - p0 * PADA) / PADA;
@@ -44,7 +74,7 @@ export function kalachakraDasa(moonLon: number, count = 9, rohini4InLeo = true):
     const years = KALACHAKRA_YEARS[sign];
     if (i === 0) t = -frac * years;
     const star = Math.floor(p / 4) % 27;
-    periods.push({ lord: 'Sun', label: `${SIGNS[sign]} (${NAKSHATRAS[star]}${(p % 4) + 1})`, start: t, end: t + years });
+    periods.push(divide({ lord: 'Sun', label: `${SIGNS[sign]} (${NAKSHATRAS[star]}${(p % 4) + 1})`, start: t, end: t + years }, p % 108, true, levels - 1, rohini4InLeo));
     t += years;
   }
   const row = padaRow(p0, rohini4InLeo);

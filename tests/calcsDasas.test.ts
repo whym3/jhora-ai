@@ -11,7 +11,7 @@ import { SUDASA_TITLE, sudasa } from '../src/core/dasas/sudasa';
 import type { SudasaCtx } from '../src/core/dasas/sudasa';
 import { vimsottari } from '../src/core/dasas/vimsottari';
 import { NAKSHATRA_DASAS, nakshatraDasa } from '../src/core/dasas/nakshatra';
-// import { kalachakraDasa } from '../src/core/dasas/kalachakra';
+import { kalachakraDasa } from '../src/core/dasas/kalachakra';
 import { narayanaDasa } from '../src/core/dasas/narayana';
 
 /** Block after `title`: per dasa, its label and [label, date] antardasas (labels may be "Sc (Magh1)"). */
@@ -38,8 +38,7 @@ const sameLabel = (ours: string, theirs: string) => ours === theirs || ours.toLo
 const SYSTEMS: [string, (c: Awaited<ReturnType<typeof computeChart>>, ctx: SudasaCtx) => Period[]][] = [
   ['Vimsottari Dasa', (c) => vimsottari(c.positions.grahas.Moon.lon, 2)],
   [NAKSHATRA_DASAS.Ashtottari.title, (c) => nakshatraDasa(NAKSHATRA_DASAS.Ashtottari, c.positions.grahas.Moon.lon, 2)],
-  // Kalachakra: antardasas still to port
-  // ['Kalachakra Dasa', (c) => kalachakraDasa(c.positions.grahas.Moon.lon).periods],
+  ['Kalachakra Dasa', (c) => kalachakraDasa(c.positions.grahas.Moon.lon).periods],
   ['Narayana Dasa of D-1', (c, ctx) => narayanaDasa(ctx.lagnaSign, ctx).periods],
   [SUDASA_TITLE, (c, ctx) => sudasa(c.longitudes.find((b) => b.name === 'Sree Lagna')!.lon, ctx)],
 ];
