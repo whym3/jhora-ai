@@ -49,3 +49,14 @@ export const OTHER_STRENGTH_MODES: [string, number, string | null][] = [
   ['Ishta-Kashta Phala', 9, 'strengths.ishtaKashta'],
   ['Rashmis', 10, 'strengths.rashmis'],
 ];
+
+/** Strengths > Ashtakavarga modes (menu 106, ids 32829-32842); the job takes the label. */
+export const AV_MODES = [
+  'BAVs and SAV', 'SoAV', 'PAV of Sun', 'PAV of Moon', 'PAV of Mars', 'PAV of Mercury', 'PAV of Jupiter', 'PAV of Venus', 'PAV of Saturn',
+  'PAV of Lagna', 'Sodhya pindas',
+] as const;
+export const AV_MODE_LABELS: Record<(typeof AV_MODES)[number], string> = {
+  'BAVs and SAV': 'BAVs and SAV', SoAV: 'SoAV - sodhita (reduced) ashtakavargas', 'PAV of Sun': 'PAV of Sun', 'PAV of Moon': 'PAV of Moon',
+  'PAV of Mars': 'PAV of Mars', 'PAV of Mercury': 'PAV of Mercury', 'PAV of Jupiter': 'PAV of Jupiter', 'PAV of Venus': 'PAV of Venus',
+  'PAV of Saturn': 'PAV of Saturn', 'PAV of Lagna': 'PAV of Lagna', 'Sodhya pindas': 'Sodhya pindas',
+};

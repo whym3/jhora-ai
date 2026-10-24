@@ -5,7 +5,7 @@ import { EngineProvider, useEngine, useJob } from './EngineProvider';
 import { BirthForm } from './BirthForm';
 import type { ChartStyle } from './ChartDiagram';
 import { ChartPane } from './shell/ChartPane';
-import { KeyInfoView, OtherStrengthsView, TableSubView } from './shell/BasicsView';
+import { AshtakavargaView, KeyInfoView, OtherStrengthsView, TableSubView } from './shell/BasicsView';
 import { NakshatraDasasView, RasiDasasView } from './shell/DasasView';
 import { NotPorted } from './shell/NotPorted';
 import { SUB_TABS, TOP_TABS, type TopTab } from './shell/tabs';
@@ -67,6 +67,7 @@ const FIXED_TABLES: Record<string, string> = { 'Basics/Houses': 'basics.houses',
 
 function SubView({ top, sub, spec }: { top: TopTab; sub: string | null; spec: ChartSpec }) {
   if (top === 'Basics' && sub === 'Key Info') return <KeyInfoView spec={spec} />;
+  if (top === 'Strengths' && sub === 'Ashtakavarga') return <AshtakavargaView spec={spec} />;
   if (top === 'Strengths' && sub === 'Other strengths') return <OtherStrengthsView spec={spec} />;
   if (top === 'Dasas' && sub === 'Nakshatra dasas') return <NakshatraDasasView spec={spec} />;
   if (top === 'Dasas' && sub === 'Rasi dasas') return <RasiDasasView spec={spec} />;

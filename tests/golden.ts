@@ -46,3 +46,21 @@ export function parseLongitude(s: string): number {
   const signs = 'Ar Ta Ge Cn Le Vi Li Sc Sg Cp Aq Pi'.split(' ');
   return signs.indexOf(m[2]) * 30 + +m[1] + +m[3] / 60 + +m[4] / 3600;
 }
+
+/**
+ * JHora's "complete calculations" dump (Edit menu, cmd 32983) per chart, from
+ * the newest capture that has one: golden/jhora-v3, then golden/calcs.
+ */
+export function goldenCalcs(): { name: string; birth: BirthData; lines: string[] }[] {
+  const out = new Map<string, { name: string; birth: BirthData; lines: string[] }>();
+  for (const dir of ['golden/calcs', 'golden/jhora-v3']) {
+    if (!existsSync(dir)) continue;
+    for (const f of readdirSync(dir).filter((x) => x.endsWith('.json'))) {
+      const name = f.replace(/\.json$/, '');
+      const g = JSON.parse(readFileSync(`${dir}/${f}`, 'utf8'));
+      const t = (g.texts ?? []).find((x: GoldenText) => x.name === 'complete_calcs' && x.lines?.length);
+      if (t) out.set(name, { name, birth: parseJhd(readFileSync(`golden/charts/${name}.jhd`, 'latin1')), lines: t.lines });
+    }
+  }
+  return [...out.values()];
+}

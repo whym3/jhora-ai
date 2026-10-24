@@ -22,6 +22,7 @@ import { brahmaRudraMaheswara } from '../core/deities';
 import { amsaRuler } from '../core/amsaRulers';
 import { computeShadbala, type Seven } from '../core/shadbala';
 import { vimsopaka } from '../core/vimsopaka';
+import { AV_BODIES, ashtakavarga, prastara, type AvBody } from '../core/ashtakavarga';
 import { SEVEN } from '../core/relations';
 import { fromMrityuBhaga, fromPushkaraBhaga, inPushkaramsa, MRITYU_BHAGA, within } from '../core/pushkara';
 import type { VargaCtx } from '../core/signStrength';
@@ -36,6 +37,9 @@ const AMSA_RULER_ROWS = [
   'Yoga Sphuta (Sun-Moon)', 'Rahu Tithi Sphuta', 'Kshetra Sphuta', 'Beeja Sphuta', 'TriSphuta', 'ChatusSphuta', 'PanchaSphuta',
   'Yoga Sphuta', 'Avayoga Sphuta', 'Varnada Lagna', ...Array.from({ length: 11 }, (_, i) => `V${i + 2}`),
 ];
+
+/** Strengths > Ashtakavarga modes (menu 106, 32829-32842). */
+const AV_MODES = ['BAVs and SAV', 'SoAV', ...AV_BODIES.slice(1).map((b) => `PAV of ${b}`), 'PAV of Lagna', 'Sodhya pindas'];
 
 const DASA_LEVEL = ['Maha Dasas', 'Antardasas', 'Pratyantardasas', 'Sookshma-antardasas', 'Prana-antardasas', 'Deha-antardasas'];
 
@@ -244,6 +248,33 @@ export const TABLES: Record<string, TableFn> = {
   }),
   'strengths.ishtaKashta': (chart) => shadbalaRows(chart, ['Planet', 'Ishta Phala', 'Kashta Phala', 'Shadbala'], (b) => [b.ishta, b.kashta, b.rupas]),
   'strengths.rashmis': (chart) => shadbalaRows(chart, ['Planet', 'Uchcha Rashmi', 'Cheshta Rashmi', 'Subha Rashmi', 'Asubha Rashmi', 'Ishta (Parasara)', 'Kashta (Parasara)'], (b) => [b.uchchaRashmi, b.cheshtaRashmi, b.subhaRashmi, b.asubhaRashmi, b.ishtaParasara, b.kashtaParasara]),
+  // Strengths > Ashtakavarga (menu 106): params.mode is one of AV_MODES, params.varga a varga name
+  'strengths.ashtakavarga': (chart, params) => {
+    const varga = (String(params.varga ?? 'D1')) as VargaName;
+    const mode = String(params.mode ?? AV_MODES[0]);
+    const spec = ALL_VARGAS[varga];
+    const lonOf = (b: AvBody) => (b === 'Lagna' ? chart.positions.ascendant : chart.positions.grahas[b].lon);
+    const sign = (b: AvBody) => Math.floor(vargaLongitude(lonOf(b), spec) / 30) % 12;
+    const av = ashtakavarga(sign);
+    const short = (b: AvBody) => (b === 'Lagna' ? 'As' : SHORT[b]);
+    const mark = (b: AvBody, row: number[]) => row.map((x, s) => `${x}${s === sign(b) ? '*' : ''}`);
+    const caption = `Ashtakavarga of ${varga === 'D1' ? 'Rasi Chart' : varga}`;
+    const signCols = ['', ...SIGNS.map((x) => x.slice(0, 2))];
+    if (mode === 'Sodhya pindas') {
+      return { caption, headers: ['', 'Sodhya Pinda', 'Rasi Pinda', 'Graha Pinda'], rows: AV_BODIES.map((b) => [short(b), String(av.pindas[b].total), String(av.pindas[b].rasi), String(av.pindas[b].graha)]) };
+    }
+    if (mode.startsWith('PAV of ')) {
+      const owner = mode.slice(7) as AvBody;
+      const pav = prastara(owner, sign);
+      const rows = AV_BODIES.map((c) => [short(c), ...pav[c].map((x, s) => (x ? 'x' : '') + (s === sign(c) ? '*' : ''))]);
+      rows.push(['Total', ...av.bav[owner].map(String)]);
+      return { caption: `Prastara ashtakavarga of ${owner} (${caption})`, headers: signCols, rows };
+    }
+    const table = mode === 'SoAV' ? av.reduced : av.bav;
+    const rows = AV_BODIES.map((b) => [short(b), ...mark(b, table[b])]);
+    if (mode !== 'SoAV') rows.push(['SAV', ...av.sav.map(String)]);
+    return { caption: mode === 'SoAV' ? `Sodhita (reduced) ${caption}` : caption, headers: signCols, rows };
+  },
   'strengths.vimsopaka': (chart) => {
     const vb = vimsopaka(chart);
     const cell = (x: number) => `${f2(x)}  (${f2(x * 5)}%)`;
