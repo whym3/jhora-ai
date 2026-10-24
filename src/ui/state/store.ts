@@ -22,6 +22,8 @@ export interface ViewState {
   chartStyle: ChartStyle;
   /** menu-105 command id selecting the Key Info table mode */
   basicsMode: number;
+  /** Strengths > Other strengths mode index (CStrengthsView modes 0..10) */
+  strengthsMode: number;
 }
 
 export interface State {
@@ -39,7 +41,7 @@ function initial(): State {
     docs: [],
     activeDoc: null,
     ini: structuredClone(DEFAULTS),
-    view: { topTab: 'Basics', subTab: {}, leftVargas: ['D1', 'D9'], chartStyle: 'south', basicsMode: 32822 },
+    view: { topTab: 'Basics', subTab: {}, leftVargas: ['D1', 'D9'], chartStyle: 'south', basicsMode: 32822, strengthsMode: 0 },
   };
   try {
     const raw = localStorage.getItem(STORAGE_KEY);

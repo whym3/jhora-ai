@@ -13,6 +13,8 @@ import { bhavaArudha, grahaArudha, signArudha, type ArudhaOptions } from '../cor
 import { sahamas } from '../core/sahamas';
 import { brahmaRudraMaheswara } from '../core/deities';
 import { amsaRuler } from '../core/amsaRulers';
+import { computeShadbala, type Seven } from '../core/shadbala';
+import { SEVEN } from '../core/relations';
 import { fromMrityuBhaga, fromPushkaraBhaga, inPushkaramsa, MRITYU_BHAGA, within } from '../core/pushkara';
 import type { VargaCtx } from '../core/signStrength';
 import type { Table } from './protocol';
@@ -26,6 +28,13 @@ const AMSA_RULER_ROWS = [
   'Yoga Sphuta (Sun-Moon)', 'Rahu Tithi Sphuta', 'Kshetra Sphuta', 'Beeja Sphuta', 'TriSphuta', 'ChatusSphuta', 'PanchaSphuta',
   'Yoga Sphuta', 'Avayoga Sphuta', 'Varnada Lagna', ...Array.from({ length: 11 }, (_, i) => `V${i + 2}`),
 ];
+
+/** JHora prints strengths with "%.2f" */
+const f2 = (x: number) => (Object.is(x, -0) ? 0 : x).toFixed(2);
+function shadbalaRows(chart: Chart, headers: string[], cols: (b: ReturnType<typeof computeShadbala>['planets'][Seven]) => number[]): Table {
+  const sb = computeShadbala(chart);
+  return { headers, rows: SEVEN.map((g) => [g, ...cols(sb.planets[g]).map(f2)]) };
+}
 
 /** Rows of the pushkara / mrityu bhaga / drekkana tables: grahas, Maandi, lagna and the 11 other cusps. */
 function bhagaBodies(chart: Chart): [string, number][] {
@@ -171,6 +180,21 @@ export const TABLES: Record<string, TableFn> = {
       }),
     };
   },
+  // Strengths > Other strengths (menu modes 0..10 of CStrengthsView)
+  'strengths.shadbalaSummary': (chart) => shadbalaRows(chart, ['Planet', 'Shadbala', 'In rupas', '% Strength', 'IshtaPhala', 'KashtaPhala'], (b) => [b.total, b.rupas, b.percent, b.ishta, b.kashta]),
+  'strengths.shadbalaBreakup': (chart) => shadbalaRows(chart, ['Planet', 'Shadbala Rupas', 'Sthana Bala', 'Kala Bala', 'DigBala', 'Cheshta Bala', 'DrigBala', 'Naisargika Bala'], (b) => [b.rupas, b.sthana, b.kaala, b.dig, b.cheshta, b.drig, b.naisargika]),
+  'strengths.sthana': (chart) => shadbalaRows(chart, ['Planet', 'Sthana Bala', 'In rupas', 'Uchcha', 'Saptavargaja', 'Oja Yugma', 'Kendra', 'Drekkana'], (b) => [b.sthana, b.sthana / 60, b.uchcha, b.saptavargaja, b.ojayugma, b.kendra, b.drekkana]),
+  'strengths.kaala': (chart) => shadbalaRows(chart, ['Planet', 'Kaala Bala', 'In rupas', 'Natonnata', 'Paksha', 'Tribhaga', 'Abda', 'Maasa', 'Vaara', 'Hora', 'Ayana', 'Yuddha'], (b) => [b.kaala, b.kaala / 60, b.natonnata, b.paksha, b.tribhaga, b.abda, b.maasa, b.vaara, b.hora, b.ayana, b.yuddha]),
+  'strengths.dig': (chart) => shadbalaRows(chart, ['Planet', 'DigBala', 'In rupas'], (b) => [b.dig, b.dig / 60]),
+  'strengths.cheshta': (chart) => shadbalaRows(chart, ['Planet', 'Cheshta Bala', 'In rupas'], (b) => [b.cheshta, b.cheshta / 60]),
+  'strengths.drig': (chart) => shadbalaRows(chart, ['Planet', 'DrigBala', 'In rupas'], (b) => [b.drig, b.drig / 60]),
+  'strengths.naisargika': (chart) => shadbalaRows(chart, ['Planet', 'Naisargika Bala', 'In rupas'], (b) => [b.naisargika, b.naisargika / 60]),
+  'strengths.bhava': (chart) => ({
+    headers: ['House', 'Bhava Bala', 'In rupas', "Lord's bala", 'DigBala', 'DrigBala'],
+    rows: computeShadbala(chart).bhavas.map((b, i) => [ORDINAL[i], f2(b.total), f2(b.rupas), f2(b.lord), f2(b.dig), f2(b.drig)]),
+  }),
+  'strengths.ishtaKashta': (chart) => shadbalaRows(chart, ['Planet', 'Ishta Phala', 'Kashta Phala', 'Shadbala'], (b) => [b.ishta, b.kashta, b.rupas]),
+  'strengths.rashmis': (chart) => shadbalaRows(chart, ['Planet', 'Uchcha Rashmi', 'Cheshta Rashmi', 'Subha Rashmi', 'Asubha Rashmi', 'Ishta (Parasara)', 'Kashta (Parasara)'], (b) => [b.uchchaRashmi, b.cheshtaRashmi, b.subhaRashmi, b.asubhaRashmi, b.ishtaParasara, b.kashtaParasara]),
   'basics.drekkanas': (chart) => ({
     headers: ['Body', 'Drekkana occupied'],
     rows: bhagaBodies(chart).map(([name, lon]) => [name, drekkanaType(lon)]),

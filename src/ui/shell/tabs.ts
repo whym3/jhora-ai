@@ -34,3 +34,18 @@ export const KEY_INFO_MODES: [string, number, string | null][] = [
   ['Lords of 64th navamsa and 22nd drekkana', 33159, 'basics.malicious'],
   ['Sahamas (sahams)', 32901, 'basics.sahamas'],
 ];
+
+/** Strengths > Other strengths modes, in JHora's order (view mode index, table id). */
+export const OTHER_STRENGTH_MODES: [string, number, string | null][] = [
+  ['Shadbala Summary', 0, 'strengths.shadbalaSummary'],
+  ['Shadbala Break-up', 1, 'strengths.shadbalaBreakup'],
+  ['Sthana Bala', 2, 'strengths.sthana'],
+  ['Kaala Bala', 3, 'strengths.kaala'],
+  ['Dig Bala', 4, 'strengths.dig'],
+  ['Cheshta Bala', 5, 'strengths.cheshta'],
+  ['Drig Bala', 6, 'strengths.drig'],
+  ['Naisargika Bala', 7, 'strengths.naisargika'],
+  ['Bhava Balas', 8, 'strengths.bhava'],
+  ['Ishta-Kashta Phala', 9, 'strengths.ishtaKashta'],
+  ['Rashmis', 10, 'strengths.rashmis'],
+];
