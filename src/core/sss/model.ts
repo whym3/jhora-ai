@@ -53,8 +53,9 @@ const RADIUS = 3437.746770784939; // radius in arc-minutes
 /** revolutions per mahayuga, index 1..8 (FUN_004bf030 stack table) */
 export const REVOLUTIONS = [0, 4320000, 57753336, 2296832, 17937060, 364220, 7022376, 146568, -232238] as const;
 /** beeja coefficients, deg per 1e10 years since creation (FUN_004bf030) */
-export const BEEJA = [0, 0, 7.1151017357437, 31.215202568113, -15.6076012840565, -23.4114019260847,
-  23.4114019260847, -7.80380064202824, -7.80380064202824] as const;
+// (the stack table at 0x4bf0f5..0x4bf19e has three leading zeros: Sun and Moon get none)
+export const BEEJA = [0, 0, 0, 7.1151017357437, 31.215202568113, -15.6076012840565, -23.4114019260847,
+  23.4114019260847, -7.80380064202824] as const;
 /** mandocca revolutions per kalpa (FUN_004bf030) */
 export const APOGEE_REVOLUTIONS = [0, 387, 488203000, 204, 368, 900, 535, 39, 0] as const;
 
