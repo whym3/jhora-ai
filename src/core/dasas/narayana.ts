@@ -15,6 +15,7 @@ import type { Graha } from '../positions';
 import type { Period } from './vimsottari';
 import { SIGNS } from '../zodiac';
 import { DEBILITATION, EXALTATION, signLordJaimini, strongerSign, type VargaCtx } from '../signStrength';
+import { strongerByDignity } from '../deities';
 
 const mod12 = (x: number) => ((x % 12) + 12) % 12;
 const ODD_FOOTED = new Set([0, 1, 2, 6, 7, 8]);
@@ -66,12 +67,29 @@ export function narayanaDasa(lagna: number, ctx: VargaCtx, varga = 'D-1', levels
 
 export function narayanaAntardasas(p: Period, sign: number, ctx: VargaCtx, levels: number): Period {
   if (levels <= 0) return p;
-  const from = ctx.sign(signLordJaimini(sign, ctx));
-  const dir = from % 2 === 0 ? 1 : -1;
+  const low = sign % 6;
+  const strong = strongerSign(low, low + 6, ctx);
+  const from = ctx.sign(signLordJaimini(strong, ctx));
+  const dir = sequenceDirection(from, ctx, strong);
   const len = (p.end - p.start) / 12;
   const children = Array.from({ length: 12 }, (_, i) => {
     const s = mod12(from + dir * i);
     return narayanaAntardasas({ lord: 'Sun', label: SIGNS[s], start: p.start + i * len, end: p.start + (i + 1) * len }, s, ctx, levels - 1);
   });
   return { ...p, children };
+}
+
+/**
+ * Parity direction of `sign` with the Saturn/Ketu flags of FUN_004ab2a0 for
+ * `flagSign` (default the same sign): Saturn there forces forward, Ketu
+ * reverses, both: the stronger by dignity decides.
+ */
+export function sequenceDirection(sign: number, ctx: VargaCtx, flagSign = sign): 1 | -1 {
+  const dir: 1 | -1 = sign % 2 === 0 ? 1 : -1;
+  const sat = ctx.sign('Saturn') === flagSign, ketu = ctx.sign('Ketu') === flagSign;
+  const reversed = (dir === 1 ? -1 : 1) as 1 | -1;
+  if (sat && ketu) return strongerByDignity('Saturn', 'Ketu', ctx) === 'Ketu' ? reversed : 1;
+  if (sat) return 1;
+  if (ketu) return reversed;
+  return dir;
 }

@@ -17,8 +17,7 @@
 import type { Period } from './vimsottari';
 import { SIGNS } from '../zodiac';
 import { aspectScore, DEBILITATION, EXALTATION, PLANETS, rasiAspects, signLordJaimini, strongerSign, type VargaCtx } from '../signStrength';
-import { strongerByDignity } from '../deities';
-import { narayanaYears } from './narayana';
+import { narayanaYears, sequenceDirection } from './narayana';
 
 const mod12 = (x: number) => ((x % 12) + 12) % 12;
 export const SUDASA_TITLE = "Sudasa (phalita dasa showing Lakshmi's blessings)";
@@ -54,16 +53,7 @@ function stronger(a: number, b: number, ctx: SudasaCtx): number {
 
 const best = (cands: number[], ctx: SudasaCtx) => cands.slice(1).reduce((acc, s) => stronger(acc, s, ctx), cands[0]);
 
-/** Direction of a sequence from `sign`: parity, then the Saturn/Ketu flags. */
-function direction(sign: number, ctx: VargaCtx): 1 | -1 {
-  const dir: 1 | -1 = sign % 2 === 0 ? 1 : -1;
-  const sat = ctx.sign('Saturn') === sign, ketu = ctx.sign('Ketu') === sign;
-  const reversed = (dir === 1 ? -1 : 1) as 1 | -1;
-  if (sat && ketu) return strongerByDignity('Saturn', 'Ketu', ctx) === 'Ketu' ? reversed : 1;
-  if (sat) return 1;
-  if (ketu) return reversed;
-  return dir;
-}
+const direction = (sign: number, ctx: VargaCtx) => sequenceDirection(sign, ctx);
 
 export function sudasaSequence(sl: number, ctx: SudasaCtx): number[] {
   const dir = direction(sl, ctx);
