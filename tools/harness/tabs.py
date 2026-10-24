@@ -96,8 +96,13 @@ class Tabs:
         return [(g[0], g[1]) for g in groups]
 
     def _calibrate_top(self):
-        groups = self._trim(self._scan(self.top, self.top_y, x_max=1500), len(TOP_TABS))
-        if len(groups) != len(TOP_TABS):
+        # the caption row's height depends on the display (font size/DPI): try a few rows
+        for y in (30, 17, 12, 22, 8):
+            groups = self._trim(self._scan(self.top, y, x_max=1500), len(TOP_TABS))
+            if len(groups) == len(TOP_TABS):
+                self.top_y = y
+                break
+        else:
             raise TabError(f"expected {len(TOP_TABS)} top tabs, found {len(groups)}")
         self.top_groups = groups
         self.log(f"tabs: top strip calibrated ({len(groups)} tabs)")
@@ -111,14 +116,18 @@ class Tabs:
                   if w.control_id() != TOP_STRIP_ID and w.is_visible() and w.rectangle().width() > 300]
         for strip in strips:
             h = strip.rectangle().height()
-            for y_off in (14, h - 14):
+            # captions are usually along the bottom; the top edge of some pages has buttons
+            # (the dasa pane's Options opens a modal dialog), so try the bottom rows first
+            found = []
+            for y_off in (h - 14, h - 9, 14, 9):
                 groups = self._trim(self._scan(strip, y_off), len(wanted))
                 if len(groups) == len(wanted):
                     self.sub[top_name] = (strip, y_off, groups)
                     self.log(f"tabs: {top_name} sub strip calibrated ({len(groups)} tabs)")
                     return
-                if len(groups) > 1:
-                    raise TabError(f"{top_name}: expected {len(wanted)} sub tabs, found {len(groups)}")
+                found.append(len(groups))
+            if max(found) > 1:
+                raise TabError(f"{top_name}: expected {len(wanted)} sub tabs, found {found}")
         raise TabError(f"{top_name}: no sub-tab strip found")
 
     # -- activation --------------------------------------------------------

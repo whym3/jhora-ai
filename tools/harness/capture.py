@@ -9,6 +9,7 @@ connection). Tab captions are clicked by position (tabs.py); JHora's window is
 pinned to a fixed size so positions are stable; calibration is cached per run.
 """
 import argparse
+import ctypes
 import json
 import os
 import re
@@ -147,16 +148,20 @@ class Session:
             pass
 
 
-DASA_ROW0, DASA_ROW_DY = 267, 40   # first mahadasa row and row pitch in the dasa pane (pinned window)
+# first mahadasa row and row pitch in the dasa pane, measured at 192 dpi (200% scaling) and
+# scaled to the current display (JHora scales its fonts with the system DPI)
+_DPI_SCALE = ctypes.windll.user32.GetDpiForSystem() / 192
+DASA_ROW0, DASA_ROW_DY, DASA_ROW_X = round(267 * _DPI_SCALE), round(40 * _DPI_SCALE), round(90 * _DPI_SCALE)
 
 
 def capture_dasa_levels(s, result, top, sub, label, copies, reset, max_rows=12):
     """JHora divides a period when it is left-clicked; the pane's buttons only move
     between dasa cycles, so `reset()` rebuilds the mahadasa view before each click."""
     def pane():
-        half = s.main.rectangle().left + s.main.rectangle().width() * 0.45   # the dasa pane is the right-hand view
-        p = [w for w in s.main.descendants(class_name="AfxFrameOrView42s") if w.is_visible() and w.rectangle().left > half]
-        return p[0] if p else None
+        # the dasa pane is the right-hand view (the charts are on the left)
+        views = [w for w in s.main.descendants(class_name="AfxFrameOrView42s") if w.is_visible()]
+        right = max(views, key=lambda w: w.rectangle().left, default=None)
+        return right if right is not None and right.rectangle().left > s.main.rectangle().left + 300 else None
     if not pane():
         return
     n_rows = len([l for l in s.copy_text(copies["dasa"])[0].split("\n") if re.match(r"^ \w+: \d{4}-", l)])
@@ -165,7 +170,7 @@ def capture_dasa_levels(s, result, top, sub, label, copies, reset, max_rows=12):
         p = pane()
         if not p:
             return
-        p.click_input(coords=(90, DASA_ROW0 + DASA_ROW_DY * i))
+        p.click_input(coords=(DASA_ROW_X, DASA_ROW0 + DASA_ROW_DY * i))
         time.sleep(0.4)
         text, _ = s.copy_text(copies["dasa"])
         if text:
