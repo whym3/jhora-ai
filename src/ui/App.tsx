@@ -18,7 +18,7 @@ import { SUB_TABS, TOP_TABS, type TopTab } from './shell/tabs';
 import { closeChart, currentSubTab, openChart, setSubTab, setTopTab, setView, updateChart, useActiveDoc, useStore } from './state/store';
 import { TabBar } from './widgets/TabBar';
 
-const SAMPLES = ['Swami Vivekananda', 'Mahatma Gandhi', 'India', 'Ramana Maharshi', 'Prof. B. V. Raman', 'Author of this software'];
+const SAMPLES = ['santosh', 'Swami Vivekananda', 'Mahatma Gandhi', 'India', 'Ramana Maharshi', 'Prof. B. V. Raman', 'Author of this software'];
 
 async function loadSample(name: string) {
   const t = await (await fetch(`${import.meta.env.BASE_URL}samples/${name}.jhd`)).text();
