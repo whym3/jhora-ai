@@ -1,41 +1,25 @@
 // Narayana dasa (Jaimini), with the rules JHora 8.0 applies by default:
 //  - the dasas start from the stronger of lagna and the 7th;
-//  - the sequence runs zodiacally from an odd sign and backwards from an even
-//    one (Saturn in the sign forces zodiacal, Ketu backwards); movable signs go
-//    sign by sign, fixed signs every 6th sign, dual signs take the trines and
-//    then move a kendra;
+//  - the sequence follows FUN_00414060's tables (rasiCommon
+//    narayanaTypeSequence): movable signs go sign by sign, fixed signs every 6th
+//    sign, dual signs take the trines and then move on; Saturn in the start sign
+//    forces zodiacal sign-by-sign order, Ketu reverses the direction;
 //  - years = signs counted from the dasa sign to its lord (forward for odd-
 //    footed signs Ar..Ge and Li..Sg, backward for the others) minus one, 12 if
 //    the lord is in the sign, +1 exalted, -1 debilitated; the second cycle is
 //    12 minus the first;
-//  - antardasas run sign by sign from the sign holding the dasa sign's lord,
-//    zodiacally if that sign is odd and backwards if even (no Saturn/Ketu
-//    exception here), each a twelfth of the dasa.
+//  - antardasas run sign by sign from the sign holding the lord of the stronger
+//    of the dasa sign and its 7th, in that sign's parity direction with the
+//    Saturn/Ketu flag of the stronger sign, each a twelfth of the dasa.
 import type { Graha } from '../positions';
 import type { Period } from './vimsottari';
 import { SIGNS } from '../zodiac';
 import { DEBILITATION, EXALTATION, signLordJaimini, strongerSign, type VargaCtx } from '../signStrength';
 import { strongerByDignity } from '../deities';
+import { narayanaTypeSequence } from './rasiCommon';
 
 const mod12 = (x: number) => ((x % 12) + 12) % 12;
 const ODD_FOOTED = new Set([0, 1, 2, 6, 7, 8]);
-
-/** +1 zodiacal, -1 backwards for a sequence starting at `sign`. */
-export function narayanaDirection(sign: number, ctx: VargaCtx): 1 | -1 {
-  if (ctx.sign('Saturn') === sign) return 1;
-  if (ctx.sign('Ketu') === sign) return -1;
-  return sign % 2 === 0 ? 1 : -1;
-}
-
-/** The 12 dasa signs from `start` (movable / fixed / dual patterns). */
-export function narayanaSequence(start: number, dir: 1 | -1): number[] {
-  const kind = start % 3; // 0 movable, 1 fixed, 2 dual
-  if (kind === 0) return Array.from({ length: 12 }, (_, i) => mod12(start + dir * i));
-  if (kind === 1) return Array.from({ length: 12 }, (_, i) => mod12(start + dir * 5 * i));
-  const out: number[] = [];
-  for (let g = 0; g < 4; g++) for (let i = 0; i < 3; i++) out.push(mod12(start + dir * (3 * g - 4 * i)));
-  return out;
-}
 
 export function narayanaYears(sign: number, ctx: VargaCtx): number {
   const lord: Graha = signLordJaimini(sign, ctx);
@@ -51,7 +35,7 @@ export interface NarayanaDasa { title: string; periods: Period[] }
 
 export function narayanaDasa(lagna: number, ctx: VargaCtx, varga = 'D-1', levels = 2): NarayanaDasa {
   const start = strongerSign(lagna, mod12(lagna + 6), ctx);
-  const seq = narayanaSequence(start, narayanaDirection(start, ctx));
+  const seq = narayanaTypeSequence(start, ctx);
   const first = seq.map((s) => narayanaYears(s, ctx));
   const periods: Period[] = [];
   let t = 0;
