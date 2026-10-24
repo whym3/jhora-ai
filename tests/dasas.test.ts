@@ -112,3 +112,25 @@ describe('Kalachakra dasa (maha dasas) matches JHora 8.0', async () => {
     });
   }
 });
+
+describe('Narayana dasa matches JHora 8.0', async () => {
+  const swe = await nodeSweph();
+  const { narayanaDasa } = await import('../src/core/dasas/narayana');
+  for (const chart of goldenV2Charts()) {
+    const texts = chart.texts.filter((t) => t.sub === 'Rasi dasas' && (t.name === 'dasa' || t.name === 'dasa_level2_0') && t.lines);
+    if (!texts.length) continue;
+    it(chart.name, async () => {
+      const c = await computeChart(swe, chart.birth);
+      const p = c.positions;
+      const ctx = { sign: (g: keyof typeof p.grahas) => Math.floor(p.grahas[g].lon / 30), degree: (g: keyof typeof p.grahas) => p.grahas[g].lon % 30 };
+      const dctx = { clock: dasaClock(swe, c), tz: chart.birth.tzHours, revjul: (jd: number) => swe.revjul(jd) };
+      const n = narayanaDasa(Math.floor(p.ascendant / 30), ctx);
+      const bad: string[] = [];
+      for (const t of texts) {
+        const have = t.name === 'dasa' ? mahaDasaText(n.title, n.periods, dctx) : antarDasaText(n.title, n.periods[0], dctx);
+        bad.push(...compareDasaText(have, t.lines, 2).map((b) => `${t.name} ${b}`));
+      }
+      expect(bad.slice(0, 6), bad.slice(0, 6).join(' | ')).toEqual([]);
+    });
+  }
+});

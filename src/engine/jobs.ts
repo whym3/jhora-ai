@@ -5,6 +5,7 @@ import type { Sweph } from '../sweph';
 import { vimsottari, type Period } from '../core/dasas/vimsottari';
 import { NAKSHATRA_DASAS, nakshatraDasa, SAPTARSHI_TITLE, saptarshiDasa } from '../core/dasas/nakshatra';
 import { kalachakraDasa } from '../core/dasas/kalachakra';
+import { narayanaDasa } from '../core/dasas/narayana';
 import { dasaClock } from '../core/dasas/time';
 import { antarDasaText, formatDasaTime, mahaDasaText, periodLabel } from '../core/dasas/format';
 import { GRAHAS } from '../core/positions';
@@ -35,6 +36,23 @@ const AMSA_RULER_ROWS = [
   'Yoga Sphuta (Sun-Moon)', 'Rahu Tithi Sphuta', 'Kshetra Sphuta', 'Beeja Sphuta', 'TriSphuta', 'ChatusSphuta', 'PanchaSphuta',
   'Yoga Sphuta', 'Avayoga Sphuta', 'Varnada Lagna', ...Array.from({ length: 11 }, (_, i) => `V${i + 2}`),
 ];
+
+const DASA_LEVEL = ['Maha Dasas', 'Antardasas', 'Pratyantardasas', 'Sookshma-antardasas', 'Prana-antardasas', 'Deha-antardasas'];
+
+/** A dasa level as a table: the periods under `path`, with JHora's copy text for the top two levels. */
+function dasaTable(chart: Chart, swe: Sweph, title: string, mds: Period[], path: number[], drill = true): Table {
+  const ctx = { clock: dasaClock(swe, chart), tz: chart.birth.tzHours, revjul: (jd: number) => swe.revjul(jd) };
+  let list = mds; let parent: Period | null = null;
+  for (const i of path) { parent = list[i]; list = parent.children ?? []; }
+  const when = (y: number) => formatDasaTime(ctx.clock.toJd(y), ctx.tz, ctx.revjul);
+  return {
+    caption: parent ? `${periodLabel(parent)}: ${when(parent.start)} - ${when(parent.end)}` : title,
+    headers: [DASA_LEVEL[path.length] ?? 'Periods', 'Start', 'End'],
+    rows: list.map((q) => [periodLabel(q), when(q.start), when(q.end)]),
+    text: !parent ? mahaDasaText(title, mds, ctx) : path.length === 1 ? antarDasaText(title, parent, ctx) : undefined,
+    drill,
+  };
+}
 
 /** JHora prints strengths with "%.2f" */
 const f2 = (x: number) => (Object.is(x, -0) ? 0 : x).toFixed(2);
@@ -200,18 +218,16 @@ export const TABLES: Record<string, TableFn> = {
     const kc = system === 'Kalachakra' ? kalachakraDasa(moon, 9, chart.ini.KCDRohini4NavamsaInLeo !== 0) : null;
     const title = kc ? kc.title : def ? def.title : saptarshi ? SAPTARSHI_TITLE : 'Vimsottari Dasa';
     const mds = kc ? kc.periods : def ? nakshatraDasa(def, moon, levels) : saptarshi ? saptarshiDasa(chart.positions.ascendant, levels, NAKSHATRAS) : vimsottari(moon, levels);
-    const ctx = { clock: dasaClock(swe, chart), tz: chart.birth.tzHours, revjul: (jd: number) => swe.revjul(jd) };
-    let list = mds; let parent: Period | null = null;
-    for (const i of path) { parent = list[i]; list = parent.children ?? []; }
-    const when = (y: number) => formatDasaTime(ctx.clock.toJd(y), ctx.tz, ctx.revjul);
-    const LEVEL = ['Maha Dasas', 'Antardasas', 'Pratyantardasas', 'Sookshma-antardasas', 'Prana-antardasas', 'Deha-antardasas'];
-    return {
-      caption: parent ? `${periodLabel(parent)}: ${when(parent.start)} - ${when(parent.end)}` : title,
-      headers: [LEVEL[path.length] ?? 'Periods', 'Start', 'End'],
-      rows: list.map((p) => [periodLabel(p), when(p.start), when(p.end)]),
-      text: !parent ? mahaDasaText(title, mds, ctx) : path.length === 1 ? antarDasaText(title, parent, ctx) : undefined,
-      drill: !kc,
-    };
+    return dasaTable(chart, swe, title, mds, path, !kc);
+  },
+  // Dasas > Rasi dasas: params.system ('Narayana'), params.path
+  'dasas.rasi': (chart, params, swe) => {
+    if (!swe) throw new Error('dasa tables need the ephemeris');
+    const path = (params.path as number[] | undefined) ?? [];
+    const p = chart.positions;
+    const ctx: VargaCtx = { sign: (g) => signOf(p.grahas[g].lon), degree: (g) => p.grahas[g].lon % 30 };
+    const n = narayanaDasa(signOf(p.ascendant), ctx, 'D-1', path.length + 1);
+    return dasaTable(chart, swe, n.title, n.periods, path);
   },
   // Strengths > Other strengths (menu modes 0..10 of CStrengthsView)
   'strengths.shadbalaSummary': (chart) => shadbalaRows(chart, ['Planet', 'Shadbala', 'In rupas', '% Strength', 'IshtaPhala', 'KashtaPhala'], (b) => [b.total, b.rupas, b.percent, b.ishta, b.kashta]),

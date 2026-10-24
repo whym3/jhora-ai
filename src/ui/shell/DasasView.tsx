@@ -16,14 +16,25 @@ const MAX_DEPTH = 6;
  * into its sub-periods; "Up" returns to the parent level.
  */
 export function NakshatraDasasView({ spec }: { spec: ChartSpec }) {
-  const [system, setSystem] = useState<string>('Vimsottari');
+  return <DasaPane spec={spec} table="dasas.nakshatra" systems={NAKSHATRA_DASA_SYSTEMS} />;
+}
+
+/** Rasi dasa systems ported so far. */
+export const RASI_DASA_SYSTEMS = ['Narayana'] as const;
+
+export function RasiDasasView({ spec }: { spec: ChartSpec }) {
+  return <DasaPane spec={spec} table="dasas.rasi" systems={RASI_DASA_SYSTEMS} />;
+}
+
+function DasaPane({ spec, table, systems }: { spec: ChartSpec; table: string; systems: readonly string[] }) {
+  const [system, setSystem] = useState<string>(systems[0]);
   const [path, setPath] = useState<number[]>([]);
-  const job = useJob({ kind: 'table' as const, chart: spec, table: 'dasas.nakshatra', params: { system, path } });
+  const job = useJob({ kind: 'table' as const, chart: spec, table, params: { system, path } });
   return (
     <div className="subview">
       <div className="subview-bar">
         <select aria-label="Dasa system" value={system} onChange={(e) => { setSystem(e.target.value); setPath([]); }}>
-          {NAKSHATRA_DASA_SYSTEMS.map((s) => <option key={s} value={s}>{s}</option>)}
+          {systems.map((s) => <option key={s} value={s}>{s}</option>)}
         </select>
         <button onClick={() => setPath((p) => p.slice(0, -1))} disabled={!path.length}>Up</button>
       </div>

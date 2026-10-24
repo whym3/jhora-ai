@@ -6,7 +6,7 @@ import { BirthForm } from './BirthForm';
 import type { ChartStyle } from './ChartDiagram';
 import { ChartPane } from './shell/ChartPane';
 import { KeyInfoView, OtherStrengthsView, TableSubView } from './shell/BasicsView';
-import { NakshatraDasasView } from './shell/DasasView';
+import { NakshatraDasasView, RasiDasasView } from './shell/DasasView';
 import { NotPorted } from './shell/NotPorted';
 import { SUB_TABS, TOP_TABS, type TopTab } from './shell/tabs';
 import { closeChart, currentSubTab, openChart, setSubTab, setTopTab, setView, updateChart, useActiveDoc, useStore } from './state/store';
@@ -69,6 +69,7 @@ function SubView({ top, sub, spec }: { top: TopTab; sub: string | null; spec: Ch
   if (top === 'Basics' && sub === 'Key Info') return <KeyInfoView spec={spec} />;
   if (top === 'Strengths' && sub === 'Other strengths') return <OtherStrengthsView spec={spec} />;
   if (top === 'Dasas' && sub === 'Nakshatra dasas') return <NakshatraDasasView spec={spec} />;
+  if (top === 'Dasas' && sub === 'Rasi dasas') return <RasiDasasView spec={spec} />;
   const table = FIXED_TABLES[`${top}/${sub}`];
   if (table) return <TableSubView spec={spec} table={table} />;
   return <NotPorted name={sub ? `${top} / ${sub}` : top} />;
