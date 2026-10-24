@@ -8,7 +8,8 @@
     "dev": "vite",
     "build": "tsc && vite build",
     "typecheck": "tsc",
-    "atlas": "node tools/atlas/install.mjs"
+    "atlas": "node tools/atlas/install.mjs",
+    "parity": "node tools/parity-report.mjs"
   },
   "keywords": [],
   "author": "",
