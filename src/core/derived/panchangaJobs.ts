@@ -6,6 +6,7 @@ import type { Table } from '../../engine/protocol';
 import type { AsyncTableFn } from './common';
 import { TITHI_NAMES, KI_NAKSHATRAS, YOGAS, KARANAS, WEEKDAYS } from '../keyInfo';
 import { dayText, monthlyText, panchangaDays, timeText, PANCHANGA_SIGNS, type PanchangaDay, type Track } from './panchanga';
+import { dpFormatText, ephemerisText, movementsText } from './panchangaCopies';
 import { laghuParasari, LAGHU_LAGNAS, type LaghuOptions } from './laghuParasari';
 
 const lines = (s: string) => s.split('\n');
@@ -43,6 +44,37 @@ export const PANCHANGA_JOBS: Record<string, AsyncTableFn> = {
   'panchanga.daily': async (chart, _params, swe) => {
     const days = await panchangaDays(chart, swe, 2);
     return { caption: 'Panchanga', headers: DAY_HEADERS, rows: days.map(dayRow), text: lines(days.map((d) => dayText(d, true)).join('')) };
+  },
+  // "Copy monthly ephemeris in JD format (5:30 am)" (33087): 31 rows from day 1. params { year?, month? }
+  'panchanga.ephemeris': async (chart, params, swe) => {
+    const { year, month } = ym(chart, params);
+    // '', title, '', column heads, '', then one line per day (each ending in a tab)
+    const text = lines(await ephemerisText(chart, swe, year, month));
+    return { caption: text[1], headers: text[3].split('	').map((h) => h.trim()), rows: text.slice(5).map((l) => l.split('	').slice(0, 13)), text };
+  },
+  // "Copy monthly planetary movements (in JD format)" (33088): the calendar month. params { year?, month? }
+  'panchanga.movements': async (chart, params, swe) => {
+    const { year, month } = ym(chart, params);
+    const text = lines(await movementsText(chart, swe, year, month));
+    const rows: string[][] = [];
+    let section = '';
+    for (const l of text.slice(2)) {
+      const f = l.split('	');
+      if (f.length === 5) rows.push([section, ...f]);
+      else if (l) section = l.replace(/:$/, '');
+    }
+    return { caption: text[1].replace(/:$/, ''), headers: ['Section', 'Body', 'Event', 'Sign / body', 'Day', 'Time'], rows, text };
+  },
+  // "Copy monthly panchanga (DP format)" (33420): JHora's dialog asks the start date and the
+  // number of days (defaults: the chart's date, 20; at most 400). params { year?, month?, day?, days? }
+  'panchanga.dpFormat': async (chart, params, swe) => {
+    const { year, month } = ym(chart, params);
+    const o = { year, month, day: Number(params.day ?? chart.birth.day), days: Number(params.days ?? 20) };
+    const text = lines(await dpFormatText(chart, swe, o));
+    return {
+      caption: `Panchanga (DP format): ${o.days} days from ${o.year}-${o.month}-${o.day}`,
+      headers: text[0].split('	'), rows: text.slice(1).map((l) => l.split('	')), text,
+    };
   },
   // Same table as LAGHU_TABLES['laghuParasari.table'], but loads the ephemeris for the
   // solar-return dates (up to 120 years after the chart) first. params: LaghuOptions

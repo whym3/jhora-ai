@@ -167,7 +167,13 @@ export interface LunarYearMonth {
 
 /** FUN_004a4270 (LunarYrDef=2): amanta month of the previous new moon, adhika when no sankranti follows. */
 export function lunarYearMonth(swe: Sweph, chart: Chart, s: Settings = calcSettingsFromIni(chart.ini)): LunarYearMonth {
-  const nm = newMoon(swe, chart.positions.jdUt, -1, s);
+  const b = castBirth(chart.birth);
+  return lunarYearMonthAt(swe, chart.positions.jdUt, b.year, b.month, s);
+}
+
+/** lunarYearMonth for a moment (JD UT) whose record has the clock date `recYear`-`recMonth`. */
+export function lunarYearMonthAt(swe: Sweph, jdUt: number, recYear: number, recMonth: number, s: Settings): LunarYearMonth {
+  const nm = newMoon(swe, jdUt, -1, s);
   const month = Math.floor(nm.sun / 30) % 12;
   const moonSign = Math.floor(nm.moon / 30) % 12;
   let adhika: 0 | 1 | 2 = 0;
@@ -177,9 +183,8 @@ export function lunarYearMonth(swe: Sweph, chart: Chart, s: Settings = calcSetti
     const prev = newMoon(swe, nm.jd - 0.0035, -1, s);
     if (Math.floor(prev.moon / 30) % 12 === moonSign) adhika = 1;
   }
-  const b = castBirth(chart.birth);
-  let year = b.year;
-  if (b.month < 6 && month >= 6 && month <= 10) year--;
+  let year = recYear;
+  if (recMonth < 6 && month >= 6 && month <= 10) year--;
   const samvatsara = (year + 0x37fd) % 60;
   const text = `${SAMVATSARAS[samvatsara]} - ${['', 'Nija ', 'Adhika '][adhika]}${LUNAR_MONTHS[month]}`;
   return { samvatsara, month, adhika, text };

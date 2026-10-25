@@ -27,8 +27,13 @@
 //   33085 "Copy monthly panchanga"        FUN_00463fc0 -> FUN_0046a150 (no horas)
 //   33086 "Copy monthly panchanga in JD format" FUN_00464310: never reachable - the update
 //         handler 0x4648d0 always disables it (enables 33084/33085, 33087/33088 and 33420)
-//   33420 DP format (FUN_00464070 -> FUN_0046eee0, asks month/year in a dialog): not ported
-//   33087/33088/33089 monthly ephemeris / movements / co-ordinates: not ported
+//   33420 "Copy monthly panchanga (DP format)" FUN_00464070 -> FUN_0046eee0 (dialog 2081
+//         "Panchanga period" asks a start date and a number of days)   - panchangaCopies.ts
+//   33087 "Copy monthly ephemeris in JD format (5:30 am)" FUN_004644c0 -> FUN_0046b9d0
+//   33088 "Copy monthly planetary movements (in JD format)" FUN_00464720 -> FUN_0046c890
+//         (both in panchangaCopies.ts)
+//   33089 "Copy planetary co-ordinates in this chart in JD format" (FUN_00464670): disabled
+//         by 0x4648d0 like 33086, not ported
 // Times: FUN_004ba720 -> FUN_004c1d40 "%d:%02d" (mode 0 truncates the seconds,
 // mode 2 rounds them) plus "*" when the event's local day-of-month differs from
 // the row's day counter.
@@ -155,6 +160,12 @@ function riseSet(c: Ctx, body: Graha, from: number, set: boolean, backward: bool
 
 function span(c: Ctx, a: number, b: number): Span { return { start: moment(c, a), end: moment(c, b) }; }
 
+/** The record's weekday (0 = Sunday): that of the local date of its sunrise. */
+export function sunriseWeekday(swe: Sweph, sunrise: number, tz: number): number {
+  const local = swe.revjul(sunrise + tz / 24);
+  return (Math.floor(swe.julday(local.year, local.month, local.day, 12) + 0.5) + 1) % 7;
+}
+
 /** One record of FUN_00467af0 for the sunrise of the day containing jdNoon. */
 export function panchangaDay(chart: Chart, swe: Sweph, jdNoon: number, counter: number): PanchangaDay {
   const s = calcSettingsFromIni(chart.ini);
@@ -167,8 +178,7 @@ export function panchangaDay(chart: Chart, swe: Sweph, jdNoon: number, counter: 
   const t0 = fr.sunrise;
   const t1 = t0 + 0.01 / 24;
   const sr = moment(c, t0);
-  const local = swe.revjul(t0 + c.tz / 24);
-  const weekday = (Math.floor(swe.julday(local.year, local.month, local.day, 12) + 0.5) + 1) % 7;
+  const weekday = sunriseWeekday(swe, t0, c.tz);
   const moonAt = lonOf(c, 'Moon');
 
   const tithi = track(c, elongation(c), 12, t1, 2);

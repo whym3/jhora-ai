@@ -4,11 +4,15 @@ import { goldenCharts } from './golden';
 import { computeChart } from '../src/core/chart';
 import { siderealLongitude, norm360 } from '../src/core/positions';
 import { calcSettingsFromIni } from '../src/core/settings';
-import { tithi, nakshatra, TITHI_NAMES } from '../src/core/keyInfo';
+import { tithi, nakshatra, TITHI_NAMES, KI_NAKSHATRAS, WEEKDAYS } from '../src/core/keyInfo';
 import { dayFrame } from '../src/core/day';
 import { monthlyText, panchangaDays, timeText } from '../src/core/derived/panchanga';
 import { laghuRows, laghuValue } from '../src/core/derived/laghuParasari';
 import { PANCHANGA_JOBS, LAGHU_TABLES } from '../src/core/derived/panchangaJobs';
+import { dpFormatText, ephemerisDms, ephemerisText, movementsText, splitLongitude, DP_HEADER } from '../src/core/derived/panchangaCopies';
+import { siderealAscendant, GRAHAS } from '../src/core/positions';
+import { panchangaDay, MONTHS, type Moment } from '../src/core/derived/panchanga';
+import { SIGN_NAMES } from '../src/core/zodiac';
 
 const wrap = (x: number) => { let d = x % 360; if (d > 180) d -= 360; else if (d < -180) d += 360; return d; };
 
@@ -115,6 +119,144 @@ describe('Miscellany > Panchanga', async () => {
     const daily = await PANCHANGA_JOBS['panchanga.daily'](chart, {}, swe);
     expect(daily.rows).toHaveLength(2);
     expect(daily.text!.join('\n')).toContain('Choghadiyas: ');
+  });
+});
+
+describe('Miscellany > Panchanga: ephemeris, movements and DP format copies', async () => {
+  const swe = await nodeSweph();
+  const chart = await computeChart(swe, goldenCharts()[0].birth);
+  const s = calcSettingsFromIni(chart.ini);
+  const { year, month, tzHours: tz, lat, lon: geoLon } = chart.birth;
+  const lon = (jd: number, body: number) => (body === 0
+    ? siderealAscendant(swe, jd, { lat, lon: geoLon }, s)
+    : siderealLongitude(swe, jd, GRAHAS[body - 1], s).lon);
+  const hms = (t: string) => { const [h, m, x] = t.split(':').map(Number); return h + m / 60 + (x ?? 0) / 3600; };
+  const atDay = (day: number, time: string) => swe.julday(year, month, day, hms(time) - tz);
+  const near = (a: number, b: number) => Math.abs(wrap(a - b));
+
+  it('splits longitudes as FUN_004c1980 (no carry from the rounded seconds)', () => {
+    expect(splitLongitude(-10)).toMatchObject({ sign: 11, deg: 20, min: 0 });
+    expect(ephemerisDms(106 + 54 / 60 + 55.4 / 3600)).toBe('106:54:55');
+    expect(ephemerisDms(5 + 7 / 60 + 3 / 3600)).toBe('005:07:03');
+    expect(ephemerisDms(264 + 59.6 / 3600)).toBe('264:00:60');
+  });
+
+  it('monthly ephemeris: 31 rows at 5:30 am, sidereal time at local mean noon', async () => {
+    const text = (await ephemerisText(chart, swe)).split('\n');
+    expect(text.slice(0, 5)).toEqual(['', `Monthly Ephemeris for ${MONTHS[month - 1]}, ${year} (at 5:30 am everyday):`, '',
+      'Date\tDay\tSunrise\tSunset   \tSidTime    \tSun    \tMoon   \tMars   \tMercury \tJupiter  \tVenus   \tSaturn   \tRahu', '']);
+    const rows = text.slice(5).map((l) => l.split('\t'));
+    expect(rows).toHaveLength(31);
+    const days = await panchangaDays(chart, swe, 31);
+    const jd0 = swe.julday(year, month, 1, 5.5 - tz);
+    rows.forEach((r, i) => {
+      expect(r).toHaveLength(14);
+      expect(r[13]).toBe('');
+      expect(Number(r[0])).toBe(swe.revjul(jd0 + i + tz / 24).day);
+      expect(r[1]).toBe(['Su', 'Mo', 'Tu', 'We', 'Th', 'Fr', 'Sa'][days[i].weekday]);
+      for (let k = 1; k <= 8; k++) {
+        const [d, m, x] = r[4 + k].split(':').map(Number);
+        expect(near(d + m / 60 + x / 3600, lon(jd0 + i, k))).toBeLessThan(1 / 3600);
+      }
+      // the frame's sunrise before 5:30 (the previous day's when the Sun rises later)
+      const fr = dayFrame(swe, jd0 + i, { lat, lon: geoLon, alt: chart.birth.altitudeM }, s, 0);
+      expect(Math.abs(hms(r[2]) - swe.revjul(fr.sunrise + tz / 24).hour)).toBeLessThan(1 / 3600);
+      if (i) expect(((hms(r[4]) - hms(rows[i - 1][4]) + 24) % 24) * 60).toBeCloseTo(3.943, 1);
+    });
+    // ARMC / 15 at 12:00 local mean time of day 1
+    const sid = swe.houses(swe.julday(year, month, 1, 12 - geoLon / 15), 0, lat, geoLon, 'P').ascmc[2] / 15;
+    expect(Math.abs(hms(rows[0][4]) - sid)).toBeLessThan(1 / 3600);
+  });
+
+  it('planetary movements: sign and nakshatra entries and aspects in the calendar month', async () => {
+    const text = (await movementsText(chart, swe)).split('\n');
+    expect(text[1]).toBe(`Planetary Movements for ${MONTHS[month - 1]}, ${year}:`);
+    expect(text[3]).toBe('Entry of planets into signs');
+    const iN = text.indexOf('Entry of planets in nakshatras'), iA = text.indexOf('Planetary aspects of Jyotish:');
+    expect(iN).toBeGreaterThan(3);
+    expect(iA).toBeGreaterThan(iN);
+    const NAMES = ['Lagna', 'Sun', 'Moon', 'Mars', 'Mercury', 'Jupiter', 'Venus', 'Saturn', 'Rahu', 'Ketu'];
+    const SHORT = ['As', 'Su', 'Mo', 'Ma', 'Me', 'Ju', 'Ve', 'Sa', 'Ra', 'Ke'];
+    const nDays = new Date(Date.UTC(year, month, 0)).getUTCDate();
+    const entries = (from: number, to: number, arc: number, names: readonly string[]) => {
+      const ls = text.slice(from, to).filter((l) => l);
+      for (const l of ls) {
+        const [body, verb, target, day, time] = l.split('\t');
+        expect(verb).toBe('enters');
+        const b = NAMES.indexOf(body);
+        expect(b >= 1 && b !== 2).toBe(true);
+        expect(Number(day)).toBeLessThanOrEqual(nDays);
+        const at = lon(atDay(Number(day), time), b);
+        const k = names.indexOf(target);
+        // on a boundary of the entered division: its start (direct) or its end (retrograde)
+        expect(Math.min(near(at, k * arc), near(at, (k + 1) * arc))).toBeLessThan(0.002);
+      }
+      return ls.length;
+    };
+    expect(entries(4, iN, 30, SIGN_NAMES)).toBeGreaterThan(0);
+    expect(entries(iN + 1, iA, 360 / 27, KI_NAKSHATRAS)).toBeGreaterThan(0);
+    const OFFSET: Record<string, number> = { '[C]': 0, '[S]': 180, '[4]': 270, '[8]': 150, '[5]': 240, '[9]': 120, '[3]': 300, '[10]': 90 };
+    const aspects = text.slice(iA + 1).filter((l) => l).map((l) => l.split('\t'));
+    expect(aspects.length).toBeGreaterThan(20);
+    let prev = -Infinity;
+    for (const [x, label, y, day, time] of aspects) {
+      const jd = atDay(Number(day), time);
+      expect(jd).toBeGreaterThanOrEqual(prev - 1e-5);   // sorted by time
+      prev = jd;
+      expect(near(lon(jd, SHORT.indexOf(x)) - lon(jd, SHORT.indexOf(y)), OFFSET[label])).toBeLessThan(0.01);
+    }
+    expect(aspects.filter(([x, l, y]) => l === '[C]' && x === 'Mo' && y === 'Sa')).toHaveLength(1);
+    // mutual aspects are listed in both directions
+    const fourth = aspects.find(([, l]) => l === '[4]')!;
+    expect(aspects.some(([x, l, y, d, t]) => l === '[10]' && x === fourth[2] && y === fourth[0] && d === fourth[3] && t === fourth[4])).toBe(true);
+  });
+
+  it('DP format: header, one row per day, lagna exits and the bodies in each sign', async () => {
+    const o = { year, month, day: chart.birth.day, days: 3 };
+    const text = (await dpFormatText(chart, swe, o)).split('\n');
+    expect(text[0]).toBe(DP_HEADER);
+    expect(DP_HEADER.split('\t')).toHaveLength(64);
+    expect(text).toHaveLength(4);
+    const t2 = (m: Moment) => timeText(m, 2, m.day);
+    for (let i = 0; i < 3; i++) {
+      const r = text[i + 1].split('\t');
+      expect(r).toHaveLength(64);
+      const d = panchangaDay(chart, swe, swe.julday(year, month, o.day, 12 - tz) + i, o.day + i);
+      const t1 = d.dayStart;
+      expect(r.slice(0, 4)).toEqual([`${t1.day}-${String(t1.month).padStart(2, '0')}-${t1.year}`, String(t1.year), MONTHS[t1.month - 1], String(t1.day)]);
+      expect(r[9]).toBe(d.tithi.items[0].index < 15 ? 'Sukla' : 'Krishna');
+      expect(r[10]).toBe(TITHI_NAMES[d.tithi.items[0].index].replace(/^(Sukla|Krishna) /, ''));
+      expect(r[11]).toBe(t2(d.tithi.items[0].end));
+      expect(r[12]).toBe(`${t2(d.rahu.start)} - ${t2(d.rahu.end)}`);
+      expect(r[13]).toBe(WEEKDAYS[d.weekday]);
+      expect(r[26]).toBe(t2(d.sunrise));
+      expect(r[27]).toBe(t2(d.sunset));
+      expect(r[20] === '').toBe(d.varjya.length < 2);
+      // the lagna leaves the listed signs (from the Sun's) at the listed times
+      const sun = Math.trunc(lon(t1.jd, 1) / 30);
+      for (let k = 0; k < 12; k++) expect(r[28 + 2 * k]).toBe(SIGN_NAMES[(sun + k) % 12]);
+      // the first exit is a couple of hours after sunrise, on C's date ('h:mm' is rounded: 0.3 degree)
+      const exit = swe.julday(t1.year, t1.month, t1.day, hms(r[29]) - tz);
+      expect(near(lon(exit, 0), ((sun + 1) % 12) * 30)).toBeLessThan(0.3);
+      const cols = r.slice(52);
+      ['Sun', 'Moon', 'Mars', 'Merc', 'Jup', 'Ven', 'Sat', 'Rah', 'Ket'].forEach((name, k) => {
+        expect(cols[Math.trunc(lon(t1.jd, k + 1) / 30)].split(', ')).toContain(name);
+      });
+      expect(cols.filter((c) => c).join(', ').split(', ')).toHaveLength(9);
+    }
+  });
+
+  it('jobs return the copy texts and tables', async () => {
+    const e = await PANCHANGA_JOBS['panchanga.ephemeris'](chart, {}, swe);
+    expect(e.rows).toHaveLength(31);
+    expect(e.headers[4]).toBe('SidTime');
+    const mv = await PANCHANGA_JOBS['panchanga.movements'](chart, { year: 2024, month: 3 }, swe);
+    expect(mv.caption).toBe('Planetary Movements for March, 2024');
+    expect(mv.rows.some((r) => r[0] === 'Entry of planets into signs' && r[1] === 'Sun' && r[3] === 'Pisces')).toBe(true);
+    expect(mv.rows.some((r) => r[0] === 'Planetary aspects of Jyotish')).toBe(true);
+    const dp = await PANCHANGA_JOBS['panchanga.dpFormat'](chart, { year: 2024, month: 2, day: 28, days: 3 }, swe);
+    expect(dp.rows.map((r) => r[0])).toEqual(['28-02-2024', '29-02-2024', '1-03-2024']);
+    expect(dp.text![0]).toBe(DP_HEADER);
   });
 });
 

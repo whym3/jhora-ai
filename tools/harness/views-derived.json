@@ -5,7 +5,9 @@
    "top": "Miscellany",
    "sub": "Panchanga",
    "copies": {
-    "monthly": 33085
+    "monthly": 33085,
+    "ephemeris": 33087,
+    "movements": 33088
    }
   },
   {
