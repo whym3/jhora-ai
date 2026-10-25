@@ -14,6 +14,7 @@ import type { Period } from './vimsottari';
 import { SIGN_LORD } from '../lords';
 import { bhavaArudha } from '../arudhas';
 import { buildRasiDasa, JHORA_VARGA_NAMES, lordOfStrong7Run, narayanaTypeSequence, narayanaYearsWithLord, rasiCtx, strong7 } from './rasiCommon';
+import { startOverride } from './overrides';
 
 export const PADANATHAMSA_DEFAULT_VARGA = 1;
 export const padanathamsaTitle = (vargaIndex = PADANATHAMSA_DEFAULT_VARGA) =>
@@ -30,7 +31,7 @@ export function padanathamsaDasa(chart: Chart, levels = 2, vargaIndex: number = 
     grahaExceptions: (ini.ExceptionsInGrahaArudhas ?? 1) !== 0,
     nodesAsLords: (ini.NodesInArudhas ?? 1) !== 0,
   });
-  const start = strong7(ctx.sign(SIGN_LORD[al]), ctx);
+  const start = startOverride(ctx) ?? strong7(ctx.sign(SIGN_LORD[al]), ctx);
   const seq = narayanaTypeSequence(start, ctx);
   return buildRasiDasa(seq, seq.map((s) => narayanaYearsWithLord(s, ctx)), (s) => lordOfStrong7Run(s, ctx), levels, true);
 }

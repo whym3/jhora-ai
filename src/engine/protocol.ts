@@ -5,6 +5,7 @@ import type { Positions } from '../core/positions';
 import type { ChartBody } from '../core/chart';
 import type { NamedBody } from '../core/longitudes';
 import type { DayFrame } from '../core/day';
+import type { UserPoint } from '../core/userPoints';
 
 /** Everything that identifies a chart: birth data plus the settings that affect it. */
 export interface ChartSpec {
@@ -16,8 +17,10 @@ export interface ChartSpec {
 export interface Table {
   headers: string[];
   rows: string[][];
-  /** text placed on the clipboard instead of the tab-separated table (JHora's own copy format) */
+  /** text placed on the clipboard instead of JHora's list copy of the table (src/core/format/listCopy.ts) */
   text?: string[];
+  /** JHora's column count for the list copy when larger than the headers (view+0x48) */
+  copyColumns?: number;
   /** heading shown above the table */
   caption?: string;
   /** rows can be expanded (dasa periods); false when no deeper level exists */
@@ -35,6 +38,8 @@ export interface ChartResult {
   longitudes: NamedBody[];
   day: DayFrame;
   birth: BirthData;
+  /** the Edit menu's special point / planetary special lagna when on (core/userPoints.ts) */
+  userPoints?: UserPoint[];
 }
 
 export type JobRequest =

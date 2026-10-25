@@ -1,8 +1,12 @@
 import { describe, expect, it } from 'vitest';
 import { nodeSweph } from './helpers';
-import { goldenCharts, goldenV2Charts, type GoldenChart, type GoldenView } from './golden';
+import { goldenCharts, goldenV2Charts, goldenV3Charts, type GoldenChart, type GoldenView } from './golden';
 import { computeChart } from '../src/core/chart';
 import { runTable } from '../src/engine/jobs';
+
+/** Views captured by harness v3 (golden/jhora-v3), by chart name: the Key Info modes golden/jhora lacks. */
+const V3 = new Map(goldenV3Charts().map((c) => [c.name, c.views]));
+const v3View = (c: GoldenChart, mode: string) => V3.get(c.name)?.find((v) => v.mode === mode);
 
 /** Table id -> how to find JHora's golden table for it. */
 const CASES: [string, (c: GoldenChart) => GoldenView | undefined, (rows: string[][]) => string[][]][] = [
@@ -23,6 +27,11 @@ const CASES: [string, (c: GoldenChart) => GoldenView | undefined, (rows: string[
   ['basics.grahaYuddha', (c) => c.views.find((v) => v.mode === 'Graha Yuddha'), (r) => r],
   // the chosen navamsa and all five drekkana variants (src/core/vargaOptions.ts)
   ['basics.malicious', (c) => c.views.find((v) => v.mode === '64th navamsa and 22nd drekkana'), (r) => r],
+  // from lagna (33197 / 33198) and the natal tables (33115 / 33116), captured in golden/jhora-v3
+  ['basics.navaTarasLagna', (c) => v3View(c, 'Nava Taras (from lagna)'), (r) => r],
+  ['basics.specialTarasLagna', (c) => v3View(c, 'Special Taras (from lagna)'), (r) => r],
+  ['basics.natalLongitudes', (c) => v3View(c, 'Natal Longitudes'), (r) => r],
+  ['basics.natalSahamas', (c) => v3View(c, 'Natal Sahamas'), (r) => r],
 ];
 
 /**
@@ -112,6 +121,23 @@ describe('Amsa rulers (D-150) match JHora 8.0', async () => {
       // (their "Division" is 1..12); we compute them from the displayed longitude instead.
       const cmp = (rows: string[][]) => rows.filter((r) => !/^V(arnada|\d)/.test(r[0]));
       expect(cmp(got.rows)).toEqual(cmp(want));
+    });
+  }
+});
+
+// Latitudes, speeds etc (33071) against the list golden/jhora captured. The mean node's latitude
+// and distance speed are exact zeros here; JHora's Swiss Ephemeris gives tiny values whose sign
+// shows ("-0.000"), so signs of zero are not compared.
+describe('Coordinates (latitudes, speeds, distances) match JHora 8.0', async () => {
+  const swe = await nodeSweph();
+  for (const chart of goldenCharts()) {
+    const golden = chart.views.find((v) => v.mode === 'Coordinates');
+    if (!golden) continue;
+    it(chart.name, async () => {
+      const got = runTable(await computeChart(swe, chart.birth), 'basics.coordinates', {}, swe);
+      expect(got.headers).toEqual(golden.headers);
+      const zero = (s: string) => s.replace(/^-(0\.0+ )/, '$1');
+      expect(got.rows.map((r) => r.map(zero))).toEqual(golden.rows.map((r) => r.map((x) => zero(x.trim()))));
     });
   }
 });

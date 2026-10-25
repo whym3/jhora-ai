@@ -1,0 +1,133 @@
+{
+ "_comment": "Calculation options of the strengths, chakra and calculation menus (tests/calcOptions.test.ts skips while the output is absent). One run per variant, each into golden/jhora-calc-options/<variant>/ with capture.py --ini overrides; restore the copy's jhcore/jhora.ini (golden/jhora-defaults.ini) afterwards - JHora saves its options on exit. capture.py --ini replaces every line of an array key, so AshtakaVargaCalculation=<slot> <0|1> sets one flag per run. Variants: default (no --ini; also the Nisheka chart of 33291 and the 'Nakshatras & rasis from sodhya pindas' drawing); amsa-swarudha1 (SwarudhaInAmsaBala=1); amsa-swarudha4 (SwarudhaInAmsaBala=4); amsa-swarudha7-disp (SwarudhaInAmsaBala=7, DispositorCombustionBadInAmsaBala=1, DispositorDefeatBadInAmsaBala=1, DispositorNeechaBadInAmsaBala=1, DispositorNeechaRasiBadInAmsaBala=1, DispositorPoorVimsopakaBadInAmsaBala=1, DispositorSayanadiBadInAmsaBala=1); avastha-compound (UseCompundRelationshipInAvasthas=1); avastha-compound-rasi (UseCompundRelationshipInAvasthas=1, CompoundRelationshipsFromRasi=1); av-reversed (AshtakaVargaDefinition=0); av-bhava-eight (BhavaDrivenSarvaAshtakaVarga=1, EightAVInSAV=1); av-flag1 (AshtakaVargaCalculation=1 0); refraction (ApparentRefraction=1); upagraha-eighth-lmt (MandiInSaturnPortion=0, GulikaInSaturnPortion=0, UpagrahaDayDefinition=1); continuous-lagnas (ContinuousSpecialLagnas=1); mb-pd-start (MBTablePreference=1, MBLocationPreference=0); pushkara-patel (PushkaraBhagaJP=0); nodes-parasara (NodalExaltationParasara=1); arudha-longitude (LongitudeBasedBhavaArudhas=1, ArudhaBasePlanet=2); arudha-divlongs (LongitudeBasedBhavaArudhas=1, DivLongsInBhavaArudhas=1); tropical-sidereal-naks (UserSelectedAyanamsa=16, SiderealNaksharasInTropical=1). Not fillable by the harness (dialogs): the avastha varga (33046), the house reference longitude (33248), the Sarvatobhadra special points (dialogs 2016-2019, 2058) - capture those by hand (screenshots) if needed.",
+ "tabs": [
+  {
+   "top": "Chakras",
+   "sub": "Many Vargas",
+   "copies": {
+    "complete_calcs": 32983
+   }
+  },
+  {
+   "top": "Basics",
+   "sub": "Key Info",
+   "lists": true,
+   "copies": {
+    "table": 32975
+   },
+   "modes": [
+    [
+     "Longitudes & Basic Info",
+     32822
+    ],
+    [
+     "Rasis occupied in all vargas",
+     32823
+    ],
+    [
+     "Pushkaramsas",
+     33393
+    ],
+    [
+     "Combustion",
+     33167
+    ],
+    [
+     "Mrityu Bhaga",
+     33072
+    ]
+   ]
+  },
+  {
+   "top": "Basics",
+   "sub": "Houses",
+   "lists": true,
+   "copies": {
+    "table": 33010
+   }
+  },
+  {
+   "top": "Strengths",
+   "sub": "Ashtakavarga",
+   "lists": true,
+   "draw": true,
+   "modes": [
+    [
+     "BAVs and SAV",
+     32829
+    ],
+    [
+     "SoAV",
+     32830
+    ],
+    [
+     "PAV Lagna",
+     32838
+    ],
+    [
+     "Sodhya pindas",
+     32842
+    ],
+    [
+     "Nakshatras & rasis from sodhya pindas",
+     32843
+    ]
+   ]
+  },
+  {
+   "top": "Strengths",
+   "sub": "Other strengths",
+   "lists": true,
+   "copies": {
+    "vimsopaka": 32978
+   },
+   "modes": [
+    [
+     "Vimsopaka Balas",
+     33062,
+     59664
+    ],
+    [
+     "Amsa Balas",
+     32844,
+     59664
+    ],
+    [
+     "Basic Avasthas",
+     32897,
+     59664
+    ],
+    [
+     "Sayanadi Avasthas",
+     32898,
+     59664
+    ]
+   ]
+  },
+  {
+   "top": "Basics",
+   "sub": "Key Info",
+   "lists": true,
+   "copies": {
+    "key_info": 32974
+   },
+   "pane_copies": [
+    "key_info"
+   ],
+   "modes": [
+    [
+     "Nisheka",
+     33291
+    ],
+    [
+     "Nisheka: Longitudes & Basic Info",
+     32822
+    ],
+    [
+     "Natal",
+     32772
+    ]
+   ]
+  }
+ ]
+}

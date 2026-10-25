@@ -10,6 +10,7 @@ import { PRAVESHA_BUTTON, PRAVESHA_TYPES, type PraveshaType, type TPDateSelectio
 import { useJob } from '../EngineProvider';
 import { updateChart, useActiveDoc } from '../state/store';
 import { DerivedDasaPane, type DasaTable } from './DasasView';
+import { MixedChartButton } from './MixedChartDialog';
 
 /** The dasa buttons of dialog 2012 (plus Vimsottari, the Dasas tab default). */
 const DASA_BUTTONS: readonly (readonly [string, DasaTable, string])[] = [
@@ -59,6 +60,8 @@ export function TithiPraveshaView({ natalSpec, docId }: { natalSpec: ChartSpec; 
           </select>
         </label>
         {active && <button onClick={() => updateChart(docId, { derived: null })}>Back to Natal Chart</button>}
+        {/* button 1019 (handler 0x4853e0, MixedChartDialog.tsx) */}
+        <MixedChartButton label="Mixed TP-Natal Chart" natalSpec={natalSpec} outerSpec={doc?.derived ? { ...natalSpec, birth: doc.derived.birth } : null} outerName={doc?.derived?.label ?? ''} />
       </div>
       <fieldset>
         <legend>Use the data below</legend>

@@ -73,14 +73,34 @@ const pad2 = (n: number) => String(n).padStart(2, '0');
 
 // ---- number formats ----
 
-/** FUN_004c1b00 + FUN_004c1f00: "h:mm:ss" of a (non-negative) number of hours. */
-export function formatHms(hours: number): string {
+/** FUN_004c1b00: hours, minutes and seconds of a (non-negative) number of hours. */
+function splitHms(hours: number): { h: number; m: number; sec: number } {
   const x = Math.abs(hours);
   let h = trunc(x);
   let m = trunc((x - h) * 60);
   let sec = trunc((x - (m / 60 + h)) * 3.6e10 + 0.5) * 1e-7;
   if (60 - sec < 1e-4) { sec = 0; m++; if (m === 60) { h++; m = 0; } }
-  let s = trunc(sec + 0.5);
+  return { h, m, sec };
+}
+
+/**
+ * FUN_004c1b00 + FUN_004c1e20, used instead of FUN_004c1f00 when TimeDisplayWithAmPm is
+ * set (the birth data dialog sets it when the time is entered with am/pm): "h:mm:ss am",
+ * 12-hour clock, "am" before 12:00; the seconds are rounded without carrying.
+ */
+export function formatHmsAmPm(hours: number): string {
+  const { h, m, sec } = splitHms(hours);
+  return `${((h + 11) % 12) + 1}:${pad2(m)}:${pad2(trunc(sec + 0.5))} ${h < 12 ? 'am' : 'pm'}`;
+}
+
+/** A clock time as Key Info shows it: am/pm per TimeDisplayWithAmPm (FUN_004b1400 0x4b15e0 / 0x4b1b80). */
+export const clockTime = (hours: number, ampm: boolean) => (ampm ? formatHmsAmPm(hours) : formatHms(hours));
+
+/** FUN_004c1b00 + FUN_004c1f00: "h:mm:ss" of a (non-negative) number of hours. */
+export function formatHms(hours: number): string {
+  const t = splitHms(hours);
+  let { h, m } = t;
+  let s = trunc(t.sec + 0.5);
   if (s === 60) { s = 0; m++; if (m === 60) { m = 0; h++; } }
   return `${h}:${pad2(m)}:${pad2(s)}`;
 }
@@ -296,7 +316,7 @@ function localTime(swe: Sweph, jdUt: number, tz: number) {
 // the day on the Date line (for a progression, the progression date's)
 function eventText(swe: Sweph, chart: Chart, jdUt: number): string {
   const t = localTime(swe, jdUt, chart.birth.tzHours);
-  const time = formatHms(t.hour);
+  const time = clockTime(t.hour, !!chart.ini.TimeDisplayWithAmPm);
   return t.day === chart.birth.day ? time : `${time} (${MONTHS[t.month - 1]} ${t.day})`;
 }
 
@@ -335,7 +355,7 @@ export function keyInfoText(swe: Sweph, chart: Chart): string[] {
     'Natal Chart',
     '',
     `Date:          ${MONTHS[b.month - 1]} ${b.day}, ${b.year}`,
-    `Time:          ${formatHms(b.hour)}`,
+    `Time:          ${clockTime(b.hour, !!chart.ini.TimeDisplayWithAmPm)}`,
     `Time Zone:     ${timeZoneText(b.tzHours)}`,
     `Place:         ${placeDms(b.lon, b.lon > 0, 'E', 'W')}, ${placeDms(b.lat, b.lat >= 0, 'N', 'S')}`,
   ];

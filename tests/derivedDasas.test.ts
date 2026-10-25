@@ -16,9 +16,7 @@ import { MUNDANE_JOBS } from '../src/core/derived/mundaneJobs';
 import { ANGULAR_JOBS } from '../src/core/derived/progressionJobs';
 import { PRASNA_JOBS, TP_JOBS } from '../src/core/derived/tpPrasnaJobs';
 import type { Sweph } from '../src/sweph';
-import { vimsottari, type Period } from '../src/core/dasas/vimsottari';
-import { mahaDasaText } from '../src/core/dasas/format';
-import { slotClock } from '../src/core/dasas/yearDefinition';
+import { locateEvent } from '../src/core/dasas/dasaJobs';
 
 interface Captured { name: string; views: { sub: string; mode: string; rows: string[][] }[]; texts: { sub?: string; mode?: string | null; name?: string; lines?: string[] }[] }
 const load = (dir: string): Captured[] => (existsSync(dir)
@@ -117,15 +115,13 @@ describe.skipIf(!misc.length)('Dasas tab of mundane / angular return / prasna / 
           const t = await dasa(natal, swe, 'dasas.nakshatra', 'Vimsottari', derived);
           if (derived.kind === 'progression' || !derived.params.periodDays) {
             // natal dasas, not compressed. JHora's pane keeps a cycle offset per dasa (DAT_00597d30[slot] ->
-            // DAT_0071fbbc, moved by FUN_00401620's date navigation around 0x401900): the progressions
-            // captured before navigated Vimsottari to 2010-06-15, so JHora lists the cycle holding that date
-            const mds = vimsottari(natal.positions.grahas.Moon.lon, 1);
-            const years = (swe.julday(2010, 6, 15, 12 - natal.birth.tzHours) - natal.positions.jdUt) / 365.2422;
-            const k = Math.floor((years - mds[0].start) / 120) * 120;
-            const shift = (ps: Period[]): Period[] => ps.map((p) => ({ ...p, start: p.start + k, end: p.end + k }));
+            // DAT_0071fbbc, dasaJobs.ts params.cycle) that FUN_00401820 moves until a maha dasa holds the
+            // moment it locates: the progressions captured before navigated Vimsottari to 2010-06-15, so
+            // JHora lists the cycle holding that date
             expect(t.rows).toEqual(runTable(natal, 'dasas.nakshatra', { system: 'Vimsottari', path: [] }, swe).rows);
-            const ctx = { clock: slotClock(swe, natal, 0), tz: natal.birth.tzHours, revjul: (jd: number) => swe.revjul(jd) };
-            expect(sameTimes(mahaDasaText('Vimsottari Dasa', shift(mds), ctx), want!, 2)).toEqual([]);
+            const r = await locateEvent(natal, 'dasas.nakshatra', { system: 'Vimsottari', derived }, swe, { year: 2010, month: 6, day: 15, hour: 12, tz: natal.birth.tzHours, level: 0 });
+            const shown = await ASYNC_TABLES['dasas.nakshatra'](natal, { system: 'Vimsottari', path: [], derived, cycle: r.cycle }, swe);
+            expect(sameTimes(shown.text!, want!, 2)).toEqual([]);
             return;
           }
           expect(sameTimes(t.text!, want!, 2)).toEqual([]);

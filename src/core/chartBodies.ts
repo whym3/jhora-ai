@@ -45,6 +45,7 @@ import { bodyLongitude } from './chakras/common';
 import { vargaLongitude, type VargaName } from './vargas';
 import { vargaSpec } from './vargaOptions';
 import { bhavaArudha, grahaArudha, lordOf, signArudha, type ArudhaOptions } from './arudhas';
+import { bhavaArudhaOptions, bhavaArudhaSigns } from './arudhaPadas';
 import { charaKarakas, KARAKA_NAMES } from './basics';
 import { GRAHAS, type Graha } from './positions';
 import type { VargaCtx } from './signStrength';
@@ -131,7 +132,7 @@ export function viewBodies(view: ChartView, ini: Partial<JhoraIni> = {}): number
 }
 
 /** Colour group of a body (JHora's chart text colours, see ChartDiagram). */
-export type BodyKind = 'lagna' | 'planet' | 'special' | 'upagraha' | 'sphuta' | 'al' | 'arudha';
+export type BodyKind = 'lagna' | 'planet' | 'special' | 'upagraha' | 'sphuta' | 'al' | 'arudha' | 'user';
 export function bodyKind(index: number): BodyKind {
   if (index === 0) return 'lagna';
   if (index <= 12 || (index >= 83 && index <= 101)) return 'planet';
@@ -183,9 +184,11 @@ export function bodySigns(chart: ChakraChart, varga: VargaName, ini: Partial<Jho
   const ctx: VargaCtx = { sign: (p: Graha) => vs(g[p].lon), degree: (p: Graha) => g[p].lon % 30 };
   const opt = arudhaOptionsOf(ini);
   const lagna = out[0]!;
+  // LongitudeBasedBhavaArudhas (dialog 2059): AL..UL from exact longitudes (arudhaPadas.ts)
+  const byLon = bhavaArudhaOptions(ini).longitudeBased ? bhavaArudhaSigns(chart, varga, ini) : null;
   for (let k = 0; k < 12; k++) {
     const house = (lagna + k) % 12;
-    out[59 + k] = bhavaArudha(house, ctx, opt);
+    out[59 + k] = byLon ? byLon[k] : bhavaArudha(house, ctx, opt);
     out[71 + k] = signArudha(house, lordOf(house, ctx, opt), ctx, opt);
   }
   GRAHAS.forEach((p, j) => { out[83 + j] = grahaArudha(p, ctx, opt); });
@@ -209,13 +212,15 @@ export interface ChartSignsOptions {
   ini?: Partial<JhoraIni>;
   /** explicit body indices instead of a view's set (used by the text copies) */
   indices?: number[];
+  /** sign of every body index instead of bodySigns() (the Bhava/Chalit chakra, core/bhavaChart.ts) */
+  signs?: (number | null)[];
 }
 
 /** The bodies a chart diagram draws in each sign (index 0 = Aries), in JHora's drawing order. */
 export function chartSigns(chart: ChakraChart, varga: VargaName, opts: ChartSignsOptions = {}): ChartPoint[][] {
   const view = opts.view ?? 'standard';
   const ini = { ...(chart.ini ?? {}), ...(opts.ini ?? {}) };
-  const signs = bodySigns(chart, varga, ini);
+  const signs = opts.signs ?? bodySigns(chart, varga, ini);
   const shown = opts.indices ?? viewBodies(view, ini);
   const lagna = signs[0]!;
   const ref = view === 'chandraArudha' ? signs[2] : view === 'suryaArudha' ? signs[1] : null;
@@ -235,6 +240,15 @@ export function chartSigns(chart: ChakraChart, varga: VargaName, opts: ChartSign
       index: i, id: i === 0 ? 'Lagna' : graha ? GRAHAS[i - 1] : label.trim(), label,
       retrograde: i >= 3 && i <= 7 && !!graha?.retrograde && !karakas, kind: bodyKind(i), corner: isCornerBody(i),
     });
+  }
+  // the user bodies 103/104 (special point, planetary special lagna: core/userPoints.ts) follow
+  // in every chart, labelled with their symbol, in the sign of their varga longitude
+  if (!opts.indices && !opts.signs) {
+    const spec = vargaSpec(varga, ini);
+    for (const u of chart.userPoints ?? []) {
+      const s = Math.floor(vargaLongitude(u.lon, spec) / 30) % 12;
+      out[s].push({ index: u.index, id: u.symbol, label: u.symbol, retrograde: false, kind: 'user', corner: false });
+    }
   }
   return out;
 }

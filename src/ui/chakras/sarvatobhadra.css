@@ -1,6 +1,8 @@
 /* Sarvatobhadra extras (tokens from src/ui/styles.css). */
 .chakra .sbc-from { fill: var(--lagna-cell); }
 .chakra .sbc-to { fill: var(--hl); }
+/* ColorSBCViewSpecialPoint (JHora default 16448220 = #dcfafa) */
+.chakra .sbc-special { fill: #dcfafa; }
 .chakra .sbc-vowel { font-size: 12px; fill: var(--lagna); }
 .chakra .sbc-consonant { font-size: 12px; fill: var(--ink); }
 .chakra .sbc-rasi { font-size: 12px; fill: var(--accent); }
@@ -13,4 +15,4 @@
 .chakra .sbc-td.sbc-name { fill: var(--lagna); }
 .chakra rect.sbc-hit { fill: transparent; cursor: pointer; }
 .sbc-bar { display: flex; gap: 8px; align-items: center; flex-wrap: wrap; margin: 4px 0; font-size: .9rem; }
-@media (prefers-color-scheme: dark) { .chakra .sbc-drishti { fill: #ff7ac0; } .chakra .sbc-latta { fill: #8fb0ff; } }
+@media (prefers-color-scheme: dark) { .chakra .sbc-drishti { fill: #ff7ac0; } .chakra .sbc-latta { fill: #8fb0ff; } .chakra .sbc-special { fill: #1f4a4a; } }

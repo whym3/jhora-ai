@@ -11,13 +11,12 @@
 // the slot's style with the slot's body view (ChartDiagram, core/chartBodies.ts).
 import { useMemo, useState } from 'react';
 import type { ChartResult, ChartSpec } from '../../engine/protocol';
-import type { VargaName } from '../../core/vargas';
-import { VARGA_INDEX } from '../../core/vargaOptions';
 import type { JhoraIni } from '../../settings/generated';
 import { DEFAULTS } from '../../settings/generated';
 import { captionBand, ChartFigure } from '../ChartDiagram';
 import {
-  DEFAULT_SLOT, NATAL_CHART_NAME, OptionalBodies, SlotBar, StyleSelect, slotChart, useSlotMenu, useSlotSources, type SlotSettings,
+  DEFAULT_SLOT, NATAL_CHART_NAME, OptionalBodies, SlotBar, StyleSelect, TwoStylesButton, setSlotVarga, slotChart, useSlotLayout, useSlotMenu,
+  useSlotSources, type SlotSettings,
 } from '../shell/ChartPane';
 import { setIni, useStore } from '../state/store';
 import type { ChakraViewProps } from './common';
@@ -29,7 +28,7 @@ export interface ManyVargasProps extends ChakraViewProps {
   spec?: ChartSpec | null;
 }
 
-type Pick = (natalOnly: boolean) => { chart: ChartResult | ChakraViewProps['chart'] | null; name: string };
+type Pick = (natalOnly: boolean) => { chart: ChartResult | ChakraViewProps['chart'] | null; name: string; spec?: ChartSpec | null; bhavaSigns?: (number | null)[] | null };
 
 /** Number of charts and columns (packed: 12 in 4 x 3, else 6 in 3 x 2). */
 export function manyVargasLayout(ini: Partial<JhoraIni>) {
@@ -39,34 +38,35 @@ export function manyVargasLayout(ini: Partial<JhoraIni>) {
 
 function Grid({ pick, hasDerived, ini, spec }: { pick: Pick; hasDerived: boolean; ini: Partial<JhoraIni>; spec: ChartSpec | null }) {
   const prefs = useStore((s) => s.ini);
-  const style = useStore((s) => s.view.chartStyle);
   const { count, cols, gap } = manyVargasLayout(prefs);
-  const display = prefs.DisplayVarga ?? DEFAULTS.DisplayVarga;
-  const vargas = useMemo(() => Array.from({ length: count }, (_, i) => VARGA_INDEX[display[i] ?? 0] ?? 'D1'), [count, display]);
+  // DisplayVarga[i] in the slot's style (UseTwoChartStyles pairs, ChartPane.tsx useSlotLayout)
+  const layout = useSlotLayout(count);
   const [settings, setSettings] = useState<SlotSettings[]>(() => Array.from({ length: 12 }, () => DEFAULT_SLOT));
   const [selected, setSelected] = useState(0);
-  const slots = useMemo(() => vargas.map((v, i) => {
-    const src = pick(settings[i].natalOnly);
-    return src.chart ? slotChart(src.chart, ini, v, settings[i].view, src.name) : null;
-  }), [vargas, settings, pick, ini]);
-  const { onMenu, marks, overlay, note } = useSlotMenu(slots, spec);
+  const slots = useMemo(() => layout.map(({ varga }, i) => {
+    const s = settings[i];
+    const src = pick(s.natalOnly);
+    return src.chart ? slotChart(src.chart, ini, varga, s.view, src.name, { bhavaSigns: src.bhavaSigns, housesFrom: s.housesFrom, spec: src.spec ?? spec }) : null;
+  }), [layout, settings, pick, ini, spec]);
+  const update = (i: number, patch: Partial<SlotSettings>) => setSettings((x) => x.map((y, j) => (j === i ? { ...y, ...patch } : y)));
+  const { onMenu, marks, overlay, note } = useSlotMenu(slots, spec, {
+    setVarga: (i, v) => setSlotVarga(layout[i].at, v),
+    setHousesFrom: (i, b) => update(i, { housesFrom: b }),
+  });
+  const style = layout[0]?.style ?? 'south';
   const rowH = S + captionBand(style), rows = Math.ceil(count / cols);
   const W = 2 * M + cols * S + (cols - 1) * gap, H = 2 * M + rows * rowH + (rows - 1) * gap;
   const sel = Math.min(selected, count - 1);
-  const setVarga = (i: number, v: VargaName) => {
-    const next = [...display];
-    next[i] = VARGA_INDEX.indexOf(v);
-    setIni({ DisplayVarga: next });
-  };
   return (
     <div className="many-vargas-view">
       {overlay}
       <div className="slot-bar">
         <strong>Chart {sel + 1}</strong>
-        <SlotBar label={`Chart ${sel + 1}`} slot={slots[sel]} settings={settings[sel]} style={style} hasDerived={hasDerived}
+        <SlotBar label={`Chart ${sel + 1}`} slot={slots[sel]} settings={settings[sel]} style={layout[sel].style} hasDerived={hasDerived}
           onSettings={(s) => setSettings((x) => x.map((y, j) => (j === sel ? s : y)))}
-          varga={vargas[sel]} onVarga={(v) => setVarga(sel, v)} />
+          varga={layout[sel].varga} onVarga={(v) => setSlotVarga(layout[sel].at, v)} />
         <StyleSelect />
+        <TwoStylesButton />
         <OptionalBodies />
         <label title="Packed chart mode (more charts): MoreChartsOnBigDisplay">
           <input type="checkbox" checked={count === 12} onChange={(e) => setIni({ MoreChartsOnBigDisplay: e.target.checked ? 1 : 0 })} /> Packed chart mode
@@ -75,8 +75,8 @@ function Grid({ pick, hasDerived, ini, spec }: { pick: Pick; hasDerived: boolean
       <svg viewBox={`0 0 ${W} ${H}`} className="many-vargas" role="img" aria-label="Many Vargas">
         {slots.map((c, i) => c && (
           <ChartFigure key={i} x={M + (i % cols) * (S + gap)} y={M + Math.floor(i / cols) * (rowH + gap)} size={S}
-            style={style} signs={c.signs} lagnaSign={c.lagna} caption={c.caption}
-            highlights={marks[i]?.signs} bodyClasses={marks[i]?.bodyClasses}
+            style={layout[i].style} signs={c.signs} lagnaSign={c.lagna} caption={c.caption}
+            highlights={marks[i]?.signs} bodyClasses={marks[i]?.bodyClasses} extraCaption={c.extraCaption}
             onMenu={(e, sign, body) => { setSelected(i); onMenu(i)(e, sign, body); }}
             onSelect={() => setSelected(i)} />
         ))}

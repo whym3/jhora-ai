@@ -139,3 +139,30 @@ button.active { border-color: var(--accent); color: var(--accent); }
 .bg-grid { stroke: var(--line); stroke-width: 0.5; opacity: 0.5; }
 .bg-axis { stroke: var(--muted); stroke-width: 1; }
 .bg-tick, .bg-label { font-size: 10px; fill: var(--muted); }
+
+/* JHora's Edit / View / Preferences menus (MenuBar.tsx) and option dialogs (src/ui/dialogs) */
+.menubar { display: flex; gap: 4px; align-items: center; flex-wrap: wrap; }
+.menu { position: relative; }
+.menu > button { border-color: transparent; background: none; }
+.menu > button.active, .menu > button:hover { border-color: var(--line); background: var(--panel); }
+.menu-items { position: absolute; z-index: 55; top: calc(100% + 2px); left: 0; min-width: 300px; max-height: 75vh; overflow-y: auto;
+  background: var(--panel); border: 1px solid var(--line); border-radius: 6px; padding: 4px 0; box-shadow: 0 4px 16px rgb(0 0 0 / .18); }
+.menu-items button { display: flex; justify-content: space-between; gap: 16px; width: 100%; text-align: left; border: 0; border-radius: 0; background: none; padding: 4px 14px; font-size: .9rem; }
+.menu-items button:hover:not(:disabled) { background: var(--tab); }
+.menu-items hr { border: 0; border-top: 1px solid var(--line); margin: 4px 0; }
+.menu-heading { padding: 6px 14px 2px; font-size: .78rem; color: var(--muted); text-transform: uppercase; letter-spacing: .04em; }
+.opt-dialog { width: min(620px, 100%); }
+.opt-body { display: flex; flex-direction: column; gap: 8px; margin: 10px 0; }
+.opt-text { white-space: pre-line; font-size: .9rem; }
+.opt-row { display: flex; flex-wrap: wrap; gap: 6px; align-items: center; }
+.opt-group { font-weight: 600; border-bottom: 1px solid var(--line); padding-top: 4px; }
+.opt-check { display: flex; gap: 6px; align-items: flex-start; font-size: .9rem; white-space: pre-line; }
+.opt-body select { max-width: 100%; }
+.opt-body textarea, .notes-text { width: 100%; box-sizing: border-box; font: inherit; padding: 6px; background: var(--bg); color: var(--ink); border: 1px solid var(--line); border-radius: 4px; }
+.notes-text { font-family: ui-monospace, Consolas, monospace; min-height: 280px; }
+.opt-buttons { display: flex; flex-wrap: wrap; gap: 8px; justify-content: flex-end; }
+.colors-dialog { width: min(760px, 100%); }
+
+/* Dasas tab: Options / Locate dialogs and command messages (DasaOptions.tsx, DasasView.tsx) */
+.dasa-options, .dasa-message { display: flex; flex-direction: column; gap: 4px; border: 1px solid #ccc; padding: 8px; margin: 8px 0; }
+.dasa-options fieldset { display: flex; flex-direction: column; gap: 4px; }

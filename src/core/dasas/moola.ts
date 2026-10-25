@@ -11,6 +11,12 @@
 //    planet the rest of its vimsottari years;
 //  - antardasas run through the same planet order starting from the dasa lord,
 //    in proportion to the first-cycle years.
+// Options (dialog 2008, FUN_0044e2e0 / FUN_004d3800): LagnaUsedInMoolaDasa (DAT_00575e38),
+// MoonUsedInMoolaDasa (0x575e3c) and SunUsedInMoolaDasa (0x575e40) = 0 give that candidate a
+// count of 0 (0x410d82..0x410dac; the lagna stays the first candidate, so with count 0 it is
+// replaced by any occupied sign); MoolaDasaNoCorrectionInMoolaTrikona (0x597edc, FUN_004ad280
+// 0x4ad306): a planet in its moolatrikona sign gets its full Vimsottari years (correction 0
+// instead of 12).
 import type { Graha } from '../positions';
 import type { Period } from './vimsottari';
 import { DEBILITATION, EXALTATION, PLANETS, sortByStrength, strongerSignDignityFirst, type VargaCtx } from '../signStrength';
@@ -23,10 +29,22 @@ const VIMS: Record<Graha, number> = { Sun: 6, Moon: 10, Mars: 7, Mercury: 17, Ju
 
 export const MOOLA_TITLE = 'Moola Dasa (dasa showing the root of events - past karma)';
 
-export function moolaYears(g: Graha, ctx: VargaCtx): number {
+export interface MoolaOptions {
+  /** LagnaUsedInMoolaDasa, MoonUsedInMoolaDasa, SunUsedInMoolaDasa (default all used) */
+  lagna?: boolean;
+  moon?: boolean;
+  sun?: boolean;
+  /** MoolaDasaNoCorrectionInMoolaTrikona */
+  noMtCorrection?: boolean;
+}
+
+export function moolaYears(g: Graha, ctx: VargaCtx, o: MoolaOptions = {}): number {
   const s = ctx.sign(g);
   let n = mod12(MOOLATRIKONA[g] - s);
-  if (MOOLATRIKONA[g] === s) n = 12;
+  if (MOOLATRIKONA[g] === s) {
+    if (o.noMtCorrection) return VIMS[g];
+    n = 12;
+  }
   else if (EXALTATION[g] === s && n < 12) n++;
   else if (DEBILITATION[g] === s && n > 0) n--;
   const y = VIMS[g] - n;
@@ -34,12 +52,12 @@ export function moolaYears(g: Graha, ctx: VargaCtx): number {
 }
 
 /** The nine planets in Moola dasa order. */
-export function moolaOrder(lagna: number, ctx: VargaCtx): Graha[] {
+export function moolaOrder(lagna: number, ctx: VargaCtx, o: MoolaOptions = {}): Graha[] {
   const occ = (s: number) => PLANETS.filter((g) => ctx.sign(g) === s).length;
-  let best = occ(lagna) + 1;
+  let best = o.lagna === false ? 0 : occ(lagna) + 1;
   let cands = [lagna];
-  for (const s of [ctx.sign('Moon'), ctx.sign('Sun')]) {
-    const n = occ(s);
+  for (const [s, used] of [[ctx.sign('Moon'), o.moon !== false], [ctx.sign('Sun'), o.sun !== false]] as const) {
+    const n = used ? occ(s) : 0;
     if (n > best) { best = n; cands = [s]; } else if (n === best) cands.push(s);
   }
   const strongerSign = (a: number, b: number) => strongerSignDignityFirst(a, b, ctx);
@@ -50,9 +68,9 @@ export function moolaOrder(lagna: number, ctx: VargaCtx): Graha[] {
   return ordered.flatMap((s) => sortByStrength(PLANETS.filter((g) => ctx.sign(g) === s), (p, q) => strongerByDignity(p, q, ctx)));
 }
 
-export function moolaDasa(lagna: number, ctx: VargaCtx, levels = 2): Period[] {
-  const order = moolaOrder(lagna, ctx);
-  const first = order.map((g) => moolaYears(g, ctx));
+export function moolaDasa(lagna: number, ctx: VargaCtx, levels = 2, o: MoolaOptions = {}): Period[] {
+  const order = moolaOrder(lagna, ctx, o);
+  const first = order.map((g) => moolaYears(g, ctx, o));
   const total = first.reduce((a, x) => a + x, 0);
   const sub = (p: Period, k: number, depth: number): Period => {
     if (depth <= 0) return p;

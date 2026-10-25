@@ -1,17 +1,19 @@
 import type { Table } from '../../engine/protocol';
 import type { JobState } from '../EngineProvider';
+import { listCopyText } from '../../core/format/listCopy';
 
 interface Props { job: JobState<Table>; title?: string; onCopy?: () => void; onRowClick?: (index: number) => void }
 
-const TAB = String.fromCharCode(9);
 const CRLF = String.fromCharCode(13, 10);
 
-/** List-view twin of JHora's tables: same headers, tab-separated copy (or JHora's own text when the job provides it). */
+/**
+ * List-view twin of JHora's tables: same headers; "Copy to clipboard" writes JHora's list copy
+ * (FUN_004b9d30, src/core/format/listCopy.ts) or the job's own text when it provides one.
+ */
 export function TableView({ job, title, onCopy, onRowClick }: Props) {
   const copy = () => {
     if (!job.data) return;
-    const text = job.data.text ? job.data.text.join(CRLF)
-      : [job.data.headers.join(TAB), ...job.data.rows.map((r) => r.join(TAB))].join(CRLF);
+    const text = job.data.text ? job.data.text.join(CRLF) : listCopyText(job.data);
     navigator.clipboard?.writeText(text);
     onCopy?.();
   };

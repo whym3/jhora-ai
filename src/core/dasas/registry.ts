@@ -8,14 +8,21 @@
 //    (rasiCommon DasaSeed); Rasi-Bhukta Vimsottari (flags of slot 0), Tithi
 //    Ashtottari (69), Yoga Vimsottari (70), Tithi Yogini (72) and Karana
 //    Chaturaseeti (flags of slot 7) take their seed from the natal chart and
-//    advance it by the completed years n.
+//    advance it by the completed years n. Varnada (FUN_00407de0) reads its flags
+//    (0x8a1879 / 0x8a182d, 0x407e08..0x407e1c) but overwrites the value before using
+//    it (0x407e2d loads the lagna sign into the same register): no Tajaka seed;
+//  - overrides: the temporary strengths of the Options dialogs (overrides.ts).
+// Options read from the chart's ini: NarayanaDasaChart (DAT_00597ee8, dialog 2006: the
+// Narayana dasa of a D-n, FUN_00414060 0x4141e7..0x414233) and the Moola dasa candidates
+// (moola.ts).
 import type { Chart } from '../chart';
 import type { Graha } from '../positions';
 import type { Period } from './vimsottari';
 import type { VargaCtx } from '../signStrength';
 import type { VargaName } from '../vargas';
 import { DEFAULTS } from '../../settings/generated';
-import { rasiCtx, withDasaSeed } from './rasiCommon';
+import { dasaLord, JHORA_VARGAS, mod12, rasiCtx, withDasaSeed } from './rasiCommon';
+import { attachOverrides, vargaLabel, type StrengthOverrides } from './overrides';
 import { nakshatraSeedLon } from './nakshatra';
 import { narayanaDasa } from './narayana';
 import { SUDASA_TITLE, sudasa } from './sudasa';
@@ -38,7 +45,7 @@ import { MANDOOKA_D11_TITLE, mandookaD11Dasa } from './mandookaD11';
 import { MANDOOKA_KN_RAO_TITLE, mandookaKNRaoDasa } from './mandookaKNRao';
 import { NAVAMSA_TITLE, navamsaDasa } from './navamsa';
 import { VARNADA_TITLE, varnadaDasa } from './varnada';
-import { MOOLA_TITLE, moolaDasa } from './moola';
+import { MOOLA_TITLE, moolaDasa, type MoolaOptions } from './moola';
 import { NAISARGIKA_TITLE, naisargikaDasa } from './naisargika';
 import { TARA_TITLE, taraDasa } from './tara';
 import { KAALA_TITLE, kaalaDasa } from './kaala';
@@ -68,11 +75,44 @@ export interface DasaOptions {
   /** DAT_008a4b68: the chart's dasas are compressed into its period */
   compressed?: boolean;
   tajaka?: TajakaDasaSeed;
+  /** DAT_008a4b60 "Use Tribhagi variation" (menu 32971; tribhagi.ts) */
+  tribhagi?: boolean;
+  /** DAT_00597ed8: JHora varga index of the nakshatra dasas' seed chart (dialog 2055) */
+  nakVarga?: number;
+  /** FUN_0049a930's offset for the seed bodies of this chart (positions.ts nakshatraShift) */
+  nakShift?: number;
+  /** the same for the natal chart behind a Tajaka chart */
+  natalNakShift?: number;
+  /** temporary rasi dasa strengths of the "Options" dialogs (overrides.ts) */
+  overrides?: StrengthOverrides;
 }
 export type DasaBuilder = (chart: Chart, levels: number, opts?: DasaOptions) => BuiltDasa;
 
 const signOf = (lon: number) => Math.floor(lon / 30) % 12;
-const d1 = (chart: Chart): VargaCtx => ({ sign: (g: Graha) => signOf(chart.positions.grahas[g].lon), degree: (g: Graha) => chart.positions.grahas[g].lon % 30 });
+const d1 = (chart: Chart): VargaCtx => attachOverrides({ sign: (g: Graha) => signOf(chart.positions.grahas[g].lon), degree: (g: Graha) => chart.positions.grahas[g].lon % 30 }, chart);
+
+/** JHora's division of each varga index (0x591ed4). */
+export const VARGA_DIVISIONS = [1, 9, 2, 3, 4, 5, 6, 7, 8, 10, 11, 12, 16, 20, 24, 27, 30, 40, 45, 60, 81, 108, 144, 90, 150, 2, 30, 1, 9];
+
+/**
+ * FUN_00414060 with NarayanaDasaChart = v: for v = 0 the D-1 lagna (or the Tajaka Muntha); for
+ * another D-n the sign the dasa lord (FUN_004ad3f0 in D-n) of the n-th house from the D-1 lagna
+ * occupies in D-n (0x4141f5..0x41422f); then the D-n chart's strengths and signs throughout.
+ */
+function narayanaOf(c: Chart, levels: number): BuiltDasa {
+  const v = c.ini.NarayanaDasaChart ?? 0;
+  const lagna0 = rasiCtx(c, 0).lagna;
+  if (!v || !JHORA_VARGAS[v]) return narayanaDasa(lagna0, d1(c), 'D-1', levels);
+  const ctx = rasiCtx(c, v);
+  const lagna = ctx.sign(dasaLord(mod12(lagna0 + VARGA_DIVISIONS[v] - 1), ctx));
+  return narayanaDasa(lagna, ctx, vargaLabel(v, c.ini), levels);
+}
+
+/** The Moola dasa options of the chart's ini (dialog 2008). */
+export const moolaOptions = (c: Chart): MoolaOptions => ({
+  lagna: (c.ini.LagnaUsedInMoolaDasa ?? 1) !== 0, moon: (c.ini.MoonUsedInMoolaDasa ?? 1) !== 0, sun: (c.ini.SunUsedInMoolaDasa ?? 1) !== 0,
+  noMtCorrection: (c.ini.MoolaDasaNoCorrectionInMoolaTrikona ?? 0) !== 0,
+});
 const plain = (title: string, f: (c: Chart, levels: number) => Period[]): DasaBuilder => (c, levels) => ({ title, periods: f(c, levels) });
 
 /** UseDasaSeedFromNatalInTajaka / ProgressDasaSeedInTajaka of a slot (bytes 0x8a184c / 0x8a1800). */
@@ -93,7 +133,7 @@ const seededPlain = (slot: number, title: string, f: (c: Chart, levels: number) 
 
 /** Rasi dasas, labelled like JHora's menu items (slots 25.., yearDefinition.ts RASI_SLOTS). */
 export const RASI_DASAS: Record<string, DasaBuilder> = {
-  Narayana: munthaSeeded(25, (c, levels) => narayanaDasa(rasiCtx(c, 0).lagna, d1(c), 'D-1', levels)),
+  Narayana: munthaSeeded(25, narayanaOf),
   Lagnamsaka: seededPlain(26, LAGNAMSAKA_TITLE, (c, l) => lagnamsakaDasa(c, l)),
   Padanaathaamsa: plain(PADANATHAMSA_TITLE, (c, l) => padanathamsaDasa(c, l)),
   Sudasa: (c, levels) => {
@@ -108,7 +148,7 @@ export const RASI_DASAS: Record<string, DasaBuilder> = {
   'Chara (K.N. Rao)': seededPlain(34, CHARA_KN_RAO_TITLE, charaKNRaoDasa),
   'Chara (Rangacharya)': seededPlain(35, CHARA_IRANGANTI_TITLE, (c, l) => charaIrangantiDasa(c, l)),
   Yogardha: seededPlain(36, YOGARDHA_TITLE, (c, l) => yogardhaDasa(c, l)),
-  Paryaaya: munthaSeeded(37, (c, levels) => { const p = paryaayaDasa(c, levels); return { title: p.title, periods: p.periods }; }),
+  Paryaaya: munthaSeeded(37, (c, levels) => { const p = paryaayaDasa(c, levels, c.ini.ParyaayaDasaChart ?? 6); return { title: p.title, periods: p.periods }; }),
   Shoola: seededPlain(38, SHOOLA_TITLE, (c, l) => shoolaDasa(c, l)),
   'Niryaana Shoola': seededPlain(39, NIRYAANA_SHOOLA_TITLE, niryaanaShoolaDasa),
   Brahma: seededPlain(40, BRAHMA_TITLE, brahmaDasa),
@@ -130,7 +170,7 @@ function tajakaSeed(c: Chart, slot: number, opts?: DasaOptions): { chart: Chart;
 
 /** Other (mostly graha) dasas. */
 export const OTHER_DASAS: Record<string, DasaBuilder> = {
-  Moola: plain(MOOLA_TITLE, (c, l) => moolaDasa(signOf(c.positions.ascendant), d1(c), l)),
+  Moola: plain(MOOLA_TITLE, (c, l) => moolaDasa(signOf(c.positions.ascendant), d1(c), l, moolaOptions(c))),
   Naisargika: plain(NAISARGIKA_TITLE, naisargikaDasa),
   Tara: plain(TARA_TITLE, taraDasa),
   Kaala: plain(KAALA_TITLE, kaalaDasa),
@@ -143,8 +183,8 @@ export const OTHER_DASAS: Record<string, DasaBuilder> = {
     // seed NakshatraDasaStartPoint[0] (DAT_008a1670), like Vimsottari
     const point = c.ini.NakshatraDasaStartPoint?.[0] ?? DEFAULTS.NakshatraDasaStartPoint[0] ?? 0;
     const s = tajakaSeed(c, 0, opts);
-    if (s.chart === c) return { title: RASI_BHUKTA_VIMSOTTARI_TITLE, periods: rasiBhuktaVimsottariDasa(c, l, 0, nakshatraSeedLon(c, point)) };
-    const seed = nakshatraSeedLon(s.chart, point) + (s.n ?? 0) * NAK;
+    if (s.chart === c) return { title: RASI_BHUKTA_VIMSOTTARI_TITLE, periods: rasiBhuktaVimsottariDasa(c, l, 0, nakshatraSeedLon(c, point, { shift: opts?.nakShift })) };
+    const seed = nakshatraSeedLon(s.chart, point, { shift: opts?.natalNakShift }) + (s.n ?? 0) * NAK;
     return { title: RASI_BHUKTA_MUDDA_TITLE, periods: rasiBhuktaVimsottariDasa(s.chart, l, 0, ((seed % 360) + 360) % 360) };
   },
   Karaka: plain(KARAKA_TITLE, karakaDasa),

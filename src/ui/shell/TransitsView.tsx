@@ -17,6 +17,8 @@ import { SAHAMAS } from '../../core/sahamas';
 import { SIGN_NAMES } from '../../core/zodiac';
 import { useJob } from '../EngineProvider';
 import { TableView } from '../widgets/TableView';
+import { transitBirth } from '../../core/transits/common';
+import { MixedChartButton } from './MixedChartDialog';
 
 const MONTHS = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
 const BODIES = ['Lagna', 'Sun', 'Moon', 'Mars', 'Mercury', 'Jupiter', 'Venus', 'Saturn', 'Rahu', 'Ketu'];
@@ -88,6 +90,8 @@ export function BasicTransitView({ spec }: { spec: ChartSpec }) {
         <DateFields value={form} onChange={setForm} />
         <button onClick={() => setDate({ ...form })}>Show Transit Calculations</button>
         {date && <button onClick={() => setDate(null)}>Back to Natal Chart</button>}
+        {/* dialog 2025 button 1002 (handler 0x4853e0, MixedChartDialog.tsx): the transit chart ("Transit") around the natal one */}
+        <MixedChartButton label="Show Mixed Transit-Natal Chart" natalSpec={spec} outerSpec={date ? { ...spec, birth: transitBirth(spec.birth, date) } : null} outerName="Transit" />
       </div>
       <p className="status">Time is taken in the natal time zone, as JHora does.</p>
       <TransitList spec={spec} date={date} />

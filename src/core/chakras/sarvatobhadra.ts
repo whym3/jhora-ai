@@ -43,7 +43,10 @@
 //   33250 lattas          FUN_00474270 -> lattasOn
 //   33253 vedhas+aspects+lattas = 0x473e60 + 0x474000 + 0x474270 (FUN_00474410)
 import { NAK28, SIGNS } from '../zodiac';
-import { planetBodies, nakshatra28Of, vargaChart, type ChakraBody, type ChakraChart } from './common';
+import { bodyLongitude, planetBodies, nakshatra28Of, vargaChart, type ChakraBody, type ChakraChart } from './common';
+import { nakshatraOf } from '../zodiac';
+import { VARGA_INDEX } from '../vargaOptions';
+import { bhavaArudhaSigns } from '../arudhaPadas';
 
 export type SbcKind = 'nakshatra' | 'vowel' | 'consonant' | 'rasi' | 'tithi';
 
@@ -138,16 +141,20 @@ export function sarvatobhadraGrid(): SbcCell[] {
 /** Tithi group (0 Nanda .. 4 Poorna) of a tithi index 0..29. */
 export const tithiGroupOf = (tithi: number) => tithi % 5;
 
-/** `vargaIndex`: "Divisional chart used for transit positions" (33244, DAT_0088484c; JHora varga index). */
-export function sarvatobhadra(chart: ChakraChart, transit?: ChakraChart | null, vargaIndex = 0): Sarvatobhadra {
+/**
+ * `vargaIndex`: "Divisional chart used for transit positions" (33244, DAT_0088484c; JHora varga
+ * index); `natalVarga`: the natal chart's varga (DAT_00884850, set by the special-point dialogs).
+ */
+export function sarvatobhadra(chart: ChakraChart, transit?: ChakraChart | null, vargaIndex = 0, natalVarga = 0): Sarvatobhadra {
   const cells = sarvatobhadraGrid();
   const cur = vargaChart(transit ?? chart, vargaIndex);
   for (const b of planetBodies(cur, !!transit)) {
     const [r, c] = SBC_STAR_CELLS[nakshatra28Of(b.lon)];
     cells[r * 9 + c].bodies.push(b);
   }
-  const moon = nakshatra28Of(chart.positions.grahas.Moon.lon);
-  const lagna = nakshatra28Of(chart.positions.ascendant);
+  const natal = vargaChart(chart, natalVarga);
+  const moon = nakshatra28Of(natal.positions.grahas.Moon.lon);
+  const lagna = nakshatra28Of(natal.positions.ascendant);
   const special = SBC_SPECIAL_NAKSHATRAS.map(([name, n]) => ({
     name, fromMoon: NAK28[(moon + n - 1) % 28], fromLagna: NAK28[(lagna + n - 1) % 28],
   }));
@@ -232,3 +239,153 @@ export function lattasOn(cur: ChakraChart, row: number, col: number): number[] {
     return ((n - 1) * d + 56 + s) % 28 === star ? [i + 1] : [];
   });
 }
+
+// ---------------------------------------------------------------- special points
+//
+// The special-point boxes (view+0xd0, bytes [x*9 + y]) are filled with
+// ColorSBCViewSpecialPoint (brush 0x897824): the whole box, or an inset of 1/8 box when
+// the box is also highlighted (OnDraw 0x471dec). The context-menu commands (menu 152):
+//   32960 Set this box as a special point          FUN_00473de0
+//   32962 Reset this special point box             FUN_00473d70
+//   32959 Reset all special points                 FUN_00473d00 -> FUN_00471b50 (also clears highlights)
+//   32964 Special nakshatra (natal), dialog 2017   FUN_004748e0
+//   32965 Natal tara (nava-tara scheme), dlg 2016  FUN_004745d0
+//   32966 Special tithi (natal), dialog 2018       FUN_004753d0
+//   32967 House in natal chart, dialog 2019        FUN_00475500
+//   33243 Natal nakshatra of a planet, dlg 2058    FUN_00475740 (planet choice kept in DAT_00884854)
+//   33023 Special nakshatra from here, dlg 2017    FUN_00475130
+//   33022 Tara from here, dialog 2016              FUN_00474e20
+// Every dialog also picks the natal varga (DAT_00884850: "in the divisional chart"), which
+// stays selected for the natal chart (the special-nakshatra table) afterwards. The dialogs'
+// varga combos store the combo index as the varga index; dialog 2017 lists no D-81 / D-144,
+// so its "D-108" entry is JHora's varga 20 (D-81) - the port offers the varga indices.
+// 33022, 33023 and the highlight commands are enabled on outer non-corner boxes only (0x473af0).
+
+/** Dialog 2016's taras (nava-tara scheme). */
+export const SBC_TARAS = [
+  'Janma tara (birth)', 'Sampat tara (wealth)', 'Vipat tara (danger)', 'Kshema tara (well-being)', 'Pratyak tara (obstacles)',
+  'Sadhana tara (achievement)', 'Naidhana tara (death)', 'Mitra tara (friend)', 'Parama mitra tara (good friend)',
+];
+/** Dialog 2018's special tithis. */
+export const SBC_SPECIAL_TITHIS = [
+  'Janma tithi (1st)', 'Dhana tithi (2nd)', 'Bhratri tithi (3rd)', 'Matri tithi (4th)', 'Putra tithi (5th)', 'Satru tithi (6th)',
+  'Dara tithi (7th)', 'Mrityu tithi (8th)', 'Pitri tithi (9th)', 'Karma tithi (10th)', 'Laabha tithi (11th)', 'Vyaya tithi (12th)',
+];
+/** Dialog 2019's "from" references and their JHora body indices (FUN_00475500 local table). */
+export const SBC_HOUSE_REFS: [string, number][] = [
+  ['Lagna', 0], ['Arudha lagna', 59], ['Upapada lagna', 70], ['Hora lagna', 14], ['Ghati lagna', 15], ['Bhava lagna', 13],
+  ['Varnada lagna', 47], ['Sun', 1], ['Moon', 2], ['Mars', 3], ['Mercury', 4], ['Jupiter', 5], ['Venus', 6], ['Saturn', 7],
+  ['Rahu', 8], ['Ketu', 9],
+];
+/** Dialog 2058's planets and their JHora body indices (FUN_00475740 local table). */
+export const SBC_PLANET_POINTS: [string, number][] = [
+  ['Sun', 1], ['Moon', 2], ['Mars', 3], ['Mercury', 4], ['Jupiter', 5], ['Venus', 6], ['Saturn', 7], ['Rahu', 8], ['Ketu', 9],
+  ['Lagna', 0], ['Arudha lagna', 59], ['Upapada lagna', 70], ['Hora lagna', 14], ['Ghati lagna', 15], ['Bhava lagna', 13],
+  ['Varnada lagna', 47],
+];
+
+export interface SbcCellRef { row: number; col: number }
+
+const starCell = (k28: number): SbcCellRef => { const [row, col] = SBC_STAR_CELLS[k28]; return { row, col }; };
+/** FUN_004b22b0: 27-star index to the 28-star scheme; the 4th pada of U.Ashadha is Abhijit. */
+const to28 = (n27: number, pada: number) => (n27 > 20 || (n27 === 20 && pada === 3) ? n27 + 1 : n27);
+/** 0-based pada of a longitude (chart + 0x176e + body). */
+const padaIndex = (lon: number) => Math.floor((((lon % 360) + 360) % 360) / (40 / 3)) % 4;
+
+/**
+ * FUN_00474b80: the 27-star index of an outer box (x = col, y = row); Abhijit's box gives
+ * U.Ashadha. null for inner boxes (and corners, where JHora reads past its table).
+ */
+export function sbcStar27At(row: number, col: number): number | null {
+  const a = [16, 17, 18, 19, 20, 20, 21, 2, 3, 4, 5, 6, 7, 8, 22, 23, 24, 25, 26, 0, 1, 9, 10, 11, 12, 13, 14, 15];
+  if ((row === 0 || row === 8) && (col === 0 || col === 8)) return null;
+  if (col === 0) return a[7 - row];
+  if (col === 8) return a[6 + row];
+  if (row === 0) return a[13 + col];
+  if (row === 8) return a[28 - col];
+  return null;
+}
+
+/** The three boxes of a tara counted (nava-tara) from a 27-star index, Abhijit decided by `pada`. */
+function taraCells(from27: number, tara: number, pada: number): SbcCellRef[] {
+  const t = (from27 + tara) % 27;
+  return [t, (t + 9) % 27, (t + 18) % 27].map((n) => starCell(to28(n, pada)));
+}
+
+const moonOf = (natal: ChakraChart) => natal.positions.grahas.Moon.lon;
+
+/** 32964 (FUN_004748e0): special nakshatra `which` (SBC_SPECIAL_NAKSHATRAS) from the natal Moon in varga v. */
+export function sbcSpecialNakshatraNatal(natal: ChakraChart, which: number, v: number): SbcCellRef[] {
+  const n = SBC_SPECIAL_NAKSHATRAS[which][1];
+  return [starCell((n + 27 + nakshatra28Of(moonOf(vargaChart(natal, v)))) % 28)];
+}
+
+/** 33023 (FUN_00475130): special nakshatra `which` counted from the selected star box. */
+export function sbcSpecialNakshatraFrom(row: number, col: number, which: number): SbcCellRef[] {
+  const box = sbcStarAt(row, col);
+  if (box < 0) return [];
+  return [starCell((SBC_SPECIAL_NAKSHATRAS[which][1] + 27 + box) % 28)];
+}
+
+/** 32965 (FUN_004745d0): natal tara `tara` (SBC_TARAS) from the Moon of the natal chart in varga v. */
+export function sbcTaraNatal(natal: ChakraChart, tara: number, v: number): SbcCellRef[] {
+  const moon = moonOf(vargaChart(natal, v));
+  return taraCells(nakshatraOf(moon), tara, padaIndex(moon));
+}
+
+/**
+ * 33022 (FUN_00474e20): tara `tara` from the selected box's star; the Abhijit test uses the
+ * pada of the Moon in the natal varga in force before the dialog (`v`).
+ */
+export function sbcTaraFrom(natal: ChakraChart, row: number, col: number, tara: number, v: number): SbcCellRef[] {
+  const box = sbcStar27At(row, col);
+  if (box === null) return [];
+  return taraCells(box, tara, padaIndex(moonOf(vargaChart(natal, v))));
+}
+
+/**
+ * 32966 (FUN_004753d0): the tithi-group box of special tithi `which` (SBC_SPECIAL_TITHIS) of
+ * the natal chart in varga v: the (which+1)-th multiple of the Moon - Sun elongation (the
+ * table at chart+0x12034), its 0-based tithi mod 5 (Nanda .. Poorna).
+ */
+export function sbcSpecialTithi(natal: ChakraChart, which: number, v: number): SbcCellRef[] {
+  const g = vargaChart(natal, v).positions.grahas;
+  const elong = (((g.Moon.lon - g.Sun.lon) % 360) + 360) % 360;
+  const tithi = Math.floor(((((elong * (which + 1)) % 360) + 360) % 360) / 12);
+  const [row, col] = SBC_TITHI_CELLS[tithi % 5];
+  return [{ row, col }];
+}
+
+/** Sign of JHora body `b` in varga v (bhava arudhas through arudhaPadas.ts). */
+function bodySignIn(natal: ChakraChart, b: number, v: number): number | null {
+  if (b === 59 || b === 70) return bhavaArudhaSigns(natal, VARGA_INDEX[v] ?? 'D1')[b - 59];
+  const lon = bodyLongitude(vargaChart(natal, v), b);
+  return lon === null ? null : Math.floor(lon / 30) % 12;
+}
+
+/** 32967 (FUN_00475500): the rasi box of house `house` (0 = 1st) from reference `ref` (SBC_HOUSE_REFS) in varga v. */
+export function sbcHouse(natal: ChakraChart, house: number, ref: number, v: number): SbcCellRef[] {
+  const s = bodySignIn(natal, SBC_HOUSE_REFS[ref][1], v);
+  if (s === null) return [];
+  const [row, col] = SBC_RASI_CELLS[(s + house) % 12];
+  return [{ row, col }];
+}
+
+/**
+ * 33243 (FUN_00475740): the box of the natal nakshatra (28 stars) of body `which`
+ * (SBC_PLANET_POINTS) in varga v. JHora reads the body's nakshatra byte; the bhava arudhas
+ * (AL, UL) carry only a sign unless LongitudeBasedBhavaArudhas is on, so the port takes the
+ * start of their sign (an assumption: JHora's byte for them is not pinned down).
+ */
+export function sbcPlanetNakshatra(natal: ChakraChart, which: number, v: number): SbcCellRef[] {
+  const b = SBC_PLANET_POINTS[which][1];
+  if (b === 59 || b === 70) {
+    const s = bodySignIn(natal, b, v);
+    return s === null ? [] : [starCell(nakshatra28Of(s * 30))];
+  }
+  const lon = bodyLongitude(vargaChart(natal, v), b);
+  return lon === null ? [] : [starCell(nakshatra28Of(lon))];
+}
+
+/** Key of a box in the special-point set (row * 9 + col). */
+export const sbcKey = (c: SbcCellRef) => c.row * 9 + c.col;

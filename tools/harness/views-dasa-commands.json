@@ -1,0 +1,115 @@
+{
+ "_comment": "Dasa pane commands and options (tests/dasaCommands.test.ts reads golden/jhora-dasa-commands/<variant>/). Tab 1 captures plain nakshatra dasas, then posts 32971 'Use Tribhagi variation' (a session toggle: the modes after it, labelled 'Tribhagi <system>', are captured with Tribhagi on; no dasa_levels there because the level reset re-posts the mode command). Tab 2 runs with Tribhagi still on and captures the antardasas of the first Tribhagi Vimsottari maha dasa. Tabs 3-4: the rasi / other dasas whose options are ini keys. Run once per variant (capture.py --ini replaces every line of an array key, so one run sets one slot) and restore the copy's jhcore/jhora.ini afterwards:\n  python tools/harness/capture.py --jhora <copy> --views tools/harness/views-dasa-commands.json --out golden/jhora-dasa-commands/default golden/charts/*.jhd\n  ... --out golden/jhora-dasa-commands/narayana-d9 --ini NarayanaDasaChart=1\n  ... --out golden/jhora-dasa-commands/paryaaya-d9 --ini ParyaayaDasaChart=1\n  ... --out golden/jhora-dasa-commands/lagnamsaka-d1 --ini LagnamsakaDasaChart=0\n  ... --out golden/jhora-dasa-commands/moola-no-lagna --ini LagnaUsedInMoolaDasa=0\n  ... --out golden/jhora-dasa-commands/moola-no-moon --ini MoonUsedInMoolaDasa=0\n  ... --out golden/jhora-dasa-commands/moola-mt0 --ini MoolaDasaNoCorrectionInMoolaTrikona=1\n  ... --out golden/jhora-dasa-commands/vimsottari-shift1 --ini \"NakshatraDasaShift=0 1\"\n  ... --out golden/jhora-dasa-commands/vimsottari-reverse --ini \"AntiZodiacalDasa=0 1\"\n  ... --out golden/jhora-dasa-commands/saptarshi-shift3 --ini \"NakshatraDasaShift=12 3\"\n  ... --out golden/jhora-dasa-commands/kalachakra-lagna --ini \"NakshatraDasaStartPoint=2 4\"",
+ "tabs": [
+  {
+   "top": "Dasas",
+   "sub": "Nakshatra dasas",
+   "copies": {
+    "dasa": 32972,
+    "dasa_dates": 33236
+   },
+   "modes": [
+    [
+     "Vimsottari",
+     32846
+    ],
+    [
+     "Kalachakra",
+     32847
+    ],
+    [
+     "Yogini",
+     32848
+    ],
+    [
+     "Saptarshi nakshatra",
+     33329
+    ],
+    [
+     "Tribhagi Vimsottari",
+     32971
+    ],
+    [
+     "Tribhagi Ashtottari",
+     32854
+    ],
+    [
+     "Tribhagi Dwisaptati sama",
+     32855
+    ],
+    [
+     "Tribhagi Shattrimsa sama",
+     32856
+    ],
+    [
+     "Tribhagi Panchottari",
+     32861
+    ],
+    [
+     "Tribhagi Saptarshi nakshatra",
+     33329
+    ]
+   ]
+  },
+  {
+   "top": "Dasas",
+   "sub": "Nakshatra dasas",
+   "copies": {
+    "dasa": 32972,
+    "dasa_dates": 33236
+   },
+   "modes": [
+    [
+     "Tribhagi Vimsottari",
+     32846
+    ]
+   ],
+   "dasa_levels": true,
+   "dasa_level_rows": 1
+  },
+  {
+   "top": "Dasas",
+   "sub": "Rasi dasas",
+   "copies": {
+    "dasa": 32972,
+    "dasa_dates": 33236
+   },
+   "modes": [
+    [
+     "Narayana",
+     32849
+    ],
+    [
+     "Lagnamsaka",
+     33201
+    ],
+    [
+     "Padanaathaamsa",
+     33202
+    ],
+    [
+     "Paryaaya",
+     32873
+    ]
+   ],
+   "dasa_levels": true,
+   "dasa_level_rows": 1
+  },
+  {
+   "top": "Dasas",
+   "sub": "Other dasas",
+   "copies": {
+    "dasa": 32972,
+    "dasa_dates": 33236
+   },
+   "modes": [
+    [
+     "Moola",
+     32853
+    ]
+   ],
+   "dasa_levels": true,
+   "dasa_level_rows": 1
+  }
+ ]
+}

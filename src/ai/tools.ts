@@ -44,7 +44,7 @@ export const OTHER_DASA_SYSTEMS = ['Moola', 'Naisargika', 'Tara', 'Kaala', 'Chak
 export const VARGAS = ['D1', 'D2', 'D3', 'D4', 'D5', 'D6', 'D7', 'D8', 'D9', 'D10', 'D11', 'D12', 'D16', 'D20', 'D24', 'D27', 'D30', 'D40', 'D45', 'D60',
   'D81', 'D108', 'D144'];
 export const AV_MODES = ['BAVs and SAV', 'SoAV', 'PAV of Sun', 'PAV of Moon', 'PAV of Mars', 'PAV of Mercury', 'PAV of Jupiter', 'PAV of Venus',
-  'PAV of Saturn', 'PAV of Lagna', 'Sodhya pindas'];
+  'PAV of Saturn', 'PAV of Lagna', 'Sodhya pindas', 'Nakshatras & rasis'];
 export const YOGA_CATEGORIES = ['All yogas', 'Pancha maha purusha yogas', 'Solar yogas', 'Lunar yogas', 'Naabhasa yogas', 'Raja yogas',
   'Raja sambandha yogas', 'Dhana yogas', 'Daridra yogas', 'Parivraja yogas', 'Other popular yogas'];
 export const TRANSIT_MODES = ['Standard (tara, murthi, vedha)', 'Houses from lagna & Moon', 'Ashtakavarga related', 'Transits in special nakshatras',

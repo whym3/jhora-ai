@@ -1,0 +1,178 @@
+{
+ "_comment": "Basics options without goldens yet (tests/basicsOptions.test.ts skips while the output is absent). Run twice: (1) --out golden/jhora-basics-options with the default ini: Amsa rulers in every varga of menu 141 (32915-32929 set AmsaRulerVarga, 33064 restores D-150 at the end), the yoga pane's 'List of supported yogas' (33077 toggles DAT_00896ff5 on; each category command then refills it; the harness re-issues 33077 at the end, toggling it off), and Key Info for the body selection run below. (2) --out golden/jhora-bodies --ini BodyTypeOuterPlanet=1 --ini BodyTypeUpagraha=0 --ini BodyTypeVarnadas=0 --ini BodyTypeGrahaArudha=0 (the [BodiesToShow] flags edited by 32821 / 32930, dialog 130). The Key Info varga chooser (33242, DAT_0065b184) and the aspect evaluation options (33297, dialog 2066) are dialogs the harness cannot fill; capture them by hand if needed. Restore the copy's jhora.ini (BodyType* = defaults, AmsaRulerVarga=25) afterwards: JHora saves them on exit.",
+ "tabs": [
+  {
+   "top": "Basics",
+   "sub": "Amsa rulers",
+   "lists": true,
+   "copies": {
+    "table": 32976
+   },
+   "modes": [
+    [
+     "Nadyamsa (D-150)",
+     33064
+    ],
+    [
+     "Navamsa",
+     32915
+    ],
+    [
+     "Hora (D-2)",
+     32916
+    ],
+    [
+     "Drekkana (D-3)",
+     32917
+    ],
+    [
+     "Chaturthamsa (D-4)",
+     32918
+    ],
+    [
+     "Saptamsa (D-7)",
+     32919
+    ],
+    [
+     "Dasamsa (D-10)",
+     32920
+    ],
+    [
+     "Dwadasamsa (D-12)",
+     32921
+    ],
+    [
+     "Shodasamsa (D-16)",
+     32922
+    ],
+    [
+     "Vimsamsa (D-20)",
+     32923
+    ],
+    [
+     "Siddhamsa (D-24)",
+     32924
+    ],
+    [
+     "Nakshatramsa (D-27)",
+     32925
+    ],
+    [
+     "Trimsamsa (D-30)",
+     32926
+    ],
+    [
+     "Khavedamsa (D-40)",
+     32927
+    ],
+    [
+     "Akshavedamsa (D-45)",
+     32928
+    ],
+    [
+     "Shashtyamsa (D-60)",
+     32929
+    ],
+    [
+     "Nadyamsa (D-150)",
+     33064
+    ]
+   ]
+  },
+  {
+   "top": "Strengths",
+   "sub": "Other strengths",
+   "lists": true,
+   "copies": {
+    "yogas": 32975
+   },
+   "modes": [
+    [
+     "Supported: All yogas",
+     33077,
+     59680
+    ],
+    [
+     "Supported: Pancha maha purusha yogas",
+     33028,
+     59680
+    ],
+    [
+     "Supported: Solar yogas",
+     33029,
+     59680
+    ],
+    [
+     "Supported: Lunar yogas",
+     33030,
+     59680
+    ],
+    [
+     "Supported: Naabhasa yogas",
+     33031,
+     59680
+    ],
+    [
+     "Supported: Raja yogas",
+     33032,
+     59680
+    ],
+    [
+     "Supported: Raja sambandha yogas",
+     33033,
+     59680
+    ],
+    [
+     "Supported: Dhana yogas",
+     33036,
+     59680
+    ],
+    [
+     "Supported: Daridra yogas",
+     33034,
+     59680
+    ],
+    [
+     "Supported: Parivraja yogas",
+     33035,
+     59680
+    ],
+    [
+     "Supported: Other popular yogas",
+     33038,
+     59680
+    ]
+   ]
+  },
+  {
+   "top": "Basics",
+   "sub": "Key Info",
+   "lists": true,
+   "copies": {
+    "table": 32975
+   },
+   "modes": [
+    [
+     "Longitudes & Basic Info",
+     32822
+    ],
+    [
+     "Planetary Aspect Evaluation",
+     33296
+    ],
+    [
+     "All Divisional Longitudes",
+     33265
+    ],
+    [
+     "Rasis occupied in all vargas",
+     32823
+    ],
+    [
+     "Natal Longitudes",
+     33115
+    ]
+   ]
+  }
+ ]
+}

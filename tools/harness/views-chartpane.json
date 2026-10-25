@@ -1,0 +1,222 @@
+{
+ "_comment": "Chart pane and chart right-click menu 103 (src/ui/shell/ChartPane.tsx, ChartMenu.tsx, MixedChartDialog.tsx). Menu commands go to the active view, so they are posted on Chakras > Many Vargas (a CChartView fills it; slot 0 = D-1), each followed by Basics > Key Info (copy 32974: the birth time) with the mode label 'After: ...': 33076 When will lagna change (message box text in 'dialogs'), 33186 / 33187 move the birth time to the next / previous lagna sign, 33188 / 33189 undo the latest / all changes. Then the left chart pane on Basics > Key Info (GDI draws: 6 charts in packed mode, DisplayVarga[0..5]), Tajaka 2000 (button 1000) and the mixed Tajaka-natal window (button 1012, handler 0x4853e0: a new CMixedChartView frame, natal D-1 inside, Tajaka D-1 outside, 'Outer: Tajaka annual'), Chakras > Mixed 2-Vargas with the Tajaka chart shown, and back to the natal chart (1001). Runs: (a) no --ini -> golden/jhora-chartpane; (b) --ini UseTwoChartStyles=1 --ini ChartStyle2=2 -> golden/jhora-chartpane-twostyles (slots 2k and 2k+1 show DisplayVarga[2k] in ChartStyle and ChartStyle2); (c) --ini MoreChartsOnBigDisplay=0 -> golden/jhora-chartpane-unpacked (2 charts). Restore UseTwoChartStyles=0 and MoreChartsOnBigDisplay=1 in the copy's jhora.ini afterwards. tests/chartPane.test.ts skips while these directories are absent.",
+ "tabs": [
+  {
+   "top": "Chakras",
+   "sub": "Many Vargas",
+   "modes": [
+    [
+     "Before: When will lagna change",
+     null
+    ],
+    [
+     "When will lagna change",
+     33076
+    ]
+   ]
+  },
+  {
+   "top": "Chakras",
+   "sub": "Many Vargas",
+   "draw": true,
+   "modes": [
+    [
+     "Before: Lagna to next sign",
+     null
+    ],
+    [
+     "Lagna to next sign",
+     33186
+    ]
+   ]
+  },
+  {
+   "top": "Basics",
+   "sub": "Key Info",
+   "copies": {
+    "key_info": 32974
+   },
+   "pane_copies": [
+    "key_info"
+   ],
+   "modes": [
+    [
+     "After: Lagna to next sign",
+     32822
+    ]
+   ]
+  },
+  {
+   "top": "Chakras",
+   "sub": "Many Vargas",
+   "draw": true,
+   "modes": [
+    [
+     "Before: Lagna to next sign again",
+     null
+    ],
+    [
+     "Lagna to next sign again",
+     33186
+    ]
+   ]
+  },
+  {
+   "top": "Basics",
+   "sub": "Key Info",
+   "copies": {
+    "key_info": 32974
+   },
+   "pane_copies": [
+    "key_info"
+   ],
+   "modes": [
+    [
+     "After: Lagna to next sign again",
+     32822
+    ]
+   ]
+  },
+  {
+   "top": "Chakras",
+   "sub": "Many Vargas",
+   "draw": true,
+   "modes": [
+    [
+     "Before: Undo the latest change",
+     null
+    ],
+    [
+     "Undo the latest change",
+     33188
+    ]
+   ]
+  },
+  {
+   "top": "Basics",
+   "sub": "Key Info",
+   "copies": {
+    "key_info": 32974
+   },
+   "pane_copies": [
+    "key_info"
+   ],
+   "modes": [
+    [
+     "After: Undo the latest change",
+     32822
+    ]
+   ]
+  },
+  {
+   "top": "Chakras",
+   "sub": "Many Vargas",
+   "draw": true,
+   "modes": [
+    [
+     "Before: Lagna to previous sign",
+     null
+    ],
+    [
+     "Lagna to previous sign",
+     33187
+    ]
+   ]
+  },
+  {
+   "top": "Basics",
+   "sub": "Key Info",
+   "copies": {
+    "key_info": 32974
+   },
+   "pane_copies": [
+    "key_info"
+   ],
+   "modes": [
+    [
+     "After: Lagna to previous sign",
+     32822
+    ]
+   ]
+  },
+  {
+   "top": "Chakras",
+   "sub": "Many Vargas",
+   "draw": true,
+   "modes": [
+    [
+     "Before: Undo all changes",
+     null
+    ],
+    [
+     "Undo all changes",
+     33189
+    ]
+   ]
+  },
+  {
+   "top": "Basics",
+   "sub": "Key Info",
+   "copies": {
+    "key_info": 32974
+   },
+   "pane_copies": [
+    "key_info"
+   ],
+   "modes": [
+    [
+     "After: Undo all changes",
+     32822
+    ]
+   ]
+  },
+  {
+   "top": "Basics",
+   "sub": "Key Info",
+   "draw": true,
+   "modes": [
+    [
+     "Chart pane",
+     32822
+    ]
+   ]
+  },
+  {
+   "top": "Tajaka",
+   "sub": null,
+   "form": [
+    [
+     "edit",
+     100,
+     "2000"
+    ],
+    [
+     "click",
+     1000
+    ],
+    [
+     "click",
+     1012,
+     4.0
+    ]
+   ],
+   "draw": true
+  },
+  {
+   "top": "Chakras",
+   "sub": "Mixed 2-Vargas",
+   "draw": true
+  },
+  {
+   "top": "Tajaka",
+   "sub": null,
+   "form": [
+    [
+     "click",
+     1001,
+     2.0
+    ]
+   ]
+  }
+ ]
+}

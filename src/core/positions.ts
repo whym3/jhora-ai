@@ -218,8 +218,57 @@ export function nakshatraShift(swe: Sweph, jdUt: number, s: Settings): number {
   return 180 - swe.fixstarEt(jhoraStarName('Spica'), jdEt, calcFlags(s)).lon;
 }
 
+/** Place of a chart; pressure (mbar) and temperature (C) are the birth data's (used by refraction). */
+export interface GeoAtmo { lat: number; lon: number; alt: number; pressure?: number; temperature?: number }
+
+const D2R = Math.PI / 180;
+const degnorm = (x: number) => ((x % 360) + 360) % 360;
+/** swe_cotrans: rotate polar coordinates (deg) about the x axis by eps (deg). */
+function cotrans(lon: number, lat: number, eps: number): [number, number] {
+  const cl = Math.cos(lat * D2R);
+  const x = cl * Math.cos(lon * D2R), y = cl * Math.sin(lon * D2R), z = Math.sin(lat * D2R);
+  const se = Math.sin(eps * D2R), ce = Math.cos(eps * D2R);
+  const y2 = y * ce + z * se, z2 = -y * se + z * ce;
+  return [degnorm(Math.atan2(y2, x) / D2R), Math.atan2(z2, Math.sqrt(x * x + y2 * y2)) / D2R];
+}
+/** swe_refrac(inalt, atpress, attemp, SE_TRUE_TO_APP): Bennett's refraction of a true altitude. */
+export function refracTrueToApp(alt: number, press: number, temp: number): number {
+  const pt = (press / 1010.0) * 283.0 / (273.0 + temp);
+  let r = 0;
+  if (alt > 15) {
+    const a = Math.tan((90 - alt) * D2R);
+    r = ((58.276 * a - 0.0824 * a * a * a) * pt) / 3600.0;
+  } else if (alt > -5) {
+    const a = alt + 10.3 / (alt + 5.11);
+    r = a + 1e-10 >= 90 ? 0 : ((1.02 / Math.tan(a * D2R)) * pt) / 60.0;
+  }
+  return alt + r > 0 ? alt + r : alt;
+}
+
+/**
+ * ApparentRefraction (dialog 149) in FUN_0049aaa0 (0x49b882, only without TruePositions):
+ * the tropical ecliptic position from swe_calc goes through swe_azalt (SE_ECL2HOR), its
+ * true altitude through swe_refrac (TRUE_TO_APP, the chart's pressure and temperature) and
+ * back with swe_azalt_rev (SE_HOR2ECL); the ayanamsa is subtracted afterwards. Returns the
+ * new tropical longitude and latitude (swe_azalt / swe_azalt_rev transcribed: ARMC from
+ * swe_sidtime, true obliquity from SE_ECL_NUT).
+ */
+export function refractEcliptic(swe: Sweph, jdUt: number, jdEt: number, lon: number, lat: number, geo: GeoAtmo): [number, number] {
+  const armc = degnorm(swe.sidtime(jdUt) * 15 + geo.lon);
+  const eps = swe.calcEt(jdEt, SE.ECL_NUT, 0).lon;
+  // swe_azalt
+  const [ra, dec] = cotrans(lon, lat, -eps);
+  const mdd = degnorm(ra - armc);
+  const [h0, alt] = cotrans(degnorm(mdd - 90), dec, 90 - geo.lat);
+  const az = 360 - degnorm(h0 + 90);
+  const app = refracTrueToApp(alt, geo.pressure ?? 1013.25, geo.temperature ?? 20);
+  // swe_azalt_rev
+  const [h1, d1] = cotrans(degnorm(360 - az - 90), app, geo.lat - 90);
+  return cotrans(degnorm(h1 + armc + 90), d1, eps);
+}
+
 export function computePositions(
-  swe: Sweph, jdUt: number, geo: { lat: number; lon: number; alt: number }, s: Settings,
+  swe: Sweph, jdUt: number, geo: GeoAtmo, s: Settings,
 ): Positions {
   // Siddhanta=1: FUN_0049aaa0 branches to its Sri Surya Siddhanta code (src/core/sss)
   if (s.sss) return computePositionsSSS(jdUt, geo, s, swe);
@@ -228,18 +277,28 @@ export function computePositions(
   const jdEt = jdUt + (jhoraDeltaT(jdUt) ?? swe.deltaT(jdUt));
   const ay = ayanamsa(swe, jdUt, jdEt, s, geo.lon);
 
+  // ApparentRefraction: the refracted shift is applied to the reduced longitude (refractEcliptic)
+  const refr = s.refraction && !s.truePositions;
+  const calc = (body: number): Position => {
+    const p = bodyLongitude(swe, jdEt, body, flags, ay);
+    if (!refr) return p;
+    const trop = swe.calcEt(jdEt, body, flags);
+    const [lon, lat] = refractEcliptic(swe, jdUt, jdEt, trop.lon, trop.lat, geo);
+    return { ...p, lon: norm360(p.lon + lon - trop.lon), lat };
+  };
   const grahas = {} as Record<Graha, BodyPosition>;
   for (const g of Object.keys(SWE_ID) as (keyof typeof SWE_ID)[]) {
-    const p = bodyLongitude(swe, jdEt, SWE_ID[g], flags, ay);
+    const p = calc(SWE_ID[g]);
     grahas[g] = { lon: p.lon, lat: p.lat, speed: p.speedLon, retrograde: p.speedLon < 0 };
   }
-  const node = bodyLongitude(swe, jdEt, s.trueNodes ? SE.TRUE_NODE : SE.MEAN_NODE, flags, ay);
+  // Ketu: JHora computes the node again and adds 180 to the (refracted) result
+  const node = calc(s.trueNodes ? SE.TRUE_NODE : SE.MEAN_NODE);
   grahas.Rahu = { lon: node.lon, lat: node.lat, speed: node.speedLon, retrograde: true };
   grahas.Ketu = { lon: norm360(node.lon + 180), lat: -node.lat, speed: node.speedLon, retrograde: true };
 
   const outer = {} as Record<OuterPlanet, BodyPosition>;
   for (const o of Object.keys(OUTER_ID) as OuterPlanet[]) {
-    const p = bodyLongitude(swe, jdEt, OUTER_ID[o], flags, ay);
+    const p = calc(OUTER_ID[o]);
     outer[o] = { lon: p.lon, lat: p.lat, speed: p.speedLon, retrograde: p.speedLon < 0 };
   }
 

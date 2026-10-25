@@ -547,3 +547,20 @@ export function giversText(r: YogaRecord): string {
   if (r.cat === 4) return NAABHASA_GIVERS;
   return r.givers.map((g) => GIVER_NAMES[g] ?? '').join(', ');
 }
+
+/** Yogas per category 1..10 (0x586ed4) and the category names of "List of supported yogas" (FUN_00497290). */
+const YOGA_COUNTS = [5, 4, 7, 32, 57, 25, 15, 24, 6, 7];
+const YOGA_TYPES = ['All', 'Mahapurusha', 'Solar', 'Lunar', 'Naabhasa', 'Other popular', 'Raja', 'Raja Sambandha', 'Dhana', 'Daridra', 'Parivraja/Pravrajya'];
+
+/**
+ * "List of supported yogas" (33077 toggles DAT_00896ff5): FUN_004c2180 records every yoga of a
+ * category (0 = all, categories 1..10 in order) with FUN_004cb240's texts, at most 300.
+ */
+export function supportedYogas(category = 0): { cat: number; idx: number; type: string; name: string; definition: string; result: string }[] {
+  const out: { cat: number; idx: number; type: string; name: string; definition: string; result: string }[] = [];
+  for (let cat = 1; cat <= 10; cat++) {
+    if (category && cat !== category) continue;
+    for (let idx = 0; idx < YOGA_COUNTS[cat - 1] && out.length < 300; idx++) out.push({ cat, idx, type: YOGA_TYPES[cat], ...meta(cat, idx) });
+  }
+  return out;
+}

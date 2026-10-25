@@ -21,6 +21,7 @@ import type { Period } from './vimsottari';
 import { strongerSign, type VargaCtx } from '../signStrength';
 import { strongerByDignity } from '../deities';
 import { buildRasiDasa, JHORA_VARGA_NAMES, lordOfStrong7Run, mod12, narayanaYearsWithLord, rasiCtx } from './rasiCommon';
+import { startOverride } from './overrides';
 
 export type ParyaayaKind = 'Chara' | 'Sthira' | 'Ubhaya';
 export const PARYAAYA_DEFAULT_VARGA = 6;
@@ -54,7 +55,8 @@ export interface ParyaayaDasa { kind: ParyaayaKind; title: string; periods: Peri
 /** @param vargaIndex JHora varga index of ParyaayaDasaChart (default 6 = D-6). */
 export function paryaayaDasa(chart: Chart, levels = 2, vargaIndex = PARYAAYA_DEFAULT_VARGA): ParyaayaDasa {
   const ctx = rasiCtx(chart, vargaIndex);
-  const ref = (DIVISION[vargaIndex] + 11 + ctx.lagna) % 12;
+  // chart+0x17e40[varga] ("Start dasas from" of dialog 2011, overrides.ts) replaces the reference sign
+  const ref = startOverride(ctx) ?? (DIVISION[vargaIndex] + 11 + ctx.lagna) % 12;
   const kind: ParyaayaKind = ref % 3 === 0 ? 'Ubhaya' : ref % 3 === 1 ? 'Sthira' : 'Chara';
   const start = CANDIDATES[kind].reduce((acc, k) => strongerSign(acc, mod12(ref + k), ctx), ref);
   const dir = footedDirection(start, ctx);

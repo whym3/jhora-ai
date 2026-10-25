@@ -1,13 +1,15 @@
 // One-call chart computation used by the UI: birth data -> positions in any varga.
 import type { Sweph } from '../sweph';
 import { birthJdUt, type BirthData } from './jhd';
-import { computePositions, GRAHAS, type Graha, type Positions } from './positions';
+import { computePositions, GRAHAS, nakshatraShift, type Graha, type Positions } from './positions';
+import { applyNodalExaltation } from './signStrength';
 import { calcSettingsFromIni } from './settings';
 import { vargaLongitude, type VargaName } from './vargas';
 import { vargaSpec, type VargaIni } from './vargaOptions';
 import { DEFAULTS, type JhoraIni } from '../settings/generated';
 import { allBodies, type NamedBody } from './longitudes';
 import { dayFrame, type DayFrame } from './day';
+import { userPoints, type UserPoint } from './userPoints';
 
 export interface ChartBody { id: Graha | 'Lagna'; label: string; lon: number; retrograde: boolean }
 
@@ -22,6 +24,13 @@ export interface Chart {
   longitudes: NamedBody[];
   /** sunrise/sunset frame of the birth */
   day: DayFrame;
+  /**
+   * FUN_0049a930's offset added to body longitudes before their nakshatras are found
+   * (SiderealNaksharasInTropical with the tropical zodiac; 0 otherwise). positions.ts nakshatraShift.
+   */
+  nakshatraShift?: number;
+  /** Edit menu's special point and planetary special lagna, when on (src/core/userPoints.ts) */
+  userPoints?: UserPoint[];
 }
 
 export const SHORT_LABEL: Record<Graha | 'Lagna', string> = {
@@ -31,12 +40,14 @@ export const SHORT_LABEL: Record<Graha | 'Lagna', string> = {
 
 export async function computeChart(swe: Sweph, input: BirthData, iniOverrides: Partial<JhoraIni> = {}): Promise<Chart> {
   const ini: JhoraIni = { ...DEFAULTS, ...iniOverrides };
+  // NodalExaltationParasara: JHora patches its exaltation tables when the option is set (FUN_004b9280)
+  applyNodalExaltation(ini.NodalExaltationParasara !== 0);
   // a file without an altitude field gets DefaultAltitude, in the calculations too (it moves
   // e.g. a local eclipse's contacts: 0.16 s for 425 m)
   const birth = input.altitudeGiven === false ? { ...input, altitudeM: ini.DefaultAltitude } : input;
   const jd = birthJdUt(birth, (y, m, d, h) => swe.julday(y, m, d, h));
   await swe.ensureEphemeris(jd);
-  const geo = { lat: birth.lat, lon: birth.lon, alt: birth.altitudeM };
+  const geo = { lat: birth.lat, lon: birth.lon, alt: birth.altitudeM, pressure: birth.pressureMbar, temperature: birth.temperatureC };
   const settings = calcSettingsFromIni(ini);
   const positions = applyOverride(computePositions(swe, jd, geo, settings), birth);
   const day = dayFrame(swe, jd, geo, settings, ini.SunriseDefinition);
@@ -48,7 +59,11 @@ export async function computeChart(swe: Sweph, input: BirthData, iniOverrides: P
       retrograde: positions.grahas[g].retrograde && g !== 'Rahu' && g !== 'Ketu',
     })),
   ];
-  return { birth, ini, positions, bodies, longitudes, day };
+  const chart: Chart = { birth, ini, positions, bodies, longitudes, day };
+  const shift = nakshatraShift(swe, jd, settings);
+  if (shift) chart.nakshatraShift = shift;
+  chart.userPoints = userPoints(swe, chart);
+  return chart;
 }
 
 /** Substitute a derived chart's fixed longitudes (BirthData.override) into computed positions. */

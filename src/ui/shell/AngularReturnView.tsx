@@ -11,6 +11,7 @@ import { useJob } from '../EngineProvider';
 import { TableView } from '../widgets/TableView';
 import { updateChart, useActiveDoc } from '../state/store';
 import { DerivedDasaPane, type DasaTable } from './DasasView';
+import { MixedChartButton } from './MixedChartDialog';
 
 const DASA_BUTTONS: readonly (readonly [string, DasaTable, string])[] = [
   ['Vimsottari dasa', 'dasas.nakshatra', 'Vimsottari'], ['Narayana dasa', 'dasas.rasi', 'Narayana'],
@@ -87,6 +88,8 @@ export function AngularReturnView({ natalSpec, docId }: { natalSpec: ChartSpec; 
       <div className="subview-bar">
         <button onClick={() => setRequest(form)}>Find Angular Return Chart</button>
         {active && <button onClick={() => updateChart(docId, { derived: null })}>Back to Natal Chart</button>}
+        {/* dialog 2061 button 1019 (handler 0x4853e0, MixedChartDialog.tsx) */}
+        <MixedChartButton label="Mixed TP-Natal Chart" natalSpec={natalSpec} outerSpec={doc?.derived ? { ...natalSpec, birth: doc.derived.birth } : null} outerName={doc?.derived?.label ?? ''} />
       </div>
       {found.status === 'loading' && <p className="status">Searching for the angular return…</p>}
       {found.status === 'error' && <p className="error">{found.error}</p>}

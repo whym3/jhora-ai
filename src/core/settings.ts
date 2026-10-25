@@ -104,6 +104,8 @@ export interface Settings {
   noGravDeflection: boolean;
   /** TrueNodes: true (osculating) instead of mean nodes */
   trueNodes: boolean;
+  /** ApparentRefraction (dialog 149): refract apparent positions (ignored with TruePositions) */
+  refraction?: boolean;
   /** Siddhanta=1: Sri Surya Siddhanta planetary model (src/core/sss) */
   sss?: boolean;
   /** UserSelectedAyanamsa=18: SSS ayanamsa (same as ayanamsa === 'sss') */
@@ -135,6 +137,7 @@ export function calcSettingsFromIni(ini: Partial<JhoraIni>): Settings {
     noAberration: s.NoAberration !== 0,
     noGravDeflection: s.NoGravDeflection !== 0,
     trueNodes: s.TrueNodes !== 0,
+    refraction: s.ApparentRefraction !== 0,
     sss: s.Siddhanta === 1,
     sssAyanamsa: ayanamsa === 'sss',
   };

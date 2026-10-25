@@ -70,7 +70,11 @@ export function kalachakraLevel(p: Period, id: number, maha: boolean, rohini4InL
 /** Table id (pada mod 108) of the i-th maha dasa from the Moon's pada. */
 export const kalachakraMahaId = (moonLon: number, i: number) => (Math.floor(moonLon / (360 / 108)) + i) % 108;
 
-export function kalachakraDasa(moonLon: number, count = 9, rohini4InLeo = true, levels = 2): Kalachakra {
+/**
+ * @param from the seed name (SEED_TITLE_NAMES) and the varga name of the title's
+ *   "From %s of %s, ..." (FUN_0040c540 0x40dbf6, the obj+0x76d38 extra)
+ */
+export function kalachakraDasa(moonLon: number, count = 9, rohini4InLeo = true, levels = 2, from = { seed: 'Moon', varga: 'D-1' }): Kalachakra {
   const PADA = 360 / 108;
   const p0 = Math.floor(moonLon / PADA);
   const frac = (moonLon - p0 * PADA) / PADA;
@@ -91,7 +95,7 @@ export function kalachakraDasa(moonLon: number, count = 9, rohini4InLeo = true, 
   const [deha, jiva] = savya ? [first, last] : [last, first];
   const paramayush = periods.reduce((a, q) => a + (q.end - q.start), 0);
   return {
-    title: `Kalachakra Dasa (From Moon of D-1, ${savya ? 'Savya' : 'Apasavya'}, Paramayush: ${Math.round(paramayush)} yr, Deha: ${SIGNS[deha]}, Jiva: ${SIGNS[jiva]})`,
+    title: `Kalachakra Dasa (From ${from.seed} of ${from.varga}, ${savya ? 'Savya' : 'Apasavya'}, Paramayush: ${Math.round(paramayush)} yr, Deha: ${SIGNS[deha]}, Jiva: ${SIGNS[jiva]})`,
     periods,
   };
 }

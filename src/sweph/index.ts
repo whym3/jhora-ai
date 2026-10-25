@@ -197,6 +197,12 @@ export class Sweph {
     return this.f64(0);
   }
 
+  /** swe_sidtime: Greenwich apparent sidereal time, hours. */
+  sidtime(jdUt: number): number {
+    this.ut(jdUt);
+    return this.m._swe_sidtime(jdUt);
+  }
+
   setTopo(lon: number, lat: number, altM: number): void {
     this.m._swe_set_topo(lon, lat, altM);
   }

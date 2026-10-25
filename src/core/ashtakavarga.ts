@@ -9,7 +9,21 @@
 //   Moon from Jupiter 2nd (option 2) or 12th (option 3 off),
 //   Venus from Mars 4th (option 4) or 5th (option 5 off).
 // All six options are on by default, so the first house of each pair counts.
+//
+// The other options of dialog 165 ("Ashtakavarga Calculation Options", Preferences 33157,
+// FUN_004e7db0), all read by FUN_00498570:
+//   AshtakaVargaDefinition (0x585ea4, default 1): 0 reverses the meaning - the bindu of
+//     owner o from contributor c (counted from c) goes to c's BAV instead of o's;
+//   BhavaDrivenSarvaAshtakaVarga (0x896ffc): SAV by houses - house h of the SAV adds each
+//     BAV's count in the h-th sign from that body (the lagna's sign is house 1);
+//   EightAVInSAV (0x8a4c11): the lagna's BAV is added to the SAV too.
+// Menu 106 "Recompute taking another sign as lagna" (32973, FUN_004246e0) shifts the
+// lagna of one varga (AV object +0x8540 + varga*4) before all of this; 33097 resets it.
+// Menu 106 "Show nakshatras & rasis from sodhya pindas" (32843, draw mode 3, FUN_00423420):
+// for every sign and body, the raw BAV count times the body's sodhya pinda, mod 27 and
+// mod 12 (1-based), named as a nakshatra and a rasi.
 import type { Graha } from './positions';
+import { DEFAULTS, type JhoraIni } from '../settings/generated';
 
 export type AvBody = 'Lagna' | 'Sun' | 'Moon' | 'Mars' | 'Mercury' | 'Jupiter' | 'Venus' | 'Saturn';
 export const AV_BODIES: AvBody[] = ['Lagna', 'Sun', 'Moon', 'Mars', 'Mercury', 'Jupiter', 'Venus', 'Saturn'];
@@ -39,6 +53,32 @@ const OPTION_CELLS: [AvBody, AvBody, number][] = [
 export type AvOptions = [boolean, boolean, boolean, boolean, boolean, boolean];
 export const AV_DEFAULT_OPTIONS: AvOptions = [true, true, true, true, true, true];
 
+/** All of dialog 165's options. */
+export interface AvCalcOptions {
+  /** AshtakaVargaCalculation (the six Parasara/Varahamihira flags) */
+  cells: AvOptions;
+  /** AshtakaVargaDefinition = 0 */
+  reversed: boolean;
+  /** BhavaDrivenSarvaAshtakaVarga */
+  bhavaSav: boolean;
+  /** EightAVInSAV */
+  eightInSav: boolean;
+}
+
+export function avOptionsFromIni(ini: Partial<JhoraIni> = {}): AvCalcOptions {
+  const cells = (ini.AshtakaVargaCalculation ?? DEFAULTS.AshtakaVargaCalculation).slice(0, 6).map((x) => x !== 0) as AvOptions;
+  while (cells.length < 6) cells.push(true);
+  return {
+    cells,
+    reversed: (ini.AshtakaVargaDefinition ?? DEFAULTS.AshtakaVargaDefinition) === 0,
+    bhavaSav: (ini.BhavaDrivenSarvaAshtakaVarga ?? DEFAULTS.BhavaDrivenSarvaAshtakaVarga) !== 0,
+    eightInSav: (ini.EightAVInSAV ?? DEFAULTS.EightAVInSAV) !== 0,
+  };
+}
+
+const calcOf = (o: AvOptions | AvCalcOptions): AvCalcOptions =>
+  (Array.isArray(o) ? { cells: o, reversed: false, bhavaSav: false, eightInSav: false } : o);
+
 function rulesFor(opts: AvOptions): Record<AvBody, Record<AvBody, number[]>> {
   const r = Object.fromEntries(AV_BODIES.map((b) => [b, Object.fromEntries(AV_BODIES.map((c) => [c, RULES[b][c].slice()]))])) as Record<AvBody, Record<AvBody, number[]>>;
   OPTION_CELLS.forEach(([b, c, h], i) => {
@@ -53,22 +93,28 @@ function rulesFor(opts: AvOptions): Record<AvBody, Record<AvBody, number[]>> {
 const RASI_MULT = [7, 10, 8, 4, 10, 5, 7, 8, 9, 5, 11, 12];
 const GRAHA_MULT: Record<string, number> = { Sun: 5, Moon: 5, Mars: 8, Mercury: 5, Jupiter: 10, Venus: 7, Saturn: 5 };
 
-/** Bindus per sign (Aries first) for each body, from the bodies' signs. */
-export function bhinnashtakavargas(sign: (b: AvBody) => number, opts: AvOptions = AV_DEFAULT_OPTIONS): Record<AvBody, number[]> {
-  const rules = rulesFor(opts);
-  const out = {} as Record<AvBody, number[]>;
-  for (const body of AV_BODIES) {
-    const bav = new Array(12).fill(0);
-    for (const c of AV_BODIES) for (const h of rules[body][c]) bav[(sign(c) + h - 1) % 12]++;
-    out[body] = bav;
+/**
+ * Bindus per sign (Aries first) for each body, from the bodies' signs. With the reversed
+ * definition the bindu of owner o from contributor c goes to c's BAV (sign counted from c).
+ */
+export function bhinnashtakavargas(sign: (b: AvBody) => number, opts: AvOptions | AvCalcOptions = AV_DEFAULT_OPTIONS): Record<AvBody, number[]> {
+  const o = calcOf(opts);
+  const rules = rulesFor(o.cells);
+  const out = Object.fromEntries(AV_BODIES.map((b) => [b, new Array(12).fill(0)])) as Record<AvBody, number[]>;
+  for (const owner of AV_BODIES) {
+    for (const c of AV_BODIES) for (const h of rules[owner][c]) out[o.reversed ? c : owner][(sign(c) + h - 1) % 12]++;
   }
   return out;
 }
 
-/** Sum of the seven planets' BAVs (JHora's default leaves the lagna's out). */
-export function sarvashtakavarga(bav: Record<AvBody, number[]>, withLagna = false): number[] {
+/**
+ * SAV: sum of the seven planets' BAVs (the lagna's too with EightAVInSAV); by houses
+ * (BhavaDrivenSarvaAshtakaVarga) sign s takes each BAV's count in the sign as far from
+ * the body as s is from the lagna (`lagna` = the lagna's sign).
+ */
+export function sarvashtakavarga(bav: Record<AvBody, number[]>, withLagna = false, bhava?: { lagna: number; sign: (b: AvBody) => number }): number[] {
   const bodies = withLagna ? AV_BODIES : AV_BODIES.slice(1);
-  return Array.from({ length: 12 }, (_, s) => bodies.reduce((a, b) => a + bav[b][s], 0));
+  return Array.from({ length: 12 }, (_, s) => bodies.reduce((a, b) => a + bav[b][bhava ? (s - bhava.lagna + 12 + bhava.sign(b)) % 12 : s], 0));
 }
 
 /** Trikona reduction: each fire/earth/air/water triad loses its minimum; three equal values all become 0. */
@@ -125,8 +171,9 @@ export interface Ashtakavarga {
 }
 
 /** Full AV of a chart given each body's sign in the chosen varga. */
-export function ashtakavarga(sign: (b: AvBody) => number, opts: AvOptions = AV_DEFAULT_OPTIONS): Ashtakavarga {
-  const bav = bhinnashtakavargas(sign, opts);
+export function ashtakavarga(sign: (b: AvBody) => number, opts: AvOptions | AvCalcOptions = AV_DEFAULT_OPTIONS): Ashtakavarga {
+  const o = calcOf(opts);
+  const bav = bhinnashtakavargas(sign, o);
   const occupied = (s: number) => AV_PLANETS.some((g) => sign(g as AvBody) === s);
   const reduced = {} as Record<AvBody, number[]>;
   const pindas = {} as Record<AvBody, SodhyaPinda>;
@@ -134,19 +181,38 @@ export function ashtakavarga(sign: (b: AvBody) => number, opts: AvOptions = AV_D
     reduced[b] = ekadhipatyaSodhana(trikonaSodhana(bav[b]), occupied);
     pindas[b] = sodhyaPinda(reduced[b], (g) => sign(g as AvBody));
   }
-  return { bav, sav: sarvashtakavarga(bav), reduced, pindas };
+  const sav = sarvashtakavarga(bav, o.eightInSav, o.bhavaSav ? { lagna: sign('Lagna'), sign } : undefined);
+  return { bav, sav, reduced, pindas };
+}
+
+/** Lagna moved `shift` signs on (menu 106, 32973): the sign function the AV is computed from. */
+export const shiftLagna = (sign: (b: AvBody) => number, shift: number) => (b: AvBody) => (b === 'Lagna' ? (sign(b) + shift) % 12 : sign(b));
+
+/**
+ * Menu 106 "Show nakshatras & rasis from sodhya pindas" (FUN_00423420): for sign s and
+ * body b, n = BAV count x sodhya pinda; nakshatra mod1(n, 27) - 1 and rasi mod1(n, 12) - 1.
+ */
+export function pindaNakshatras(av: Ashtakavarga): Record<AvBody, { nakshatra: number; rasi: number }[]> {
+  const mod1 = (x: number, n: number) => { const r = x % n; return r === 0 ? n : r; };
+  return Object.fromEntries(AV_BODIES.map((b) => [b, av.bav[b].map((c) => {
+    const n = c * av.pindas[b].total;
+    return { nakshatra: mod1(n, 27) - 1, rasi: mod1(n, 12) - 1 };
+  })])) as Record<AvBody, { nakshatra: number; rasi: number }[]>;
 }
 
 /**
  * Prastara (PAV) of one body: for each contributor (Lagna, Sun..Saturn) the
  * signs where it gives this body a bindu, as 0/1 per sign.
  */
-export function prastara(owner: AvBody, sign: (b: AvBody) => number, opts: AvOptions = AV_DEFAULT_OPTIONS): Record<AvBody, number[]> {
-  const rules = rulesFor(opts);
+export function prastara(owner: AvBody, sign: (b: AvBody) => number, opts: AvOptions | AvCalcOptions = AV_DEFAULT_OPTIONS): Record<AvBody, number[]> {
+  const o = calcOf(opts);
+  const rules = rulesFor(o.cells);
   const out = {} as Record<AvBody, number[]>;
   for (const c of AV_BODIES) {
     const row = new Array(12).fill(0);
-    for (const h of rules[owner][c]) row[(sign(c) + h - 1) % 12] = 1;
+    // reversed: row c of owner's PAV holds c's bindus to owner, counted from owner (FUN_00498570's 0x188c table)
+    if (o.reversed) for (const h of rules[c][owner]) row[(sign(owner) + h - 1) % 12] = 1;
+    else for (const h of rules[owner][c]) row[(sign(c) + h - 1) % 12] = 1;
     out[c] = row;
   }
   return out;

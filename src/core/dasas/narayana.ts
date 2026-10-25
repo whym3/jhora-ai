@@ -17,12 +17,17 @@ import { SIGNS } from '../zodiac';
 import { DEBILITATION, EXALTATION, signLordByDistance, strongerSign, type VargaCtx } from '../signStrength';
 import { strongerByDignity } from '../deities';
 import { narayanaTypeSequence } from './rasiCommon';
+import { lordOverride, pairOverride, skOverride, startOverride } from './overrides';
+
+/** strongerSign / signLordByDistance with the temporary strengths of overrides.ts. */
+const stronger = (a: number, b: number, ctx: VargaCtx) => pairOverride(a, b, ctx) ?? strongerSign(a, b, ctx);
+const lordOf = (sign: number, ctx: VargaCtx): Graha => lordOverride(sign, ctx) ?? signLordByDistance(sign, ctx);
 
 const mod12 = (x: number) => ((x % 12) + 12) % 12;
 const ODD_FOOTED = new Set([0, 1, 2, 6, 7, 8]);
 
 export function narayanaYears(sign: number, ctx: VargaCtx): number {
-  const lord: Graha = signLordByDistance(sign, ctx);
+  const lord: Graha = lordOf(sign, ctx);
   const ls = ctx.sign(lord);
   if (ls === sign) return 12;
   let n = ODD_FOOTED.has(sign) ? mod12(ls - sign) : mod12(sign - ls);
@@ -34,7 +39,7 @@ export function narayanaYears(sign: number, ctx: VargaCtx): number {
 export interface NarayanaDasa { title: string; periods: Period[] }
 
 export function narayanaDasa(lagna: number, ctx: VargaCtx, varga = 'D-1', levels = 2): NarayanaDasa {
-  const start = strongerSign(lagna, mod12(lagna + 6), ctx);
+  const start = startOverride(ctx) ?? stronger(lagna, mod12(lagna + 6), ctx);
   const seq = narayanaTypeSequence(start, ctx);
   const first = seq.map((s) => narayanaYears(s, ctx));
   const periods: Period[] = [];
@@ -52,8 +57,8 @@ export function narayanaDasa(lagna: number, ctx: VargaCtx, varga = 'D-1', levels
 export function narayanaAntardasas(p: Period, sign: number, ctx: VargaCtx, levels: number): Period {
   if (levels <= 0) return p;
   const low = sign % 6;
-  const strong = strongerSign(low, low + 6, ctx);
-  const from = ctx.sign(signLordByDistance(strong, ctx));
+  const strong = stronger(low, low + 6, ctx);
+  const from = ctx.sign(lordOf(strong, ctx));
   const dir = sequenceDirection(from, ctx, strong);
   const len = (p.end - p.start) / 12;
   const children = Array.from({ length: 12 }, (_, i) => {
@@ -70,8 +75,10 @@ export function narayanaAntardasas(p: Period, sign: number, ctx: VargaCtx, level
  */
 export function sequenceDirection(sign: number, ctx: VargaCtx, flagSign = sign): 1 | -1 {
   const dir: 1 | -1 = sign % 2 === 0 ? 1 : -1;
-  const sat = ctx.sign('Saturn') === flagSign, ketu = ctx.sign('Ketu') === flagSign;
   const reversed = (dir === 1 ? -1 : 1) as 1 | -1;
+  const o = skOverride(flagSign, ctx);
+  if (o !== undefined) return o === 1 ? 1 : o === 2 ? reversed : dir;
+  const sat = ctx.sign('Saturn') === flagSign, ketu = ctx.sign('Ketu') === flagSign;
   if (sat && ketu) return strongerByDignity('Saturn', 'Ketu', ctx) === 'Ketu' ? reversed : 1;
   if (sat) return 1;
   if (ketu) return reversed;

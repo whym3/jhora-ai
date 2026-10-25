@@ -16,7 +16,9 @@
 //    twelfths. Sub-period signs come from the per-sign table obj+0x78b40, so
 //    deeper levels re-use the antardasa rule of the sub-period's sign.
 //  - No balance of dasa (obj+0x8fa08 = 0) and the user "start from" overrides
-//    (chart+0x17eb4[dasa], 0x17ce0/0x17e40[varga]) are 12 = unused by default.
+//    (chart+0x17eb4[dasa], 0x17ce0/0x17e40[varga]) are 12 = unused by default;
+//    the Options dialogs' temporary strengths (overrides.ts) reach strong7, dasaLord and
+//    skFlag through the VargaCtx rasiCtx builds.
 import type { Chart } from '../chart';
 import type { Period } from './vimsottari';
 import { SIGNS, signOf } from '../zodiac';
@@ -25,6 +27,7 @@ import { vargaSpec } from '../vargaOptions';
 import { DEBILITATION, EXALTATION, signLordByDistance, strongerSign, type VargaCtx } from '../signStrength';
 import { sequenceDirection } from './narayana';
 import { strongerByDignity } from '../deities';
+import { attachOverrides, lordOverride, pairOverride, skOverride } from './overrides';
 
 export const mod12 = (x: number) => ((x % 12) + 12) % 12;
 
@@ -73,11 +76,11 @@ export function rasiCtx(chart: Chart, vargaIndex = 0): RasiCtx {
   const spec = vargaSpec(name, chart.ini);
   const p = chart.positions;
   const seed = dasaSeedOf(chart);
-  return {
+  return attachOverrides({
     sign: (g) => signOf(vargaLongitude(p.grahas[g].lon, spec)),
     degree: (g) => p.grahas[g].lon % 30,
     lagna: seed ? seed.lagnaIn(name) : signOf(vargaLongitude(p.ascendant, spec)),
-  };
+  }, chart);
 }
 
 /** A natal sign moved by Muntha - natal lagna in varga `name` (the Tajaka seed of Brahma, Sthira, AK Kendradi). */
@@ -88,11 +91,11 @@ export function seedShift(seed: DasaSeed, natalSign: number, name: VargaName = '
 /** FUN_004ab810: stronger of s and its 7th, the sign of Ar..Vi as first argument. */
 export const strong7 = (s: number, ctx: VargaCtx) => {
   const low = mod12(s) % 6;
-  return strongerSign(low, low + 6, ctx);
+  return pairOverride(low, low + 6, ctx) ?? strongerSign(low, low + 6, ctx);
 };
 
-/** FUN_004ad3f0. */
-export const dasaLord = signLordByDistance;
+/** FUN_004ad3f0 (with a temporary co-lord of overrides.ts). */
+export const dasaLord = (sign: number, ctx: VargaCtx) => lordOverride(sign, ctx) ?? signLordByDistance(sign, ctx);
 
 /** FUN_004acc50 with the lord given: Narayana dasa years of `sign` (1..12, 0 possible). */
 export function narayanaYearsWithLord(sign: number, ctx: VargaCtx): number {
@@ -165,6 +168,8 @@ export function bodySign(chart: Chart, name: string): number {
  * stronger), 0 = neither.
  */
 export function skFlag(s: number, ctx: VargaCtx): 0 | 1 | 2 {
+  const o = skOverride(s, ctx);
+  if (o !== undefined) return o;
   const sat = ctx.sign('Saturn') === s, ketu = ctx.sign('Ketu') === s;
   if (sat && ketu) return strongerByDignity('Saturn', 'Ketu', ctx) === 'Ketu' ? 2 : 1;
   return sat ? 1 : ketu ? 2 : 0;

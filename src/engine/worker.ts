@@ -1,4 +1,5 @@
 // Calculation worker: owns one Swiss Ephemeris instance and answers JobRequests.
+import { applyNodalExaltation } from '../core/signStrength';
 import { loadEngine } from '../core/engine';
 import type { Sweph } from '../sweph';
 import { computeChart, type Chart } from '../core/chart';
@@ -49,13 +50,14 @@ async function run(req: JobRequest): Promise<unknown> {
   switch (req.kind) {
     case 'chart': {
       const c = await chartFor(req.chart);
-      return { positions: c.positions, bodies: c.bodies, longitudes: c.longitudes, day: c.day, birth: c.birth };
+      return { positions: c.positions, bodies: c.bodies, longitudes: c.longitudes, day: c.day, birth: c.birth, userPoints: c.userPoints };
     }
     case 'table':
       return memo<Table>(`table:${req.table}:${stableStringify(req.params ?? {})}:${stableStringify(req.chart)}`,
         async () => {
           const chart = await chartFor(req.chart);
           const asyncTable = ASYNC_TABLES[req.table];
+          if (req.table in ASYNC_TABLES) applyNodalExaltation((chart.ini?.NodalExaltationParasara ?? 0) !== 0);   // shared tables (signStrength.ts)
           return asyncTable ? asyncTable(chart, req.params ?? {}, await engine) : runTable(chart, req.table, req.params ?? {}, await engine);
         });
     case 'text':

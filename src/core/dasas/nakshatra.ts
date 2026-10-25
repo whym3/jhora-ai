@@ -15,6 +15,9 @@ import type { Chart } from '../chart';
 import type { Graha } from '../positions';
 import type { Period } from './vimsottari';
 import { adIndex } from './vimsottari';
+import { vargaLongitude } from '../vargas';
+import { vargaSpec } from '../vargaOptions';
+import { JHORA_VARGAS } from './rasiCommon';
 
 const NAK = 360 / 27;
 
@@ -164,30 +167,53 @@ export function saptarshiDasa(lagnaLon: number, levels = 2, starNames: readonly 
  * Aadhaana: star + 4 / 3 / 7, longitude + 53 deg 20' / 40 / 93 deg 20', same remaining part).
  * NakshatraDasaStartPoint[slot] picks one (the seed menu 155 of the seed comparison view,
  * 33140..33134 / 33161 -> 1..8, "Accept this seed" 33142 stores it for Vimsottari).
+ * Every body longitude gets FUN_0049a930's offset first (positions.ts nakshatraShift: tropical
+ * zodiac with SiderealNaksharasInTropical, 0 otherwise). The builders read the seeds of
+ * FUN_004a1260(DAT_00597ed8), the chart of the "nakshatra dasa varga" (dialog 2055, a session
+ * setting): there each body is at its longitude in that varga.
  */
 export const NAKSHATRA_SEEDS = [
   'Moon', 'Utpanna (5th from Moon)', 'Kshema (4th from Moon)', 'Aadhaana (8th from Moon)', 'Lagna', 'Maandi', 'Gulika',
   'Sookshma TriSphuta', 'Sun', 'Mars', 'Mercury', 'Jupiter', 'Venus', 'Saturn', 'Rahu', 'Ketu', 'Bhrigu Bindu', 'Indu Lagna', 'Pranapada Lagna',
 ] as const;
 
-export function nakshatraSeedLon(chart: Chart, point = 0): number {
+/** The seed names JHora prints (CString table 0x8a16dc, Kalachakra's "From %s of %s"). */
+export const SEED_TITLE_NAMES = [
+  'Moon', 'Utpanna taara', 'Kshema taara', 'Aadhaana taara', 'Lagna', 'Mandi', 'Gulika', 'Trisphuta', 'Sun', 'Mars', 'Mercury',
+  'Jupiter', 'Venus', 'Saturn', 'Rahu', 'Ketu', 'Bhrigubindu', 'Indu lagna', 'Pranapada lagna',
+] as const;
+
+export interface SeedOptions {
+  /** JHora varga index of the chart the seed is read from (DAT_00597ed8; 0 = rasi chart) */
+  varga?: number;
+  /** FUN_0049a930's offset added to every body longitude */
+  shift?: number;
+}
+
+export function nakshatraSeedLon(chart: Chart, point = 0, o: SeedOptions = {}): number {
   const g = chart.positions.grahas;
   const n360 = (x: number) => ((x % 360) + 360) % 360;
-  const named = (name: string) => {
-    const b = chart.longitudes.find((x) => x.name === name);
-    if (!b) throw new Error(`nakshatra dasa seed ${name} missing`);
-    return b.lon;
+  const name = o.varga ? JHORA_VARGAS[o.varga] : null;
+  if (o.varga && !name) throw new Error(`nakshatra dasa varga ${o.varga} not supported`);
+  const spec = name ? vargaSpec(name, chart.ini) : null;
+  const shift = o.shift ?? chart.nakshatraShift ?? 0;
+  // the defaults leave the longitude untouched (no rounding through n360)
+  const at = (lon: number) => (spec || shift ? n360((spec ? vargaLongitude(lon, spec) : lon) + shift) : lon);
+  const named = (body: string) => {
+    const b = chart.longitudes.find((x) => x.name === body);
+    if (!b) throw new Error(`nakshatra dasa seed ${body} missing`);
+    return at(b.lon);
   };
   switch (point) {
-    case 0: return g.Moon.lon;
-    case 1: return n360(g.Moon.lon + 160 / 3);
-    case 2: return n360(g.Moon.lon + 40);
-    case 3: return n360(g.Moon.lon + 280 / 3);
-    case 4: return chart.positions.ascendant;
+    case 0: return at(g.Moon.lon);
+    case 1: return n360(at(g.Moon.lon) + 160 / 3);
+    case 2: return n360(at(g.Moon.lon) + 40);
+    case 3: return n360(at(g.Moon.lon) + 280 / 3);
+    case 4: return at(chart.positions.ascendant);
     case 5: case 6: case 7: case 16: case 17: case 18: return named(NAKSHATRA_SEEDS[point]);
-    case 8: return g.Sun.lon;
+    case 8: return at(g.Sun.lon);
     default:
-      if (point >= 9 && point <= 15) return g[(['Mars', 'Mercury', 'Jupiter', 'Venus', 'Saturn', 'Rahu', 'Ketu'] as const)[point - 9]].lon;
+      if (point >= 9 && point <= 15) return at(g[(['Mars', 'Mercury', 'Jupiter', 'Venus', 'Saturn', 'Rahu', 'Ketu'] as const)[point - 9]].lon);
       throw new Error(`nakshatra dasa seed ${point} not supported`);
   }
 }

@@ -34,6 +34,8 @@ export const KEY_INFO_MODES: [string, number, string | null][] = [
   ['Planetary drekkanas', 33158, 'basics.drekkanas'],
   ['Lords of 64th navamsa and 22nd drekkana', 33159, 'basics.malicious'],
   ['Sahamas (sahams)', 32901, 'basics.sahamas'],
+  ['Natal Longitudes', 33115, 'basics.natalLongitudes'],
+  ['Natal Sahamas', 33116, 'basics.natalSahamas'],
 ];
 
 /** Strengths > Other strengths modes, in JHora's order (view mode index, table id). */
@@ -54,12 +56,13 @@ export const OTHER_STRENGTH_MODES: [string, number, string | null][] = [
 /** Strengths > Ashtakavarga modes (menu 106, ids 32829-32842); the job takes the label. */
 export const AV_MODES = [
   'BAVs and SAV', 'SoAV', 'PAV of Sun', 'PAV of Moon', 'PAV of Mars', 'PAV of Mercury', 'PAV of Jupiter', 'PAV of Venus', 'PAV of Saturn',
-  'PAV of Lagna', 'Sodhya pindas',
+  'PAV of Lagna', 'Sodhya pindas', 'Nakshatras & rasis',
 ] as const;
 export const AV_MODE_LABELS: Record<(typeof AV_MODES)[number], string> = {
   'BAVs and SAV': 'BAVs and SAV', SoAV: 'SoAV - sodhita (reduced) ashtakavargas', 'PAV of Sun': 'PAV of Sun', 'PAV of Moon': 'PAV of Moon',
   'PAV of Mars': 'PAV of Mars', 'PAV of Mercury': 'PAV of Mercury', 'PAV of Jupiter': 'PAV of Jupiter', 'PAV of Venus': 'PAV of Venus',
   'PAV of Saturn': 'PAV of Saturn', 'PAV of Lagna': 'PAV of Lagna', 'Sodhya pindas': 'Sodhya pindas',
+  'Nakshatras & rasis': 'Nakshatras & rasis from sodhya pindas',
 };
 
 /** Strengths > Other strengths, second (vimsopaka) pane modes in JHora's order. */

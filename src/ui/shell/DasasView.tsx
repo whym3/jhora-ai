@@ -1,10 +1,21 @@
-import { useState } from 'react';
+// The Dasas tab: JHora's CDasaView (FUN_0044a330) with its buttons (`<` `|` `>`, Quick Info,
+// Options) and the commands of its context menu 108 (src/core/dasas/dasaJobs.ts has the jobs):
+// Entry chart of this period (32892), Locate an event (33125, dialog 2041), Dasa-Transit
+// Correlation (33269), Definition of year in dasas, Dasa seed settings for Tajaka (33019), Use dasa
+// sesham in compressed mundane dasas (33043), Use Tribhagi variation (32971), Copy to clipboard
+// (only dates) (33236) and Sum of longitudes of planets upto this level (33389). JHora runs the
+// period commands on the right-clicked period; here on the period chosen in "Period" (else the
+// period whose sub-periods are shown).
+import { useEffect, useRef, useState } from 'react';
 import type { ChartSpec } from '../../engine/protocol';
 import { useJob } from '../EngineProvider';
 import { TableView } from '../widgets/TableView';
 import { OTHER_DASAS, RASI_DASAS } from '../../core/dasas/registry';
-import { setIni, useActiveDoc, useStore, type DerivedChart } from '../state/store';
+import { setIni, updateChart, useActiveDoc, useStore, type DerivedChart } from '../state/store';
 import { applyYearDefinition, dasaSlot, YEAR_DEFINITION_NAMES, YEAR_MENU } from '../../core/dasas/yearDefinition';
+import { DASA_LEVEL, datesOnlyLines } from '../../core/dasas/format';
+import { overridesKey, setCycle, setDasaSession, useDasaSession } from './dasaSession';
+import { DasaOptionsDialog, hasDasaOptions, TajakaSeedDialog } from './DasaOptions';
 
 /** Nakshatra dasa systems in JHora's menu order. */
 export const NAKSHATRA_DASA_SYSTEMS = [
@@ -13,6 +24,7 @@ export const NAKSHATRA_DASA_SYSTEMS = [
 ] as const;
 
 const MAX_DEPTH = 6;
+const CRLF = String.fromCharCode(13, 10);
 
 /**
  * Dasas > Nakshatra dasas. Like JHora's dasa pane, clicking a period divides it
@@ -40,24 +52,85 @@ export type DasaTable = 'dasas.nakshatra' | 'dasas.rasi' | 'dasas.other';
 
 /**
  * The job of one dasa on the chart shown. With a derived chart (Tajaka, Tithi Pravesha,
- * mundane, prasna, angular return, progression) the job runs on the natal chart with
- * params.derived (engine/jobs.ts derivedDasaJob), which compresses the dasas into the
- * chart's period of effect as JHora does; `spec` is the chart shown (derived birth).
+ * mundane, prasna, angular return, progression, period entry) the job runs on the natal chart
+ * with params.derived (dasaJobs.ts paneDasa), which compresses the dasas into the chart's period
+ * of effect as JHora does; `spec` is the chart shown (derived birth). `extra`: the pane's cycle,
+ * Tribhagi, nakshatra dasa varga and temporary strengths (dasaJobs.ts), or a command's input.
  */
 export function dasaJob(spec: ChartSpec, natalBirth: ChartSpec['birth'] | undefined, derived: DerivedChart | null | undefined,
-  table: DasaTable, system: string, path: number[]) {
-  if (!derived || !natalBirth) return { kind: 'table' as const, chart: spec, table, params: { system, path } };
+  table: DasaTable | string, system: string, path: number[], extra: Record<string, unknown> = {}) {
+  if (!derived || !natalBirth) return { kind: 'table' as const, chart: spec, table, params: { system, path, ...extra } };
   return {
     kind: 'table' as const, chart: { ...spec, birth: natalBirth }, table,
-    params: { system, path, derived: { kind: derived.kind, label: derived.label, birth: derived.birth, params: derived.params } },
+    params: { system, path, ...extra, derived: { kind: derived.kind, label: derived.label, birth: derived.birth, params: derived.params } },
   };
 }
 
+type Dialog = null | 'options' | 'tajakaSeed' | 'locate';
+type Command = null | { job: string; extra?: Record<string, unknown> };
+
 function DasaPane({ spec, table, systems }: { spec: ChartSpec; table: DasaTable; systems: readonly string[] }) {
   const doc = useActiveDoc();
+  const ini = useStore((s) => s.ini);
+  const session = useDasaSession();
   const [system, setSystem] = useState<string>(systems[0]);
   const [path, setPath] = useState<number[]>([]);
-  const job = useJob(dasaJob(spec, doc?.birth, doc?.derived, table, system, path));
+  const [row, setRow] = useState<number | null>(null);
+  const [dialog, setDialog] = useState<Dialog>(null);
+  const [command, setCommand] = useState<Command>(null);
+  const [message, setMessage] = useState<string[] | null>(null);
+  const [transit, setTransit] = useState<Command>(null);
+  const slot = dasaSlot(table, system);
+  const shown = doc?.derived?.birth ?? doc?.birth ?? spec.birth;
+  const ov = session.overrides[overridesKey(shown, slot)];
+  const extra: Record<string, unknown> = {
+    cycle: session.cycles[slot] ?? 0,
+    ...(table === 'dasas.nakshatra' && session.tribhagi ? { tribhagi: true } : {}),
+    ...(session.nakVarga ? { nakVarga: session.nakVarga } : {}),
+    ...(ov && Object.keys(ov).length ? { overrides: ov } : {}),
+  };
+  const job = useJob(dasaJob(spec, doc?.birth, doc?.derived, table, system, path, extra));
+  const cmdJob = useJob(command ? dasaJob(spec, doc?.birth, doc?.derived, command.job, system, path, { ...extra, table, index: row ?? undefined, ...command.extra }) : null);
+  const transitJob = useJob(transit ? dasaJob(spec, doc?.birth, doc?.derived, transit.job, system, path, { ...extra, table, index: row ?? undefined }) : null);
+
+  // a new list clears the chosen period (Locate an event chooses the located one)
+  const pendingRow = useRef<number | null>(null);
+  useEffect(() => { setRow(pendingRow.current); pendingRow.current = null; }, [system, path]);
+  // a command's result: Quick Info / Sum of longitudes as a message, Locate moves the pane, Entry chart is shown
+  // (the job's state still holds the previous command's result until it reports 'loading')
+  const started = useRef(false);
+  useEffect(() => {
+    if (!command) return;
+    if (cmdJob.status === 'loading') { started.current = true; return; }
+    if (!started.current || cmdJob.status === 'idle') return;
+    started.current = false;
+    if (cmdJob.status === 'error') { setMessage([cmdJob.error ?? 'error']); setCommand(null); return; }
+    const t = cmdJob.data!;
+    if (command.job === 'dasas.locate') {
+      const r = JSON.parse(t.text![0]) as { cycle: number; path: number[]; index: number };
+      setCycle(slot, r.cycle);
+      pendingRow.current = r.index;
+      setPath(r.path);
+      setMessage(t.rows.map((x) => `${x[0]}: ${x[1]}  ${x[2]} - ${x[3]}`));
+    } else if (command.job === 'dasas.entry' && doc) {
+      const r = JSON.parse(t.text![0]) as { birth: DerivedChart['birth']; label: string; periodDays: number };
+      updateChart(doc.id, { derived: { kind: 'entry', label: r.label, birth: r.birth, params: { periodDays: r.periodDays } } });
+    } else {
+      setMessage(t.text ?? t.rows.map((x) => x.join(' ')));
+    }
+    setCommand(null);
+  }, [command, cmdJob.status, cmdJob.data, cmdJob.error, slot, doc]);
+
+  const run = (job: string, ex?: Record<string, unknown>) => { setMessage(null); setCommand({ job, extra: ex }); };
+  const copyDates = () => {
+    const text = job.data?.text;
+    if (text) navigator.clipboard?.writeText(datesOnlyLines(text).join(CRLF));
+    else setMessage(['Copy (only dates) is available for the maha dasas and the antardasas of one maha dasa.']);
+  };
+  const rows = job.data?.rows ?? [];
+  const category = table === 'dasas.nakshatra' ? 0 : table === 'dasas.rasi' ? 1 : 2;
+  const cycle = session.cycles[slot] ?? 0;
+  const periodChosen = path.length > 0 || row !== null;
   return (
     <div className="subview">
       <div className="subview-bar">
@@ -65,10 +138,77 @@ function DasaPane({ spec, table, systems }: { spec: ChartSpec; table: DasaTable;
           {systems.map((s) => <option key={s} value={s}>{s}</option>)}
         </select>
         <button onClick={() => setPath((p) => p.slice(0, -1))} disabled={!path.length}>Up</button>
+        <span className="dasa-cycle">
+          <button title="Previous dasa cycle" onClick={() => setCycle(slot, cycle - 1)}>&lt;</button>
+          <button title="The dasa cycle that starts at birth" onClick={() => setCycle(slot, 0)}>|</button>
+          <button title="Next dasa cycle" onClick={() => setCycle(slot, cycle + 1)}>&gt;</button>
+          {cycle !== 0 && <span className="status"> cycle {cycle > 0 ? `+${cycle}` : cycle}</span>}
+        </span>
+        <button onClick={() => run('dasas.quickInfo')}>Quick Info</button>
+        <button onClick={() => setDialog('options')} disabled={!hasDasaOptions(slot)}>Options</button>
         {doc?.derived && <span className="status">{doc.derived.label}</span>}
-        <YearDefinitionMenu slot={dasaSlot(table, system)} />
+        <YearDefinitionMenu slot={slot} />
       </div>
+      <div className="subview-bar">
+        <label>Period <select aria-label="Period" value={row ?? ''} onChange={(e) => setRow(e.target.value === '' ? null : Number(e.target.value))}>
+          <option value="">{path.length ? '(the period above)' : '(none)'}</option>
+          {rows.map((r, i) => <option key={i} value={i}>{r[0]}: {r[1]}</option>)}
+        </select></label>
+        <button onClick={() => run('dasas.entry')} disabled={!periodChosen}>Entry chart of this period</button>
+        <button onClick={() => setDialog('locate')}>Locate an event</button>
+        <button onClick={() => setTransit({ job: 'dasas.transit' })} disabled={!periodChosen}>Dasa-Transit Correlation</button>
+        <button onClick={() => run('dasas.sumLongitudes')} disabled={!periodChosen}>Sum of longitudes</button>
+        <button onClick={copyDates} disabled={!job.data}>Copy (only dates)</button>
+        {table === 'dasas.nakshatra' && (
+          <label><input type="checkbox" checked={session.tribhagi} onChange={(e) => setDasaSession({ tribhagi: e.target.checked })} /> Use Tribhagi variation</label>
+        )}
+        <button onClick={() => setDialog('tajakaSeed')}>Dasa seed settings for Tajaka…</button>
+        <label><input type="checkbox" checked={!!ini.DasaSeshamInMundaneCharts} onChange={(e) => setIni({ DasaSeshamInMundaneCharts: e.target.checked ? 1 : 0 })} /> Use dasa sesham in compressed mundane dasas</label>
+      </div>
+      {dialog === 'options' && <DasaOptionsDialog slot={slot} birth={shown} onClose={() => setDialog(null)} />}
+      {dialog === 'tajakaSeed' && <TajakaSeedDialog slot={slot} category={category} onClose={() => setDialog(null)} />}
+      {dialog === 'locate' && <LocateDialog tz={shown.tzHours} onCancel={() => setDialog(null)}
+        onOk={(at) => { setDialog(null); run('dasas.locate', { at }); }} />}
+      {command && <p className="status">Calculating…</p>}
+      {message && (
+        <div className="dasa-message" role="status">
+          {message.map((m, i) => <p key={i}>{m}</p>)}
+          <button onClick={() => setMessage(null)}>OK</button>
+        </div>
+      )}
       <TableView job={job} onRowClick={path.length < MAX_DEPTH - 1 && job.data?.drill !== false ? (i) => setPath((p) => [...p, i]) : undefined} />
+      {transit && (
+        <>
+          <div className="subview-bar"><strong>Dasa-Transit Correlation</strong><button onClick={() => setTransit(null)}>Close</button></div>
+          <TableView job={transitJob} />
+        </>
+      )}
+    </div>
+  );
+}
+
+/** Dialog 2041 "Locate an event": date, time, time zone and the level to go down to. */
+function LocateDialog({ tz, onOk, onCancel }: { tz: number; onOk: (at: Record<string, number>) => void; onCancel: () => void }) {
+  const now = new Date();
+  const [date, setDate] = useState(`${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, '0')}-${String(now.getDate()).padStart(2, '0')}`);
+  const [time, setTime] = useState('12:00:00');
+  const [zone, setZone] = useState(tz);
+  const [level, setLevel] = useState(2);
+  const ok = () => {
+    const [y, m, d] = date.split('-').map(Number);
+    const [h, mi, s] = time.split(':').map(Number);
+    onOk({ year: y, month: m, day: d, hour: h + (mi || 0) / 60 + (s || 0) / 3600, tz: zone, level });
+  };
+  return (
+    <div className="dasa-options" role="dialog" aria-label="Locate an event">
+      <strong>Locate an event</strong>
+      <label>Date <input type="date" value={date} onChange={(e) => setDate(e.target.value)} /></label>
+      <label>Time <input type="time" step={1} value={time} onChange={(e) => setTime(e.target.value)} /></label>
+      <label>Time Zone (hours east) <input type="number" step="any" value={zone} onChange={(e) => setZone(Number(e.target.value))} style={{ width: '6em' }} /></label>
+      <label>Identify the periods and sub-periods running at the above time by going upto the following level <select value={level} onChange={(e) => setLevel(Number(e.target.value))}>
+        {DASA_LEVEL.map((l, i) => <option key={l} value={i}>{l}</option>)}
+      </select></label>
+      <div><button onClick={ok}>OK</button> <button onClick={onCancel}>Cancel</button></div>
     </div>
   );
 }

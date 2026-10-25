@@ -24,14 +24,33 @@
 //   start otherwise -- i.e. the Swiss Ephemeris cusp itself for real house systems.
 // * The KP view (0x4590f0) lists 13 bodies (As, Su..Ke, Ur, Ne, Pl) and the 12 houses.
 //
-// Not ported: the SSS house system (type 11, needs the Surya Siddhanta model; JHora
-// itself falls back to Porphyry when it is unavailable) and "Choose the reference
-// longitude" (33248): houses are always reckoned from the lagna here.
+// * "Choose the reference longitude for finding houses" (33248, FUN_00454ff0, dialog 2060:
+//   Lagna, Sun .. Ketu) stores a body index in DAT_008846d0 (a session setting, not in the
+//   ini). FUN_004a30c0 then takes that body's longitude (and sign) in place of the lagna
+//   for types 0 and 2, and for the other types the cusps of FUN_0049bd80(longitude): the
+//   chart recomputed at the moment the lagna was at that longitude, found with FUN_0049c130
+//   searching backwards from the chart's moment (lagna steps of 2 h, 1/15 s bracket).
+// * Siddhanta=1 (SSS) with any house type but 11: FUN_004a30c0 clears the siddhanta flag
+//   around FUN_0049bd80(lagna), i.e. the drik cusps of the moment the drik lagna was at
+//   the SSS lagna.
+//
+// Not ported: the SSS house system (menu 33388, HouseTypeWanted 11, FUN_00454dc0: only
+// with Siddhanta=1). Its cusps are filled by FUN_0049aaa0's SSS branch (0x49b2a2..0x49b614):
+// c1 = the SSS lagna, c10 = the "MC" of FUN_004bfc00 (the lagna iteration of FUN_004bfd60
+// with FUN_004bfa50's flag 1 - right ascension only - on a time derived from the half-day
+// length of FUN_004bfec0, with a before/after-midday branch at 0x49b2f6), both moved into
+// the user's zodiac by (doc+0x1688 - doc+0x1680); c4 = c10 + 180,
+// c2 = c1 + (c4 - c1)/3, c3 = c2 + (c4 - c1)/3, c5 = c4 + 2 (30 - (c4 - c1)/6),
+// c6 = c5 + 2 (30 - (c4 - c1)/6), c7..c9, c11, c12 = c1..c3, c5, c6 + 180 (all mod 360).
+// The MC's time argument is not pinned down yet, so type 11 still uses Porphyry here.
 import type { Sweph } from '../sweph';
 import type { Chart } from './chart';
 import { kpLords } from './kp';
 import { SIGN_LORD } from './lords';
-import { GRAHAS, norm360, type Graha } from './positions';
+import { ayanamsa, GRAHAS, norm360, siderealAscendant, type Graha } from './positions';
+import { calcSettingsFromIni } from './settings';
+import { jhoraBodySearch } from './tajaka/search';
+import { jhoraDeltaT } from './deltat';
 import { ORDINAL, SHORT } from './basics';
 
 /** Menu 145 entries: label, command id, HouseTypeWanted value. */
@@ -57,10 +76,31 @@ export interface HouseOptions {
   type: number;
   /** HouseCuspsInMiddle */
   middle: boolean;
+  /** reference body of 33248 (DAT_008846d0): 0 Lagna, 1..9 Sun..Ketu */
+  ref?: number;
 }
 
-export function houseOptions(chart: Pick<Chart, 'ini'>): HouseOptions {
-  return { type: Number(chart.ini.HouseTypeWanted ?? 1), middle: Number(chart.ini.HouseCuspsInMiddle ?? 1) !== 0 };
+export function houseOptions(chart: Pick<Chart, 'ini'>, ref = 0): HouseOptions {
+  return { type: Number(chart.ini.HouseTypeWanted ?? 1), middle: Number(chart.ini.HouseCuspsInMiddle ?? 1) !== 0, ref };
+}
+
+/** Dialog 2060's reference bodies (index = DAT_008846d0). */
+export const HOUSE_REFERENCES = ['Lagna', 'Sun', 'Moon', 'Mars', 'Mercury', 'Jupiter', 'Venus', 'Saturn', 'Rahu', 'Ketu'];
+
+const refLongitude = (chart: Chart, ref: number) => (ref ? chart.positions.grahas[GRAHAS[ref - 1]].lon : chart.positions.ascendant);
+
+/**
+ * FUN_0049bd80(target): sidereal cusps 1..12 of the (drik) chart at the moment the lagna
+ * stood at `target`, searched backwards from the chart's moment (FUN_0049c130).
+ */
+export function cuspsWithLagnaAt(chart: Chart, type: number, target: number, swe: Sweph): number[] {
+  const s = { ...calcSettingsFromIni(chart.ini), sss: false };
+  const geo = { lat: chart.birth.lat, lon: chart.birth.lon, alt: chart.birth.altitudeM };
+  const t = jhoraBodySearch({ lon: (_b, jd) => siderealAscendant(swe, jd, geo, s), b1: 0, target, backward: true }, chart.positions.jdUt);
+  const hsys = HSYS[type] ?? 'O';
+  const ay = ayanamsa(swe, t, t + (jhoraDeltaT(t) ?? swe.deltaT(t)), s, geo.lon).mean;
+  if (hsys === 'E') return Array.from({ length: 12 }, (_, i) => norm360(siderealAscendant(swe, t, geo, s) + 30 * i));
+  return swe.houses(t, 0, geo.lat, geo.lon, hsys).cusps.slice(1, 13).map((c) => norm360(c - ay));
 }
 
 /** Sidereal cusps 1..12 of a house system (doc+0x1620): tropical swe_houses minus the mean ayanamsa. */
@@ -78,7 +118,8 @@ export interface HouseSpan { start: number; cusp: number; end: number }
 
 /** Start, cusp and end of the 12 houses (FUN_004a30c0). */
 export function houseSpans(chart: Chart, opt: HouseOptions, swe?: Sweph): HouseSpan[] {
-  const lagna = chart.positions.ascendant;
+  const ref = opt.ref ?? 0;
+  const lagna = refLongitude(chart, ref);
   const at = (start: number, cusp: number, end: number): HouseSpan => ({ start: norm360(start), cusp: norm360(cusp), end: norm360(end) });
   // FUN_004a30c0 reads the house type and the middle flag from globals; here they come from the chart's ini
   if (opt.type === 0) {
@@ -92,7 +133,12 @@ export function houseSpans(chart: Chart, opt: HouseOptions, swe?: Sweph): HouseS
       ? at(d + 30 * i - 15, d + 30 * i, d + 30 * i + 15)
       : at(d + 30 * i, d + 30 * i + 15, d + 30 * i + 30)));
   }
-  const c = systemCusps(chart, opt.type, swe);
+  const sss = Number(chart.ini.Siddhanta ?? 0) === 1;
+  let c: number[];
+  if (ref || (sss && opt.type !== 11)) {
+    if (!swe) throw new Error('houses from a reference longitude need the ephemeris');
+    c = cuspsWithLagnaAt(chart, opt.type, lagna, swe);
+  } else c = systemCusps(chart, opt.type, swe);
   return c.map((ci, i) => {
     const next = c[(i + 1) % 12], prev = c[(i + 11) % 12];
     const fwd = norm360(next + 360 - ci);

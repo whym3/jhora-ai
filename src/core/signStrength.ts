@@ -12,6 +12,21 @@ export const PLANETS: Graha[] = ['Sun', 'Moon', 'Mars', 'Mercury', 'Jupiter', 'V
 export const EXALTATION: Record<Graha, number> = { Sun: 0, Moon: 1, Mars: 9, Mercury: 5, Jupiter: 3, Venus: 11, Saturn: 6, Rahu: 2, Ketu: 8 };
 export const DEBILITATION: Record<Graha, number> = { Sun: 6, Moon: 7, Mars: 3, Mercury: 11, Jupiter: 9, Venus: 5, Saturn: 0, Rahu: 8, Ketu: 2 };
 
+/**
+ * NodalExaltationParasara (Preferences 33391, dialog 2076; FUN_004e7f60 -> FUN_004b9280):
+ * JHora rewrites the nodes' entries of its exaltation / debilitation tables
+ * (0x591e54/58, 0x591e7c/80) in place, so every user of the tables follows.
+ * 0 (default, Pt Sanjay Rath): Rahu exalted in Ge, Ketu in Sg (debilitated Sg / Ge);
+ * 1 (some versions of BPHS): Rahu exalted in Ta, Ketu in Sc (debilitated Sc / Ta).
+ * computeChart applies the chart's setting, as JHora does when the ini is read.
+ */
+export function applyNodalExaltation(parasara: boolean): void {
+  EXALTATION.Rahu = parasara ? 1 : 2;
+  EXALTATION.Ketu = parasara ? 7 : 8;
+  DEBILITATION.Rahu = parasara ? 7 : 8;
+  DEBILITATION.Ketu = parasara ? 1 : 2;
+}
+
 const mod12 = (x: number) => ((x % 12) + 12) % 12;
 
 /** Rasi drishti: a sign aspects itself; movable<->fixed and dual<->dual, never the adjacent sign. */

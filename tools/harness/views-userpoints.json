@@ -1,0 +1,213 @@
+{
+ "_comment": "Edit > User defined special point (33199) and Planetary special lagnas (33252) goldens (src/core/userPoints.ts, tests/userPointsGolden.test.ts). Key Info > Longitudes & Basic Info, whose rows after the 56 bodies are the user bodies (FUN_0042b0b0: bodies 103/104 named SpecialPointName / SpecialLagnaName). One capture.py run per entry of _runs, each passing every SpecialPoint*/SpecialLagna* key and SunriseDefinition with --ini (JHora writes its ini back on exit, so a key set by one run would otherwise stick): python tools/harness/capture.py --jhora <copy> --views tools/harness/views-userpoints.json --out <run.out> --ini Key=Value ... <_charts>. The 'defaults' run comes last so the copy's jhora.ini ends at JHora's defaults.",
+ "_charts": [
+  "golden/charts/Mahatma Gandhi.jhd",
+  "golden/charts/Swami Vivekananda.jhd",
+  "golden/charts/India.jhd",
+  "golden/charts/Author of this software.jhd"
+ ],
+ "_runs": [
+  {
+   "out": "golden/jhora-userpoints/planet-ahead",
+   "ini": {
+    "SpecialPointOn": 1,
+    "SpecialPointBehindAfter": 1,
+    "SpecialPointUsePlanet": 1,
+    "SpecialPointUseSaham": 0,
+    "SpecialPointUseRasi": 0,
+    "SpecialPointUseMidPoint": 0,
+    "SpecialPointPlanetIndex": 5,
+    "SpecialPointSahamIndex": 0,
+    "SpecialPointSignIndex": 0,
+    "SpecialPointPlanetIndex1": 0,
+    "SpecialPointPlanetIndex2": 0,
+    "SpecialPointName": "UserPt",
+    "SpecialPointSymbol": "UP",
+    "SpecialPointDeg": 10,
+    "SpecialPointMin": 20,
+    "SpecialPointSec": 30,
+    "SpecialLagnaOn": 1,
+    "SpecialLagnaPlanet": 5,
+    "SpecialLagnaSpeedFactor": 9,
+    "SpecialLagnaNodesReverse": 1,
+    "SpecialLagnaName": "Ju9",
+    "SunriseDefinition": 0
+   }
+  },
+  {
+   "out": "golden/jhora-userpoints/sahama-behind",
+   "ini": {
+    "SpecialPointOn": 1,
+    "SpecialPointBehindAfter": 0,
+    "SpecialPointUsePlanet": 0,
+    "SpecialPointUseSaham": 1,
+    "SpecialPointUseRasi": 0,
+    "SpecialPointUseMidPoint": 0,
+    "SpecialPointPlanetIndex": 0,
+    "SpecialPointSahamIndex": 2,
+    "SpecialPointSignIndex": 0,
+    "SpecialPointPlanetIndex1": 0,
+    "SpecialPointPlanetIndex2": 0,
+    "SpecialPointName": "UserPt",
+    "SpecialPointSymbol": "UP",
+    "SpecialPointDeg": 3,
+    "SpecialPointMin": 0,
+    "SpecialPointSec": 0,
+    "SpecialLagnaOn": 1,
+    "SpecialLagnaPlanet": 8,
+    "SpecialLagnaSpeedFactor": 4,
+    "SpecialLagnaNodesReverse": 1,
+    "SpecialLagnaName": "Ra4",
+    "SunriseDefinition": 0
+   }
+  },
+  {
+   "out": "golden/jhora-userpoints/rasi",
+   "ini": {
+    "SpecialPointOn": 1,
+    "SpecialPointBehindAfter": 1,
+    "SpecialPointUsePlanet": 0,
+    "SpecialPointUseSaham": 0,
+    "SpecialPointUseRasi": 1,
+    "SpecialPointUseMidPoint": 0,
+    "SpecialPointPlanetIndex": 0,
+    "SpecialPointSahamIndex": 0,
+    "SpecialPointSignIndex": 4,
+    "SpecialPointPlanetIndex1": 0,
+    "SpecialPointPlanetIndex2": 0,
+    "SpecialPointName": "UserPt",
+    "SpecialPointSymbol": "UP",
+    "SpecialPointDeg": 15,
+    "SpecialPointMin": 0,
+    "SpecialPointSec": 0,
+    "SpecialLagnaOn": 1,
+    "SpecialLagnaPlanet": 2,
+    "SpecialLagnaSpeedFactor": 2,
+    "SpecialLagnaNodesReverse": 0,
+    "SpecialLagnaName": "Mo2",
+    "SunriseDefinition": 0
+   }
+  },
+  {
+   "out": "golden/jhora-userpoints/midpoint",
+   "ini": {
+    "SpecialPointOn": 1,
+    "SpecialPointBehindAfter": 1,
+    "SpecialPointUsePlanet": 0,
+    "SpecialPointUseSaham": 0,
+    "SpecialPointUseRasi": 0,
+    "SpecialPointUseMidPoint": 1,
+    "SpecialPointPlanetIndex": 0,
+    "SpecialPointSahamIndex": 0,
+    "SpecialPointSignIndex": 0,
+    "SpecialPointPlanetIndex1": 6,
+    "SpecialPointPlanetIndex2": 2,
+    "SpecialPointName": "UserPt",
+    "SpecialPointSymbol": "UP",
+    "SpecialPointDeg": 0,
+    "SpecialPointMin": 30,
+    "SpecialPointSec": 0,
+    "SpecialLagnaOn": 1,
+    "SpecialLagnaPlanet": 1,
+    "SpecialLagnaSpeedFactor": 5,
+    "SpecialLagnaNodesReverse": 1,
+    "SpecialLagnaName": "Su5",
+    "SunriseDefinition": 0
+   }
+  },
+  {
+   "out": "golden/jhora-userpoints/ketu-forward-sunrise2",
+   "ini": {
+    "SpecialPointOn": 1,
+    "SpecialPointBehindAfter": 1,
+    "SpecialPointUsePlanet": 1,
+    "SpecialPointUseSaham": 0,
+    "SpecialPointUseRasi": 0,
+    "SpecialPointUseMidPoint": 0,
+    "SpecialPointPlanetIndex": 31,
+    "SpecialPointSahamIndex": 0,
+    "SpecialPointSignIndex": 0,
+    "SpecialPointPlanetIndex1": 0,
+    "SpecialPointPlanetIndex2": 0,
+    "SpecialPointName": "UserPt",
+    "SpecialPointSymbol": "UP",
+    "SpecialPointDeg": 0,
+    "SpecialPointMin": 0,
+    "SpecialPointSec": 0,
+    "SpecialLagnaOn": 1,
+    "SpecialLagnaPlanet": 9,
+    "SpecialLagnaSpeedFactor": 1,
+    "SpecialLagnaNodesReverse": 0,
+    "SpecialLagnaName": "Ke1",
+    "SunriseDefinition": 2
+   }
+  },
+  {
+   "out": "golden/jhora-userpoints/saturn-sunrise1",
+   "ini": {
+    "SpecialPointOn": 0,
+    "SpecialPointBehindAfter": 1,
+    "SpecialPointUsePlanet": 1,
+    "SpecialPointUseSaham": 0,
+    "SpecialPointUseRasi": 0,
+    "SpecialPointUseMidPoint": 0,
+    "SpecialPointPlanetIndex": 0,
+    "SpecialPointSahamIndex": 0,
+    "SpecialPointSignIndex": 0,
+    "SpecialPointPlanetIndex1": 0,
+    "SpecialPointPlanetIndex2": 0,
+    "SpecialPointName": "UserPt",
+    "SpecialPointSymbol": "UP",
+    "SpecialPointDeg": 0,
+    "SpecialPointMin": 0,
+    "SpecialPointSec": 0,
+    "SpecialLagnaOn": 1,
+    "SpecialLagnaPlanet": 7,
+    "SpecialLagnaSpeedFactor": 3,
+    "SpecialLagnaNodesReverse": 1,
+    "SpecialLagnaName": "Sa3",
+    "SunriseDefinition": 1
+   }
+  },
+  {
+   "out": "golden/jhora-userpoints/defaults",
+   "ini": {
+    "SpecialPointOn": 0,
+    "SpecialPointBehindAfter": 1,
+    "SpecialPointUsePlanet": 1,
+    "SpecialPointUseSaham": 0,
+    "SpecialPointUseRasi": 0,
+    "SpecialPointUseMidPoint": 0,
+    "SpecialPointPlanetIndex": 0,
+    "SpecialPointSahamIndex": 0,
+    "SpecialPointSignIndex": 0,
+    "SpecialPointPlanetIndex1": 0,
+    "SpecialPointPlanetIndex2": 0,
+    "SpecialPointName": "UserPt",
+    "SpecialPointSymbol": "UP",
+    "SpecialPointDeg": 0,
+    "SpecialPointMin": 0,
+    "SpecialPointSec": 0,
+    "SpecialLagnaOn": 0,
+    "SpecialLagnaPlanet": 1,
+    "SpecialLagnaSpeedFactor": 5,
+    "SpecialLagnaNodesReverse": 1,
+    "SpecialLagnaName": "Su5",
+    "SunriseDefinition": 0
+   }
+  }
+ ],
+ "tabs": [
+  {
+   "top": "Basics",
+   "sub": "Key Info",
+   "lists": true,
+   "modes": [
+    [
+     "Longitudes & Basic Info",
+     32822
+    ]
+   ]
+  }
+ ]
+}

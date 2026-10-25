@@ -10,6 +10,7 @@ import type { BirthData } from '../../core/jhd';
 import { useJob } from '../EngineProvider';
 import { updateChart, useActiveDoc } from '../state/store';
 import { DerivedDasaPane, type DasaTable } from './DasasView';
+import { MixedChartButton } from './MixedChartDialog';
 
 const DASA_LINKS: readonly (readonly [string, DasaTable, string])[] = [['Mudda dasa', 'dasas.nakshatra', 'Vimsottari'], ['Narayana dasa', 'dasas.rasi', 'Narayana']];
 
@@ -66,6 +67,8 @@ export function TajakaView({ natalSpec, docId }: { natalSpec: ChartSpec; docId: 
         <button onClick={() => setRequest({ selection: sel, variant: 'exact' })}>Find Tajaka Chart</button>
         <button onClick={() => setRequest({ selection: sel, variant: 'sunrise' })}>Find Tajaka Sunrise Chart</button>
         {active && <button onClick={() => updateChart(docId, { derived: null })}>Back to Natal Chart</button>}
+        {/* button 1012 (handler 0x4853e0, MixedChartDialog.tsx) */}
+        <MixedChartButton label="Show Mixed Tajaka-Natal Chart!" natalSpec={natalSpec} outerSpec={doc?.derived ? { ...natalSpec, birth: doc.derived.birth } : null} outerName={doc?.derived?.label ?? ''} />
       </div>
       {found.status === 'loading' && <p className="status">Searching for the Tajaka chart…</p>}
       {found.status === 'error' && <p className="error">{found.error}</p>}

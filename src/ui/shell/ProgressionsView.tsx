@@ -8,6 +8,7 @@ import { PROG_BODIES, PROG_DASAS, PROG_VARGA_LABELS, type ProgressionInput, type
 import { useJob } from '../EngineProvider';
 import { TableView } from '../widgets/TableView';
 import { updateChart, useActiveDoc } from '../state/store';
+import { MixedChartButton } from './MixedChartDialog';
 
 const MONTHS = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
 const BUTTONS: [ProgressionKind, string][] = [
@@ -80,6 +81,9 @@ export function ProgressionsView({ natalSpec, docId }: { natalSpec: ChartSpec; d
       <div className="subview-bar">
         {BUTTONS.map(([kind, label]) => <button key={kind} onClick={() => setRequest({ ...form, kind })}>{label}</button>)}
         {active && <button onClick={() => updateChart(docId, { derived: null })}>Back to Natal Chart</button>}
+        {/* button 1002 (handler 0x4853e0, MixedChartDialog.tsx) */}
+        <MixedChartButton label="Show a BIG Mixed Progressed-Natal Chart!" natalSpec={natalSpec}
+          outerSpec={doc?.derived ? { ...natalSpec, birth: doc.derived.birth } : null} outerName={doc?.derived?.label ?? ''} />
       </div>
       {found.status === 'loading' && <p className="status">Computing the progression…</p>}
       {found.status === 'error' && <p className="error">{found.error}</p>}

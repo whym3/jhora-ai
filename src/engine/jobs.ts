@@ -14,7 +14,7 @@ import { muntha } from '../core/tajaka/muntha';
 import { angularReturn, type AngularReturnInput } from '../core/derived/angularReturn';
 import { antarDasaText, formatDasaTime, mahaDasaText, periodLabel } from '../core/dasas/format';
 import { GRAHAS } from '../core/positions';
-import { formatLongitude, formatVargaLongitude, NAK28, nakshatra28Of, nakshatraOf, NAKSHATRAS, padaOf, signOf, SIGNS } from '../core/zodiac';
+import { formatLongitude, formatVargaLongitude, NAK28, nakshatra28Of, NAKSHATRAS, signOf, SIGNS } from '../core/zodiac';
 import { vargaLongitude, type VargaName } from '../core/vargas';
 import { vargaColumnLabel, vargasOf } from '../core/vargaOptions';
 import { charaKarakas, drekkanaType, grahaYuddha, isCombust, maliciousLordLabel, nakshatraAspects, navaTaras, ORDINAL, SHORT, specialTaras, specialTithis, yogiPoints } from '../core/basics';
@@ -27,11 +27,10 @@ import type { NamedBody } from '../core/longitudes';
 import { bhavaArudha, grahaArudha, signArudha, type ArudhaOptions } from '../core/arudhas';
 import { sahamas } from '../core/sahamas';
 import { brahmaRudraMaheswara } from '../core/deities';
-import { amsaRuler } from '../core/amsaRulers';
 import { computeShadbala, type Seven } from '../core/shadbala';
 import { vimsopaka } from '../core/vimsopaka';
-import { AGES, ALERTNESS, basicAvasthas, HARSHA_CLASSES, INTENSITY, MOODS, PANCHA_CLASSES, SAYANADI, sayanadiAvasthas, tajakaBalas, VAISESHIKAMSA_GROUPS, vaiseshikamsas } from '../core/otherStrengths';
-import { AV_BODIES, ashtakavarga, prastara, type AvBody } from '../core/ashtakavarga';
+import { AGES, ALERTNESS, avasthaVargaLabel, basicAvasthas, HARSHA_CLASSES, INTENSITY, MOODS, PANCHA_CLASSES, SAYANADI, sayanadiAvasthas, tajakaBalas, VAISESHIKAMSA_GROUPS, vaiseshikamsaCells } from '../core/otherStrengths';
+import { AV_BODIES, ashtakavarga, avOptionsFromIni, pindaNakshatras, prastara, shiftLagna, type AvBody } from '../core/ashtakavarga';
 import { SEVEN } from '../core/relations';
 import { findYogas, giversText, YOGA_MODES } from '../core/yogas';
 import { aspectPercent } from '../core/aspects';
@@ -45,6 +44,11 @@ import { MOOLATRIKONA } from '../core/deities';
 import { fromMrityuBhaga, fromPushkaraBhaga, inPushkaramsa, MRITYU_BHAGA, within } from '../core/pushkara';
 import type { VargaCtx } from '../core/signStrength';
 import { keyInfoText } from '../core/keyInfo';
+import { BASICS_JOBS, jhoraBody, keyInfoBodies } from '../core/basicsJobs';
+import { CHART_JOBS } from '../core/chartJobs';
+import { BODY_GROUPS } from '../core/basics';
+import { CALC_TEXTS } from '../core/format/calcsText';
+import { cFixed } from '../core/format/cfixed';
 import type { Table } from './protocol';
 import { MUNDANE_JOBS } from '../core/derived/mundaneJobs';
 import { ANGULAR_JOBS, PROGRESSION_JOBS } from '../core/derived/progressionJobs';
@@ -52,19 +56,15 @@ import { LAGHU_TABLES, PANCHANGA_JOBS } from '../core/derived/panchangaJobs';
 import { PRASNA_JOBS, TP_JOBS } from '../core/derived/tpPrasnaJobs';
 import { TRANSIT_JOBS } from '../core/transits/jobs';
 import { strengthBarGraphs, type BarGraph } from '../core/strengthGraphs';
+import { OPTION_ASYNC_JOBS } from './optionJobs';
+import { bhavaArudhaOptions, bhavaArudhaSigns } from '../core/arudhaPadas';
+import { applyNodalExaltation } from '../core/signStrength';
+import { DASA_ASYNC_JOBS, DASA_TABLES } from '../core/dasas/dasaJobs';
 
 const yes = (b: boolean) => (b ? 'Yes' : '-');
 
-const AMSA_RULER_ROWS = [
-  'Lagna', ...GRAHAS, 'Bhava Lagna', 'Hora Lagna', 'Ghati Lagna', 'Vighati Lagna', 'Pranapada Lagna', 'Sree Lagna', 'Indu Lagna',
-  'Bhrigu Bindu', 'Kunda', 'Dhooma', 'Vyatipata', 'Parivesha', 'Indra Chapa', 'Upaketu', 'Kaala', 'Mrityu', 'Artha Prahara',
-  'Yama Ghantaka', 'Maandi', 'Gulika', 'Prana Sphuta', 'Deha Sphuta', 'Mrityu Sphuta', 'Sookshma TriSphuta', 'Tithi Sphuta',
-  'Yoga Sphuta (Sun-Moon)', 'Rahu Tithi Sphuta', 'Kshetra Sphuta', 'Beeja Sphuta', 'TriSphuta', 'ChatusSphuta', 'PanchaSphuta',
-  'Yoga Sphuta', 'Avayoga Sphuta', 'Varnada Lagna', ...Array.from({ length: 11 }, (_, i) => `V${i + 2}`),
-];
-
 /** Strengths > Ashtakavarga modes (menu 106, 32829-32842). */
-const AV_MODES = ['BAVs and SAV', 'SoAV', ...AV_BODIES.slice(1).map((b) => `PAV of ${b}`), 'PAV of Lagna', 'Sodhya pindas'];
+const AV_MODES = ['BAVs and SAV', 'SoAV', ...AV_BODIES.slice(1).map((b) => `PAV of ${b}`), 'PAV of Lagna', 'Sodhya pindas', 'Nakshatras & rasis'];
 
 const DASA_LEVEL = ['Maha Dasas', 'Antardasas', 'Pratyantardasas', 'Sookshma-antardasas', 'Prana-antardasas', 'Deha-antardasas'];
 
@@ -153,7 +153,7 @@ function derivedDasaJob(table: DasaTableId) {
 }
 
 /** JHora prints strengths with "%.2f" */
-const f2 = (x: number) => (Object.is(x, -0) ? 0 : x).toFixed(2);
+const f2 = (x: number) => cFixed(Object.is(x, -0) ? 0 : x, 2);   // MSVC printf rounding (src/core/format/cfixed.ts)
 function shadbalaRows(chart: Chart, headers: string[], cols: (b: ReturnType<typeof computeShadbala>['planets'][Seven]) => number[]): Table {
   const sb = computeShadbala(chart);
   return { headers, rows: SEVEN.map((g) => [g, ...cols(sb.planets[g]).map(f2)]) };
@@ -214,43 +214,14 @@ function bodyInVarga(chart: Chart, body: NamedBody, v: VargaName): number {
   return vargaLongitude(body.lon, spec);
 }
 
-/** Row labels of the Longitudes table: planets carry "(R)" and their chara karaka, like "Saturn (R) - AmK". */
-function longitudeLabels(chart: Chart): string[] {
-  const karaka = new Map(charaKarakas(chart.positions).map((k) => [k.planet as string, k.karaka]));
-  return chart.longitudes.map((b) => {
-    const g = chart.positions.grahas[b.name as keyof typeof chart.positions.grahas];
-    if (!g) return b.name;
-    const retro = g.retrograde && b.name !== 'Rahu' && b.name !== 'Ketu' ? ' (R)' : '';
-    const k = karaka.get(b.name);
-    return k ? `${b.name}${retro} - ${k}` : `${b.name}${retro}`;
-  });
-}
-
 export const TABLES: Record<string, TableFn> = {
-  // Basics > Key Info > "Longitudes & Basic Info" (menu 105 id 32822): all 56 bodies
-  'basics.longitudes': (chart) => {
-    const labels = longitudeLabels(chart);
-    return {
-      headers: ['Body', 'Longitude', 'Nakshatra', 'Pada', 'Rasi', 'Navamsa'],
-      rows: chart.longitudes.map((b, i) => [
-        labels[i], formatLongitude(b.lon), NAKSHATRAS[nakshatraOf(b.lon)], String(padaOf(b.lon)),
-        SIGNS[signOf(b.lon)], SIGNS[signOf(vargaLongitude(b.lon, vargasOf(chart.ini).D9))],
-      ]),
-    };
-  },
-  // Basics > Key Info > "All Divisional Longitudes" (33265)
-  'basics.allDivisionalLongitudes': (chart) => {
-    const labels = longitudeLabels(chart).map((l) => l.replace(/ - \w+$/, '').replace(' (R)', ''));
-    return {
-      headers: ['Body', ...DIV_COLUMNS.map(([, v]) => vargaColumnLabel(v!, chart.ini))],
-      rows: chart.longitudes.map((b, i) => [
-        labels[i], ...DIV_COLUMNS.map(([, v]) => formatVargaLongitude(bodyInVarga(chart, b, v!))),
-      ]),
-    };
-  },
+  // Basics > Key Info > "All Divisional Longitudes" (33265); rows per the body selection (32821)
+  'basics.allDivisionalLongitudes': (chart) => ({
+    headers: ['Body', ...DIV_COLUMNS.map(([, v]) => vargaColumnLabel(v!, chart.ini))],
+    rows: keyInfoBodies(chart).map((b) => [b.name, ...DIV_COLUMNS.map(([, v]) => formatVargaLongitude(bodyInVarga(chart, b, v!)))]),
+  }),
   // Basics > Key Info > "Rasis occupied in all vargas" (32823): 56 bodies + arudhas, per varga
   'basics.rasisInVargas': (chart) => {
-    const labels = longitudeLabels(chart).map((l) => l.replace(/ - \w+$/, ''));   // keeps "(R)", drops the karaka
     const opt: ArudhaOptions = {
       bhavaExceptions: chart.ini.ExceptionsInBhavaArudhas !== 0,
       grahaExceptions: chart.ini.ExceptionsInGrahaArudhas !== 0,
@@ -269,16 +240,27 @@ export const TABLES: Record<string, TableFn> = {
     const ctxs = cols.map(ctxFor);
     const lagnas = cols.map((v) => signOf(vargaLongitude(chart.positions.ascendant, V[v])));
     const put = (name: string, f: (ctx: VargaCtx, i: number) => number) => rows.push([name, ...ctxs.map((c, i) => SIGNS[f(c, i)])]);
-    chart.longitudes.forEach((b, i) => {
-      if (b.name === 'V2') {
-        // the arudha block sits before the varnadas
-        for (let h = 1; h <= 12; h++) put(h === 1 ? 'AL' : h === 12 ? 'UL' : `A${h}`, (c, k) => bhavaArudha((lagnas[k] + h - 1) % 12, c, opt));
+    // LongitudeBasedBhavaArudhas (dialog 2059): AL..UL from exact longitudes (arudhaPadas.ts)
+    const byLon = bhavaArudhaOptions(chart.ini).longitudeBased ? cols.map((v) => bhavaArudhaSigns(chart, v)) : null;
+    // the body groups in JHora's order (BodiesToShow), the three arudha groups included
+    for (const [key, , from, to] of BODY_GROUPS) {
+      if (Number((chart.ini as unknown as Record<string, unknown>)[key] ?? (key === 'BodyTypeOuterPlanet' ? 0 : 1)) === 0) continue;
+      if (key === 'BodyTypeArudhaLagna') put('AL', (c, k) => (byLon ? byLon[k][0] : bhavaArudha(lagnas[k], c, opt)));
+      else if (key === 'BodyTypeBhavaArudha') {
+        for (let h = 2; h <= 12; h++) put(h === 12 ? 'UL' : `A${h}`, (c, k) => (byLon ? byLon[k][h - 1] : bhavaArudha((lagnas[k] + h - 1) % 12, c, opt)));
+      } else if (key === 'BodyTypeGrahaArudha') {
         for (const g of GRAHAS) put(`${g}'s Arudha`, (c) => grahaArudha(g, c, opt));
         for (const [g, s] of SIGN_ARUDHA_ROWS) put(`${g}'s ${SIGNS[s]} Arudha`, (c) => signArudha(s, g, c, opt));
+      } else {
+        for (let i = from; i <= to; i++) {
+          const b = jhoraBody(chart, i);
+          rows.push([`${b.name}${b.retrograde ? ' (R)' : ''}`, ...cols.map((v) => SIGNS[signOf(bodyInVarga(chart, b, v))])]);
+        }
       }
-      rows.push([labels[i], ...cols.map((v) => SIGNS[signOf(bodyInVarga(chart, b, v))])]);
-    });
-    return { headers: ['Body', ...RASI_COLUMNS.map(([, v]) => vargaColumnLabel(v, chart.ini))], rows };
+    }
+    for (const r of rows) r[cols.length] = '';   // JHora fills the varga columns up to D-108 only: D-144 stays empty
+    // FUN_0042cd20 sets view+0x48 to 30 columns (24 exist): the copy repeats the last header
+    return { headers: ['Body', ...RASI_COLUMNS.map(([, v]) => vargaColumnLabel(v, chart.ini))], rows, copyColumns: 30 };
   },
   'basics.sahamas': (chart) => ({
     headers: ['Sahama name', 'Position', 'Nakshatra', 'Meaning of sahama'],
@@ -290,19 +272,6 @@ export const TABLES: Record<string, TableFn> = {
     const ak = charaKarakas(p)[0].planet;
     const d = brahmaRudraMaheswara(signOf(p.ascendant), ak, ctx);
     return { headers: ['Special Deity', 'Planet in this chart'], rows: [['Brahma', d.brahma], ['Rudra', d.rudra], ['Maheswara', d.maheswara]] };
-  },
-  // Basics > Amsa rulers (D-150 nadiamsas); JHora's row order differs from the Longitudes table
-  'basics.amsaRulers': (chart) => {
-    const labels = new Map(chart.longitudes.map((b, i) => [b.name, longitudeLabels(chart)[i].replace(/ - \w+$/, '')]));
-    const byName = new Map(chart.longitudes.map((b) => [b.name, b.lon]));
-    byName.set('Lagna', chart.positions.ascendant);
-    return {
-      headers: ['Body', 'Division', 'Index', 'In whose amsa in D-150'],
-      rows: AMSA_RULER_ROWS.map((name) => {
-        const r = amsaRuler(byName.get(name)!);
-        return [labels.get(name) ?? name, String(r.division + 1), String(r.index + 1), r.name];
-      }),
-    };
   },
   // Dasas > Nakshatra / Rasi / Other dasas: params.system (a NAKSHATRA_SLOTS / RASI_DASAS / OTHER_DASAS
   // key), params.path (drill-down indices); timed with the system's YearDefinition slot. A derived chart
@@ -325,14 +294,17 @@ export const TABLES: Record<string, TableFn> = {
   }),
   'strengths.ishtaKashta': (chart) => shadbalaRows(chart, ['Planet', 'Ishta Phala', 'Kashta Phala', 'Shadbala'], (b) => [b.ishta, b.kashta, b.rupas]),
   'strengths.rashmis': (chart) => shadbalaRows(chart, ['Planet', 'Uchcha Rashmi', 'Cheshta Rashmi', 'Subha Rashmi', 'Asubha Rashmi', 'Ishta (Parasara)', 'Kashta (Parasara)'], (b) => [b.uchchaRashmi, b.cheshtaRashmi, b.subhaRashmi, b.asubhaRashmi, b.ishtaParasara, b.kashtaParasara]),
-  // Strengths > Ashtakavarga (menu 106): params.mode is one of AV_MODES, params.varga a varga name
+  // Strengths > Ashtakavarga (menu 106): params.mode is one of AV_MODES, params.varga a varga name,
+  // params.lagnaShift the signs the lagna is moved on (32973 "Recompute taking another sign as
+  // lagna"; 33097 resets it); dialog 165's options come from the ini (ashtakavarga.ts)
   'strengths.ashtakavarga': (chart, params) => {
     const varga = (String(params.varga ?? 'D1')) as VargaName;
     const mode = String(params.mode ?? AV_MODES[0]);
     const spec = vargasOf(chart.ini)[varga];
     const lonOf = (b: AvBody) => (b === 'Lagna' ? chart.positions.ascendant : chart.positions.grahas[b].lon);
-    const sign = (b: AvBody) => Math.floor(vargaLongitude(lonOf(b), spec) / 30) % 12;
-    const av = ashtakavarga(sign);
+    const sign = shiftLagna((b: AvBody) => Math.floor(vargaLongitude(lonOf(b), spec) / 30) % 12, (((Number(params.lagnaShift) || 0) % 12) + 12) % 12);
+    const avo = avOptionsFromIni(chart.ini);
+    const av = ashtakavarga(sign, avo);
     const short = (b: AvBody) => (b === 'Lagna' ? 'As' : SHORT[b]);
     const mark = (b: AvBody, row: number[]) => row.map((x, s) => `${x}${s === sign(b) ? '*' : ''}`);
     const caption = `Ashtakavarga of ${varga === 'D1' ? 'Rasi Chart' : varga}`;
@@ -340,9 +312,18 @@ export const TABLES: Record<string, TableFn> = {
     if (mode === 'Sodhya pindas') {
       return { caption, headers: ['', 'Sodhya Pinda', 'Rasi Pinda', 'Graha Pinda'], rows: AV_BODIES.map((b) => [short(b), String(av.pindas[b].total), String(av.pindas[b].rasi), String(av.pindas[b].graha)]) };
     }
+    if (mode === 'Nakshatras & rasis') {
+      // FUN_00423420 (draw mode 3): sign rows, a nakshatra and a rasi per body
+      const nr = pindaNakshatras(av);
+      return {
+        caption: `Based on ${varga === 'D1' ? 'Rasi' : varga} of the chart`,
+        headers: ['', ...AV_BODIES.map(short)],
+        rows: SIGNS.map((x, s) => [x, ...AV_BODIES.map((b) => `${NAKSHATRAS[nr[b][s].nakshatra]} ${SIGNS[nr[b][s].rasi]}`)]),
+      };
+    }
     if (mode.startsWith('PAV of ')) {
       const owner = mode.slice(7) as AvBody;
-      const pav = prastara(owner, sign);
+      const pav = prastara(owner, sign, avo);
       const rows = AV_BODIES.map((c) => [short(c), ...pav[c].map((x, s) => (x ? 'x' : '') + (s === sign(c) ? '*' : ''))]);
       rows.push(['Total', ...av.bav[owner].map(String)]);
       return { caption: `Prastara ashtakavarga of ${owner} (${caption})`, headers: signCols, rows };
@@ -354,12 +335,14 @@ export const TABLES: Record<string, TableFn> = {
   },
   // Strengths > Other strengths, vimsopaka pane modes
   'strengths.amsaBalas': (chart) => {
-    const v = vaiseshikamsas(chart);
-    return { headers: ['Vaiseshikamsas', ...VAISESHIKAMSA_GROUPS.map((g) => g.name)], rows: GRAHAS.map((g) => [g, ...v[g].map((x) => x.label)]) };
+    const v = vaiseshikamsaCells(chart);   // JHora's labels are padded (they show in its copy)
+    return { headers: ['Vaiseshikamsas', ...VAISESHIKAMSA_GROUPS.map((g) => g.name)], rows: GRAHAS.map((g) => [g, ...v[g]]) };
   },
-  'strengths.basicAvasthas': (chart) => {
-    const a = basicAvasthas(chart);
-    return { headers: ['Planet', 'Age', 'Alertness (D-1)', 'Mood (D-1)'], rows: GRAHAS.map((g) => [g, AGES[a[g].age], ALERTNESS[a[g].alertness], a[g].moods.map((m) => MOODS[m]).join(', ')]) };
+  // params.varga: JHora varga index of alertness and mood (menu 129, 33046)
+  'strengths.basicAvasthas': (chart, params) => {
+    const v = Number(params.varga) || 0;
+    const a = basicAvasthas(chart, v);
+    return { headers: ['Planet', 'Age', `Alertness (${avasthaVargaLabel(v)})`, `Mood (${avasthaVargaLabel(v)})`], rows: GRAHAS.map((g) => [g, AGES[a[g].age], ALERTNESS[a[g].alertness], a[g].moods.map((m) => MOODS[m]).join(', ')]) };
   },
   'strengths.sayanadi': (chart) => {
     const a = sayanadiAvasthas(chart);
@@ -395,13 +378,12 @@ export const TABLES: Record<string, TableFn> = {
     const av = vargasOf(chart.ini)[String(params.aspectedVarga ?? 'D1') as VargaName];
     const pv = vargasOf(chart.ini)[String(params.aspectingVarga ?? 'D1') as VargaName];
     const from = GRAHAS.map((q) => vargaLongitude(chart.positions.grahas[q].lon, pv));
-    const cells = (lon: number) => GRAHAS.map((q, k) => { const x = aspectPercent(lon, from[k], q); return x === 0 ? '-' : `${x.toFixed(2).padStart(5)}%`; });
+    const cells = (lon: number) => GRAHAS.map((q, k) => { const x = aspectPercent(lon, from[k], q); return x === 0 ? '-' : `${cFixed(x, 2).padStart(5)}%`; });
     const rows: string[][] = [];
-    chart.longitudes.forEach((b, i) => {
+    keyInfoBodies(chart).forEach((b) => {
       const lon = vargaLongitude(b.lon, av);
-      const retro = i >= 1 && i < 8 && chart.positions.grahas[GRAHAS[i - 1]].retrograde;
-      rows.push([`${b.name}${retro ? ' (R)' : ''}`, formatLongitude(lon), ...cells(lon)]);
-      if (i > 9) return;
+      rows.push([`${b.name}${b.retrograde ? ' (R) ' : ' '}`, formatLongitude(lon), ...cells(lon)]);   // "%s%s": name, " (R) " or " "
+      if (b.index > 9) return;
       const step = b.name === 'Rahu' || b.name === 'Ketu' ? -30 : 30;
       for (let h = 1; h < 12; h++) {
         // JHora passes the unreduced lon + 30h to FUN_004b2b00 (it matters on exact boundaries)
@@ -415,7 +397,7 @@ export const TABLES: Record<string, TableFn> = {
   'aspects.table': (chart, params) => {
     const varga = String(params.varga ?? 'D1') as VargaName;
     const spec = vargasOf(chart.ini)[varga];
-    const maxValue = Number(params.max ?? 100);
+    const maxValue = Number(params.max ?? chart.ini.AspectValueMax ?? 60);   // AspectValueMax (menu 163: 33382 = 60, 33383 = 100)
     const lonOf = (g: Graha) => vargaLongitude(chart.positions.grahas[g].lon, spec);
     const signOfG = (g: Graha) => signOf(lonOf(g));
     const rel = (p: Graha, q: Graha) => (p === q ? 'own' : `rel${3 - compoundRelation(p, q, signOfG)}`);
@@ -478,6 +460,7 @@ export const TABLES: Record<string, TableFn> = {
   },
   'basics.drekkanas': (chart) => ({
     headers: ['Body', 'Drekkana occupied'],
+    copyColumns: 7,   // FUN_0043030f inserts 2 columns but sets view+0x48 to 7 (see listCopy.ts)
     rows: bhagaBodies(chart).map(([name, lon]) => [name, drekkanaType(lon)]),
   }),
   'basics.nakshatraAspects': (chart) => ({
@@ -493,39 +476,35 @@ export const TABLES: Record<string, TableFn> = {
   }),
   'basics.pushkara': (chart) => ({
     headers: ['Body', 'In Pushkaramsa?', 'In Pushkara Bhaga?', 'From Pushkara Bhaga Center'],
-    rows: bhagaBodies(chart).map(([name, lon]) => [name, yes(inPushkaramsa(lon)), yes(within(fromPushkaraBhaga(lon))), `${Math.abs(fromPushkaraBhaga(lon)).toFixed(4)} deg`]),
+    rows: bhagaBodies(chart).map(([name, lon]) => {
+      const d = fromPushkaraBhaga(lon, chart.ini.PushkaraBhagaJP !== 0);   // Preferences 33392
+      return [name, yes(inPushkaramsa(lon)), yes(within(d)), `${Math.abs(d).toFixed(4)} deg`];
+    }),
   }),
   'basics.mrityuBhaga': (chart) => ({
     headers: ['Body', 'From Mrityu Bhaga Center', 'Within the Trimsamsa (degree)?'],
     rows: bhagaBodies(chart).map(([name, lon]) => {
       const key = /house$/.test(name) ? 'Lagna' : (name as keyof typeof MRITYU_BHAGA);
-      const d = fromMrityuBhaga(key, lon);
+      const d = fromMrityuBhaga(key, lon, { table: chart.ini.MBTablePreference, location: chart.ini.MBLocationPreference });   // 33079
       return [name, `${Math.abs(d).toFixed(4)} deg`, yes(within(d))];
-    }),
-  }),
-  // Basics > Key Info > "Coordinates" (33071)
-  'basics.coordinates': (chart) => ({
-    headers: ['Planet', 'Longitude', 'Lon Speed', 'Latitude', 'Lat Speed'],
-    rows: GRAHAS.filter((g) => g !== 'Ketu').map((g) => {
-      const p = chart.positions.grahas[g];
-      return [g, `${p.lon.toFixed(3)} deg`, `${p.speed.toFixed(3)} deg/day`, `${p.lat.toFixed(3)} deg`, ''];
     }),
   }),
   // Basics > Houses (menu 145): house system and lagna-in-middle from the ini (HouseTypeWanted,
   // HouseCuspsInMiddle; default equal houses, lagna in the middle). See src/core/kpHouses.ts.
-  'basics.houses': (chart, _params, swe) => ({
+  // params.ref: reference body of 33248 (0 Lagna, 1..9 Sun..Ketu; a session setting in JHora)
+  'basics.houses': (chart, params, swe) => ({
     headers: ['House', 'Start', 'Cusp', 'End', 'Planets in it'],
-    rows: houseRows(chart, houseOptions(chart), swe).map((h, i) => [ORDINAL[i], formatLongitude(h.start), formatLongitude(h.cusp), formatLongitude(h.end), h.bodies.join(', ')]),
+    rows: houseRows(chart, houseOptions(chart, Number(params.ref) || 0), swe).map((h, i) => [ORDINAL[i], formatLongitude(h.start), formatLongitude(h.cusp), formatLongitude(h.end), h.bodies.join(', ')]),
   }),
   // Basics > KP (menu 146 id 33011); house rows follow the Houses settings (Placidus = KP cusps)
-  'basics.kp': (chart, _params, swe) => ({
+  'basics.kp': (chart, params, swe) => ({
     headers: ['Body/Cusp', 'Nakshatra lord', 'Sub lord', 'Prati-sub', 'Sookshma-sub', 'Praana-sub', 'Deha-sub'],
-    rows: kpPoints(chart, houseOptions(chart), swe).map((pt) => [pt.label, ...kpLords(pt.lon, 6).map((g) => SHORT[g])]),
+    rows: kpPoints(chart, houseOptions(chart, Number(params.ref) || 0), swe).map((pt) => [pt.label, ...kpLords(pt.lon, 6).map((g) => SHORT[g])]),
   }),
   // Basics > KP, "Planets occupying each planet's nakshatra / sub / ..." (33012, 33014..33018): params.level 0..5
   'basics.kpOccupants': (chart, params, swe) => {
     const level = Math.max(0, Math.min(5, Number(params.level ?? 0)));
-    const occ = kpOccupants(chart, level, houseOptions(chart), swe);
+    const occ = kpOccupants(chart, level, houseOptions(chart, Number(params.ref) || 0), swe);
     return { headers: ['Planet', KP_LEVEL_HEADERS[level]], rows: GRAHAS.map((g) => [SHORT[g], occ[g].join(', ')]) };
   },
   // Horoscope matching (command 33320, FUN_004e8db0): the native's Moon against another
@@ -545,7 +524,7 @@ export const TABLES: Record<string, TableFn> = {
   'basics.navaTarasMoon': (chart) => navaTarasTable(chart.positions.grahas.Moon.lon, 'Moon'),
   'basics.navaTarasLagna': (chart) => navaTarasTable(chart.positions.ascendant, 'Lagna'),
   'basics.specialTarasMoon': (chart) => specialTarasTable(chart.positions.grahas.Moon.lon, 'Moon'),
-  'basics.specialTarasLagna': (chart) => specialTarasTable(chart.positions.ascendant, 'Lagna'),
+  'basics.specialTarasLagna': (chart) => specialTarasTable(chart.positions.ascendant, 'lagna'),   // JHora's header is lower case here
   'basics.yogi': (chart) => {
     const y = yogiPoints(chart.positions);
     return {
@@ -583,6 +562,12 @@ export const TABLES: Record<string, TableFn> = {
   },
   // Miscellany > Laghu Parasari (src/core/derived/laghuParasari.ts)
   ...LAGHU_TABLES,
+  // Key Info longitudes / natal tables / coordinates, Amsa rulers, supported yogas (src/core/basicsJobs.ts)
+  ...BASICS_JOBS,
+  // chart right-click menu (src/core/chartJobs.ts)
+  ...CHART_JOBS,
+  // Dasas tab (src/core/dasas/dasaJobs.ts): replaces the 'dasas.*' entries above (cycle, Tribhagi, varga, options)
+  ...DASA_TABLES,
 };
 
 function navaTarasTable(lon: number, from: string): Table {
@@ -604,6 +589,8 @@ export const TEXTS: Record<number, TextFn> = {
     if (!swe) throw new Error('Key Info needs the ephemeris');
     return keyInfoText(swe, chart).join('\r\n');
   },
+  // Edit > Copy basic / complete calculations (src/core/format/calcsText.ts)
+  ...CALC_TEXTS,
 };
 
 /**
@@ -644,15 +631,22 @@ export const ASYNC_TABLES: Record<string, (chart: Chart, params: Record<string, 
   ...PANCHANGA_JOBS,
   // Transits tab (src/core/transits): basic results, calendar, special search, longitude correlation
   ...TRANSIT_JOBS,
+  // Dasas tab and its commands (src/core/dasas/dasaJobs.ts)
+  ...DASA_ASYNC_JOBS,
+  // calculation options ported from jhora.exe (Nisheka chart, ...)
+  ...OPTION_ASYNC_JOBS,
 };
 
 export function runTable(chart: Chart, table: string, params: Record<string, unknown>, swe?: Sweph): Table {
+  // NodalExaltationParasara patches shared tables (signStrength.ts): re-apply the chart's setting
+  applyNodalExaltation((chart.ini?.NodalExaltationParasara ?? 0) !== 0);
   const fn = TABLES[table];
   if (!fn) throw new Error(`table not implemented: ${table}`);
   return fn(chart, params, swe);
 }
 
 export function runText(chart: Chart, cmd: number, params: Record<string, unknown>, swe?: Sweph): string {
+  applyNodalExaltation((chart.ini?.NodalExaltationParasara ?? 0) !== 0);
   const fn = TEXTS[cmd];
   if (!fn) throw new Error(`text command not implemented: ${cmd}`);
   return fn(chart, params, swe);

@@ -1,0 +1,24 @@
+{
+ "_comment": "Bhava/Chalit chakra (varga 28, FUN_004a76b0). Each mode is a chart-menu command applied to Many Vargas slot 0 (view+0x8ad0 = 0 until a chart is clicked): 33330..33362 set BhavaChartVarga and put the Bhava/Chalit chakra in slot 0. Run once per settings set, each into its own directory under golden/jhora-bhava/: default (no --ini; BhavaChartRef=2 Moon, HouseCuspsInMiddle=1), --ini BhavaChartRef=0 (house-cusp path, equal houses), --ini BhavaChartRef=0 --ini HouseCuspsInMiddle=0 --ini HouseTypeWanted=4 (Placidus spans), --ini BhavaChartRef=8 --ini HouseCuspsInMiddle=0 (Rahu, anti-zodiacal), --ini BhavaChartRef=8 --ini HouseCuspsInMiddle=0 --ini HousesFromNodesReversed=0. The harness re-issues the first mode at the end, leaving BhavaChartVarga=0 and slot 0 in the bhava chart; JHora saves DisplayVarga and BhavaChart* to the copy's jhora.ini on exit, so restore DisplayVarga=0 0 and BhavaChartVarga=0 there afterwards. tests/bhavaChart.test.ts skips while golden/jhora-bhava is absent.",
+ "tabs": [
+  {
+   "top": "Chakras",
+   "sub": "Many Vargas",
+   "draw": true,
+   "modes": [
+    [
+     "Bhava D-1",
+     33330
+    ],
+    [
+     "Bhava D-9",
+     33332
+    ],
+    [
+     "Bhava D-10",
+     33344
+    ]
+   ]
+  }
+ ]
+}

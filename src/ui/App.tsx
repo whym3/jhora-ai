@@ -3,8 +3,8 @@ import { parseJhd, writeJhd, type BirthData } from '../core/jhd';
 import type { ChartResult, ChartSpec } from '../engine/protocol';
 import { EngineProvider, useEngine, useJob } from './EngineProvider';
 import { BirthForm } from './BirthForm';
-import type { ChartStyle } from './ChartDiagram';
-import { ChartPane } from './shell/ChartPane';
+import { CHART_STYLES, type ChartStyle } from './ChartDiagram';
+import { ChartPane, setChartStyle } from './shell/ChartPane';
 import { Preferences } from './Preferences';
 import { MatchingView } from './shell/MatchingView';
 import { TajakaView } from './shell/TajakaView';
@@ -16,7 +16,7 @@ import { NakshatraDasasView, OtherDasasView, RasiDasasView } from './shell/Dasas
 import { NotPorted } from './shell/NotPorted';
 import { BarGraphsView } from './shell/BarGraphsView';
 import { SUB_TABS, TOP_TABS, type TopTab } from './shell/tabs';
-import { closeChart, currentSubTab, openChart, setSubTab, setTopTab, setView, updateChart, useActiveDoc, useStore } from './state/store';
+import { closeChart, currentSubTab, openChart, setSubTab, setTopTab, updateChart, useActiveDoc, useStore } from './state/store';
 import { TabBar } from './widgets/TabBar';
 
 // the AI panel (and its provider SDKs) loads on first use
@@ -33,6 +33,10 @@ async function loadSample(name: string) {
 import { newChart, setCurrentLocationAsDefault } from './state/store';
 import { defaultLocationMessage } from '../core/newChart';
 import { AyanamsaDialog } from './AyanamsaDialog';
+import { MenuBar } from './MenuBar';
+import { applyAppearance } from './appearance';
+import { displayBirth } from '../core/displayTz';
+import { NishekaButton } from './shell/NishekaButton';
 
 function Toolbar() {
   const doc = useActiveDoc();
@@ -51,7 +55,7 @@ function Toolbar() {
   const [aiUsed, setAiUsed] = useState(false);
   const ini = useStore((s) => s.ini);
   // the AI reads the chart on screen: a derived chart (Tajaka etc.) when one is shown
-  const aiSpec = useMemo<ChartSpec | null>(() => (doc ? { birth: doc.derived?.birth ?? doc.birth, ini: { ...diffIni(ini), ...doc.ini } } : null), [doc, ini]);
+  const aiSpec = useMemo<ChartSpec | null>(() => (doc ? { birth: doc.derived?.birth ?? displayBirth(doc.birth, doc.displayTz), ini: { ...diffIni(ini), ...doc.ini } } : null), [doc, ini]);
   const aiTitle = doc ? (doc.derived ? `${doc.title} - ${doc.derived.label}` : doc.title) : '';
   const openFile = async (f: File) => openChart(parseJhd(await f.text()), f.name.replace(/\.jhd$/i, ''));
   const save = () => {
@@ -59,6 +63,7 @@ function Toolbar() {
     const url = URL.createObjectURL(new Blob([writeJhd(doc.birth)], { type: 'text/plain' }));
     Object.assign(document.createElement('a'), { href: url, download: `${doc.title}.jhd` }).click();
     URL.revokeObjectURL(url);
+    if (!doc.saved) updateChart(doc.id, { saved: true });
   };
   return (
     <div className="toolbar">
@@ -69,11 +74,12 @@ function Toolbar() {
       <button onClick={() => newChart()} title="File > New: now, at the default location">New chart</button>
       <label className="file">Open .jhd<input type="file" accept=".jhd" onChange={(e) => e.target.files?.[0] && openFile(e.target.files[0])} /></label>
       <button onClick={save} disabled={!doc}>Save .jhd</button>
-      <select aria-label="Chart style" value={style} onChange={(e) => setView({ chartStyle: e.target.value as ChartStyle })}>
-        <option value="south">South Indian</option>
-        <option value="north">North Indian</option>
+      <select aria-label="Chart style" value={style} onChange={(e) => setChartStyle(e.target.value as ChartStyle)}>
+        {CHART_STYLES.map((c) => <option key={c.style} value={c.style}>{c.label}</option>)}
       </select>
       <button onClick={() => setMatching(true)} disabled={!doc}>Horoscope Matching</button>
+      {doc && <NishekaButton docId={doc.id} active={doc.derived?.label === 'Nisheka Adhana'}
+        natalSpec={{ birth: displayBirth(doc.birth, doc.displayTz), ini: { ...diffIni(ini), ...doc.ini } }} />}
       <button onClick={setDefaultLocation} disabled={!doc}>Set location as default</button>
       <button onClick={() => setAyanamsa(true)}>Ayanamsa…</button>
       <button onClick={() => setPrefs(true)}>Preferences…</button>
@@ -85,7 +91,7 @@ function Toolbar() {
         <div className="modal-backdrop" onClick={() => setMatching(false)}>
           <div className="modal" role="dialog" aria-label="Horoscope Matching" onClick={(e) => e.stopPropagation()}>
             <div className="note-bar"><strong>Horoscope Matching for Marriage</strong><button onClick={() => setMatching(false)}>Close</button></div>
-            <MatchingView spec={{ birth: doc.birth, ini: { ...diffIni(ini), ...doc.ini } }} />
+            <MatchingView spec={{ birth: displayBirth(doc.birth, doc.displayTz), ini: { ...diffIni(ini), ...doc.ini } }} />
           </div>
         </div>
       )}
@@ -130,7 +136,7 @@ function SubView({ top, sub, spec, natalSpec, docId, chart }: { top: TopTab; sub
   if (top === 'Basics' && sub === 'Key Info') return <KeyInfoView spec={spec} />;
   if (top === 'Basics' && sub === 'Houses') return <HousesView spec={spec} />;
   if (top === 'Basics' && sub === 'KP') return <KpView spec={spec} />;
-  if (top === 'Strengths' && sub === 'Ashtakavarga') return <AshtakavargaView spec={spec} />;
+  if (top === 'Strengths' && sub === 'Ashtakavarga') return <AshtakavargaView spec={spec} natalSpec={natalSpec} />;
   if (top === 'Strengths' && sub === 'Other strengths') return <OtherStrengthsView spec={spec} />;
   if (top === 'Strengths' && sub === 'Bar graphs') return <BarGraphsView spec={spec} />;
   if (top === 'Dasas' && sub === 'Nakshatra dasas') return <NakshatraDasasView spec={spec} />;
@@ -146,7 +152,8 @@ function Workspace() {
   const ini = useStore((s) => s.ini);
   const view = useStore((s) => s.view);
   const { ready, error } = useEngine();
-  const natalSpec = useMemo<ChartSpec | null>(() => (doc ? { birth: doc.birth, ini: { ...diffIni(ini), ...doc.ini } } : null), [doc, ini]);
+  // Edit > Change timezone: every view computes from the birth record in the display zone
+  const natalSpec = useMemo<ChartSpec | null>(() => (doc ? { birth: displayBirth(doc.birth, doc.displayTz), ini: { ...diffIni(ini), ...doc.ini } } : null), [doc, ini]);
   // a derived chart (Tajaka etc.) replaces the natal one in every view, as in JHora
   const spec = useMemo<ChartSpec | null>(() => (natalSpec && doc?.derived ? { ...natalSpec, birth: doc.derived.birth } : natalSpec), [natalSpec, doc?.derived]);
   const chart = useJob(spec ? { kind: 'chart' as const, chart: spec } : null);
@@ -192,6 +199,9 @@ function diffIni(ini: JhoraIni): Partial<JhoraIni> {
 
 export function App() {
   const docs = useStore((s) => s.docs);
+  // JHora's Colors / font size preferences (src/ui/appearance.ts)
+  const ini = useStore((s) => s.ini);
+  useEffect(() => { applyAppearance(ini); }, [ini]);
   useEffect(() => { if (!docs.length) loadSample(SAMPLES[0]); }, [docs.length]);
   return (
     <EngineProvider>
@@ -199,6 +209,7 @@ export function App() {
         <header>
           <h1>Jagannatha Hora <span>web</span></h1>
           <Toolbar />
+          <MenuBar />
         </header>
         <DocTabs />
         <Workspace />

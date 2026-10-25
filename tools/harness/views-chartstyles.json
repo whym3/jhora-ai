@@ -1,0 +1,19 @@
+{
+ "_comment": "North and East Indian chart geometry (FUN_00437e40, FUN_004362d0). Run once per ChartStyle 2, 3, 4 into its own directory: --ini ChartStyle=N --out golden/jhora-chartstyle<N> (GDI draws of the Many Vargas boxes, standard view). Restore ChartStyle=0 afterwards (--ini ChartStyle=0 on the next run). tests/chartStylesGolden.test.ts skips while these directories are absent; it also reads the style draws of golden/jhora-chartviews-style<N> (views-chartviews.json) when present.",
+ "tabs": [
+  {
+   "top": "Chakras",
+   "sub": "Many Vargas",
+   "draw": true,
+   "copies": {
+    "chart_text": 32985
+   },
+   "modes": [
+    [
+     "Standard view",
+     32803
+    ]
+   ]
+  }
+ ]
+}

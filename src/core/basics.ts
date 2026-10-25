@@ -71,8 +71,7 @@ export const SPECIAL_TARAS: [string, string, number][] = [
 ];
 
 export function specialTaras(fromLon: number): { tara: string; meaning: string; nak: string; lord: Graha }[] {
-  const janma27 = nakshatraOf(fromLon);
-  const janma28 = janma27 >= 21 ? janma27 + 1 : janma27; // index in the 28-star list
+  const janma28 = nakshatra28Of(fromLon);   // Abhijit by its own span (JHora: lagna at 8 Cp 16' is in Abhijit)
   return SPECIAL_TARAS.map(([tara, meaning, n]) => {
     const i = (janma28 + n - 1) % 28;
     return { tara, meaning, nak: NAK28[i], lord: NAK28_LORD[i] };
@@ -230,4 +229,60 @@ export function specialTithis(p: Positions): { name: string; seed: string; tithi
       tithi: tithiOf(elong * n),
     };
   });
+}
+
+// ---- Body selection (Key Info "Select bodies", 32821, dialog 130; Amsa rulers 32930) ----
+// jhora.exe: both commands edit the same 19 flags at 0x5791d4 (ini [BodiesToShow] BodyType*),
+// one per group of body indices (pairs at 0x579220). FUN_0042b400 (Longitudes), FUN_0042c8e0
+// (Natal Longitudes), FUN_0042c3b0 (All Divisional Longitudes), FUN_0042cd20 (Rasis occupied
+// in all vargas), FUN_0042bac0 (Aspect Evaluation) and FUN_00495500 (Amsa rulers) walk the
+// groups in this order and skip unselected ones; Longitudes stops at index 59 (the arudhas
+// start there) unless DAT_008a4c18 is set (Rasis occupied in all vargas).
+
+/** JHora's body names by index (runtime table *0x8a29b4, filled from the language table). */
+export const JHORA_BODY_NAMES = [
+  'Lagna', 'Sun', 'Moon', 'Mars', 'Mercury', 'Jupiter', 'Venus', 'Saturn', 'Rahu', 'Ketu', 'Uranus', 'Neptune', 'Pluto',
+  'Bhava Lagna', 'Hora Lagna', 'Ghati Lagna', 'Vighati Lagna', 'Pranapada Lagna', 'Sree Lagna', 'Indu Lagna', 'Bhrigu Bindu',
+  'Kunda', 'Dhooma', 'Vyatipata', 'Parivesha', 'Indra Chapa', 'Upaketu', 'Kaala', 'Mrityu', 'Artha Prahara', 'Yama Ghantaka',
+  'Maandi', 'Gulika', 'Prana Sphuta', 'Deha Sphuta', 'Mrityu Sphuta', 'Sookshma TriSphuta', 'Tithi Sphuta',
+  'Yoga Sphuta (Sun-Moon)', 'Rahu Tithi Sphuta', 'Kshetra Sphuta', 'Beeja Sphuta', 'TriSphuta', 'ChatusSphuta', 'PanchaSphuta',
+  'Yoga Sphuta', 'Avayoga Sphuta', 'Varnada Lagna', 'V2', 'V3', 'V4', 'V5', 'V6', 'V7', 'V8', 'V9', 'V10', 'V11', 'V12',
+];
+
+/** The 19 body groups: ini key and inclusive JHora index range (0x579220), in display order. */
+export const BODY_GROUPS: [string, string, number, number][] = [
+  ['BodyTypePlanet', 'Planets', 0, 9], ['BodyTypeOuterPlanet', 'Outer planets', 10, 12], ['BodyTypeMandi', 'Mandi', 31, 31],
+  ['BodyTypeGulika', 'Gulika', 32, 32], ['BodyTypeBhavaHoraGhatiLagnas', 'Bhava, Hora Ghati Lagnas', 13, 15],
+  ['BodyTypeViGhatiLagna', 'Vighati Lagna', 16, 16], ['BodyTypeVarnadaLagna', 'Varnada Lagna', 47, 47],
+  ['BodyTypeSreeLagna', 'Sree Lagna', 18, 18], ['BodyTypePranapadaLagna', 'Pranapada Lagna', 17, 17],
+  ['BodyTypeInduLagna', 'Indu Lagna', 19, 19], ['BodyTypeBhriguBindu', 'Bhrigu Bindu', 20, 20],
+  ['BodyTypeUpagraha', 'Other Upagrahas', 22, 30], ['BodyTypePrasnaMargaSphutas', 'Sphutas of Prasna Marga', 33, 44],
+  ['BodyTypeArudhaLagna', 'Arudha Lagna', 59, 59], ['BodyTypeBhavaArudha', 'Bhava Arudhas', 60, 70],
+  ['BodyTypeGrahaArudha', 'Graha Arudhas', 83, 101], ['BodyTypeVarnadas', 'Varnadas', 48, 58], ['BodyTypeKunda', 'Kunda', 21, 21],
+  ['BodyTypeYoga', 'Yoga and Avayoga Sphuta', 45, 46],
+];
+
+/** BodiesToShow defaults (0x5791d4): everything but the outer planets. */
+const BODY_GROUP_DEFAULT = BODY_GROUPS.map(([key]) => (key === 'BodyTypeOuterPlanet' ? 0 : 1));
+
+/** Selected JHora body indices in display order, below `limit` (59: no arudhas). */
+export function selectedBodies(ini: Partial<Record<string, unknown>>, limit = 59): number[] {
+  const out: number[] = [];
+  BODY_GROUPS.forEach(([key, , from, to], g) => {
+    const v = ini[key];
+    if (Number(v ?? BODY_GROUP_DEFAULT[g]) === 0) return;
+    for (let i = from; i <= to && i < limit; i++) out.push(i);
+  });
+  return out;
+}
+
+/** Group of a JHora body index (or -1). */
+export function bodyGroupOf(index: number): number {
+  return BODY_GROUPS.findIndex(([, , from, to]) => index >= from && index <= to);
+}
+
+/** Is the body group of this index shown? */
+export function bodyShown(ini: Partial<Record<string, unknown>>, index: number): boolean {
+  const g = bodyGroupOf(index);
+  return g < 0 || Number(ini[BODY_GROUPS[g][0]] ?? BODY_GROUP_DEFAULT[g]) !== 0;
 }

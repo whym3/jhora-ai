@@ -36,7 +36,7 @@ import { VARGA_INDEX, vargaSpec } from '../vargaOptions';
  * that need `longitudes` (special lagnas, upagrahas, sphutas) or `day`/`birth`
  * (weekday).
  */
-export type ChakraChart = Pick<Chart, 'positions' | 'bodies'> & Partial<Pick<Chart, 'longitudes' | 'day' | 'birth' | 'ini'>>;
+export type ChakraChart = Pick<Chart, 'positions' | 'bodies'> & Partial<Pick<Chart, 'longitudes' | 'day' | 'birth' | 'ini' | 'userPoints'>>;
 
 /** JHora's internal body index order (long name, short label). */
 export const JHORA_BODIES: [string, string][] = [
