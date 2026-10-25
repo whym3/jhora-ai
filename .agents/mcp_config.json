@@ -1,0 +1,14 @@
+{
+  "mcpServers": {
+    "jhora": {
+      "command": "/opt/homebrew/bin/node",
+      "args": [
+        "/Users/santosh/Documents/jhora/jhora-ai/dist-mcp/jhora-mcp.mjs"
+      ],
+      "env": {
+        "JHORA_ROOT": "/Users/santosh/Documents/jhora/jhora-ai"
+      }
+    }
+  }
+}
+
