@@ -1,6 +1,5 @@
 # MCP server of the AI astrologer (src/mcp) as a Streamable HTTPS server on port 3443.
-# The ephemeris files in public/ephe are JHora's own (tools/copy-ephe.sh) and must exist
-# before building. Saved charts and the message log live in /app/charts: mount a volume
+# The ephemeris files in public/ephe are JHora's own copies, included in the repository. Saved charts and the message log live in /app/charts: mount a volume
 # there to keep them. The TLS certificate and key are mounted at /app/tls, never baked into
 # the image (docker-compose.yml mounts ./charts and ./.cache/mcp-tls).
 FROM node:22-bookworm-slim AS build

@@ -1,5 +1,6 @@
 #!/usr/bin/env bash
-# Copy JHora's own Swiss Ephemeris data files into public/ephe (not committed).
+# Copy JHora's own Swiss Ephemeris data files into public/ephe (the repository already
+# includes them; use this to refresh them from an install).
 # JHora 8.0 ships an older build of the .se1 files than current Swiss Ephemeris;
 # using the same files keeps positions identical to the desktop program.
 set -euo pipefail

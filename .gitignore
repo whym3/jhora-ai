@@ -4,7 +4,6 @@ dist/
 dist-mcp/
 charts/
 *.log
-public/ephe/
 scratch/
 public/atlas/
 __pycache__/

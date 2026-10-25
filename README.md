@@ -19,24 +19,24 @@ The port is tested against Jagannatha Hora's own output: **1955 of 1957** compar
 
 ## Getting started
 
-You need Node.js 22 or newer, and an installation of Jagannatha Hora 8.0 for its ephemeris data files. Those files are not in this repository.
+You need Node.js 22 or newer.
 
 ```bash
 npm install
-
-# Copy JHora's Swiss Ephemeris files into public/ephe. Point JHORA_DIR at your JHora
-# install; the default is the Windows location, "C:\Program Files (x86)\Jagannatha Hora".
-JHORA_DIR="/path/to/Jagannatha Hora" bash tools/copy-ephe.sh
-
-# Optional: JHora's atlas for searching places by name
-node tools/atlas/install.mjs "/path/to/Jagannatha Hora/jhcore/atlas"
-
 npm run dev        # http://localhost:5173
 ```
 
-On a Mac running JHora through Wine or Whisky, `JHORA_DIR` is the `drive_c/Program Files (x86)/Jagannatha Hora` folder inside the bottle.
+**Ephemeris files.** The Swiss Ephemeris data files in `public/ephe` are included, and they are JHora 8.0's own copies. That matters: JHora ships an older build of these files, and only the same files reproduce its output exactly. Compared with JHora's results across the test suite:
 
-JHora's own data files are used because JHora 8.0 ships an older build of them; with the same files, positions match the desktop program.
+| Files in `public/ephe` | Tests that differ from JHora |
+|---|---:|
+| JHora's own copies (included) | 0 |
+| Astrodienst's current official files | 314 |
+| none (Swiss Ephemeris falls back to its Moshier approximation) | 844 |
+
+To refresh them from an installation, run `JHORA_DIR="/path/to/Jagannatha Hora" bash tools/copy-ephe.sh`. The default `JHORA_DIR` is the Windows location; on a Mac running JHora through Wine or Whisky, it is the `drive_c/Program Files (x86)/Jagannatha Hora` folder inside the bottle.
+
+**Place search (optional).** JHora's atlas lets you search birth places by name; it is not included. Copy it with `node tools/atlas/install.mjs "/path/to/Jagannatha Hora/jhcore/atlas"`.
 
 ## AI astrologer
 
@@ -107,7 +107,7 @@ Both modes listen on this machine only and refuse requests addressed to any othe
 docker compose up -d --build    # https://localhost:3443/mcp
 ```
 
-This builds the server into a Node 22 image and publishes it on `127.0.0.1` only. Saved charts stay in `./charts` on the host, and the certificate from `.cache/mcp-tls` is mounted read-only, never copied into the image. The image includes the ephemeris files, so copy them first.
+This builds the server into a Node 22 image and publishes it on `127.0.0.1` only. Saved charts stay in `./charts` on the host, and the certificate from `.cache/mcp-tls` is mounted read-only, never copied into the image. The image includes the ephemeris files.
 
 ### Settings
 
@@ -136,7 +136,7 @@ This builds the server into a Node 22 image and publishes it on `127.0.0.1` only
 | `npm run parity` | regenerate PARITY.md from the test results |
 | `npm run mcp:build` | build the MCP server |
 
-The tests compare the port with JHora's output in `golden/`; most need the ephemeris files.
+The tests compare the port with JHora's output in `golden/`. `JHORA_EPHE_DIR=/some/folder npm test` runs them against another set of ephemeris files.
 
 **Swiss Ephemeris engine.** It is built from Astrodienst's official source (v2.10.3) with Emscripten, plus small patches that emulate the DLL bundled with JHora. Rebuild it with `tools/build-sweph.sh`, which needs Docker.
 
