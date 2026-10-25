@@ -95,6 +95,39 @@ export function chartWeekday(chart: ChakraChart): number | null {
   return weekdayOf(chart.day.sunrise, chart.birth.tzHours);
 }
 
+const YOGINI_WEEKDAY = [0, 6, 5, 7, 2, 4, 1];
+const YOGINI_SLOT = [0, 20, 7, 27, 14, 6, 21, 13];
+
+/**
+ * FUN_004a5f30: the "Yogini (vara)" and "Mrityu" points of the star chakras' body
+ * set 1 (chart+0x2752c, +0x27534; the third, +0x27530, is always 0 and drawn with
+ * an empty label). Inputs: the ghatis since sunrise x (chart+0x9758) and the
+ * weekday w (chart+0x11fdc); k = trunc(x 4/15) is the 3.75-ghati part of the day,
+ * f = trunc((x - 3.75 k) 1.6) its sixth. With S = [0, 20, 7, 27, 14, 6, 21, 13]
+ * and E = [0, 6, 5, 7, 2, 4, 1][w], Yogini starts from a = S[(k + E) & 7] and
+ * b = S[(k + E + 1) & 7] (k = 15: S[E of the next weekday]), Mrityu from
+ * a = S[(k + 1) & 7], b = S[(k + 2) & 7] (k = 15: 20); for f > 3 the point is
+ * b moved by 6 - f, else a moved by f - forward when the value is a multiple of
+ * 7, else backward - all mod 28. The drawers (FUN_004553c0, FUN_004785d0,
+ * FUN_00444d50 / FUN_0047aa50) use the values directly as slot indices of the
+ * wheel, not relative to the base star.
+ */
+export function yoginiMrityu(chart: ChakraChart): [number, number, number] | null {
+  const w = chartWeekday(chart);
+  if (w === null || !chart.day) return null;
+  const x = chart.day.ghatis;
+  const k = Math.trunc(x * 0.26666666666666666);
+  const f = Math.trunc((x - k * 3.75) * 1.6);
+  const point = (a: number, b: number) => {
+    const [v, d] = f > 3 ? [b, 6 - f] : [a, f];
+    return ((v % 7 === 0 ? v + d : v - d) + 280) % 28;
+  };
+  const e = YOGINI_WEEKDAY[w];
+  const yogini = point(YOGINI_SLOT[(k + e) & 7], k === 15 ? YOGINI_SLOT[YOGINI_WEEKDAY[(w + 1) % 7]] : YOGINI_SLOT[(k + e + 1) & 7]);
+  const mrityu = point(YOGINI_SLOT[(k + 1) & 7], k === 15 ? 20 : YOGINI_SLOT[(k + 2) & 7]);
+  return [yogini, mrityu, 0];
+}
+
 /** Tithi index 0..29 (0 = Sukla Pratipat, 29 = Amavasya) from Moon - Sun. */
 export function chartTithi(chart: ChakraChart): number {
   const g = chart.positions.grahas;

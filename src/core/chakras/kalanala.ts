@@ -44,7 +44,7 @@
 //   3 Upagrahas = 32, 31, 22..30; 4 Special lagnas = 0, 14, 15, 17..20;
 //   5 Sahamas = the 36 sahamas (chart+0x214f0, names 0x8a2088).
 import { sahamas } from '../sahamas';
-import { bodiesByIndex, type ChakraBody, type ChakraChart, nakshatra28Of } from './common';
+import { bodiesByIndex, type ChakraBody, type ChakraChart, nakshatra28Of, yoginiMrityu } from './common';
 
 export type KalanalaKind = 'surya' | 'chandra';
 /** Menu 152 body sets, in the order of view+0x12c. */
@@ -121,7 +121,7 @@ export interface KalanalaOptions {
   tajaka?: boolean;
   /** chart shown instead of the natal one (transits): bodies come from it */
   transit?: ChakraChart | null;
-  /** raw chart+0x2752c / +0x27534 / +0x27530 values for mode 1 (box indices) */
+  /** raw chart+0x2752c / +0x27534 / +0x27530 values for mode 1 (box indices); default: common.ts yoginiMrityu */
   yoginiMrityu?: [number, number, number];
 }
 export interface Kalanala {
@@ -161,11 +161,11 @@ function build(kind: KalanalaKind, chart: ChakraChart, opts: KalanalaOptions = {
       const text = mode === 0 && b.retrograde ? `(${b.label})` : b.label;
       place(rel(b.lon), b, text);
     }
-  } else if (mode === 1 && opts.yoginiMrityu) {
-    const [yogini, mrityu, third] = opts.yoginiMrityu;
+  } else if (mode === 1) {
+    const ym = opts.yoginiMrityu ?? yoginiMrityu(shown);
     // drawn in this order: +0x2752c, +0x27534, +0x27530
-    ([[yogini, 'Yogini (vara)'], [mrityu, 'Mrityu'], [third, '']] as [number, string][]).forEach(([v, text]) =>
-      place(((v % 28) + 28) % 28, { index: -1, label: text, lon: 0, retrograde: false }, text));
+    if (ym) (['Yogini (vara)', 'Mrityu', ''] as const).forEach((text, i) =>
+      place(((ym[i] % 28) + 28) % 28, { index: -1, label: text, lon: 0, retrograde: false }, text));
   } else if (mode === 5 && shown.day) {
     for (const s of sahamas(shown.positions, shown.day.isDay)) {
       const name = s.name.replace(/ Sahama$/, '');

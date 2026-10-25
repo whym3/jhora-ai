@@ -46,6 +46,7 @@ import { ANGULAR_JOBS, PROGRESSION_JOBS } from '../core/derived/progressionJobs'
 import { LAGHU_TABLES, PANCHANGA_JOBS } from '../core/derived/panchangaJobs';
 import { PRASNA_JOBS, TP_JOBS } from '../core/derived/tpPrasnaJobs';
 import { TRANSIT_JOBS } from '../core/transits/jobs';
+import { strengthBarGraphs, type BarGraph } from '../core/strengthGraphs';
 
 const yes = (b: boolean) => (b ? 'Yes' : '-');
 
@@ -403,6 +404,17 @@ export const TABLES: Record<string, TableFn> = {
     return {
       headers: ['Yoga', 'Varga', 'Yoga givers', 'Results ascribed to yoga', 'Brief definition of yoga'],
       rows: findYogas(chart, cat, varga).map((r) => [r.name, vl, giversText(r), r.result, r.definition]),
+    };
+  },
+  // Strengths > Bar graphs (src/core/strengthGraphs.ts). params: set (0..5), varga (AV varga, default D1).
+  // text[0] carries the graphs as JSON for the SVG view; the rows are the same numbers.
+  'strengths.barGraphs': (chart, params) => {
+    const graphs = strengthBarGraphs(chart, Number(params.set ?? 0), String(params.varga ?? 'D1') as VargaName);
+    const num = (g: BarGraph, x: number) => (g.integer ? String(x) : f2(x));
+    return {
+      headers: ['Graph', 'Values'],
+      rows: graphs.map((g) => [g.title, g.labels.map((l, i) => `${l} ${num(g, g.values[i])}`).join(', ')]),
+      text: [JSON.stringify(graphs)],
     };
   },
   'strengths.vimsopaka': (chart) => {

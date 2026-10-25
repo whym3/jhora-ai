@@ -162,7 +162,11 @@ function children(p: Period, def: NakshatraDasaDef | null): Period[] {
  * FUN_00401820 for per-star nakshatra dasas: the progressed seed longitude at
  * `years` dasa years after birth, from the running periods of 6 levels with equal
  * arcs per sub-period. Grouped dasas (Ashtottari, Shashtihayani) and Kalachakra are
- * not supported (JHora's base/unit for them was not traced).
+ * not supported: FUN_00401820 sums base (obj+0x283d0) + index_k * unit (obj+0x283d8,
+ * divided by the entry count obj+0x28400 per level), but for those dasas base and unit
+ * arrive with the level records block-copied from the dasa (FUN_00401c20 only moves them
+ * between levels), and their source was not traced. PyJHora's nakshathra_dhasa_progression
+ * uses one star per maha dasa for every dasa (Ashtottari included), which is not this model.
  */
 export function progressedSeed(seedLon: number, dasaKey: string | null, years: number): number {
   const def = dasaKey ? NAKSHATRA_DASAS[dasaKey] : null;

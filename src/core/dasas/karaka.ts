@@ -9,8 +9,14 @@
 //    one and ending with the dasa's own karaka, each its years over the
 //    first-cycle total; second cycle - the same order, shares (12 - years)
 //    over (12 n - total).
-// With 7 karakas JHora skips PK (or PiK when CharaKarakaDefinition = 1); that
-// path is approximated with the 7-karaka list of basics.ts.
+// With 7 karakas the builder walks the karaka slots chart+0x17fe0 skipping PiK
+// when CharaKarakaDefinition (0x8a4ba8) = 1, else PK. FUN_004a4c30 fills those
+// slots from Sun..Saturn by advancement: with definition 1 slots AK..MK take
+// the first four, PiK is empty and PK, GK, DK the rest (the 7-karaka list of
+// basics.ts); with 2 (and 3 when no two degrees tie) PiK takes the fifth planet
+// and PK repeats MK, so the dasas are the same planets with the fifth labelled
+// PiK. (Definition 3 with tied degrees switches to 8 karakas with natural
+// karaka substitutes; not ported.)
 import type { Chart } from '../chart';
 import type { Graha } from '../positions';
 import type { Period } from './vimsottari';
@@ -25,7 +31,9 @@ const TWO: Record<Graha, string> = { Sun: 'Su', Moon: 'Mo', Mars: 'Ma', Mercury:
 
 export function karakaDasa(chart: Chart, levels = 2): Period[] {
   const p = chart.positions;
-  const ks = charaKarakas(p, karakaScheme(chart));
+  const scheme = karakaScheme(chart);
+  const pikFifth = scheme === 7 && chart.ini.CharaKarakaDefinition !== 1;
+  const ks = charaKarakas(p, scheme).map((k) => (pikFifth && k.karaka === 'PK' ? { ...k, karaka: 'PiK' } : k));
   const n = ks.length;
   const lagna = signOf(p.ascendant);
   const years = ks.map((k) => mod12(signOf(p.grahas[k.planet].lon) - lagna) || 12);

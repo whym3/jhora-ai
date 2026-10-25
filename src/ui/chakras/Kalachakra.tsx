@@ -32,7 +32,7 @@ export function KalachakraView({ chart, transit, mode }: ChakraViewProps & { mod
         <g key={s.k}>
           <text x={s.x * S + CELL / 2} y={TOP + s.y * S + 12} textAnchor="middle" className={s.k === 0 ? 'ck-star ck-title' : 'ck-star'}>{s.label}</text>
           {s.bodies.map((b, n) => (
-            <text key={`${b.index}-${b.label}-${n}`} x={s.x * S + ((KC_SLOT_X[n % 8] + 2) * cellW) / 16} y={TOP + s.y * S + ((KC_SLOT_Y[n % 8] + 1) * CELL) / 16 + 11}
+            <text key={`${b.index}-${b.label}-${n}`} x={s.x * S + ((KC_SLOT_X[n % 8] + kc.slotShift.x) * cellW) / 16} y={TOP + s.y * S + ((KC_SLOT_Y[n % 8] + kc.slotShift.y) * CELL) / 16 + 11}
               className={bodyClass(b)}>
               {b.retrograde ? `(${b.label})` : b.label}
             </text>

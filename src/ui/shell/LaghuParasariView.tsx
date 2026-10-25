@@ -1,14 +1,17 @@
 // Miscellany > Laghu Parasari (CLaghuParasariView, context menu 159): sums of body
-// longitudes (plus a lagna) read as ages, with the solar-return dates. Works on the shown chart.
+// longitudes (plus a lagna) read as ages, with the solar-return dates. Works on the shown chart;
+// a derived chart with a period of effect (mundane, prasna, Tithi Pravesha) compresses the dates.
 import { useState } from 'react';
 import type { ChartSpec } from '../../engine/protocol';
 import { useJob } from '../EngineProvider';
 import { TableView } from '../widgets/TableView';
+import { useActiveDoc } from '../state/store';
 import { LAGHU_DEFAULTS, LAGHU_LAGNAS, LAGHU_MODES, LAGHU_VARGAS, type LaghuOptions } from '../../core/derived/laghuParasari';
 
 export function LaghuParasariView({ spec }: { natalSpec: ChartSpec; docId: string; spec: ChartSpec }) {
   const [opt, setOpt] = useState<LaghuOptions>(LAGHU_DEFAULTS);
-  const job = useJob({ kind: 'table' as const, chart: spec, table: 'laghuParasari.table', params: { ...opt } });
+  const periodDays = Number(useActiveDoc()?.derived?.params.periodDays) || null;
+  const job = useJob({ kind: 'table' as const, chart: spec, table: 'laghuParasari.table', params: { ...opt, periodDays } });
   const set = (p: Partial<LaghuOptions>) => setOpt({ ...opt, ...p });
   return (
     <div className="subview laghu-parasari">
@@ -30,6 +33,9 @@ export function LaghuParasariView({ spec }: { natalSpec: ChartSpec; docId: strin
           <option value="longitude">Find longitudes in divisions</option>
           <option value="count">Count signs in divisions</option>
         </select>
+        {periodDays && (
+          <label><input type="checkbox" checked={!!opt.oneCycle} onChange={(e) => set({ oneCycle: e.target.checked })} /> Use only one cycle</label>
+        )}
       </div>
       <TableView job={job} />
       {job.data?.notes?.map((n) => <p key={n} className="status" style={{ whiteSpace: 'pre-line' }}>{n}</p>)}

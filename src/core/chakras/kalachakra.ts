@@ -35,12 +35,14 @@
 //     ((xs[n%8] + 2)/16, (ys[n%8] + 1)/16) of a cell with xs = 0,0,0,0,8,8,8,8,
 //     ys = 4,8,12,16,4,8,12,16; text "%s" or "(%s)" if retrograde.
 //     Mode 0 Planets: bodies 1..9 (Sun..Ketu, no lagna).
-//     Mode 1 Yogini & Mrityu: stars at chart+0x2752c ("Yogini (vara)"),
-//       +0x27534 ("Mrityu"), +0x27530 ("") - not ported.
+//     Mode 1 Yogini & Mrityu: chart+0x2752c ("Yogini (vara)"), +0x27534
+//       ("Mrityu"), +0x27530 ("") mod 28 used directly as the slot k (not
+//       relative to the base; common.ts yoginiMrityu), at (xs[n]/16,
+//       (ys[n] + 2)/16) of the cell.
 //     Mode 2 Trisphuta: bodies 33..36. Mode 3 Upagrahas: 32, 31, 22..30.
 //     Mode 4 Special lagnas: 14, 15, 17, 18, 19, 20. Mode 5 Sahamas: the 36
 //       sahamas (names table 0x8a2088), cells widened to 1.5 W/12.
-import { type ChakraBody, type ChakraChart, bodiesByIndex, chakraBody, NAK28, nakshatra28Of } from './common';
+import { type ChakraBody, type ChakraChart, bodiesByIndex, chakraBody, NAK28, nakshatra28Of, yoginiMrityu } from './common';
 import { sahamas } from '../sahamas';
 
 export const KC_STAR_X = [33, 33, 33, 36, 44, 50, 56, 65, 57, 49, 40, 44, 50, 56, 33, 33, 33, 30, 22, 16, 10, 1, 9, 17, 26, 22, 16, 10];
@@ -95,7 +97,9 @@ export interface KalachakraChakra {
   title: string;
   stars: KalachakraStar[];
   dikpalas: KcDikpala[];
-  /** false when the chart data lacks what the mode needs (yogini is not ported) */
+  /** offset added to KC_SLOT_X / KC_SLOT_Y for the bodies of this mode (in cell/16 steps) */
+  slotShift: { x: number; y: number };
+  /** false when the chart data lacks what the mode needs */
   complete: boolean;
 }
 
@@ -131,7 +135,15 @@ export function kalachakraChakra(chart: ChakraChart, transit?: ChakraChart | nul
     if (src.day) {
       bodies = sahamas(src.positions, src.day.isDay).map((s) => ({ index: -1, label: s.name, lon: s.lon, retrograde: false, transit: !!transit }));
     } else complete = false;
+  } else if (mode === 'yogini') {
+    const ym = yoginiMrityu(src);
+    if (ym) {
+      // drawn in this order: +0x2752c, +0x27534, +0x27530
+      (['Yogini (vara)', 'Mrityu', ''] as const).forEach((label, i) =>
+        stars[ym[i] % 28].bodies.push({ index: -1, label, lon: 0, retrograde: false, transit: !!transit }));
+    } else complete = false;
+    return { baseStar, mode, title: KC_MODE_TITLES[mode], stars, dikpalas: KC_DIKPALA, slotShift: { x: 0, y: 2 }, complete };
   } else complete = false;
   for (const b of bodies) stars[(nakshatra28Of(b.lon) - baseStar + 28) % 28].bodies.push(b);
-  return { baseStar, mode, title: KC_MODE_TITLES[mode], stars, dikpalas: KC_DIKPALA, complete };
+  return { baseStar, mode, title: KC_MODE_TITLES[mode], stars, dikpalas: KC_DIKPALA, slotShift: { x: 2, y: 1 }, complete };
 }

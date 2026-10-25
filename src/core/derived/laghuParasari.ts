@@ -23,8 +23,12 @@
 // each cell "%s  (%.2f)": FUN_00459bc0 = date ("%4d-%02d-%02d") of the true sidereal
 // solar return after `age` years (FUN_0049dae0 mode 3), then the age.
 // Row labels "%s-%s..." with the short body names at 0x8a4350 ('Asc', 'Sun', 'Merc', 'Glk'...).
-// Not ported: the compressed-chart scaling (DAT_008a4b68: Tajaka/TP charts use
-// DAT_005922b0 and "Use only one cycle", 33234).
+// Compressed charts (DAT_008a4b68, set by the Tajaka, Tithi Pravesha, mundane, prasna and
+// angular-return charts, cleared by natal and progressed ones): FUN_00459bc0 turns the age
+// into period x age / (120 x 365.24219) years (2.2815911089935512e-05), with "Use only one
+// cycle" (33234, DAT_00884718) into period x age / (cycle x 365.24219) and a single column;
+// period = DAT_005922b0, the chart's period of effect in days. Dates count from the shown
+// chart's moment, the ages printed stay unscaled.
 import type { Sweph } from '../../sweph';
 import type { Chart } from '../chart';
 import type { Table } from '../../engine/protocol';
@@ -73,6 +77,10 @@ export interface LaghuOptions {
   varga: number;
   /** 'count': count signs in divisions (default); 'longitude': find longitudes in divisions */
   method: 'count' | 'longitude';
+  /** period of effect (days) when the shown chart is a compressed one (DAT_008a4b68 / DAT_005922b0) */
+  periodDays?: number | null;
+  /** "Use only one cycle" (33234, DAT_00884718): only with a compressed chart */
+  oneCycle?: boolean;
 }
 export const LAGHU_DEFAULTS: LaghuOptions = { mode: 0, lagna: 0, varga: 0, method: 'count' };
 
@@ -109,7 +117,11 @@ export interface LaghuRow { label: string; ages: number[]; dates: string[] }
 export function laghuRows(chart: Chart, opt: Partial<LaghuOptions> = {}, swe?: Sweph): { header: string; columns: number; rows: LaghuRow[] } {
   const o = { ...LAGHU_DEFAULTS, ...opt };
   const cycle = laghuValue(0, o.varga, o.method).cycle;
-  const columns = Math.trunc(120 / cycle + 0.5);
+  const compressed = !!o.periodDays;
+  const columns = compressed && o.oneCycle ? 1 : Math.trunc(120 / cycle + 0.5);
+  // FUN_00459bc0: age -> years of the solar-return search
+  const years = (age: number) => !compressed ? age
+    : o.oneCycle ? (o.periodDays! * age) / (cycle * 365.24219) : o.periodDays! * age * 2.2815911089935512e-05;
   const sets = o.mode === 0 ? combos(BODIES, 1)
     : o.mode === 1 ? combos(BODIES.slice(0, 9), 2)
       : o.mode === 2 ? combos(BODIES, 2)
@@ -124,7 +136,7 @@ export function laghuRows(chart: Chart, opt: Partial<LaghuOptions> = {}, swe?: S
     const ages = Array.from({ length: columns }, (_, k) => v + k * cycle);
     const dates = ages.map((a) => {
       if (!swe) return '';
-      const r = swe.revjul(solarYearsToJd(swe, chart, a, 3) + chart.birth.tzHours / 24);
+      const r = swe.revjul(solarYearsToJd(swe, chart, years(a), 3) + chart.birth.tzHours / 24);
       return `${String(r.year).padStart(4)}-${String(r.month).padStart(2, '0')}-${String(r.day).padStart(2, '0')}`;
     });
     return { label: names.join('-'), ages, dates };

@@ -14,6 +14,7 @@ import { CHAKRA_VIEWS, type ChakraSubTab } from './chakras';
 import { AshtakavargaView, HousesView, KeyInfoView, KpView, OtherStrengthsView, TableSubView } from './shell/BasicsView';
 import { NakshatraDasasView, OtherDasasView, RasiDasasView } from './shell/DasasView';
 import { NotPorted } from './shell/NotPorted';
+import { BarGraphsView } from './shell/BarGraphsView';
 import { SUB_TABS, TOP_TABS, type TopTab } from './shell/tabs';
 import { closeChart, currentSubTab, openChart, setSubTab, setTopTab, setView, updateChart, useActiveDoc, useStore } from './state/store';
 import { TabBar } from './widgets/TabBar';
@@ -116,6 +117,7 @@ function SubView({ top, sub, spec, natalSpec, docId, chart }: { top: TopTab; sub
   if (top === 'Basics' && sub === 'KP') return <KpView spec={spec} />;
   if (top === 'Strengths' && sub === 'Ashtakavarga') return <AshtakavargaView spec={spec} />;
   if (top === 'Strengths' && sub === 'Other strengths') return <OtherStrengthsView spec={spec} />;
+  if (top === 'Strengths' && sub === 'Bar graphs') return <BarGraphsView spec={spec} />;
   if (top === 'Dasas' && sub === 'Nakshatra dasas') return <NakshatraDasasView spec={spec} />;
   if (top === 'Dasas' && sub === 'Rasi dasas') return <RasiDasasView spec={spec} />;
   if (top === 'Dasas' && sub === 'Other dasas') return <OtherDasasView spec={spec} />;

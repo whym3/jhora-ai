@@ -127,3 +127,15 @@ td.rel3 { color: var(--muted); } td.rel4 { color: #c82828; } td.rel5 { color: #e
 button.active { border-color: var(--accent); color: var(--accent); }
 .ai-models { display: flex; align-items: center; gap: 6px; align-self: end; }
 .ai-settings label.ai-check { flex-direction: row; align-items: center; gap: 4px; }
+
+/* Strengths > Bar graphs */
+.bar-graphs { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 12px; margin: 8px 0; }
+.bar-graph { margin: 0; background: var(--panel); border: 1px solid var(--line); border-radius: 4px; padding: 6px; }
+.bar-graph figcaption { font-weight: 600; font-size: 13px; color: var(--ink); margin-bottom: 2px; }
+.bar-graph svg { width: 100%; height: auto; display: block; }
+.bg-fill { fill: var(--accent); }
+.bg-hit { fill: transparent; }
+.bg-bar:hover .bg-hit { fill: var(--hl); opacity: 0.35; }
+.bg-grid { stroke: var(--line); stroke-width: 0.5; opacity: 0.5; }
+.bg-axis { stroke: var(--muted); stroke-width: 1; }
+.bg-tick, .bg-label { font-size: 10px; fill: var(--muted); }

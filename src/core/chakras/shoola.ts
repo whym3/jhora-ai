@@ -18,7 +18,7 @@
 //   i.e. the natal chart unless the document shows a transit/derived chart - there is
 //   no separate transit overlay. Varga for planets: 0x884870 (default 0 = D-1).
 // * Body set = view+0x12c (constructor default 0): 0 Planets (bodies 0..9),
-//   1 Yogini & Mrityu (ints chart+0x2752c, +0x27534, +0x27530 mod 28),
+//   1 Yogini & Mrityu (ints chart+0x2752c, +0x27534, +0x27530 mod 28 as slot indices),
 //   2 Trisphuta etc (33..36), 3 Upagrahas (32,31,22..30), 4 Special lagnas
 //   (0,14,15,17,18,19,20), 5 Sahamas (36 longitudes at chart+0x214f0, step 0x30).
 //   Menu 152 commands 33091/33094/33092/33095/33096/33093 select them.
@@ -32,7 +32,7 @@
 // * No copy-to-clipboard command exists in this view's message map.
 import { sahamas } from '../sahamas';
 import {
-  bodiesByIndex, nakshatra28Of, NAK28, planetBodies,
+  bodiesByIndex, nakshatra28Of, NAK28, planetBodies, yoginiMrityu,
   type ChakraBody, type ChakraChart,
 } from './common';
 
@@ -76,7 +76,10 @@ export interface ShoolaOptions {
   fixedBaseStar?: number;
   /** chart whose bodies are drawn (doc+0x76d00); defaults to the natal chart */
   current?: ChakraChart | null;
-  /** Yogini (vara), Mrityu and third Yogini point stars (NAK28 indices) for mode 'yoginiMrityu' - not computed by this port */
+  /**
+   * chart+0x2752c / +0x27534 / +0x27530 for mode 'yoginiMrityu' (slot indices, used mod 28
+   * without the base star); default: common.ts yoginiMrityu of the drawn chart
+   */
   yoginiMrityuStars?: [number, number, number];
 }
 
@@ -132,8 +135,9 @@ export function shoolaChakra(chart: ChakraChart, opts: ShoolaOptions = {}): Shoo
   };
   let bodies: PlacedBody[];
   if (mode === 'yoginiMrityu') {
-    const stars = opts.yoginiMrityuStars;
-    bodies = stars ? stars.map((s, i) => place({ index: -1, label: YOGINI_LABELS[i], lon: 0, retrograde: false, transit: isTransit }, ((s % 28) + 28) % 28, YOGINI_LABELS[i])) : [];
+    // FUN_004785d0 takes value % 28 as the slot itself; place() subtracts the base star again
+    const stars = opts.yoginiMrityuStars ?? yoginiMrityu(current);
+    bodies = stars ? stars.map((s, i) => place({ index: -1, label: YOGINI_LABELS[i], lon: 0, retrograde: false, transit: isTransit }, (((s % 28) + 28) % 28 + baseStar) % 28, YOGINI_LABELS[i])) : [];
   } else {
     bodies = starChakraBodies(current, mode, isTransit).map((b) => place(b, nakshatra28Of(b.lon), bodyText(b)));
   }
