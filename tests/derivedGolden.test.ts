@@ -49,23 +49,27 @@ describe.skipIf(!charts.length)('Derived charts match JHora 8.0', async () => {
         expect(keyInfoText(swe, tp).slice(2)).toEqual(block);
       });
 
-      it('Tithi Pravesha 2000: longitudes within 0.5"', () => {
+      // the moment is found by JHora's own search (tajaka/search.ts via tithiPravesha.ts), so the
+      // longitudes agree to the printed 0.01"
+      it('Tithi Pravesha 2000: longitudes to the printed 0.01"', () => {
         const table = g.views.find((v) => v.sub === 'Key Info' && v.mode === 'TP annual 2000')!;
         const ours = runTable(tp, 'basics.longitudes', {});
         for (let i = 0; i < 10; i++) {
           const d = Math.abs(((parseLongitude(ours.rows[i][1]) - parseLongitude(table.rows[i][1]) + 540) % 360) - 180) * 3600;
-          expect(d, `${table.rows[i][0]}: ${ours.rows[i][1]} vs ${table.rows[i][1]}`).toBeLessThan(0.5);
+          expect(d, `${table.rows[i][0]}: ${ours.rows[i][1]} vs ${table.rows[i][1]}`).toBeLessThan(0.0101);
         }
       });
 
       it('Tithi Pravesha 2000: compressed Vimsottari (maha and antar dasas)', async () => {
         const md = await TP_JOBS['tithiPravesha.dasa'](natal, { birth, label, periodDays, path: [] }, swe);
-        expect(sameTimes(md.text!, text(g, 'dasa', 'TP Vimsottari'), 5)).toEqual([]);
+        // tithi-year clock FUN_0049e3f0 and compression FUN_004094b0 are JHora's; JHora's times after
+        // the chart moment still come out 1-2 s later than ours (those before it match)
+        expect(sameTimes(md.text!, text(g, 'dasa', 'TP Vimsottari'), 2)).toEqual([]);
         // dates-only copy (33236): " Merc:  2000-09-16  -  2000-11-10"
         const dates = md.text!.map((l) => l.replace(/ \(\d+:\d\d:\d\d\)/g, '').replace(/^( \S+): (\d)/, '$1:  $2').replace(/(\d) - (\d)/, '$1  -  $2'));
         expect(dates.map((l) => l.trimEnd())).toEqual(text(g, 'dasa_dates', 'TP Vimsottari').map((l) => l.trimEnd()));
         const ad = await TP_JOBS['tithiPravesha.dasa'](natal, { birth, label, periodDays, path: [0] }, swe);
-        expect(sameTimes(ad.text!, text(g, 'dasa_level2_0', 'TP Vimsottari'), 5)).toEqual([]);
+        expect(sameTimes(ad.text!, text(g, 'dasa_level2_0', 'TP Vimsottari'), 2)).toEqual([]);
       });
 
       it('Panchanga: monthly panchanga of the natal month', async () => {

@@ -128,11 +128,20 @@ export function SpecialSearchView({ spec }: { spec: ChartSpec }) {
   const set = <K extends keyof typeof f>(k: K) => (v: (typeof f)[K]) => setF({ ...f, [k]: v });
   const [request, setRequest] = useState<SpecialSearch | null>(null);
   const job = useJob(request ? { kind: 'table' as const, chart: spec, table: 'transits.search', params: { ...request } } : null);
-  const found = job.status === 'done' && job.data?.text?.[0] ? (JSON.parse(job.data.text[0]) as { date: TransitDate }).date : null;
-  const search = () => setRequest({
-    planet: f.planet, deg: f.deg, min: f.min, sec: f.sec, ahead: !!f.ahead, after: !!f.after, date: f.date,
-    ref: f.radio === 0 ? { kind: 'planet', body: NATAL_SEARCH_BODIES[f.body], varga: f.varga } : f.radio === 1 ? { kind: 'saham', index: f.saham } : { kind: 'sign', sign: f.sign },
-  });
+  const result = job.status === 'done' && job.data?.text?.[0] ? (JSON.parse(job.data.text[0]) as { date: TransitDate; birth: unknown; label: string; periodDays: number }) : null;
+  const found = result?.date ?? null;
+  // the found chart's Vimsottari compressed into the time to the next such transit (DAT_008a4b68, DAT_005922b0)
+  const [path, setPath] = useState<number[]>([]);
+  const dasa = useJob(request && result
+    ? { kind: 'table' as const, chart: spec, table: 'mundane.dasa', params: { birth: result.birth, label: result.label, periodDays: result.periodDays, path } }
+    : null);
+  const search = () => {
+    setPath([]);
+    setRequest({
+      planet: f.planet, deg: f.deg, min: f.min, sec: f.sec, ahead: !!f.ahead, after: !!f.after, date: f.date,
+      ref: f.radio === 0 ? { kind: 'planet', body: NATAL_SEARCH_BODIES[f.body], varga: f.varga } : f.radio === 1 ? { kind: 'saham', index: f.saham } : { kind: 'sign', sign: f.sign },
+    });
+  };
   const num = (k: 'deg' | 'min' | 'sec') => <input type="number" aria-label={k} value={f[k]} style={{ width: '4em' }} onChange={(e) => set(k)(Number(e.target.value))} />;
   return (
     <div className="subview transits-form">
@@ -157,6 +166,12 @@ export function SpecialSearchView({ spec }: { spec: ChartSpec }) {
       </div>
       {request && <TableView job={job} />}
       {found && <TransitList spec={spec} date={found} />}
+      {request && result && (
+        <>
+          <div className="subview-bar"><button onClick={() => setPath((p) => p.slice(0, -1))} disabled={!path.length}>Up</button></div>
+          <TableView job={dasa} onRowClick={path.length < 5 ? (i) => setPath((p) => [...p, i]) : undefined} />
+        </>
+      )}
     </div>
   );
 }

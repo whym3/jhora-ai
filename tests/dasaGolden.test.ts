@@ -31,14 +31,14 @@ function compare(have: string[], want: string[], tolSec: number): string[] {
 }
 
 /**
- * Dates must agree to 2 s, except for dasas seeded by the Moon, tithi/karana or
- * degrees in sign, where tiny input differences are magnified over a life span.
- * With the Moon (tools/sweph-patches/0001) and delta-T (deltat.ts) identical to
- * JHora's DLL these agree to 3 s.
+ * Dates must agree to 1 s: the dasa clock is JHora's own Sun search (FUN_0049dc20 via
+ * dasas/time.ts), with the Moon (tools/sweph-patches/0001) and delta-T (deltat.ts) identical
+ * to JHora's DLL. Dasas seeded by tithi/karana (whose tiny input differences are magnified
+ * over a life span) and RBV, Tara and Yoga Vimsottari still differ by up to 2 s.
  */
 // Sudasa's balance comes from Sree Lagna (27x the Moon) and Kaala's k from the birth time
-// within the day (a sunrise error is stretched by each 45-year cycle); both agree to 2 s.
-const TOLERANT = new Set(['Patyayini', 'Karana Chaturaseeti', 'Tithi Yogini']);
+// within the day (a sunrise error is stretched by each 45-year cycle); both agree to 1 s.
+const TOLERANT = new Set(['Karana Chaturaseeti', 'Tithi Yogini', 'Tithi Ashtottari', 'RBV', 'Tara', 'Yoga Vimsottari']);
 
 describe('Rasi and other dasas match JHora 8.0', async () => {
   const swe = await nodeSweph();
@@ -59,7 +59,7 @@ describe('Rasi and other dasas match JHora 8.0', async () => {
           for (const t of texts) {
             const k = t.name === 'dasa' ? -1 : Number(t.name!.split('_').pop());
             const have = k < 0 ? mahaDasaText(d.title, d.periods, dctx) : antarDasaText(d.title, d.periods[k], dctx);
-            bad.push(...compare(have, t.lines!, TOLERANT.has(mode) ? 3 : 2).map((b) => `${t.name}: ${b}`));
+            bad.push(...compare(have, t.lines!, TOLERANT.has(mode) ? 2 : 1).map((b) => `${t.name}: ${b}`));
           }
           expect(bad.slice(0, 4), bad.slice(0, 4).join('\n')).toEqual([]);
         });

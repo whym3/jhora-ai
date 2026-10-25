@@ -9,10 +9,11 @@ import { siderealLongitude, norm360 } from '../src/core/positions';
 import { calcSettingsFromIni } from '../src/core/settings';
 import { signOf } from '../src/core/zodiac';
 import { basicTransitTable, vedhaMatrix, ANGA_PARTS, ANGA_LIMBS } from '../src/core/transits/basic';
-import { computeTransitChart, jhoraCrossing, VARGA_ORDER, GOOD_HOUSE, VEDHA_HOUSE, clockText, arudhaLongitudes, type TransitDate } from '../src/core/transits/common';
+import { computeTransitChart, VARGA_ORDER, GOOD_HOUSE, VEDHA_HOUSE, clockText, arudhaLongitudes, type TransitDate } from '../src/core/transits/common';
 import { lastIngress, murthis } from '../src/core/transits/murthi';
 import { transitCalendar, calendarVedha } from '../src/core/transits/calendar';
 import { specialSearch, searchTarget, type SpecialSearch } from '../src/core/transits/search';
+import { jhoraCrossing, SECOND } from '../src/core/tajaka/search';
 import { longitudeCorrelation, namedAspect, windowOrb, correlationTable } from '../src/core/transits/correlation';
 
 describe('Transits', async () => {
@@ -85,7 +86,7 @@ describe('Transits', async () => {
     const lon = (jd: number) => siderealLongitude(swe, jd, 'Sun', settings).lon;
     const t0 = transit.positions.jdUt;
     const target = norm360(lon(t0) + 10);
-    const t = jhoraCrossing(lon, target, t0, false, 10);
+    const t = jhoraCrossing(lon, target, t0, { step: 10, tol: SECOND });
     expect(Math.abs(norm360(lon(t) - target + 180) - 180)).toBeLessThan(1e-3);
     const ti = lastIngress(swe, transit, 'Jupiter');
     expect(ti).toBeLessThan(t0);
@@ -110,10 +111,20 @@ describe('Transits', async () => {
 
   it('special search lands on the requested longitude', () => {
     const s: SpecialSearch = { planet: 5, deg: 10, min: 0, sec: 0, ahead: true, ref: { kind: 'planet', body: 'Moon', varga: 0 }, after: true, date };
-    const jd = specialSearch(swe, natal, s);
+    const { jd, periodDays } = specialSearch(swe, natal, s);
     expect(jd).toBeGreaterThan(transit.positions.jdUt);
-    const d = norm360(siderealLongitude(swe, jd, 'Jupiter', settings).lon - searchTarget(natal, s) + 180) - 180;
-    expect(Math.abs(d)).toBeLessThan(1e-3);
+    // JHora's 1 s bracket (later end): Jupiter moves < 0.25 deg/day, so < 3e-6 deg
+    const err = (t: number) => norm360(siderealLongitude(swe, t, 'Jupiter', settings).lon - searchTarget(natal, s) + 180) - 180;
+    expect(Math.abs(err(jd))).toBeLessThan(3e-6);
+    // the period of effect runs to the next such crossing (direct or retrograde), searched forward
+    expect(periodDays).toBeGreaterThan(0);
+    expect(periodDays).toBeLessThan(13 * 365.25);
+    expect(Math.abs(err(jd + periodDays))).toBeLessThan(3e-6);
+    const before = specialSearch(swe, natal, { ...s, after: false });
+    expect(before.jd).toBeLessThan(transit.positions.jdUt);
+    expect(Math.abs(err(before.jd))).toBeLessThan(3e-6);
+    // the before-search's next crossing is at or before the transit moment's next one
+    expect(before.jd + before.periodDays).toBeLessThanOrEqual(jd + SECOND);
     expect(searchTarget(natal, { ...s, ref: { kind: 'sign', sign: 3 }, ahead: false })).toBe(80);
   });
 

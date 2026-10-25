@@ -6,7 +6,9 @@
 //                          CTransitView list; without `date` the current chart is the natal chart (as in JHora
 //                          before "Show Transit Calculations").
 //   'transits.calendar'    { start, stepDays, rows, natalVarga, transitVarga, items: boolean[6] }
-//   'transits.search'      SpecialSearch (search.ts); one row [label, found date/time]; text[0] = JSON { date }
+//   'transits.search'      SpecialSearch (search.ts); rows [label, found date/time] and the next such transit;
+//                          text[0] = JSON { date, birth, label, periodDays } (periodDays = DAT_005922b0; the
+//                          compressed dasa of the found chart is 'mundane.dasa' with these, as for kind 5)
 //   'transits.correlation' { date, tz (form zone, east positive hours), mode 0..3, minPercent, orbAspect, orbQuadrant, orbTrine }
 import type { Sweph } from '../../sweph';
 import type { Chart } from '../chart';
@@ -67,14 +69,15 @@ export const TRANSIT_JOBS: Record<string, AsyncTableFn> = {
     const s = params as unknown as SpecialSearch;
     const jd0 = await prepare(swe, natal, s.date);
     await swe.ensureEphemeris(s.after ? jd0 + 11000 : jd0 - 11000);
-    const jd = specialSearch(swe, natal, s);
-    if (Number.isNaN(jd)) throw new Error('no such transit found');
-    const b = birthAt(swe, natal, jd);
-    const date: TransitDate = { year: b.year, month: b.month, day: b.day, hour: b.hour };
+    const { jd, periodDays } = specialSearch(swe, natal, s);
+    if (!Number.isFinite(jd)) throw new Error('no such transit found');
+    const birth = birthAt(swe, natal, jd);
+    const date: TransitDate = { year: birth.year, month: birth.month, day: birth.day, hour: birth.hour };
+    const when = (x: number) => formatDasaTime(x, natal.birth.tzHours, (t) => swe.revjul(t));
     return {
       caption: 'Transit Search', headers: ['', 'Date and time'],
-      rows: [['Transit Search', formatDasaTime(jd, natal.birth.tzHours, (x) => swe.revjul(x))]],
-      text: [JSON.stringify({ date })],
+      rows: [['Transit Search', when(jd)], ['Next such transit', when(jd + periodDays)]],
+      text: [JSON.stringify({ date, birth, label: 'Transit Search', periodDays })],
     };
   },
   'transits.correlation': async (natal, params, swe): Promise<Table> => {

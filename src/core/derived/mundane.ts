@@ -59,18 +59,17 @@ import { SE } from '../../sweph';
 import type { Chart } from '../chart';
 import { calcFlags, siderealAscendant, siderealLongitude, GRAHAS, type Graha } from '../positions';
 import { jhoraDeltaT } from '../deltat';
-import { jhoraBodySearch, jhoraStation, type BodySearch } from '../tajaka/search';
+import { jhoraBodySearch, jhoraStation, n360 as jhoraNorm, recordRoundTrip, SECOND, type BodySearch } from '../tajaka/search';
 import { calcSettingsFromIni, type Settings } from '../settings';
 import { vimsottari, type Period } from '../dasas/vimsottari';
 import { dasaClock, type DasaClock } from '../dasas/time';
-import { compressPeriods } from '../tajaka/mudda';
+import { compressPeriods, jhoraSunClock } from '../tajaka/mudda';
 import { solarYearsToJd } from '../tajaka/annual';
 import { formatHms } from '../keyInfo';
 import type { JhoraIni } from '../../settings/generated';
 import { DEFAULTS } from '../../settings/generated';
 
 const n360 = (x: number) => ((x % 360) + 360) % 360;
-const wrap180 = (x: number) => { let d = x % 360; if (d > 180) d -= 360; else if (d <= -180) d += 360; return d; };
 
 /** JHora body index (combo order): 0 Lagna, 1 Sun ... 7 Saturn, 8 Rahu, 9 Ketu. */
 export const MUNDANE_BODIES = ['Lagna', 'Sun', 'Moon', 'Mars', 'Mercury', 'Jupiter', 'Venus', 'Saturn', 'Rahu', 'Ketu'] as const;
@@ -141,12 +140,11 @@ export function bodySpeed(c: Ctx, body: number, jd: number): number {
  * FUN_0049c130: swe_julday(date, hour - zone)).
  */
 export function recordJd(c: Ctx, jd: number): number {
-  const r = c.swe.revjul(jd + c.tz * 0.041666666666666664);
-  return c.swe.julday(r.year, r.month, r.day, r.hour - c.tz);
+  return recordRoundTrip(c.swe, c.tz, jd);
 }
 
 /** FUN_0049c0d0 -> FUN_0049c130 from `from`: one body against `target`, or b1 against b2 + offset; the found record's JD. */
-function search(c: Ctx, s: Omit<BodySearch, 'lon'>, from: number): number {
+export function recordSearch(c: Ctx, s: Omit<BodySearch, 'lon'>, from: number): number {
   return recordJd(c, jhoraBodySearch({ ...s, lon: (b, t) => bodyLon(c, b, t) }, from));
 }
 
@@ -172,14 +170,14 @@ export function transitChange(c: Ctx, body: number, code: number, base: number, 
   if (code >= 1000 && code < 1012) t0 -= (1012 - code) * 30;
   if (code === 2000) t0 += 66.66666666666667;
   if (body === 9 && code === 1) t0 += 180;
-  const A = search(c, { b1: b, target: t0, backward: !after }, base);
-  const B = search(c, { b1: b, target: t0 + arc, backward: !after }, base);
+  const A = recordSearch(c, { b1: b, target: t0, backward: !after }, base);
+  const B = recordSearch(c, { b1: b, target: t0 + arc, backward: !after }, base);
   const useB = after ? A > B : A < B;
   const jd = useB ? B : A;
   const lower = useB ? (after ? 1 : 0) * arc + t0 : t0 - (after ? 1 : 0) * arc;
   const from = recordJd(c, jd + 0.01);
-  const C = search(c, { b1: b, target: lower, backward: false }, from);
-  const D = search(c, { b1: b, target: lower + arc, backward: false }, from);
+  const C = recordSearch(c, { b1: b, target: lower, backward: false }, from);
+  const D = recordSearch(c, { b1: b, target: lower + arc, backward: false }, from);
   return { jd, periodDays: Math.min(C, D) - jd };
 }
 
@@ -197,15 +195,15 @@ export function stationaryChange(c: Ctx, body: number, base: number, after: bool
 
 /** FUN_0040aeb0: lon(p1) - lon(p2) = angle before/after `base`; period until it recurs (searched from 0.0035 day later). */
 export function aspectMoment(c: Ctx, p1: number, p2: number, angle: number, base: number, after: boolean): { jd: number; periodDays: number } {
-  const jd = search(c, { b1: p1, b2: p2, offset: angle, backward: !after }, base);
-  const next = search(c, { b1: p1, b2: p2, offset: angle, backward: false }, recordJd(c, jd + NEXT_STEP));
+  const jd = recordSearch(c, { b1: p1, b2: p2, offset: angle, backward: !after }, base);
+  const next = recordSearch(c, { b1: p1, b2: p2, offset: angle, backward: false }, recordJd(c, jd + NEXT_STEP));
   return { jd, periodDays: next - jd };
 }
 
 /** FUN_0040acd0: the Sun reaches `start` (prev: backward, next: forward), then `end` after that. */
 export function solarSpan(c: Ctx, start: number, end: number, base: number, next: boolean): { jd: number; end: number } {
-  const jd = search(c, { b1: 1, target: start, backward: !next }, base);
-  return { jd, end: search(c, { b1: 1, target: end, backward: false }, recordJd(c, jd + NEXT_STEP)) };
+  const jd = recordSearch(c, { b1: 1, target: start, backward: !next }, base);
+  return { jd, end: recordSearch(c, { b1: 1, target: end, backward: false }, recordJd(c, jd + NEXT_STEP)) };
 }
 
 export interface LunarSolarOptions {
@@ -257,7 +255,7 @@ export function lunarNewYear(swe: Sweph, natal: Chart, next: boolean, o = lunarS
   if (o.lunarYrDef >= 4) return { jd: s.jd, periodDays: s.end - s.jd, label: 'Lunar Year' };
   const c = ctxOf(swe, natal);
   const moon = { b1: 2, b2: 1, offset: o.lunarYrDef <= 1 ? 180 : 0, backward: false };
-  const a = search(c, moon, s.jd), b = search(c, moon, s.end);
+  const a = recordSearch(c, moon, s.jd), b = recordSearch(c, moon, s.end);
   return { jd: a, periodDays: b - a, label: 'Lunar Year' };
 }
 
@@ -276,7 +274,7 @@ export function lunarNewMonth(swe: Sweph, natal: Chart, next: boolean, o = lunar
 export function fortnight(swe: Sweph, natal: Chart, next: boolean): MundaneMoment {
   const c = ctxOf(swe, natal);
   const base = natal.positions.jdUt;
-  const phase = (offset: number, backward: boolean, from: number) => search(c, { b1: 2, b2: 1, offset, backward }, from);
+  const phase = (offset: number, backward: boolean, from: number) => recordSearch(c, { b1: 2, b2: 1, offset, backward }, from);
   const a = phase(0, !next, base), b = phase(180, !next, base);
   const useB = next ? b < a : b > a;
   const jd = useB ? b : a;
@@ -291,8 +289,8 @@ export function newLunarDay(swe: Sweph, natal: Chart, next: boolean): MundaneMom
   const e = n360(bodyLon(c, 2, base) - bodyLon(c, 1, base));
   let target = Math.trunc(e * 0.08333333333333333) * 12;
   if (next) target += 12;
-  const jd = search(c, { b1: 2, b2: 1, offset: target, backward: !next }, base);
-  const end = search(c, { b1: 2, b2: 1, offset: target + 12, backward: false }, recordJd(c, jd + NEXT_STEP));
+  const jd = recordSearch(c, { b1: 2, b2: 1, offset: target, backward: !next }, base);
+  const end = recordSearch(c, { b1: 2, b2: 1, offset: target + 12, backward: false }, recordJd(c, jd + NEXT_STEP));
   return { jd, periodDays: end - jd, label: 'Lunar Day' };
 }
 
@@ -428,42 +426,24 @@ export function mundaneYearDefinition(ini: Partial<JhoraIni>, label: string): nu
   return def;
 }
 
-/** Tithi years: the Moon gains 360 tithis (12 x 360 deg) on the Sun per year. */
+/**
+ * Tithi years (FUN_0049dae0 mode 4 -> FUN_0049e3f0): the Moon gains 360 tithis (12 x 360 deg)
+ * on the Sun per year.  From the record jd + years x 354.36708 + 15 days, FUN_0049c130 searches
+ * backwards for Moon - Sun = norm(chartMoon - chartSun) + norm(years x 4320) (bodies Moon, Sun,
+ * comparator 0x49a780); the result is a record.
+ */
 export function tithiClock(swe: Sweph, chart: Chart): DasaClock {
   const c = ctxOf(swe, chart);
   const jd0 = chart.positions.jdUt;
-  const e0 = chart.positions.grahas.Moon.lon - chart.positions.grahas.Sun.lon;
+  const e0 = jhoraNorm(chart.positions.grahas.Moon.lon - chart.positions.grahas.Sun.lon);
   return {
-    toJd(years) {
-      const target = e0 + years * 4320;
-      let t = jd0 + years * 354.36708;
-      for (let i = 0; i < 30; i++) {
-        const m = siderealLongitude(swe, t, 'Moon', c.settings), s = siderealLongitude(swe, t, 'Sun', c.settings);
-        const d = wrap180(target - (m.lon - s.lon));
-        t += d / (m.speed - s.speed);
-        if (Math.abs(d) < 1e-9) break;
-      }
-      return t;
-    },
+    toJd: (years) => recordSearch(c, { b1: 2, b2: 1, offset: e0 + jhoraNorm(years * 4320), backward: true }, recordJd(c, years * 354.36708 + jd0 + 15)),
   };
 }
 
+/** FUN_0049de30 (year definition 7): JHora's search for the tropical Sun at chartSun + 360 x years (tajaka/annual.ts solarYearsToJd mode 7). */
 function trueTropicalClock(swe: Sweph, chart: Chart): DasaClock {
-  const c = ctxOf(swe, chart, true);
-  const jd0 = chart.positions.jdUt;
-  const sun0 = bodyLon(c, 1, jd0);
-  return {
-    toJd(years) {
-      let t = jd0 + years * 365.24219;
-      for (let i = 0; i < 12; i++) {
-        const { lon, speed } = siderealLongitude(swe, t, 'Sun', c.settings);
-        const d = wrap180(sun0 + years * 360 - lon);
-        t += d / speed;
-        if (Math.abs(d) < 1e-9) break;
-      }
-      return t;
-    },
-  };
+  return { toJd: (years) => solarYearsToJd(swe, chart, years, 7) };
 }
 
 /** The dasa clock of a year definition, from the mundane chart's moment. */
@@ -476,25 +456,25 @@ export function mundaneClock(swe: Sweph, chart: Chart, def: number): DasaClock {
     case 4: return tithiClock(swe, chart);
     case 5: case 6: return dasaClock(swe, chart, 'mean-sidereal');
     case 7: return trueTropicalClock(swe, chart);
-    default: return dasaClock(swe, chart, 'true-sidereal');
+    default: return jhoraSunClock(swe, chart);
   }
 }
 
-/** FUN_004094b0: the period (days) measured in years of `def`. */
+/**
+ * FUN_004094b0: the period (days) measured in years of `def`: from y = 0, y += (target - clock(y)) /
+ * nominal year length (the caller's table, 0x4093cc) until clock(y) (FUN_0049dae0) is within 1 s of
+ * chart + period, at most 500 times.
+ */
 export function periodInYears(swe: Sweph, chart: Chart, periodDays: number, def: number): number {
-  const jd0 = chart.positions.jdUt, jd1 = jd0 + periodDays;
   const len = def === 2 ? ({ ...DEFAULTS, ...chart.ini }.YearLength?.[0] ?? 365.24219) : YEAR_LEN[def] || 365.256364;
-  const nominal = periodDays / len;
-  if (def === 3 || def === 7) {
-    const c = ctxOf(swe, chart, def === 7);
-    return nominal + wrap180(bodyLon(c, 1, jd1) - bodyLon(c, 1, jd0) - nominal * 360) / 360;
+  const clock = mundaneClock(swe, chart, def);
+  const jd0 = chart.positions.jdUt, target = jd0 + periodDays;
+  let y = 0, jd = jd0;
+  for (let i = 0; i < 500 && Math.abs(jd - target) > SECOND; i++) {
+    y += (target - jd) / len;
+    jd = clock.toJd(y);
   }
-  if (def === 4) {
-    const c = ctxOf(swe, chart);
-    const e = (t: number) => bodyLon(c, 2, t) - bodyLon(c, 1, t);
-    return nominal + wrap180(e(jd1) - e(jd0) - nominal * 4320) / 4320;
-  }
-  return nominal;
+  return y;
 }
 
 export interface MundaneDasa { title: string; periods: Period[]; clock: DasaClock; compression: number; yearDefinition: number }

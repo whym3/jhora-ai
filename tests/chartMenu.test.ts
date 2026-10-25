@@ -1,6 +1,8 @@
 import { describe, expect, it } from 'vitest';
 import { highlightSigns, maranaKarakaSthana, pachakadiOfPlanet, relationCodes } from '../src/core/chartMenu';
 import { formatSpan, signChange } from '../src/core/signChange';
+import { siderealAscendant } from '../src/core/positions';
+import { calcSettingsFromIni } from '../src/core/settings';
 import type { Graha } from '../src/core/positions';
 import { nodeSweph } from './helpers';
 import { goldenV3Charts } from './golden';
@@ -44,5 +46,12 @@ describe('change of sign search', async () => {
     expect(r.earlierDays).toBeGreaterThan(0);
     expect(r.laterDays).toBeGreaterThan(0);
     expect(r.earlierDays + r.laterDays).toBeLessThan(0.15);
+    // JHora's search (1/15 s bracket for the lagna, later end): both moments sit on a sign boundary
+    const geo = { lat: c.birth.lat, lon: c.birth.lon, alt: c.birth.altitudeM };
+    const s = calcSettingsFromIni(c.ini);
+    for (const t of [c.positions.jdUt - r.earlierDays, c.positions.jdUt + r.laterDays]) {
+      const lon = siderealAscendant(swe, t, geo, s);
+      expect(Math.min(lon % 30, 30 - (lon % 30))).toBeLessThan(1e-3);
+    }
   });
 });

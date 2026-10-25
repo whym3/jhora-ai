@@ -6,26 +6,28 @@
 //  (radio 202) | the beginning of sign 1011 (radio 203)> in <varga 1030>
 //  <before|after 1012> the following date and time".
 //
-//   off = deg + min/60 + sec/3600, negated for "behind"
+//   off = (sec/3600 + min/60) + deg (multiplied by the constants 1/3600, 1/60),
+//         negated for "behind"
 //   ref = radio 201: the natal body's longitude in the varga chart (the only use
 //                    of the varga combo; JHora's list of 47 natal bodies)
 //         radio 202: the natal D-1 sahama longitude (36 sahamas, port order)
 //         radio 203: sign*30
-// The transit planet is always D-1 and searched from the entered moment (natal
-// place and zone) with FUN_0049c130 (step 10 d, Moon 3 d, lagna 2 h; 1 s
-// bracket, 1/15 s for the lagna; later bracket end) for norm360(lon - (ref+off))
-// crossing 0, backward for "before". The result becomes the current chart
-// "Transit Search" (doc+0x279e0, type 5) shown by the panes and CTransitView.
-// Side effect not ported: DAT_005922b0 (dasa year length) = time to the next
-// such crossing.
+// FUN_004203b0(date..., body, ref, off, after): the start record is the natal record
+// with the entered clock date/time (natal place and zone); the transit planet is
+// always D-1 and searched from it with FUN_0049c0d0 -> FUN_0049c130 (tajaka/search.ts:
+// one body against the target ref, offset c = off, i.e. norm360(lon - (ref + off));
+// step 10 d, Moon 3 d, lagna 1/12 d; 1 s bracket, 1/15 s for the lagna; later bracket
+// end), backward for "before". The found record becomes the current chart "Transit
+// Search" (doc+0x279e0, kind 5, file name "NULL") shown by the panes and CTransitView,
+// with compressed dasas (DAT_008a4b68 = 1): its period of effect DAT_005922b0 is the
+// time to the next such crossing, searched forward from the found record.
 import type { Sweph } from '../../sweph';
 import type { Chart } from '../chart';
 import { birthJdUt } from '../jhd';
-import { computePositions, siderealLongitude } from '../positions';
-import { calcSettingsFromIni } from '../settings';
 import { sahamas } from '../sahamas';
 import { ALL_VARGAS, vargaLongitude } from '../vargas';
-import { graha, jhoraCrossing, searchStep, searchTol, transitBirth, VARGA_ORDER, type TransitDate } from './common';
+import { ctxOf, recordSearch } from '../derived/mundane';
+import { transitBirth, VARGA_ORDER, type TransitDate } from './common';
 
 /** Varga combo 1030 (has D-81): index = JHora varga index. */
 export const SEARCH_VARGAS = ['Rasi', 'Navamsa', ...VARGA_ORDER.slice(2).map((v) => v.replace('D', 'D-'))];
@@ -65,22 +67,37 @@ export function natalBodyLon(natal: Chart, name: string, v: number): number {
   return vargaLongitude(b.lon, spec);
 }
 
-export function searchTarget(natal: Chart, s: SpecialSearch): number {
-  const off = (s.deg + s.min / 60 + s.sec / 3600) * (s.ahead ? 1 : -1);
-  let ref: number;
-  if (s.ref.kind === 'planet') ref = natalBodyLon(natal, s.ref.body, s.ref.varga);
-  else if (s.ref.kind === 'saham') ref = sahamas(natal.positions, natal.day.isDay)[s.ref.index].lon;
-  else ref = s.ref.sign * 30;
-  return ref + off;
+/** The offset of combos 102..104 / 1008 as FUN_0048ae30 computes it. */
+export function searchOffset(s: SpecialSearch): number {
+  const off = (s.sec * 0.0002777777777777778 + s.min * 0.016666666666666666) + s.deg;
+  return s.ahead ? off : -off;
 }
 
-/** JD (UT) of the searched transit, or NaN when none was found. */
-export function specialSearch(swe: Sweph, natal: Chart, s: SpecialSearch): number {
-  const settings = calcSettingsFromIni(natal.ini);
-  const geo = { lat: natal.birth.lat, lon: natal.birth.lon, alt: natal.birth.altitudeM };
-  const lon = s.planet === 0
-    ? (jd: number) => computePositions(swe, jd, geo, settings).ascendant
-    : (jd: number) => siderealLongitude(swe, jd, graha(s.planet), settings).lon;
+/** The reference longitude of radios 201..203. */
+export function searchRef(natal: Chart, s: SpecialSearch): number {
+  if (s.ref.kind === 'planet') return natalBodyLon(natal, s.ref.body, s.ref.varga);
+  if (s.ref.kind === 'saham') return sahamas(natal.positions, natal.day.isDay)[s.ref.index].lon;
+  return s.ref.sign * 30;
+}
+
+/** The longitude the transit planet is searched for (ref + off). */
+export function searchTarget(natal: Chart, s: SpecialSearch): number {
+  return searchRef(natal, s) + searchOffset(s);
+}
+
+export interface SpecialSearchResult {
+  /** JD (UT) of the found record */
+  jd: number;
+  /** DAT_005922b0: days to the next crossing searched forward from it */
+  periodDays: number;
+}
+
+/** FUN_004203b0: the searched transit (a record) and its period of effect. */
+export function specialSearch(swe: Sweph, natal: Chart, s: SpecialSearch): SpecialSearchResult {
+  const c = ctxOf(swe, natal);
+  const spec = { b1: s.planet, target: searchRef(natal, s), offset: searchOffset(s) };
   const t0 = birthJdUt(transitBirth(natal.birth, s.date), (y, m, d, h) => swe.julday(y, m, d, h));
-  return jhoraCrossing(lon, searchTarget(natal, s), t0, !s.after, searchStep(s.planet), searchTol(s.planet));
+  const jd = recordSearch(c, { ...spec, backward: !s.after }, t0);
+  const next = recordSearch(c, { ...spec, backward: false }, jd);
+  return { jd, periodDays: next - jd };
 }

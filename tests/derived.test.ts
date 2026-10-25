@@ -9,6 +9,7 @@ import { siderealLongitude, norm360 } from '../src/core/positions';
 import { calcSettingsFromIni } from '../src/core/settings';
 import { tithi } from '../src/core/keyInfo';
 import { lunarMonthAt, praveshaError, tpDateChart, tpYearChart } from '../src/core/derived/tithiPravesha';
+import { ctxOf } from '../src/core/derived/mundane';
 import { KP249, prasnaLagna } from '../src/core/derived/prasna';
 import { ASYNC_TABLES, TABLES } from '../src/engine/jobs';
 import { DERIVED_VIEWS } from '../src/ui/shell/derivedViews';
@@ -88,7 +89,7 @@ describe('Tithi Pravesha', async () => {
     const r = tpYearChart(swe, natal, { year: by + 5, type: 2 });
     expect(r.label).toBe('Annual YP');
     expect(Math.abs(praveshaError(swe, natal, 2, r.start))).toBeLessThan(TOL);
-    expect(lunarMonthAt(swe, s, natal.positions.jdUt, 4)).toBe((natalSign + 11) % 12);
+    expect(lunarMonthAt(ctxOf(swe, natal), natal.positions.jdUt, 4)).toBe((natalSign + 11) % 12);
   });
 
   it('job returns the TP chart birth data (tithi reproduced by the computed chart)', async () => {

@@ -50,32 +50,6 @@ export function solveAngle(f: AngleFn, target: number, guess: number, maxIter = 
   return t;
 }
 
-/**
- * First time after (dir 1) or before (dir -1) `from` when angle f crosses `target`,
- * scanning in steps of `step` days then refining by bisection to `tol` days.
- * Works for non-monotonic angles (retrograde planets); `limit` days caps the scan.
- */
-export function scanCrossing(f: (jd: number) => number, target: number, from: number, dir: 1 | -1, step: number, limit: number, tol = 1e-8): number | null {
-  const g = (t: number) => wrap180(f(t) - target);
-  let a = from; let ga = g(a);
-  for (let k = 0; k * step < limit; k++) {
-    const b = a + dir * step;
-    const gb = g(b);
-    // a sign change of the wrapped difference that is not a 180-degree wrap
-    if (ga === 0) return a;
-    if ((ga < 0) !== (gb < 0) && Math.abs(ga - gb) < 180) {
-      let lo = a, hi = b, glo = ga;
-      while (Math.abs(hi - lo) > tol) {
-        const m = (lo + hi) / 2; const gm = g(m);
-        if ((gm < 0) === (glo < 0)) { lo = m; glo = gm; } else hi = m;
-      }
-      return (lo + hi) / 2;
-    }
-    a = b; ga = gb;
-  }
-  return null;
-}
-
 /** JD (UT) of a local clock date/time in a zone (east-positive hours). */
 export function localToJd(swe: Sweph, y: number, m: number, d: number, hour: number, tzHours: number): number {
   return swe.julday(y, m, d, hour - tzHours);

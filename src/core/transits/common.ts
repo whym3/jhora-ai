@@ -165,34 +165,8 @@ export function addDays(swe: Sweph, d: TransitDate, days: number): TransitDate {
   return { year: r.year, month: r.month, day: r.day, hour: r.hour };
 }
 
-/**
- * JHora's crossing search (FUN_0049c130): step from t0 (10 days, Moon 3 days,
- * lagna 2 hours; backward when `backward`) until norm360(f - target) jumps
- * between >240 and <120, then bisect until the bracket is <= tol (1 s; 1/15 s for
- * the lagna) and return the later end of the bracket.
- */
-export function jhoraCrossing(f: (jd: number) => number, target: number, t0: number, backward: boolean, step: number, tol = 1 / 86400, maxSteps = 200000): number {
-  const g = (t: number) => norm360(f(t) - target);
-  const dir = backward ? -1 : 1;
-  let a = t0, ga = g(a);
-  for (let i = 0; i < maxSteps; i++) {
-    const c = a + dir * step, gc = g(c);
-    if ((ga > 240 && gc < 120) || (ga < 120 && gc > 240)) {
-      let lo = a, hi = c, glo = ga;
-      while (Math.abs(hi - lo) > tol) {
-        const mid = (lo + hi) / 2, gm = g(mid);
-        if ((glo > 180) === (gm > 180)) { lo = mid; glo = gm; } else hi = mid;
-      }
-      return Math.max(lo, hi);
-    }
-    a = c; ga = gc;
-  }
-  return NaN;
-}
-
-/** Search step per body index (FUN_0049c130): lagna 1/12 day, Moon 3 days, others 10 days. */
-export const searchStep = (b: number) => (b === 0 ? 1 / 12 : b === 2 ? 3 : 10);
-export const searchTol = (b: number) => (b === 0 ? 7.716049e-7 : 1 / 86400);
+// Longitude searches (Special Search, murthi ingresses) are JHora's FUN_0049c130,
+// tajaka/search.ts, through derived/mundane.ts recordSearch (found moments are records).
 
 /** "%d:%02d" clock text with seconds >= 30 rounding the minute up (calendar row labels, 0x48847a). */
 export function clockText(hour: number): string {

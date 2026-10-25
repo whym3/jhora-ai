@@ -6,8 +6,9 @@
 // FUN_0049c0d0, which clears +0x19/+0x1a and moves its +0x19 to +0x1b):
 //   +0x00 body 1, +0x04 body 2 (JHora indices: 0 lagna, 1 Sun ... 7 Saturn, 8 Rahu, 9 Ketu),
 //   +0x08 target longitude (one body), +0x10 offset c, +0x18 two bodies,
-//   +0x19 / +0x1a other comparators (0x49a7b0 / 0x49a7e0; unused by the ported callers),
-//   +0x1b search backwards.
+//   +0x19 comparator 0x49a7b0 (c negated, no swap): f(t) = norm360(lon1 + (lon2 - c))
+//   (FUN_004ae5e0; Yoga Pravesha), +0x1a comparator 0x49a7e0 (unused by the ported
+//   callers), +0x1b search backwards.
 //   Comparator 0x49a780: f(t) = norm360(lon1 - (lon2 + c)) (FUN_004ae540), lon2 = the
 //   target for one body.  With two bodies, when rank[b1] > rank[b2] (rank table on the
 //   stack: Lagna 0, Sun 4, Moon 1, Mars 5, Mercury 2, Jupiter 6, Venus 3, Saturn 9,
@@ -27,7 +28,10 @@
 // All comparisons are strict, as in the x87 code.  The one-body Sun form (solar
 // returns, Sun-longitude dasa clocks FUN_0049dc20 / FUN_0049de30) is jhoraCrossing.
 
-const n360 = (x: number) => {
+import type { Sweph } from '../../sweph';
+
+/** FUN_004ae800 (and the tails of FUN_004ae540 / FUN_004ae5e0): add or subtract 360 until in [0, 360). */
+export const n360 = (x: number) => {
   let d = x;
   if (d < 0) { do d += 360; while (d < 0); }
   if (d >= 360) { do d -= 360; while (d >= 360); }
@@ -39,6 +43,15 @@ export interface SearchOptions {
   step: number;
   /** stop when the bracket is at most this many days (JHora: 1 s) */
   tol: number;
+}
+
+/**
+ * A moment stored as a chart record and read back (FUN_0049d250: swe_revjul(jd + zone/24)
+ * -> date and hour; FUN_0049d210 / FUN_0049c130: swe_julday(date, hour - zone)).
+ */
+export function recordRoundTrip(swe: Pick<Sweph, 'revjul' | 'julday'>, tz: number, jd: number): number {
+  const r = swe.revjul(jd + tz * 0.041666666666666664);
+  return swe.julday(r.year, r.month, r.day, r.hour - tz);
 }
 
 /** 1 s and 1/15 s (the lagna) in days, the tolerances of FUN_0049c130 */
@@ -110,6 +123,8 @@ export interface BodySearch {
   target?: number;
   /** +0x10 */
   offset?: number;
+  /** +0x19: comparator 0x49a7b0, the sum of the two longitudes (Yoga Pravesha) */
+  sum?: boolean;
   backward: boolean;
 }
 
@@ -120,13 +135,16 @@ const RANK = [0, 4, 1, 5, 2, 6, 3, 9, 7, 8];
 export function jhoraBodySearch(s: BodySearch, t0: number): number {
   let b1 = s.b1, b2 = s.b2 ?? 105, c = s.offset ?? 0;
   const two = s.b2 !== undefined;
-  if (two && RANK[b1] > RANK[b2]) { [b1, b2] = [b2, b1]; c = -c; }
+  if (s.sum) c = -c;
+  else if (two && RANK[b1] > RANK[b2]) { [b1, b2] = [b2, b1]; c = -c; }
   const lagna = b1 === 0 || b2 === 0;
   const step = lagna ? 1 / 12 : b1 === 2 || b2 === 2 ? 3 : 10;
   const target = s.target ?? 0;
-  const g = two
-    ? (t: number) => n360(s.lon(b1, t) - (s.lon(b2, t) + c))
-    : (t: number) => n360(s.lon(b1, t) - (target + c));
+  const g = s.sum
+    ? (t: number) => n360(s.lon(b1, t) + (s.lon(b2, t) + c))
+    : two
+      ? (t: number) => n360(s.lon(b1, t) - (s.lon(b2, t) + c))
+      : (t: number) => n360(s.lon(b1, t) - (target + c));
   return jhoraRefine(g, t0, s.backward ? -step : step, lagna ? LAGNA_TOL : SECOND);
 }
 

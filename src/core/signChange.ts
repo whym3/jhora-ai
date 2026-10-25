@@ -1,56 +1,34 @@
 // "When will this planet change sign in this chart?" (FUN_004427a0 / FUN_00442930):
 // how much earlier or later the birth would have to be for a body to leave its
 // present division of the zodiac in a varga. Like JHora, the division is taken
-// as a 30/n-degree segment of the D-1 longitude (exact for evenly divided vargas),
-// Ketu is timed by Rahu, and each boundary is bracketed by stepping (lagna 2 h,
-// Moon 3 days, others 10 days) and refined to under a second (1/15 s for lagna).
+// as a 30/n-degree segment of the D-1 longitude (exact for evenly divided vargas)
+// and Ketu is timed by Rahu. FUN_00442930(record, body, &earlier, &later):
+//   seg = 30 / n, start = ftol(lon * n * (1/30)) * seg, end = start + seg
+//   (lon = the record's longitude of the body), then four FUN_0049c0d0 ->
+//   FUN_0049c130 searches from the record (tajaka/search.ts: one body against the
+//   target, c = 0; lagna steps 1/12 day and 1/15 s bracket, Moon 3 days, others 10
+//   days and 1 s; later bracket end): start and end backwards, keeping the later
+//   found record (the first when equal), end and start forwards, keeping the earlier
+//   (the first when equal); earlier = t0 - backward, later = forward - t0.
 import type { Sweph } from '../sweph';
 import type { Chart } from './chart';
 import { birthJdUt } from './jhd';
-import { computePositions, type Graha } from './positions';
-import { calcSettingsFromIni } from './settings';
-
-const n360 = (x: number) => ((x % 360) + 360) % 360;
+import { GRAHAS, type Graha } from './positions';
+import { bodyLon, ctxOf, recordSearch } from './derived/mundane';
 
 export interface SignChange { earlierDays: number; laterDays: number }
 
 export function signChange(swe: Sweph, chart: Chart, body: Graha | 'Lagna', divisions: number): SignChange {
-  const b: Graha | 'Lagna' = body === 'Ketu' ? 'Rahu' : body;
-  const geo = { lat: chart.birth.lat, lon: chart.birth.lon, alt: chart.birth.altitudeM };
-  const settings = calcSettingsFromIni(chart.ini);
-  const lonAt = (jd: number) => {
-    const p = computePositions(swe, jd, geo, settings);
-    return b === 'Lagna' ? p.ascendant : p.grahas[b].lon;
-  };
+  const b = body === 'Lagna' ? 0 : body === 'Ketu' ? 8 : GRAHAS.indexOf(body) + 1;
+  const c = ctxOf(swe, chart);
   const t0 = birthJdUt(chart.birth, (y, m, d, h) => swe.julday(y, m, d, h));
-  const L = lonAt(t0);
   const seg = 30 / divisions;
-  const start = Math.floor(L / seg) * seg, end = start + seg;
-  const step = b === 'Lagna' ? 1 / 12 : b === 'Moon' ? 3 : 10;
-  const tol = b === 'Lagna' ? 1 / 86400 / 15 : 1 / 86400;
-
-  /** First time from t0 in direction dir at which the body crosses `target`. */
-  const cross = (target: number, dir: 1 | -1): number => {
-    const f = (t: number) => n360(lonAt(t) - target);
-    let a = t0, fa = f(a);
-    for (let i = 0; i < 20000; i++) {
-      const c = a + dir * step, fc = f(c);
-      const jumped = (fa > 240 && fc < 120) || (fa < 120 && fc > 240);
-      if (jumped) {
-        let lo = a, hi = c, flo = fa;
-        while (Math.abs(hi - lo) > tol) {
-          const mid = (lo + hi) / 2, fm = f(mid);
-          const sameSide = (flo > 180) === (fm > 180);
-          if (sameSide) { lo = mid; flo = fm; } else hi = mid;
-        }
-        return hi;
-      }
-      a = c; fa = fc;
-    }
-    return NaN;
-  };
-  const tb = Math.max(cross(start, -1), cross(end, -1));
-  const tf = Math.min(cross(end, 1), cross(start, 1));
+  const start = Math.trunc(bodyLon(c, b, t0) * divisions * 0.03333333333333333) * seg, end = start + seg;
+  const cross = (target: number, backward: boolean) => recordSearch(c, { b1: b, target, backward }, t0);
+  const b1 = cross(start, true), b2 = cross(end, true);
+  const f1 = cross(end, false), f2 = cross(start, false);
+  const tb = b2 > b1 ? b2 : b1;
+  const tf = f2 < f1 ? f2 : f1;
   return { earlierDays: t0 - tb, laterDays: tf - t0 };
 }
 
