@@ -21,7 +21,7 @@ import { TabBar } from './widgets/TabBar';
 // the AI panel (and its provider SDKs) loads on first use
 const AiPanel = lazy(() => import('./AiPanel').then((m) => ({ default: m.AiPanel })));
 
-const SAMPLES = ['santosh', 'Swami Vivekananda', 'Mahatma Gandhi', 'India', 'Ramana Maharshi', 'Prof. B. V. Raman', 'Author of this software'];
+const SAMPLES = ['Swami Vivekananda', 'Mahatma Gandhi', 'India', 'Ramana Maharshi', 'Prof. B. V. Raman', 'Author of this software'];
 
 async function loadSample(name: string) {
   const t = await (await fetch(`${import.meta.env.BASE_URL}samples/${name}.jhd`)).text();

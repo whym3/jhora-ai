@@ -17,7 +17,8 @@ const dir = (p: string) => fileURLToPath(new URL(p, import.meta.url));
 
 describe('MCP server', () => {
   const chartsDir = mkdtempSync(join(tmpdir(), 'jhora-charts-'));
-  writeFileSync(join(chartsDir, 'santosh.jhd'), readFileSync(dir('../public/samples/santosh.jhd')));
+  // a "saved chart" for the tests: Mahatma Gandhi's sample under another name
+  writeFileSync(join(chartsDir, 'My chart.jhd'), readFileSync(dir('../public/samples/Mahatma Gandhi.jhd')));
   const client = new Client({ name: 'test', version: '0' });
   const call = async (name: string, args: Record<string, unknown> = {}) => {
     const r = await client.callTool({ name, arguments: args });
@@ -72,22 +73,22 @@ describe('MCP server', () => {
 
   it('starts a consultation with the saved charts and no chart open', async () => {
     const start = await call('start_consultation');
-    expect(start.text).toMatch(/# Consultation flow[\s\S]*No chart is open yet[\s\S]*Saved charts: santosh\nSample charts of well-known people: [^\n]*Swami Vivekananda/);
-    expect(start.text).not.toMatch(/well-known people: [^\n]*santosh/);
+    expect(start.text).toMatch(/# Consultation flow[\s\S]*No chart is open yet[\s\S]*Saved charts: My chart\nSample charts of well-known people: [^\n]*Swami Vivekananda/);
+    expect(start.text).not.toMatch(/well-known people: [^\n]*My chart/);
     expect(await call('get_longitudes')).toEqual({ text: expect.stringMatching(/open_chart first/), isError: true });
     expect((await call('record_life_events', { events: [{ year: 2020, event: 'x' }] })).isError).toBe(true);
   });
 
   it('opens a saved chart and tests it against life events', async () => {
-    const opened = await call('open_chart', { chart: 'santosh', gender: 'male' });
+    const opened = await call('open_chart', { chart: 'My chart', gender: 'male' });
     expect(opened.isError).toBe(false);
-    expect(opened.text).toMatch(/Opened "santosh"\.\nGender: male\.[\s\S]*Lagna \|[\s\S]*June 17, 2000[\s\S]*CALCULATION SETTINGS/);
-    const first = await call('record_life_events', { events: [{ year: 2018, month: 6, event: 'finished school' }, { year: 2022, month: 8, day: 1, event: 'moved abroad for university' }] });
-    expect(first.text).toMatch(/2018-06 \| finished school \| \w+ \/ \w+ \/ \w+ \(month only[^\n]*\n2022-08-01 \| moved abroad for university \| \w+ \/ \w+ \/ \w+\n/);
-    const second = await call('record_life_events', { events: [{ year: 2016, event: 'first award' }] });
-    expect(second.text).toMatch(/\n2016 \| first award[^\n]*year only[^\n]*\n2018-06 \| finished school[\s\S]*\n2022-08-01 \| moved/);
+    expect(opened.text).toMatch(/Opened "My chart"\.\nGender: male\.[\s\S]*Lagna \|[\s\S]*October 2, 1869[\s\S]*CALCULATION SETTINGS/);
+    const first = await call('record_life_events', { events: [{ year: 1888, month: 9, event: 'sailed to London to study law' }, { year: 1893, month: 5, day: 24, event: 'arrived in South Africa' }] });
+    expect(first.text).toMatch(/1888-09 \| sailed to London to study law \| \w+ \/ \w+ \/ \w+ \(month only[^\n]*\n1893-05-24 \| arrived in South Africa \| \w+ \/ \w+ \/ \w+\n/);
+    const second = await call('record_life_events', { events: [{ year: 1883, event: 'married' }] });
+    expect(second.text).toMatch(/\n1883 \| married[^\n]*year only[^\n]*\n1888-09 \| sailed to London[\s\S]*\n1893-05-24 \| arrived/);
     expect((await call('record_life_events', { events: [{ year: 2016, day: 3, event: 'x' }] })).text).toMatch(/needs a month/);
-    expect((await call('start_consultation')).text).toMatch(/Open chart: "santosh" \(male\); 3 life events recorded: continue with step 3/);
+    expect((await call('start_consultation')).text).toMatch(/Open chart: "My chart" \(male\); 3 life events recorded: continue with step 3/);
   }, 120000);
 
   it('opens a sample and runs tools on it, clearing the events', async () => {
@@ -107,7 +108,7 @@ describe('MCP server', () => {
     const opened = await call('open_chart', { birth, name: 'Delhi 1990', save_as: 'Delhi 1990', house_system });
     expect(opened.text).toMatch(/Saved as "Delhi 1990"[\s\S]*June 15, 1990[\s\S]*Placidus houses \(KP\/Krishnamoorthy\), cusp at the start/);
     expect(existsSync(join(chartsDir, 'Delhi 1990.jhd'))).toBe(true);
-    expect((await call('list_saved_charts')).text).toMatch(/^Saved charts: Delhi 1990, santosh\n/);
+    expect((await call('list_saved_charts')).text).toMatch(/^Saved charts: Delhi 1990, My chart\n/);
     // the saved chart reopens as the same moment
     expect((await call('open_chart', { chart: 'Delhi 1990' })).text).toMatch(/June 15, 1990[\s\S]*14:30:00/);
     // KP default: the 1st house begins at the Placidus cusp (the ascendant)
@@ -120,7 +121,7 @@ describe('MCP server', () => {
     expect((await call('open_chart', {})).text).toMatch(/exactly one of/);
     expect((await call('open_chart', { chart: 'Nobody' })).text).toMatch(/no chart "Nobody"[\s\S]*Saved charts:/);
     expect((await call('open_chart', { birth: { year: 1990 } })).isError).toBe(true);
-    expect((await call('open_chart', { chart: 'santosh', gender: 'other' })).isError).toBe(true);
+    expect((await call('open_chart', { chart: 'My chart', gender: 'other' })).isError).toBe(true);
     expect((await call('get_dasa', { system: 'Nope' })).isError).toBe(true);
   });
 
