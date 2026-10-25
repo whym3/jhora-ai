@@ -20,7 +20,8 @@ import type { Chart } from '../chart';
 import type { Table } from '../../engine/protocol';
 import { aspectPercent } from '../aspects';
 import { norm360, type Graha } from '../positions';
-import { ALL_VARGAS, vargaLongitude } from '../vargas';
+import { vargaLongitude } from '../vargas';
+import { vargaSpec } from '../vargaOptions';
 import { formatLongitude } from '../zodiac';
 import { arudhaLongitudes, bodyLon, BODY_NAMES, graha, VARGA_ORDER, type TransitDate } from './common';
 
@@ -110,7 +111,7 @@ export function longitudeCorrelation(natal: Chart, transit: Chart, o: Correlatio
     for (let k = 0; k < points.length && matches.length < 100; k++) {
       for (const v of CORRELATION_VARGAS) {
         if (matches.length >= 100) break;
-        const N = v === 0 ? points[k] : vargaLongitude(transitPoints[k], ALL_VARGAS[VARGA_ORDER[v]]);
+        const N = v === 0 ? points[k] : vargaLongitude(transitPoints[k], vargaSpec(VARGA_ORDER[v], natal.ini));
         const m = { point: NATAL_POINTS[k], varga: v, natalLon: N };
         if (mode === 0) {
           const pct = aspectPercent(N, T, g);

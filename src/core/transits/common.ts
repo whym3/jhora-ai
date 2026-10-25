@@ -15,7 +15,8 @@ import type { Sweph } from '../../sweph';
 import type { BirthData } from '../jhd';
 import { computeChart, type Chart } from '../chart';
 import { GRAHAS, norm360, type Graha, type Positions } from '../positions';
-import { ALL_VARGAS, vargaLongitude, type VargaName } from '../vargas';
+import { vargaLongitude, type VargaName } from '../vargas';
+import { vargaSpec, type VargaIni } from '../vargaOptions';
 import { NAK28, nakshatra28Of, nakshatraOf, NAKSHATRAS, signOf } from '../zodiac';
 import { bhavaArudha, lordOf, DEFAULT_ARUDHA, type ArudhaOptions } from '../arudhas';
 import type { VargaCtx } from '../signStrength';
@@ -89,8 +90,8 @@ export function bodyLon(p: Positions, b: number): number {
 export const graha = (b: number): Graha => GRAHAS[b - 1];
 
 /** Sign of body b in varga index v (chart+0x17d7 + b*0x1d + v). */
-export function bodySign(p: Positions, b: number, v: number): number {
-  return signOf(vargaLongitude(bodyLon(p, b), ALL_VARGAS[VARGA_ORDER[v] ?? 'D1']));
+export function bodySign(p: Positions, b: number, v: number, ini?: VargaIni): number {
+  return signOf(vargaLongitude(bodyLon(p, b), vargaSpec(VARGA_ORDER[v] ?? 'D1', ini)));
 }
 export const nak27 = (p: Positions, b: number) => nakshatraOf(bodyLon(p, b));
 export const nak28 = (p: Positions, b: number) => nakshatra28Of(bodyLon(p, b));
@@ -100,8 +101,8 @@ export { NAK28, NAKSHATRAS };
 export const kakshyaOf = (lon: number) => Math.min(7, Math.trunc((lon - signOf(lon) * 30) * 8 / 30));
 
 /** Varga context for the arudha helpers. */
-export function vargaCtx(p: Positions, v: number): VargaCtx {
-  const spec = ALL_VARGAS[VARGA_ORDER[v] ?? 'D1'];
+export function vargaCtx(p: Positions, v: number, ini?: VargaIni): VargaCtx {
+  const spec = vargaSpec(VARGA_ORDER[v] ?? 'D1', ini);
   return {
     sign: (g) => signOf(vargaLongitude(p.grahas[g].lon, spec)),
     degree: (g) => vargaLongitude(p.grahas[g].lon, spec) % 30,
@@ -123,9 +124,9 @@ export const NATAL_REFS: NatalRef[] = ['Moon', 'Lagna', 'AL'];
 /** Sign of the natal reference in varga v. */
 export function refSign(natal: Chart, ref: NatalRef, v: number): number {
   const p = natal.positions;
-  if (ref === 'Moon') return bodySign(p, 2, v);
-  if (ref === 'Lagna') return bodySign(p, 0, v);
-  return bhavaArudha(bodySign(p, 0, v), vargaCtx(p, v), arudhaOptions(natal.ini) ?? DEFAULT_ARUDHA);
+  if (ref === 'Moon') return bodySign(p, 2, v, natal.ini);
+  if (ref === 'Lagna') return bodySign(p, 0, v, natal.ini);
+  return bhavaArudha(bodySign(p, 0, v, natal.ini), vargaCtx(p, v, natal.ini), arudhaOptions(natal.ini) ?? DEFAULT_ARUDHA);
 }
 
 /**

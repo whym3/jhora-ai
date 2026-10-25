@@ -7,6 +7,8 @@
 //    reduced to the unelapsed fraction of the tithi (chart+0x120c8); 24 maha
 //    dasas (three cycles; 8 when JHora's DAT_008a4b68 flag is set);
 //  - antardasas from the dasa lord round the cycle, in proportion (of 36).
+// Tajaka chart with ProgressDasaSeedInTajaka[72] (0x4126cb): the lord's body id is
+// advanced by the completed years n, ((n + id - 1) mod 8) + 1.
 import type { Chart } from '../chart';
 import type { Period } from './vimsottari';
 import { NAKSHATRA_DASAS } from './nakshatra';
@@ -16,8 +18,10 @@ import { TITHI_HARMONICS } from './tithiAshtottari';
 export const tithiYoginiTitle = (harmonic = 0) => `Tithi Yogini Dasa of ${TITHI_HARMONICS[harmonic]} (based on tithis instead of nakshatras)`;
 export const TITHI_YOGINI_TITLE = tithiYoginiTitle();
 
-export function tithiYoginiDasa(chart: Chart, levels = 2, harmonic = 0): Period[] {
+/** @param progress Tajaka: completed years n added to the lord (ProgressDasaSeedInTajaka) */
+export function tithiYoginiDasa(chart: Chart, levels = 2, harmonic = 0, progress?: number): Period[] {
   const cycle = NAKSHATRA_DASAS.Yogini.lords;
   const t = tithiOf(chart, harmonic);
-  return seededCycleDasa(cycle, cycleIndex(cycle, TITHI_LORD[t.index]), t.remaining, 24, false, levels);
+  const lord = progress === undefined ? TITHI_LORD[t.index] : ((progress + TITHI_LORD[t.index] - 1) % 8) + 1;
+  return seededCycleDasa(cycle, cycleIndex(cycle, lord), t.remaining, 24, false, levels);
 }

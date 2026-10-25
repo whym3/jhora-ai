@@ -62,6 +62,14 @@ function divide(p: Period, id: number, maha: boolean, levels: number, rohini4InL
   return { ...p, children };
 }
 
+/** One level below a period with table id `id` (a pada for maha dasas): the sub-periods and their ids. */
+export function kalachakraLevel(p: Period, id: number, maha: boolean, rohini4InLeo = true): { period: Period; id: number }[] {
+  return (divide(p, id, maha, 1, rohini4InLeo).children ?? []).map((period, j) => ({ period, id: subEntries(id, rohini4InLeo, maha)[j] }));
+}
+
+/** Table id (pada mod 108) of the i-th maha dasa from the Moon's pada. */
+export const kalachakraMahaId = (moonLon: number, i: number) => (Math.floor(moonLon / (360 / 108)) + i) % 108;
+
 export function kalachakraDasa(moonLon: number, count = 9, rohini4InLeo = true, levels = 2): Kalachakra {
   const PADA = 360 / 108;
   const p0 = Math.floor(moonLon / PADA);

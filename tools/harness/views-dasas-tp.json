@@ -1,0 +1,167 @@
+{
+ "_comment": "Dasas tab of the Tithi Pravesha annual chart of 2000 (TP form: edit 100 = 2000, combo 1003 = 0, click 1000), then nakshatra, rasi and other dasas of that chart (compressed in tithi years), then Back to Natal (1001). Output: golden/jhora-dasas-tp (tests/derivedDasas.test.ts).",
+ "tabs": [
+  {
+   "top": "Tithi Pravesha",
+   "sub": null,
+   "form": [
+    [
+     "edit",
+     100,
+     "2000"
+    ],
+    [
+     "combo",
+     1003,
+     0
+    ],
+    [
+     "click",
+     1000
+    ]
+   ]
+  },
+  {
+   "top": "Dasas",
+   "sub": "Nakshatra dasas",
+   "copies": {
+    "dasa": 32972,
+    "dasa_dates": 33236
+   },
+   "modes": [
+    [
+     "Vimsottari",
+     32846
+    ],
+    [
+     "Ashtottari",
+     32854
+    ],
+    [
+     "Kalachakra",
+     32847
+    ],
+    [
+     "Yogini",
+     32848
+    ],
+    [
+     "Shattrimsa sama",
+     32856
+    ],
+    [
+     "Saptarshi nakshatra",
+     33329
+    ]
+   ],
+   "dasa_levels": true,
+   "dasa_level_rows": 1
+  },
+  {
+   "top": "Dasas",
+   "sub": "Rasi dasas",
+   "copies": {
+    "dasa": 32972,
+    "dasa_dates": 33236
+   },
+   "modes": [
+    [
+     "Narayana",
+     32849
+    ],
+    [
+     "Lagnamsaka",
+     33201
+    ],
+    [
+     "Drigdasa",
+     32851
+    ],
+    [
+     "Lagna Kendradi",
+     32868
+    ],
+    [
+     "AK Kendradi Rasi",
+     32869
+    ],
+    [
+     "Chara (Parasara)",
+     32871
+    ],
+    [
+     "Brahma",
+     32878
+    ],
+    [
+     "Shoola",
+     32876
+    ],
+    [
+     "Mandooka (D-11)",
+     32880
+    ]
+   ],
+   "dasa_levels": true,
+   "dasa_level_rows": 1
+  },
+  {
+   "top": "Dasas",
+   "sub": "Other dasas",
+   "copies": {
+    "dasa": 32972,
+    "dasa_dates": 33236
+   },
+   "modes": [
+    [
+     "Patyayini",
+     32852
+    ],
+    [
+     "Rasi-Bhukta Vimsottari",
+     32863
+    ],
+    [
+     "Tithi Ashtottari",
+     32865
+    ],
+    [
+     "Yoga Vimsottari",
+     33203
+    ],
+    [
+     "Karana Chaturaseeti",
+     33204
+    ],
+    [
+     "Tithi Yogini",
+     32866
+    ],
+    [
+     "Karaka",
+     33267
+    ],
+    [
+     "Moola",
+     32853
+    ],
+    [
+     "Naisargika",
+     33164
+    ]
+   ],
+   "dasa_levels": true,
+   "dasa_level_rows": 1
+  },
+  {
+   "top": "Tithi Pravesha",
+   "sub": null,
+   "form": [
+    [
+     "click",
+     1001
+    ]
+   ]
+  }
+ ]
+}

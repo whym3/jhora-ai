@@ -1,6 +1,7 @@
 // Application state: open charts (JHora's MDI documents), preferences and view state.
 import { useSyncExternalStore } from 'react';
 import type { BirthData } from '../../core/jhd';
+import { defaultLocationFromChart, newChartBirth } from '../../core/newChart';
 import type { VargaName } from '../../core/vargas';
 import { DEFAULTS, type JhoraIni } from '../../settings/generated';
 import type { ChartStyle } from '../ChartDiagram';
@@ -91,6 +92,18 @@ export function openChart(birth: BirthData, title: string): ChartDoc {
   const doc: ChartDoc = { id: `${Date.now().toString(36)}${Math.random().toString(36).slice(2, 6)}`, title, birth, ini: {} };
   setState((s) => ({ docs: [...s.docs, doc], activeDoc: doc.id }));
   return doc;
+}
+/** File > New (57600): a chart for now at the default location (src/core/newChart.ts). */
+export function newChart(now: Date = new Date()): ChartDoc {
+  return openChart(newChartBirth(state.ini, now), 'Untitled');
+}
+/** "Set Current Location as Default" (32934): the active chart's place becomes the ini default; returns the keys written. */
+export function setCurrentLocationAsDefault(): Partial<JhoraIni> | null {
+  const doc = state.docs.find((d) => d.id === state.activeDoc);
+  if (!doc) return null;
+  const patch = defaultLocationFromChart(doc.birth);
+  setIni(patch);
+  return patch;
 }
 export function updateChart(id: string, patch: Partial<ChartDoc>) {
   setState((s) => ({ docs: s.docs.map((d) => (d.id === id ? { ...d, ...patch } : d)) }));

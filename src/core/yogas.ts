@@ -7,7 +7,8 @@
 // several of them as sign or house numbers, which they are not).
 import type { Chart } from './chart';
 import type { Graha } from './positions';
-import { ALL_VARGAS, vargaLongitude, type VargaName } from './vargas';
+import { vargaLongitude, type VargaName } from './vargas';
+import { vargasOf } from './vargaOptions';
 import { charaKarakas } from './basics';
 import { bhavaArudha } from './arudhas';
 import META from './data/yogas.json';
@@ -113,8 +114,9 @@ interface Ctx {
 
 function buildCtx(chart: Chart, varga: VargaName): Ctx {
   const lonOf = (b: number) => (b === 0 ? chart.positions.ascendant : chart.positions.grahas[GRAHA_OF[b]].lon);
-  const signIn = (v: VargaName, b: number) => Math.floor(vargaLongitude(lonOf(b), ALL_VARGAS[v]) / 30) % 12;
-  const signOfLon = (lon: number) => Math.floor(vargaLongitude(lon, ALL_VARGAS[varga]) / 30) % 12;
+  const V = vargasOf(chart.ini);
+  const signIn = (v: VargaName, b: number) => Math.floor(vargaLongitude(lonOf(b), V[v]) / 30) % 12;
+  const signOfLon = (lon: number) => Math.floor(vargaLongitude(lon, V[varga]) / 30) % 12;
   const S = Array.from({ length: 10 }, (_, b) => signIn(varga, b));
   const cnt = GROUPS.map((g) => Array.from({ length: 12 }, (_, s) => g.filter((p) => S[p] === s).length));
   const named = (n: string) => chart.longitudes.find((x) => x.name === n)!.lon;

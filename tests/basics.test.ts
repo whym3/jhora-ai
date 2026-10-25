@@ -21,9 +21,8 @@ const CASES: [string, (c: GoldenChart) => GoldenView | undefined, (rows: string[
   ['basics.nakshatraAspects', (c) => c.views.find((v) => v.mode === 'Nakshatra Aspects & Latta'), (r) => r],
   ['basics.specialTithis', (c) => c.views.find((v) => v.mode === 'Special Tithis'), (r) => r],
   ['basics.grahaYuddha', (c) => c.views.find((v) => v.mode === 'Graha Yuddha'), (r) => r],
-  // only the rows we compute so far (Parasara drekkana and navamsa, from lagna and Moon)
-  ['basics.malicious', (c) => c.views.find((v) => v.mode === '64th navamsa and 22nd drekkana'),
-    (rows) => rows.filter((r) => /^The (64th navamsa|22nd Para(r)?sara drekkana)( from Moon)?$/.test(r[0]))],
+  // the chosen navamsa and all five drekkana variants (src/core/vargaOptions.ts)
+  ['basics.malicious', (c) => c.views.find((v) => v.mode === '64th navamsa and 22nd drekkana'), (r) => r],
 ];
 
 /**

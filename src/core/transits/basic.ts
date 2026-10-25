@@ -98,7 +98,7 @@ function standard(natal: Chart, transit: Chart, o: Required<Omit<BasicOptions, '
 
 function houses(natal: Chart, transit: Chart): Table {
   const p = transit.positions, np = natal.positions;
-  const refs = [bodySign(np, 2, 0), bodySign(np, 0, 0), bodySign(np, 2, 1), bodySign(np, 0, 1)];
+  const refs = [bodySign(np, 2, 0), bodySign(np, 0, 0), bodySign(np, 2, 1, natal.ini), bodySign(np, 0, 1, natal.ini)];
   const rows: string[][] = [];
   for (let i = 1; i <= 9; i++) {
     const s = bodySign(p, i, 0);
@@ -109,7 +109,7 @@ function houses(natal: Chart, transit: Chart): Table {
 
 /** Natal BAV / SAV / prastara in varga index v (natal chart+0x1800c, +0x195cc, +0x19884). */
 export function natalAv(natal: Chart, v: number) {
-  const sign = (b: AvBody) => bodySign(natal.positions, AV_BODIES.indexOf(b), v);
+  const sign = (b: AvBody) => bodySign(natal.positions, AV_BODIES.indexOf(b), v, natal.ini);
   const av = ashtakavarga(sign);
   const pav = AV_BODIES.map((b) => prastara(b, sign));
   return {
@@ -125,7 +125,7 @@ function avMode(natal: Chart, transit: Chart, nv: number, tv: number): Table {
   const av = natalAv(natal, nv);
   const rows: string[][] = [];
   for (let b = 0; b < 8; b++) {
-    const s = bodySign(p, b, tv);
+    const s = bodySign(p, b, tv, natal.ini);
     const lord = KAKSHYA_LORD[kakshyaOf(bodyLon(p, b))];
     const refs = AV_BODIES.map((_, c) => c).filter((c) => av.bindu(b, s, c)).map((c) => BODY_ABBR[c]);
     rows.push([NAMES[b], String(av.bav(b, s)), String(av.sav(s)), NAMES[lord], av.bindu(b, s, lord) ? '1' : '0', refs.join(', ')]);

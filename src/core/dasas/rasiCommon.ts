@@ -20,7 +20,8 @@
 import type { Chart } from '../chart';
 import type { Period } from './vimsottari';
 import { SIGNS, signOf } from '../zodiac';
-import { ALL_VARGAS, vargaLongitude, type VargaName } from '../vargas';
+import { vargaLongitude, type VargaName } from '../vargas';
+import { vargaSpec } from '../vargaOptions';
 import { DEBILITATION, EXALTATION, signLordByDistance, strongerSign, type VargaCtx } from '../signStrength';
 import { sequenceDirection } from './narayana';
 import { strongerByDignity } from '../deities';
@@ -43,17 +44,45 @@ export interface RasiCtx extends VargaCtx {
   lagna: number;
 }
 
+/**
+ * Seed of the rasi dasas of a Tajaka chart (kind 1) when UseDasaSeedFromNatalInTajaka and
+ * ProgressDasaSeedInTajaka are both set for the dasa's slot: the builders (FUN_00414060
+ * Narayana, 0x414d30, 0x414670, 0x415b40, 0x416e90, 0x417770, 0x417ac0, 0x417d10, 0x407920,
+ * 0x407b60, 0x408040, 0x408840 (D-11), 0x408ae0 ...) read the Muntha sign of the varga
+ * (chart+0x124a0[varga] = doc+0x39e80, tajaka/muntha.ts) where they read the lagna's sign
+ * (chart+0x17d7[varga]); Brahma / Sthira (0x4082e0 / 0x408580) and AK Kendradi (0x415ef0)
+ * take the NATAL Brahma / AK sign moved by Muntha - natal lagna (chart+0x25cc = natal).
+ */
+export interface DasaSeed {
+  lagnaIn: (varga: VargaName) => number;
+  natal: Chart;
+}
+const DASA_SEED = Symbol('dasaSeed');
+type SeededChart = Chart & { [DASA_SEED]?: DasaSeed };
+
+/** The chart with the Tajaka seed of the flagged rasi dasas. */
+export function withDasaSeed(chart: Chart, seed: DasaSeed): Chart {
+  return { ...chart, [DASA_SEED]: seed } as SeededChart;
+}
+export const dasaSeedOf = (chart: Chart): DasaSeed | undefined => (chart as SeededChart)[DASA_SEED];
+
 /** Planet signs in one varga (by JHora varga index) with rasi-chart degrees. */
 export function rasiCtx(chart: Chart, vargaIndex = 0): RasiCtx {
   const name = JHORA_VARGAS[vargaIndex];
   if (!name) throw new Error(`varga index ${vargaIndex} not supported`);
-  const spec = ALL_VARGAS[name];
+  const spec = vargaSpec(name, chart.ini);
   const p = chart.positions;
+  const seed = dasaSeedOf(chart);
   return {
     sign: (g) => signOf(vargaLongitude(p.grahas[g].lon, spec)),
     degree: (g) => p.grahas[g].lon % 30,
-    lagna: signOf(vargaLongitude(p.ascendant, spec)),
+    lagna: seed ? seed.lagnaIn(name) : signOf(vargaLongitude(p.ascendant, spec)),
   };
+}
+
+/** A natal sign moved by Muntha - natal lagna in varga `name` (the Tajaka seed of Brahma, Sthira, AK Kendradi). */
+export function seedShift(seed: DasaSeed, natalSign: number, name: VargaName = 'D1'): number {
+  return mod12(natalSign - signOf(vargaLongitude(seed.natal.positions.ascendant, vargaSpec(name, seed.natal.ini))) + seed.lagnaIn(name));
 }
 
 /** FUN_004ab810: stronger of s and its 7th, the sign of Ar..Vi as first argument. */

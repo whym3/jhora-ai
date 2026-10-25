@@ -46,7 +46,8 @@
 // * No copy-to-clipboard command in this view.
 import type { ChakraBody, ChakraChart } from './common';
 import { bodiesByIndex, signOf } from './common';
-import { ALL_VARGAS, vargaLongitude } from '../vargas';
+import { vargaLongitude } from '../vargas';
+import { vargaSpec } from '../vargaOptions';
 import { JHORA_VARGAS, JHORA_VARGA_NAMES } from '../dasas/rasiCommon';
 import type { Graha } from '../positions';
 import { bhavaArudha } from '../arudhas';
@@ -115,15 +116,15 @@ export interface MixedVargasOptions {
   outerName?: string;
 }
 
-const spec = (v: number) => {
+const spec = (v: number, ini?: ChakraChart['ini']) => {
   const name = JHORA_VARGAS[v];
   if (!name) throw new Error(`varga index ${v} not supported`);
-  return ALL_VARGAS[name];
+  return vargaSpec(name, ini);
 };
 
 /** Bodies of one chart in one varga, signs 0..11 (Aries first). */
 export function vargaBodies(chart: ChakraChart, vargaIndex: number, transit = false, arudhas = true): { lagna: number; bySign: ChakraBody[][] } {
-  const sp = spec(vargaIndex);
+  const sp = spec(vargaIndex, chart.ini);
   const vs = (lon: number) => signOf(vargaLongitude(lon, sp));
   const bySign: ChakraBody[][] = Array.from({ length: 12 }, () => []);
   for (const b of bodiesByIndex(chart, MIXED_DEFAULT_BODIES, transit)) bySign[vs(b.lon)].push(b);

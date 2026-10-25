@@ -21,7 +21,8 @@ import { formatDasaTime, antarDasaText, mahaDasaText, periodLabel } from '../das
 import { vimsottari, type Period } from '../dasas/vimsottari';
 import { compressPeriods } from '../tajaka/mudda';
 import { formatLongitude, NAKSHATRAS, nakshatraOf, padaOf, SIGNS, signOf } from '../zodiac';
-import { ALL_VARGAS, vargaLongitude } from '../vargas';
+import { vargaLongitude } from '../vargas';
+import { vargaSpec } from '../vargaOptions';
 import { DEFAULTS } from '../../settings/generated';
 import { birthAt, whenText, type AsyncTableFn } from './common';
 import { mundaneClock, periodInYears, mundaneDasa } from './mundane';
@@ -85,7 +86,7 @@ export const PRASNA_JOBS: Record<string, AsyncTableFn> = {
     const label = PRASNA_LABEL[inp.mode](n);
     const birth: BirthData = { ...natal.birth, legacy: null, override: replace ? { ascendant: plag } : null };
     const periodDays = inp.compress ? prasnaSpanDays(inp.compress) : 0;
-    const row = (name: string, lon: number) => [name, formatLongitude(lon), NAKSHATRAS[nakshatraOf(lon)], String(padaOf(lon)), SIGNS[signOf(lon)], SIGNS[signOf(vargaLongitude(lon, ALL_VARGAS.D9))]];
+    const row = (name: string, lon: number) => [name, formatLongitude(lon), NAKSHATRAS[nakshatraOf(lon)], String(padaOf(lon)), SIGNS[signOf(lon)], SIGNS[signOf(vargaLongitude(lon, vargaSpec('D9', natal.ini)))]];
     return {
       caption: label,
       headers: ['Body', 'Longitude', 'Nakshatra', 'Pada', 'Rasi', 'Navamsa'],

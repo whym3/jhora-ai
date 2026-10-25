@@ -1,14 +1,21 @@
 // Tithi Pravesha tab (CTPFormView, dialog 2012): year/month/day returns of the natal tithi
 // (or nakshatra / yoga), or the return before/after a date. The found chart replaces the
-// natal chart in every view (derived kind 'tithiPravesha'); its Vimsottari dasa is shown
-// compressed into the chart's period (tithi years, SpecialYearForTP).
+// natal chart in every view (derived kind 'tithiPravesha'). The form's dasa buttons show
+// Vimsottari, Tithi Ashtottari, Yoga Vimsottari and Narayana dasa of that chart, compressed
+// into its period as the Dasas tab shows them (tithi years with SpecialYearForTP).
 import { useEffect, useRef, useState } from 'react';
 import type { ChartSpec } from '../../engine/protocol';
 import type { BirthData } from '../../core/jhd';
 import { PRAVESHA_BUTTON, PRAVESHA_TYPES, type PraveshaType, type TPDateSelection, type TPYearSelection } from '../../core/derived/tithiPravesha';
 import { useJob } from '../EngineProvider';
-import { TableView } from '../widgets/TableView';
 import { updateChart, useActiveDoc } from '../state/store';
+import { DerivedDasaPane, type DasaTable } from './DasasView';
+
+/** The dasa buttons of dialog 2012 (plus Vimsottari, the Dasas tab default). */
+const DASA_BUTTONS: readonly (readonly [string, DasaTable, string])[] = [
+  ['Vimsottari dasa', 'dasas.nakshatra', 'Vimsottari'], ['Tithi Ashtottari dasa', 'dasas.other', 'Tithi Ashtottari'],
+  ['Yoga Vimsottari dasa', 'dasas.other', 'Yoga Vimsottari'], ['Narayana dasa', 'dasas.rasi', 'Narayana'],
+];
 
 const ORD = ['None', ...Array.from({ length: 14 }, (_, i) => `${i + 1}${['st', 'nd', 'rd'][i] ?? 'th'}`)];
 const MONTHS = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
@@ -32,17 +39,12 @@ export function TithiPraveshaView({ natalSpec, docId }: { natalSpec: ChartSpec; 
   const stale = useRef<unknown>(null);
   const found = useJob(request ? { kind: 'table' as const, chart: natalSpec, table: 'tithiPravesha.find', params: { ...request } } : null);
   const active = doc?.derived?.kind === 'tithiPravesha' ? doc.derived : null;
-  const [path, setPath] = useState<number[]>([]);
-  const dasa = useJob(active && active.params.periodDays
-    ? { kind: 'table' as const, chart: natalSpec, table: 'tithiPravesha.dasa', params: { birth: active.birth, label: active.label, periodDays: active.params.periodDays, path } }
-    : null);
 
   useEffect(() => {
     if (!request || found.status !== 'done' || found.data === stale.current || !found.data?.text?.[0]) return;
     const { birth, label, periodDays } = JSON.parse(found.data.text[0]) as { birth: BirthData; label: string; periodDays: number };
     updateChart(docId, { derived: { kind: 'tithiPravesha', label, birth, params: { ...request, periodDays } } });
     setRequest(null);
-    setPath([]);
   }, [found.data, found.status, request, docId]);
 
   const go = (r: Request) => { stale.current = found.data; setRequest(r); };
@@ -91,15 +93,7 @@ export function TithiPraveshaView({ natalSpec, docId }: { natalSpec: ChartSpec; 
       </fieldset>
       {found.status === 'loading' && <p className="status">Searching for the Pravesha chart…</p>}
       {found.status === 'error' && <p className="error">{found.error}</p>}
-      {active && (
-        <>
-          <div className="subview-bar">
-            <strong>{active.label}: Vimsottari dasa (compressed)</strong>
-            <button onClick={() => setPath((p) => p.slice(0, -1))} disabled={!path.length}>Up</button>
-          </div>
-          <TableView job={dasa} onRowClick={path.length < 5 ? (i) => setPath((p) => [...p, i]) : undefined} />
-        </>
-      )}
+      {active && <DerivedDasaPane key={JSON.stringify(active.birth)} natalSpec={natalSpec} derived={active} choices={DASA_BUTTONS} />}
     </div>
   );
 }

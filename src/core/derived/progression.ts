@@ -42,9 +42,12 @@
 //   with the chosen seed body (seed option table [4,8,0,9..15] by body); FUN_00401820
 //   finds the running periods at the date (6 levels) and turns them into a
 //   "progressed seed": base + sum(index_k * unit / N^k) + fraction * unit / N^5,
-//   with unit = one star for per-star dasas (equal arcs per sub-period, not
-//   proportional to their years). shift = progressed seed - natal seed (varga),
-//   applied like SCD (flags 0x275c8/9/a).
+//   with base and unit doc+0x9f0f0 / +0x9f0f8 as the dasa builder leaves them (see
+//   progressedSeed: the seed's star for Vimsottari, Yogini and Sataabdika, its pada for
+//   Kalachakra, else Aries 0) and N the sub-period count (equal arcs per sub-period, not
+//   proportional to their years); the date is read with the dasa's year definition
+//   (YearDefinition[slot]). shift = progressed seed - natal seed (varga), applied like
+//   SCD (flags 0x275c8/9/a).
 // SCD and nakshatra dasa (and Yogini / KCD) set the derived record's flag +0x275c8:
 // it shows the progression date, but FUN_00403120 computes it from the natal date,
 // time and zone and FUN_004a0520 adds the shift only at its end, so Key Info is the
@@ -59,10 +62,12 @@ import type { Chart } from '../chart';
 import type { BirthData, PositionOverride } from '../jhd';
 import { GRAHAS, norm360, siderealLongitude, type Graha } from '../positions';
 import { calcSettingsFromIni } from '../settings';
-import { ALL_VARGAS, vargaLongitude, type VargaName } from '../vargas';
+import { vargaLongitude, type VargaName } from '../vargas';
+import { vargaSpec } from '../vargaOptions';
 import { solarYearsToJd } from '../tajaka/annual';
 import { splitDms } from '../keyInfo';
-import { dasaClock } from '../dasas/time';
+import { slotClock } from '../dasas/yearDefinition';
+import { kalachakraDasa, kalachakraLevel, kalachakraMahaId } from '../dasas/kalachakra';
 import { vimsottari, subdivide, type Period } from '../dasas/vimsottari';
 import { NAKSHATRA_DASAS, nakshatraDasa, type NakshatraDasaDef } from '../dasas/nakshatra';
 import { birthAt, birthWithOverride } from './common';
@@ -159,42 +164,67 @@ function children(p: Period, def: NakshatraDasaDef | null): Period[] {
 }
 
 /**
- * FUN_00401820 for per-star nakshatra dasas: the progressed seed longitude at
- * `years` dasa years after birth, from the running periods of 6 levels with equal
- * arcs per sub-period. Grouped dasas (Ashtottari, Shashtihayani) and Kalachakra are
- * not supported: FUN_00401820 sums base (obj+0x283d0) + index_k * unit (obj+0x283d8,
- * divided by the entry count obj+0x28400 per level), but for those dasas base and unit
- * arrive with the level records block-copied from the dasa (FUN_00401c20 only moves them
- * between levels), and their source was not traced. PyJHora's nakshathra_dhasa_progression
- * uses one star per maha dasa for every dasa (Ashtottari included), which is not this model.
+ * Base and unit of FUN_00401820's sum, doc+0x9f0f0 / doc+0x9f0f8 (= engine obj+0x283d0 /
+ * +0x283d8, the engine object being doc+0x76d20): the dispatcher FUN_00408d90 resets them to
+ * 0 and 13 deg 20' (0x408e1a) before every builder; only Vimsottari (0x40c0b6), Yogini
+ * (0x40e335) and Sataabdika (0x40f5cd) then set base = trunc(seed x 0.075) x 13 deg 20' (the
+ * seed's star), and Kalachakra (0x40d3a9) base = trunc(seed x 0.3) x 3 deg 20' (its pada) with
+ * unit 3 deg 20'. Ashtottari, Dwisaptati, Shattrimsa, Dwadasottari, Chaturaseeti, Shodasottari,
+ * Panchottari and Shashtihayani keep base 0 (Aries 0) and unit one star.
  */
-export function progressedSeed(seedLon: number, dasaKey: string | null, years: number): number {
-  const def = dasaKey ? NAKSHATRA_DASAS[dasaKey] : null;
-  if (dasaKey && (!def || def.groups)) throw new Error(`nakshatra dasa progression: ${dasaKey} not ported`);
-  const n = def ? def.lords.length : 9;
-  let list = def ? nakshatraDasa(def, seedLon, 1) : vimsottari(seedLon, 1);
+const STAR_BASED = new Set<string | null>([null, 'Yogini', 'Sataabdika']);
+const STAR = 13.333333333333334, PADA = 3.3333333333333335;
+
+/**
+ * FUN_00401820: the progressed seed longitude at `years` dasa years after birth, from the
+ * running periods of 6 levels: base + sum_k index_k x unit / N^k + fraction x unit / N^5,
+ * index_k = the running period's position in its level's list and N the entry count of the
+ * deepest level (obj+0x28400 after the last FUN_00401c20 call: the sub-period count), i.e.
+ * equal arcs per sub-period, not proportional to their years. Grouped dasas (Ashtottari,
+ * Shashtihayani) run their maha dasas from the seed's group as the Dasas tab lists them;
+ * Kalachakra its nine maha padas with the antardasas of each pada's row.
+ */
+export function progressedSeed(seedLon: number, dasaKey: string | null, years: number, rohini4InLeo = true): number {
+  type Node = { period: Period; id: number; maha: boolean };
+  let list: Node[], sub: (n: Node) => Node[], base: number, unit: number, n: number;
+  if (dasaKey === 'Kalachakra') {
+    list = kalachakraDasa(seedLon, 9, rohini4InLeo, 1).periods.map((period, i) => ({ period, id: kalachakraMahaId(seedLon, i), maha: true }));
+    sub = (x) => kalachakraLevel(x.period, x.id, x.maha, rohini4InLeo).map((c) => ({ ...c, maha: false }));
+    base = Math.trunc(seedLon * 0.3) * PADA;
+    unit = PADA;
+    n = 9;
+  } else {
+    const def = dasaKey ? NAKSHATRA_DASAS[dasaKey] : null;
+    if (dasaKey && !def) throw new Error(`nakshatra dasa progression: ${dasaKey} not ported`);
+    const wrap = (period: Period): Node => ({ period, id: 0, maha: false });
+    list = (def ? nakshatraDasa(def, seedLon, 1) : vimsottari(seedLon, 1)).map(wrap);
+    sub = (x) => children(x.period, def).map(wrap);
+    base = STAR_BASED.has(dasaKey) ? Math.trunc(seedLon * 0.075) * STAR : 0;
+    unit = STAR;
+    n = def ? def.lords.length : 9;
+  }
   // JHora's maha dasa list covers a fixed number of cycles (one; Yogini and Shattrimsa
-  // sama three); a later date is found in it modulo its span, so the period index -
-  // and with it the progressed star - starts again from the seed's star
-  const span = list[list.length - 1].end - list[0].start;
-  while (years >= list[list.length - 1].end) years -= span;
-  let lon = Math.floor(seedLon / NAK) * NAK;
-  let unit = NAK;
+  // sama three); a later date is found in it modulo its span (the pane's cycle offset
+  // DAT_0071fbbc), so the period index - and with it the progressed seed - starts again
+  const first = list[0].period, last = list[list.length - 1].period;
+  const span = last.end - first.start;
+  while (years >= last.end) years -= span;
+  let lon = base;
   for (let level = 0; level < 6; level++) {
-    let idx = list.findIndex((p) => years >= p.start && years < p.end);
-    if (idx < 0) idx = years < list[0].start ? 0 : list.length - 1;
+    let idx = list.findIndex((x) => years >= x.period.start && years < x.period.end);
+    if (idx < 0) idx = years < list[0].period.start ? 0 : list.length - 1;
     const p = list[idx];
     lon += idx * unit;
-    if (level === 5) lon += ((years - p.start) / (p.end - p.start)) * unit;
+    if (level === 5) lon += ((years - p.period.start) / (p.period.end - p.period.start)) * unit;
     unit /= n;
-    list = children(p, def);
+    list = sub(p);
   }
   return norm360(lon);
 }
 
-/** Dasa years at `jd` for the natal dasa clock (inverse of dasaClock.toJd). */
-export function dasaYearsAt(swe: Sweph, natal: Chart, jd: number): number {
-  const clock = dasaClock(swe, natal);
+/** Dasa years at `jd` for the natal dasa clock of nakshatra dasa slot `slot` (inverse of its toJd). */
+export function dasaYearsAt(swe: Sweph, natal: Chart, jd: number, slot = 0): number {
+  const clock = slotClock(swe, natal, slot);
   let y = (jd - natal.positions.jdUt) / 365.256364;
   for (let i = 0; i < 20; i++) {
     const t = clock.toJd(y);
@@ -256,8 +286,8 @@ export function progression(swe: Sweph, natal: Chart, inp: ProgressionInput): Pr
     case 'nakshatra': {
       const body = PROG_BODIES[inp.body ?? 2];
       const dasaKey = PROG_DASAS[inp.dasa ?? 0][1];
-      const seed0 = vargaLongitude(lonOf(natal, body), ALL_VARGAS[vargaNameOf(n)]);
-      const seed = progressedSeed(seed0, dasaKey, dasaYearsAt(swe, natal, jd));
+      const seed0 = vargaLongitude(lonOf(natal, body), vargaSpec(vargaNameOf(n), natal.ini));
+      const seed = progressedSeed(seed0, dasaKey, dasaYearsAt(swe, natal, jd, inp.dasa ?? 0), natal.ini.KCDRohini4NavamsaInLeo !== 0);
       const shift = norm360(seed - seed0);
       return { ...base, kind: 'nakshatra', label: 'Prog (NaksDasa)', shift, seed, birth: shiftedBirth(natal, inp, shift), chartJd: natal.positions.jdUt };
     }
@@ -270,7 +300,7 @@ export function progression(swe: Sweph, natal: Chart, inp: ProgressionInput): Pr
  * (FUN_004a0da1 / 0x4a11c2); otherwise the varga of the progressed rasi longitude.
  */
 export function progressedVargaLongitudes(natal: Chart, p: Progression, v: VargaName, chart?: Chart): Record<ProgBody, number> {
-  const spec = ALL_VARGAS[v];
+  const spec = vargaSpec(v, natal.ini);
   const out = {} as Record<ProgBody, number>;
   for (const body of PROG_BODIES) {
     if (p.shift !== undefined) out[body] = norm360(vargaLongitude(lonOf(natal, body), spec) + p.shift);

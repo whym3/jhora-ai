@@ -2,17 +2,22 @@
 // matches a JHora view (the tab/mode it appears in) and its headers match JHora's.
 import type { Chart } from '../core/chart';
 import type { Sweph } from '../sweph';
-import { vimsottari, type Period } from '../core/dasas/vimsottari';
-import { NAKSHATRA_DASAS, nakshatraDasa, SAPTARSHI_TITLE, saptarshiDasa } from '../core/dasas/nakshatra';
-import { kalachakraDasa } from '../core/dasas/kalachakra';
+import type { Period } from '../core/dasas/vimsottari';
 import { narayanaDasa } from '../core/dasas/narayana';
-import { OTHER_DASAS, RASI_DASAS } from '../core/dasas/registry';
+import { OTHER_DASAS, RASI_DASAS, type TajakaDasaSeed } from '../core/dasas/registry';
 import { dasaClock } from '../core/dasas/time';
+import { buildDasa } from '../core/dasas/build';
+import { compressDasa, DERIVED_KIND_CODE, NAKSHATRA_SLOTS, slotClock, YEAR_DEFINITION_NAMES, type DasaTableId } from '../core/dasas/yearDefinition';
+import { computeChart } from '../core/chart';
+import type { BirthData } from '../core/jhd';
+import { muntha } from '../core/tajaka/muntha';
+import { angularReturn, type AngularReturnInput } from '../core/derived/angularReturn';
 import { antarDasaText, formatDasaTime, mahaDasaText, periodLabel } from '../core/dasas/format';
 import { GRAHAS } from '../core/positions';
 import { formatLongitude, formatVargaLongitude, NAK28, nakshatra28Of, nakshatraOf, NAKSHATRAS, padaOf, signOf, SIGNS } from '../core/zodiac';
-import { ALL_VARGAS, vargaLongitude, type VargaName } from '../core/vargas';
-import { charaKarakas, drekkanaType, grahaYuddha, isCombust, lordLabel, nakshatraAspects, navaTaras, ORDINAL, SHORT, specialTaras, specialTithis, yogiPoints } from '../core/basics';
+import { vargaLongitude, type VargaName } from '../core/vargas';
+import { vargaColumnLabel, vargasOf } from '../core/vargaOptions';
+import { charaKarakas, drekkanaType, grahaYuddha, isCombust, maliciousLordLabel, nakshatraAspects, navaTaras, ORDINAL, SHORT, specialTaras, specialTithis, yogiPoints } from '../core/basics';
 import { kpLords } from '../core/kp';
 import { houseOptions, houseRows, KP_LEVEL_HEADERS, kpOccupants, kpPoints } from '../core/kpHouses';
 import { defaultOtherIsGroom, MATCH_TITLE, matchHoroscopes, nakshatraPada } from '../core/matching';
@@ -31,7 +36,7 @@ import { SEVEN } from '../core/relations';
 import { findYogas, giversText, YOGA_MODES } from '../core/yogas';
 import { aspectPercent } from '../core/aspects';
 import { birthAt, computeTajakaChart, tajakaWindow, type TajakaSelection, type TajakaVariant } from '../core/tajaka/annual';
-import { muddaDasa } from '../core/tajaka/mudda';
+import { muddaDasa, tajakaCompression } from '../core/tajaka/mudda';
 import { formatSpan, signChange } from '../core/signChange';
 import { compoundRelation } from '../core/relations';
 import { SIGN_LORD } from '../core/lords';
@@ -75,6 +80,75 @@ function dasaTable(chart: Chart, swe: Sweph, title: string, mds: Period[], path:
     rows: list.map((q) => [periodLabel(q), when(q.start), when(q.end)]),
     text: !parent ? mahaDasaText(title, mds, ctx) : path.length === 1 ? antarDasaText(title, parent, ctx) : undefined,
     drill,
+  };
+}
+
+const DASA_DEFAULT: Record<DasaTableId, string> = { 'dasas.nakshatra': 'Vimsottari', 'dasas.rasi': 'Narayana', 'dasas.other': 'Moola' };
+function dasaSystem(table: DasaTableId, params: Record<string, unknown>): string {
+  const s = String(params.system ?? DASA_DEFAULT[table]);
+  const known = table === 'dasas.nakshatra' ? (NAKSHATRA_SLOTS as readonly string[]).includes(s) : s in (table === 'dasas.rasi' ? RASI_DASAS : OTHER_DASAS);
+  return known ? s : DASA_DEFAULT[table];
+}
+
+/** The Dasas tab on a chart whose dasas are not compressed (natal, progressed): YearDefinition[slot] years. */
+function natalDasaJob(table: DasaTableId): TableFn {
+  return (chart, params, swe) => {
+    if (!swe) throw new Error('dasa tables need the ephemeris');
+    const path = (params.path as number[] | undefined) ?? [];
+    const d = buildDasa(chart, table, dasaSystem(table, params), path.length + 1);
+    return dasaTable(chart, swe, d.title, d.periods, path, d.drill, slotClock(swe, chart, d.slot));
+  };
+}
+
+/** The derived chart a doc shows (store.ts DerivedChart), passed to the Dasas jobs as params.derived. */
+export interface DerivedDasaParams {
+  kind: 'tajaka' | 'tithiPravesha' | 'angularReturn' | 'prasna' | 'progression' | 'mundane';
+  label: string;
+  birth: BirthData;
+  /** the form input (Tajaka: selection and variant; others: periodDays = DAT_005922b0) */
+  params: Record<string, unknown>;
+}
+
+/**
+ * The Dasas tab with a derived chart shown; the job runs on the NATAL chart (FUN_00408d90):
+ *  - progressed charts (kind 4, and the transit kind 3) show the natal chart's dasas,
+ *    uncompressed (doc+0x76d00 is pointed back at doc+0x50 around the builder);
+ *  - Tajaka (1), Tithi Pravesha (2), mundane / angular return (5) and prasna charts with
+ *    "Compress dasas" (6) build every dasa on the derived chart (Tajaka seeds per
+ *    build.ts / registry.ts) and compress it into the chart's period (yearDefinition.ts
+ *    compressDasa), timed from the derived chart with the compressed year definition.
+ */
+function derivedDasaJob(table: DasaTableId) {
+  return async (natal: Chart, params: Record<string, unknown>, swe: Sweph): Promise<Table> => {
+    const d = params.derived as DerivedDasaParams | undefined;
+    if (!d || d.kind === 'progression') return runTable(natal, table, params, swe);
+    const path = (params.path as number[] | undefined) ?? [];
+    const system = dasaSystem(table, params);
+    let chart: Chart, periodDays: number, years: number | undefined;
+    let tajaka: TajakaDasaSeed | undefined;
+    if (d.kind === 'tajaka') {
+      const p = d.params as { selection: TajakaSelection; variant?: TajakaVariant };
+      const t = await computeTajakaChart(swe, natal, p.selection, p.variant ?? 'exact');
+      chart = t.chart;
+      periodDays = t.end - t.start;
+      years = tajakaCompression(swe, t);
+      tajaka = { natal, years: t.period.years, munthaIn: muntha(natal, t.period).signIn };
+    } else {
+      chart = await computeChart(swe, d.birth, natal.ini);
+      periodDays = Number(d.params.periodDays ?? 0);
+      if (d.kind === 'angularReturn' && !periodDays) {
+        const r = angularReturn(swe, natal, d.params as unknown as AngularReturnInput);
+        periodDays = r.end - r.start;
+      }
+    }
+    const compressed = periodDays > 0;
+    const b = buildDasa(chart, table, system, path.length + 1, { compressed, tajaka });
+    if (!compressed) return dasaTable(chart, swe, b.title, b.periods, path, b.drill, slotClock(swe, chart, b.slot));
+    const c = compressDasa(swe, chart, b.slot, b.periods, { periodDays, kindCode: DERIVED_KIND_CODE[d.kind], label: d.label, years });
+    return {
+      ...dasaTable(chart, swe, b.title, c.periods, path, b.drill, c.clock),
+      notes: [`${d.label}: compressed into ${periodDays.toFixed(2)} days = ${c.F.toFixed(4)} years (${YEAR_DEFINITION_NAMES[c.def] ?? c.def}), maha dasa years x ${c.F.toFixed(4)} / ${c.total}`],
+    };
   };
 }
 
@@ -126,7 +200,7 @@ type TextFn = (chart: Chart, params: Record<string, unknown>, swe?: Sweph) => st
  * varga's lagna and hora lagna) rather than mapped from D-1, as JHora does.
  */
 function bodyInVarga(chart: Chart, body: NamedBody, v: VargaName): number {
-  const spec = ALL_VARGAS[v];
+  const spec = vargasOf(chart.ini)[v];
   const house = body.name === 'Varnada Lagna' ? 1 : /^V(\d+)$/.test(body.name) ? Number(body.name.slice(1)) : 0;
   if (house) {
     if (v === 'D10xD9') return 0;   // JHora leaves varnadas blank (0 Ar 00) in the sub-divisional chart
@@ -160,7 +234,7 @@ export const TABLES: Record<string, TableFn> = {
       headers: ['Body', 'Longitude', 'Nakshatra', 'Pada', 'Rasi', 'Navamsa'],
       rows: chart.longitudes.map((b, i) => [
         labels[i], formatLongitude(b.lon), NAKSHATRAS[nakshatraOf(b.lon)], String(padaOf(b.lon)),
-        SIGNS[signOf(b.lon)], SIGNS[signOf(vargaLongitude(b.lon, ALL_VARGAS.D9))],
+        SIGNS[signOf(b.lon)], SIGNS[signOf(vargaLongitude(b.lon, vargasOf(chart.ini).D9))],
       ]),
     };
   },
@@ -168,7 +242,7 @@ export const TABLES: Record<string, TableFn> = {
   'basics.allDivisionalLongitudes': (chart) => {
     const labels = longitudeLabels(chart).map((l) => l.replace(/ - \w+$/, '').replace(' (R)', ''));
     return {
-      headers: ['Body', ...DIV_COLUMNS.map((c) => c[0])],
+      headers: ['Body', ...DIV_COLUMNS.map(([, v]) => vargaColumnLabel(v!, chart.ini))],
       rows: chart.longitudes.map((b, i) => [
         labels[i], ...DIV_COLUMNS.map(([, v]) => formatVargaLongitude(bodyInVarga(chart, b, v!))),
       ]),
@@ -184,15 +258,16 @@ export const TABLES: Record<string, TableFn> = {
     };
     const rows: string[][] = [];
     const cols = RASI_COLUMNS.map(([, v]) => v);
+    const V = vargasOf(chart.ini);
     const ctxFor = (v: VargaName): VargaCtx => {
-      const spec = ALL_VARGAS[v];
+      const spec = V[v];
       return {
         sign: (g) => signOf(vargaLongitude(chart.positions.grahas[g].lon, spec)),
         degree: (g) => chart.positions.grahas[g].lon % 30,
       };
     };
     const ctxs = cols.map(ctxFor);
-    const lagnas = cols.map((v) => signOf(vargaLongitude(chart.positions.ascendant, ALL_VARGAS[v])));
+    const lagnas = cols.map((v) => signOf(vargaLongitude(chart.positions.ascendant, V[v])));
     const put = (name: string, f: (ctx: VargaCtx, i: number) => number) => rows.push([name, ...ctxs.map((c, i) => SIGNS[f(c, i)])]);
     chart.longitudes.forEach((b, i) => {
       if (b.name === 'V2') {
@@ -203,7 +278,7 @@ export const TABLES: Record<string, TableFn> = {
       }
       rows.push([labels[i], ...cols.map((v) => SIGNS[signOf(bodyInVarga(chart, b, v))])]);
     });
-    return { headers: ['Body', ...RASI_COLUMNS.map((c) => c[0])], rows };
+    return { headers: ['Body', ...RASI_COLUMNS.map(([, v]) => vargaColumnLabel(v, chart.ini))], rows };
   },
   'basics.sahamas': (chart) => ({
     headers: ['Sahama name', 'Position', 'Nakshatra', 'Meaning of sahama'],
@@ -229,36 +304,12 @@ export const TABLES: Record<string, TableFn> = {
       }),
     };
   },
-  // Dasas > Nakshatra dasas: params.system (Vimsottari or a NAKSHATRA_DASAS key), params.path (drill-down indices)
-  'dasas.nakshatra': (chart, params, swe) => {
-    if (!swe) throw new Error('dasa tables need the ephemeris');
-    const system = String(params.system ?? 'Vimsottari');
-    const path = (params.path as number[] | undefined) ?? [];
-    const levels = path.length + 1;
-    const moon = chart.positions.grahas.Moon.lon;
-    const def = NAKSHATRA_DASAS[system];
-    const saptarshi = system === 'Saptarshi nakshatra';
-    const kc = system === 'Kalachakra' ? kalachakraDasa(moon, 9, chart.ini.KCDRohini4NavamsaInLeo !== 0, levels) : null;
-    const title = kc ? kc.title : def ? def.title : saptarshi ? SAPTARSHI_TITLE : 'Vimsottari Dasa';
-    const mds = kc ? kc.periods : def ? nakshatraDasa(def, moon, levels) : saptarshi ? saptarshiDasa(chart.positions.ascendant, levels, NAKSHATRAS) : vimsottari(moon, levels);
-    return dasaTable(chart, swe, title, mds, path, !kc || levels < 3);
-  },
-  // Dasas > Rasi dasas: params.system ('Narayana'), params.path
-  'dasas.rasi': (chart, params, swe) => {
-    if (!swe) throw new Error('dasa tables need the ephemeris');
-    const path = (params.path as number[] | undefined) ?? [];
-    const build = RASI_DASAS[String(params.system ?? 'Narayana')] ?? RASI_DASAS.Narayana;
-    const d = build(chart, path.length + 1);
-    return dasaTable(chart, swe, d.title, d.periods, path);
-  },
-  // Dasas > Other dasas: params.system (an OTHER_DASAS key), params.path
-  'dasas.other': (chart, params, swe) => {
-    if (!swe) throw new Error('dasa tables need the ephemeris');
-    const path = (params.path as number[] | undefined) ?? [];
-    const build = OTHER_DASAS[String(params.system ?? 'Moola')] ?? OTHER_DASAS.Moola;
-    const d = build(chart, path.length + 1);
-    return dasaTable(chart, swe, d.title, d.periods, path);
-  },
+  // Dasas > Nakshatra / Rasi / Other dasas: params.system (a NAKSHATRA_SLOTS / RASI_DASAS / OTHER_DASAS
+  // key), params.path (drill-down indices); timed with the system's YearDefinition slot. A derived chart
+  // (params.derived, see ASYNC_TABLES) is handled by derivedDasaJob.
+  'dasas.nakshatra': natalDasaJob('dasas.nakshatra'),
+  'dasas.rasi': natalDasaJob('dasas.rasi'),
+  'dasas.other': natalDasaJob('dasas.other'),
   // Strengths > Other strengths (menu modes 0..10 of CStrengthsView)
   'strengths.shadbalaSummary': (chart) => shadbalaRows(chart, ['Planet', 'Shadbala', 'In rupas', '% Strength', 'IshtaPhala', 'KashtaPhala'], (b) => [b.total, b.rupas, b.percent, b.ishta, b.kashta]),
   'strengths.shadbalaBreakup': (chart) => shadbalaRows(chart, ['Planet', 'Shadbala Rupas', 'Sthana Bala', 'Kala Bala', 'DigBala', 'Cheshta Bala', 'DrigBala', 'Naisargika Bala'], (b) => [b.rupas, b.sthana, b.kaala, b.dig, b.cheshta, b.drig, b.naisargika]),
@@ -278,7 +329,7 @@ export const TABLES: Record<string, TableFn> = {
   'strengths.ashtakavarga': (chart, params) => {
     const varga = (String(params.varga ?? 'D1')) as VargaName;
     const mode = String(params.mode ?? AV_MODES[0]);
-    const spec = ALL_VARGAS[varga];
+    const spec = vargasOf(chart.ini)[varga];
     const lonOf = (b: AvBody) => (b === 'Lagna' ? chart.positions.ascendant : chart.positions.grahas[b].lon);
     const sign = (b: AvBody) => Math.floor(vargaLongitude(lonOf(b), spec) / 30) % 12;
     const av = ashtakavarga(sign);
@@ -341,8 +392,8 @@ export const TABLES: Record<string, TableFn> = {
   },
   // Planetary Aspect Evaluation (menu 33296, FUN_0042bac0): Parasara's aspect of each planet on every body
   'aspects.evaluation': (chart, params) => {
-    const av = ALL_VARGAS[String(params.aspectedVarga ?? 'D1') as VargaName];
-    const pv = ALL_VARGAS[String(params.aspectingVarga ?? 'D1') as VargaName];
+    const av = vargasOf(chart.ini)[String(params.aspectedVarga ?? 'D1') as VargaName];
+    const pv = vargasOf(chart.ini)[String(params.aspectingVarga ?? 'D1') as VargaName];
     const from = GRAHAS.map((q) => vargaLongitude(chart.positions.grahas[q].lon, pv));
     const cells = (lon: number) => GRAHAS.map((q, k) => { const x = aspectPercent(lon, from[k], q); return x === 0 ? '-' : `${x.toFixed(2).padStart(5)}%`; });
     const rows: string[][] = [];
@@ -363,7 +414,7 @@ export const TABLES: Record<string, TableFn> = {
   // Aspect Table with Relationships (menu 33387, CAspectTableView FUN_004286c0)
   'aspects.table': (chart, params) => {
     const varga = String(params.varga ?? 'D1') as VargaName;
-    const spec = ALL_VARGAS[varga];
+    const spec = vargasOf(chart.ini)[varga];
     const maxValue = Number(params.max ?? 100);
     const lonOf = (g: Graha) => vargaLongitude(chart.positions.grahas[g].lon, spec);
     const signOfG = (g: Graha) => signOf(lonOf(g));
@@ -510,16 +561,24 @@ export const TABLES: Record<string, TableFn> = {
     const war = grahaYuddha(chart.positions);
     return { headers: ['Planet', 'Wins?', 'Loses?'], rows: GRAHAS.map((g) => [g, yes(war[g].wins.length > 0), yes(war[g].loses.length > 0)]) };
   },
-  // "Lords of 64th navamsa and 22nd drekkana" (33159)
+  // "Lords of 64th navamsa and 22nd drekkana" (33159, routine at 0x430700): the chosen D-9 and
+  // every D-3 variant; rows in JHora's list order (it inserts the Jagannatha rows at fixed
+  // indices, so the lagna's ends up last)
   'basics.malicious': (chart) => {
     const p = chart.positions;
-    const V = ALL_VARGAS;
-    const rows: string[][] = [];
+    const d9 = vargasOf(chart.ini).D9;
+    const d3 = (pref: number) => vargasOf({ ...chart.ini, D3Preference: pref }).D3;
     // JHora spells the lagna row "Pararsara" and the Moon row "Parasara".
-    for (const [from, lon, parasara] of [['', p.ascendant, 'Pararsara'], [' from Moon', p.grahas.Moon.lon, 'Parasara']] as const) {
-      rows.push([`The 64th navamsa${from}`, lordLabel(lon, V.D9, 64, 9)]);
-      rows.push([`The 22nd ${parasara} drekkana${from}`, lordLabel(lon, V.D3, 22, 3)]);
-    }
+    const names = (parasara: string) => [parasara, 'Parivritti traya', 'Somanatha', 'Jagannatha', 'Uma-Shambhu'];
+    const block = (from: string, lon: number, parasara: string, prefs: number[]) => [
+      [`The 64th navamsa${from}`, maliciousLordLabel(lon, d9)],
+      ...prefs.map((k) => [`The 22nd ${names(parasara)[k]} drekkana${from}`, maliciousLordLabel(lon, d3(k))]),
+    ];
+    const rows = [
+      ...block('', p.ascendant, 'Pararsara', [0, 1, 2, 4]),
+      ...block(' from Moon', p.grahas.Moon.lon, 'Parasara', [0, 1, 2, 4, 3]),
+      [`The 22nd Jagannatha drekkana`, maliciousLordLabel(p.ascendant, d3(3))],
+    ];
     return { headers: ['Malicious Division', 'Lord'], rows };
   },
   // Miscellany > Laghu Parasari (src/core/derived/laghuParasari.ts)
@@ -572,6 +631,10 @@ export const ASYNC_TABLES: Record<string, (chart: Chart, params: Record<string, 
     const m = muddaDasa(swe, t, { levels: path.length + 1 });
     return dasaTable(t.chart, swe, m.title, m.periods, path, true, m.clock);
   },
+  // Dasas tab with a derived chart shown (params.derived); without it the TABLES jobs run
+  'dasas.nakshatra': derivedDasaJob('dasas.nakshatra'),
+  'dasas.rasi': derivedDasaJob('dasas.rasi'),
+  'dasas.other': derivedDasaJob('dasas.other'),
   // Derived-chart tabs (src/core/derived): Tithi Pravesha, Mundane, Miscellany sub-tabs
   ...TP_JOBS,
   ...MUNDANE_JOBS,

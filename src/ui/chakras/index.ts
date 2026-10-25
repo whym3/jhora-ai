@@ -12,9 +12,10 @@
 //             while base stars/signs and ring starts stay natal. Omit it for JHora's default view.
 // Some views accept extra optional props (body-set `mode`, varga choices) - see each component.
 //
-// 'Many Vargas' is the existing chart pane and is not part of this map.
+// 'Many Vargas' is the chart view filling the window (ManyVargas.tsx; App passes it the chart spec too).
 import type { ComponentType } from 'react';
 import type { ChakraViewProps } from './common';
+import { ManyVargasView } from './ManyVargas';
 import { MixedVargasView } from './MixedVargas';
 import { KalachakraView } from './Kalachakra';
 import { SarvatobhadraView } from './Sarvatobhadra';
@@ -25,10 +26,11 @@ import { ShoolaView } from './Shoola';
 import { TripatakiView } from './Tripataki';
 
 export type ChakraSubTab =
-  | 'Mixed 2-Vargas' | 'Kalachakra' | 'Sarvatobhadra' | 'Kota Chakra' | 'Surya Kalanala'
+  | 'Many Vargas' | 'Mixed 2-Vargas' | 'Kalachakra' | 'Sarvatobhadra' | 'Kota Chakra' | 'Surya Kalanala'
   | 'Chandra Kalanala' | 'Sudarsana' | 'Shoola' | 'Tripataki';
 
 export const CHAKRA_VIEWS: Record<ChakraSubTab, ComponentType<ChakraViewProps>> = {
+  'Many Vargas': ManyVargasView,
   'Mixed 2-Vargas': MixedVargasView,
   Kalachakra: KalachakraView,
   Sarvatobhadra: SarvatobhadraView,

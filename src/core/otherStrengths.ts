@@ -8,7 +8,8 @@ import type { Chart } from './chart';
 import type { Graha } from './positions';
 import { GRAHAS, norm360 } from './positions';
 import { SIGN_LORD } from './lords';
-import { ALL_VARGAS, vargaLongitude, type VargaName } from './vargas';
+import { vargaLongitude, type VargaName } from './vargas';
+import { vargaSpec } from './vargaOptions';
 import { DEBILITATION, EXALTATION } from './signStrength';
 import { MOOLATRIKONA } from './deities';
 import { compoundRelation, naturalRelation, SEVEN } from './relations';
@@ -25,7 +26,7 @@ const MALEFIC = new Set<Graha>(['Sun', 'Mars', 'Saturn', 'Rahu', 'Ketu']);
 
 function signIn(chart: Chart, g: Graha | 'Lagna', varga: VargaName = 'D1'): number {
   const lon = g === 'Lagna' ? chart.positions.ascendant : chart.positions.grahas[g].lon;
-  return Math.floor(vargaLongitude(lon, ALL_VARGAS[varga]) / 30) % 12;
+  return Math.floor(vargaLongitude(lon, vargaSpec(varga, chart.ini)) / 30) % 12;
 }
 
 // ---------------------------------------------------------------- vaiseshikamsas

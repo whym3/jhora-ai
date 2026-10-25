@@ -3,7 +3,8 @@ import type { Sweph } from '../sweph';
 import { birthJdUt, type BirthData } from './jhd';
 import { computePositions, GRAHAS, type Graha, type Positions } from './positions';
 import { calcSettingsFromIni } from './settings';
-import { ALL_VARGAS, vargaLongitude, type VargaName } from './vargas';
+import { vargaLongitude, type VargaName } from './vargas';
+import { vargaSpec, type VargaIni } from './vargaOptions';
 import { DEFAULTS, type JhoraIni } from '../settings/generated';
 import { allBodies, type NamedBody } from './longitudes';
 import { dayFrame, type DayFrame } from './day';
@@ -63,10 +64,10 @@ export function applyOverride(p: Positions, birth: BirthData): Positions {
 }
 
 /** Bodies grouped by the sign they occupy in a varga (index 0 = Aries). */
-export function signsInVarga(chart: Pick<Chart, 'bodies'>, varga: VargaName): ChartBody[][] {
+export function signsInVarga(chart: Pick<Chart, 'bodies'> & { ini?: VargaIni }, varga: VargaName): ChartBody[][] {
   const out: ChartBody[][] = Array.from({ length: 12 }, () => []);
   for (const b of chart.bodies) {
-    const lon = vargaLongitude(b.lon, ALL_VARGAS[varga]);
+    const lon = vargaLongitude(b.lon, vargaSpec(varga, chart.ini));
     out[Math.floor(lon / 30) % 12].push({ ...b, lon });
   }
   return out;

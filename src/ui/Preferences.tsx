@@ -5,6 +5,7 @@ import { useMemo, useState } from 'react';
 import { DEFAULTS, INI_SPEC, type IniKeySpec, type JhoraIni } from '../settings/generated';
 import { parseIni, writeIni } from '../io/ini';
 import { setIni, useStore } from './state/store';
+import { VargaOptions } from './VargaOptions';
 
 const SECTIONS = ['CalculationPreferences', 'DisplayPreferences', 'BodiesToShow', 'CurrentState', 'Colors'] as const;
 type Value = string | number | string[] | number[];
@@ -47,6 +48,7 @@ export function Preferences({ onClose }: { onClose: () => void }) {
   const ini = useStore((s) => s.ini);
   const [section, setSection] = useState<string>(SECTIONS[0]);
   const [query, setQuery] = useState('');
+  const [vargas, setVargas] = useState(false);
   const rows = useMemo(() => INI_SPEC.filter((s) => (query ? s.key.toLowerCase().includes(query.toLowerCase()) : s.section === section)), [section, query]);
   const changedCount = INI_SPEC.filter((s) => JSON.stringify(ini[s.key as keyof JhoraIni]) !== JSON.stringify(DEFAULTS[s.key as keyof JhoraIni])).length;
 
@@ -68,6 +70,7 @@ export function Preferences({ onClose }: { onClose: () => void }) {
           <span className="toolbar">
             <label className="file">Import jhora.ini<input type="file" accept=".ini" onChange={(e) => e.target.files?.[0] && importIni(e.target.files[0])} /></label>
             <button onClick={exportIni}>Export jhora.ini</button>
+            <button onClick={() => setVargas(true)}>Varga options…</button>
             <button onClick={() => setIni(structuredClone(DEFAULTS))} disabled={!changedCount}>Reset all</button>
             <button onClick={onClose}>Close</button>
           </span>
@@ -83,6 +86,7 @@ export function Preferences({ onClose }: { onClose: () => void }) {
           <tbody>{rows.map((s) => <Row key={s.key} spec={s} value={ini[s.key as keyof JhoraIni]} />)}</tbody>
         </table>
       </div>
+      {vargas && <VargaOptions onClose={() => setVargas(false)} />}
     </div>
   );
 }

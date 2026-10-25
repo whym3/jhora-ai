@@ -2,7 +2,9 @@
 // Layout follows jhora.exe: a 144-unit box scaled to a W x H area with a 24 px
 // heading band ("Planets:") above and 24 px below: H = side - 48; W = 7/6 side for
 // Surya (layout 0x47a650), W = side for Chandra (layout 0x478210).
+import { useState } from 'react';
 import { chandraKalanala, suryaKalanala, type Kalanala, type KalanalaOptions } from '../../core/chakras/kalanala';
+import { StarChakraOptions } from './StarChakraOptions';
 import { NAK28 } from '../../core/chakras/common';
 import { bodyClass, ChakraSvg, type ChakraViewProps } from './common';
 import './kalanala.css';
@@ -39,12 +41,26 @@ export interface KalanalaViewProps extends ChakraViewProps {
   options?: Omit<KalanalaOptions, 'transit'>;
 }
 
+type ViewOptions = Omit<KalanalaOptions, 'transit'>;
+const MODES = [0, 1, 2, 3, 4, 5];
+
+function KalanalaView({ kind, chart, transit, options }: KalanalaViewProps & { kind: 'surya' | 'chandra' }) {
+  const [opts, setOpts] = useState<ViewOptions>(options ?? {});
+  const k = (kind === 'surya' ? suryaKalanala : chandraKalanala)(chart, { ...opts, transit });
+  return (
+    <div>
+      <StarChakraOptions modes={MODES} value={opts} onChange={setOpts} />
+      <KalanalaSvg k={k} name={kind === 'surya' ? 'Surya Kalanala' : 'Chandra Kalanala'} />
+    </div>
+  );
+}
+
 /** Chakras > Surya Kalanala. Bodies from `transit` when given (JHora shows the displayed chart's bodies). */
-export function SuryaKalanalaView({ chart, transit, options }: KalanalaViewProps) {
-  return <KalanalaSvg k={suryaKalanala(chart, { ...options, transit })} name="Surya Kalanala" />;
+export function SuryaKalanalaView(props: KalanalaViewProps) {
+  return <KalanalaView kind="surya" {...props} />;
 }
 
 /** Chakras > Chandra Kalanala. */
-export function ChandraKalanalaView({ chart, transit, options }: KalanalaViewProps) {
-  return <KalanalaSvg k={chandraKalanala(chart, { ...options, transit })} name="Chandra Kalanala" />;
+export function ChandraKalanalaView(props: KalanalaViewProps) {
+  return <KalanalaView kind="chandra" {...props} />;
 }

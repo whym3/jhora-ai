@@ -1,0 +1,515 @@
+{
+ "_comment": "Nakshatra dasa progressions of the grouped dasas (FUN_00419aa0 / FUN_00401820; base and unit doc+0x9f0f0/+0x9f0f8: Aries 0 and one star unless the builder sets them): Ashtottari, Kalachakra (pada based), Shashtihayani, Dwisaptati, Shattrimsa (D-9) and Panchottari (lagna seed), date 2010-06-15 12:00. Output: golden/jhora-prog-grouped; check with MISC_DIR=golden/jhora-prog-grouped npx vitest run tests/miscGolden.test.ts.",
+ "tabs": [
+  {
+   "top": "Miscellany",
+   "sub": "Progressions",
+   "label": "Progression: NakshatraDasa Rasi Moon Ashtottari",
+   "form": [
+    [
+     "combo",
+     1007,
+     0
+    ],
+    [
+     "combo",
+     1013,
+     2
+    ],
+    [
+     "combo",
+     1014,
+     1
+    ],
+    [
+     "combo",
+     1003,
+     5
+    ],
+    [
+     "edit",
+     100,
+     "15"
+    ],
+    [
+     "edit",
+     101,
+     "2010"
+    ],
+    [
+     "edit",
+     1004,
+     "12"
+    ],
+    [
+     "edit",
+     1005,
+     "0"
+    ],
+    [
+     "edit",
+     1006,
+     "0"
+    ],
+    [
+     "click",
+     1009,
+     4.0
+    ]
+   ]
+  },
+  {
+   "top": "Basics",
+   "sub": "Key Info",
+   "lists": true,
+   "copies": {
+    "key_info": 32974
+   },
+   "pane_copies": [
+    "key_info"
+   ],
+   "modes": [
+    [
+     "Progression: NakshatraDasa Rasi Moon Ashtottari",
+     32822
+    ]
+   ]
+  },
+  {
+   "top": "Miscellany",
+   "sub": "Progressions",
+   "form": [
+    [
+     "click",
+     1000,
+     2.0
+    ]
+   ]
+  },
+  {
+   "top": "Miscellany",
+   "sub": "Progressions",
+   "label": "Progression: NakshatraDasa Rasi Moon Kalachakra",
+   "form": [
+    [
+     "combo",
+     1007,
+     0
+    ],
+    [
+     "combo",
+     1013,
+     2
+    ],
+    [
+     "combo",
+     1014,
+     2
+    ],
+    [
+     "combo",
+     1003,
+     5
+    ],
+    [
+     "edit",
+     100,
+     "15"
+    ],
+    [
+     "edit",
+     101,
+     "2010"
+    ],
+    [
+     "edit",
+     1004,
+     "12"
+    ],
+    [
+     "edit",
+     1005,
+     "0"
+    ],
+    [
+     "edit",
+     1006,
+     "0"
+    ],
+    [
+     "click",
+     1009,
+     4.0
+    ]
+   ]
+  },
+  {
+   "top": "Basics",
+   "sub": "Key Info",
+   "lists": true,
+   "copies": {
+    "key_info": 32974
+   },
+   "pane_copies": [
+    "key_info"
+   ],
+   "modes": [
+    [
+     "Progression: NakshatraDasa Rasi Moon Kalachakra",
+     32822
+    ]
+   ]
+  },
+  {
+   "top": "Miscellany",
+   "sub": "Progressions",
+   "form": [
+    [
+     "click",
+     1000,
+     2.0
+    ]
+   ]
+  },
+  {
+   "top": "Miscellany",
+   "sub": "Progressions",
+   "label": "Progression: NakshatraDasa Rasi Moon Shashtisama",
+   "form": [
+    [
+     "combo",
+     1007,
+     0
+    ],
+    [
+     "combo",
+     1013,
+     2
+    ],
+    [
+     "combo",
+     1014,
+     11
+    ],
+    [
+     "combo",
+     1003,
+     5
+    ],
+    [
+     "edit",
+     100,
+     "15"
+    ],
+    [
+     "edit",
+     101,
+     "2010"
+    ],
+    [
+     "edit",
+     1004,
+     "12"
+    ],
+    [
+     "edit",
+     1005,
+     "0"
+    ],
+    [
+     "edit",
+     1006,
+     "0"
+    ],
+    [
+     "click",
+     1009,
+     4.0
+    ]
+   ]
+  },
+  {
+   "top": "Basics",
+   "sub": "Key Info",
+   "lists": true,
+   "copies": {
+    "key_info": 32974
+   },
+   "pane_copies": [
+    "key_info"
+   ],
+   "modes": [
+    [
+     "Progression: NakshatraDasa Rasi Moon Shashtisama",
+     32822
+    ]
+   ]
+  },
+  {
+   "top": "Miscellany",
+   "sub": "Progressions",
+   "form": [
+    [
+     "click",
+     1000,
+     2.0
+    ]
+   ]
+  },
+  {
+   "top": "Miscellany",
+   "sub": "Progressions",
+   "label": "Progression: NakshatraDasa Rasi Moon Dwisaptati",
+   "form": [
+    [
+     "combo",
+     1007,
+     0
+    ],
+    [
+     "combo",
+     1013,
+     2
+    ],
+    [
+     "combo",
+     1014,
+     4
+    ],
+    [
+     "combo",
+     1003,
+     5
+    ],
+    [
+     "edit",
+     100,
+     "15"
+    ],
+    [
+     "edit",
+     101,
+     "2010"
+    ],
+    [
+     "edit",
+     1004,
+     "12"
+    ],
+    [
+     "edit",
+     1005,
+     "0"
+    ],
+    [
+     "edit",
+     1006,
+     "0"
+    ],
+    [
+     "click",
+     1009,
+     4.0
+    ]
+   ]
+  },
+  {
+   "top": "Basics",
+   "sub": "Key Info",
+   "lists": true,
+   "copies": {
+    "key_info": 32974
+   },
+   "pane_copies": [
+    "key_info"
+   ],
+   "modes": [
+    [
+     "Progression: NakshatraDasa Rasi Moon Dwisaptati",
+     32822
+    ]
+   ]
+  },
+  {
+   "top": "Miscellany",
+   "sub": "Progressions",
+   "form": [
+    [
+     "click",
+     1000,
+     2.0
+    ]
+   ]
+  },
+  {
+   "top": "Miscellany",
+   "sub": "Progressions",
+   "label": "Progression: NakshatraDasa Navamsa Moon Shattrimsa",
+   "form": [
+    [
+     "combo",
+     1007,
+     1
+    ],
+    [
+     "combo",
+     1013,
+     2
+    ],
+    [
+     "combo",
+     1014,
+     5
+    ],
+    [
+     "combo",
+     1003,
+     5
+    ],
+    [
+     "edit",
+     100,
+     "15"
+    ],
+    [
+     "edit",
+     101,
+     "2010"
+    ],
+    [
+     "edit",
+     1004,
+     "12"
+    ],
+    [
+     "edit",
+     1005,
+     "0"
+    ],
+    [
+     "edit",
+     1006,
+     "0"
+    ],
+    [
+     "click",
+     1009,
+     4.0
+    ]
+   ]
+  },
+  {
+   "top": "Basics",
+   "sub": "Key Info",
+   "lists": true,
+   "copies": {
+    "key_info": 32974
+   },
+   "pane_copies": [
+    "key_info"
+   ],
+   "modes": [
+    [
+     "Progression: NakshatraDasa Navamsa Moon Shattrimsa",
+     32822
+    ]
+   ]
+  },
+  {
+   "top": "Miscellany",
+   "sub": "Progressions",
+   "form": [
+    [
+     "click",
+     1000,
+     2.0
+    ]
+   ]
+  },
+  {
+   "top": "Miscellany",
+   "sub": "Progressions",
+   "label": "Progression: NakshatraDasa Rasi Lagna Panchottari",
+   "form": [
+    [
+     "combo",
+     1007,
+     0
+    ],
+    [
+     "combo",
+     1013,
+     0
+    ],
+    [
+     "combo",
+     1014,
+     10
+    ],
+    [
+     "combo",
+     1003,
+     5
+    ],
+    [
+     "edit",
+     100,
+     "15"
+    ],
+    [
+     "edit",
+     101,
+     "2010"
+    ],
+    [
+     "edit",
+     1004,
+     "12"
+    ],
+    [
+     "edit",
+     1005,
+     "0"
+    ],
+    [
+     "edit",
+     1006,
+     "0"
+    ],
+    [
+     "click",
+     1009,
+     4.0
+    ]
+   ]
+  },
+  {
+   "top": "Basics",
+   "sub": "Key Info",
+   "lists": true,
+   "copies": {
+    "key_info": 32974
+   },
+   "pane_copies": [
+    "key_info"
+   ],
+   "modes": [
+    [
+     "Progression: NakshatraDasa Rasi Lagna Panchottari",
+     32822
+    ]
+   ]
+  },
+  {
+   "top": "Miscellany",
+   "sub": "Progressions",
+   "form": [
+    [
+     "click",
+     1000,
+     2.0
+    ]
+   ]
+  }
+ ]
+}

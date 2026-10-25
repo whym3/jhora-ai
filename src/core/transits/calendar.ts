@@ -25,6 +25,7 @@ import {
   nak27, transitBirth, VARGA_TITLE, VEDHA_HOUSE, type TransitDate,
 } from './common';
 import { natalAv } from './basic';
+import type { VargaIni } from '../vargaOptions';
 import { lastIngress, murthiOf } from './murthi';
 
 /** Good taras of the calendar (0x57e9b4): Janma counts as good. */
@@ -59,10 +60,10 @@ export interface CalendarRow { date: TransitDate; label: string; cells: Calendar
 const PARTNER: Record<number, number> = { 1: 7, 7: 1, 2: 4, 4: 2 };
 
 /** FUN_00487b20: is a good house h (from refSign) of body B obstructed in the transit varga? */
-export function calendarVedha(p: Positions, B: number, h: number, ref: number, tv: number): boolean {
+export function calendarVedha(p: Positions, B: number, h: number, ref: number, tv: number, ini?: VargaIni): boolean {
   const vSign = (ref + VEDHA_HOUSE[B][h] - 1 + 12) % 12;
   const occ: number[] = [];
-  for (let b = 1; b <= 9; b++) if (bodySign(p, b, tv) === vSign) occ.push(b);
+  for (let b = 1; b <= 9; b++) if (bodySign(p, b, tv, ini) === vSign) occ.push(b);
   if (occ.length === 1 && PARTNER[B] === occ[0]) return false;
   return occ.length > 0;
 }
@@ -72,7 +73,7 @@ export function transitCalendar(swe: Sweph, natal: Chart, o: CalendarOptions): {
   const n = Math.max(0, Math.min(100, Math.trunc(o.rows ?? 15)));
   const nv = o.natalVarga ?? 0, tv = o.transitVarga ?? 0;
   const np = natal.positions;
-  const nMoon = bodySign(np, 2, nv), nLag = bodySign(np, 0, nv);
+  const nMoon = bodySign(np, 2, nv, natal.ini), nLag = bodySign(np, 0, nv, natal.ini);
   const nMoonD1 = bodySign(np, 2, 0);       // murthi reference: varga DAT_008a4b84 (default D-1)
   const moon27 = nak27(np, 2);
   const av = natalAv(natal, nv);
@@ -92,7 +93,7 @@ export function transitCalendar(swe: Sweph, natal: Chart, o: CalendarOptions): {
     const p = computePositions(swe, jd, geo, settings);
     const cells: CalendarCell[] = [];
     for (let B = 1; B <= 9; B++) {
-      const ts = bodySign(p, B, tv);
+      const ts = bodySign(p, B, tv, natal.ini);
       const hM = (ts - nMoon + 12) % 12, hL = (ts - nLag + 12) % 12;
       const goodMoon = GOOD_HOUSE[B][hM] > 0, goodLagna = GOOD_HOUSE[B][hL] > 0;
       const t = (nak27(p, B) - moon27 + 27) % 9;
@@ -106,8 +107,8 @@ export function transitCalendar(swe: Sweph, natal: Chart, o: CalendarOptions): {
       prevHouse[B] = hM; prevMurthi[B] = murthi;
       const lord = KAKSHYA_LORD[kakshyaOf(bodyLon(p, B))];
       cells.push({
-        houseMoon: hM + 1, goodMoon, vedhaMoon: goodMoon && calendarVedha(p, B, hM, nMoon, tv),
-        houseLagna: hL + 1, goodLagna, vedhaLagna: goodLagna && calendarVedha(p, B, hL, nLag, tv),
+        houseMoon: hM + 1, goodMoon, vedhaMoon: goodMoon && calendarVedha(p, B, hM, nMoon, tv, natal.ini),
+        houseLagna: hL + 1, goodLagna, vedhaLagna: goodLagna && calendarVedha(p, B, hL, nLag, tv, natal.ini),
         tara: t + 1, goodTara: CALENDAR_GOOD_TARA[t] === 1,
         murthi, av: bav(B, ts), kakshyaLord: lord, kakshyaBindu: bindu(B, ts, lord),
       });

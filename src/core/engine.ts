@@ -13,6 +13,15 @@ export const JHORA_SWISS_MODELS = 'SE2.02.01';
 /** Star name of JHora's Spica record in our sefstars.txt (used for the ayanamsa). */
 export const JHORA_SPICA = 'JHoraSpica';
 
+/**
+ * Our sefstars.txt search string for a star JHora looks up in its fixstars.cat:
+ * "Spica" -> "JHoraSpica", ",deCnc" (nomenclature) -> ",JHdeCnc" (tools/gen-sefstars.py).
+ */
+export function jhoraStarName(star: string): string {
+  const t = star.replace(/\s+/g, '');
+  return t.startsWith(',') ? `,JH${t.slice(1)}` : `JHora${t}`;
+}
+
 export async function loadEngine(fetcher: FileFetcher): Promise<Sweph> {
   const swe = await loadSweph(fetcher);
   swe.setAstroModels(JHORA_SWISS_MODELS);

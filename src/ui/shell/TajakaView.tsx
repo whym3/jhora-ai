@@ -1,13 +1,17 @@
 // Tajaka tab (CTajakaFormView, dialog 2009): year / month / sub-period inputs,
 // "Find Tajaka Chart" and "Find Tajaka Sunrise Chart" (the found chart then
-// replaces the natal chart in every view), and Mudda dasa for that chart.
+// replaces the natal chart in every view), and the form's dasa links for that
+// chart: Mudda (button 1008, Vimsottari with the natal seed) and Narayana dasa,
+// both compressed into the Tajaka period as the Dasas tab shows them.
 import { useEffect, useState } from 'react';
 import type { ChartSpec } from '../../engine/protocol';
 import type { TajakaSelection, TajakaVariant } from '../../core/tajaka/annual';
 import type { BirthData } from '../../core/jhd';
 import { useJob } from '../EngineProvider';
-import { TableView } from '../widgets/TableView';
 import { updateChart, useActiveDoc } from '../state/store';
+import { DerivedDasaPane, type DasaTable } from './DasasView';
+
+const DASA_LINKS: readonly (readonly [string, DasaTable, string])[] = [['Mudda dasa', 'dasas.nakshatra', 'Vimsottari'], ['Narayana dasa', 'dasas.rasi', 'Narayana']];
 
 const MONTHS = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
 const ORD = ['1st', '2nd', '3rd', '4th', '5th', '6th', '7th', '8th', '9th', '10th', '11th', '12th'];
@@ -20,9 +24,7 @@ export function TajakaView({ natalSpec, docId }: { natalSpec: ChartSpec; docId: 
   const [sel, setSel] = useState<TajakaSelection>(() => (doc?.derived?.params.selection as TajakaSelection | undefined) ?? { year: new Date().getFullYear() });
   const [request, setRequest] = useState<Request | null>(null);
   const found = useJob(request ? { kind: 'table' as const, chart: natalSpec, table: 'tajaka.find', params: { ...request } } : null);
-  const active = doc?.derived?.kind === 'tajaka' ? (doc.derived.params as unknown as Request) : null;
-  const [path, setPath] = useState<number[]>([]);
-  const mudda = useJob(active ? { kind: 'table' as const, chart: natalSpec, table: 'tajaka.mudda', params: { ...active, path } } : null);
+  const active = doc?.derived?.kind === 'tajaka' ? doc.derived : null;
 
   // once found, switch every view to the Tajaka chart
   useEffect(() => {
@@ -30,7 +32,6 @@ export function TajakaView({ natalSpec, docId }: { natalSpec: ChartSpec; docId: 
     const { birth, label } = JSON.parse(found.data.text[0]) as { birth: BirthData; label: string };
     updateChart(docId, { derived: { kind: 'tajaka', label, birth, params: { ...request } } });
     setRequest(null);
-    setPath([]);
   }, [found.data, request, docId]);
 
   // a sub-period only counts when the level above it is chosen
@@ -68,15 +69,7 @@ export function TajakaView({ natalSpec, docId }: { natalSpec: ChartSpec; docId: 
       </div>
       {found.status === 'loading' && <p className="status">Searching for the Tajaka chart…</p>}
       {found.status === 'error' && <p className="error">{found.error}</p>}
-      {active && (
-        <>
-          <div className="subview-bar">
-            <strong>Mudda dasa</strong>
-            <button onClick={() => setPath((p) => p.slice(0, -1))} disabled={!path.length}>Up</button>
-          </div>
-          <TableView job={mudda} onRowClick={path.length < 5 ? (i) => setPath((p) => [...p, i]) : undefined} />
-        </>
-      )}
+      {active && <DerivedDasaPane key={JSON.stringify(active.birth)} natalSpec={natalSpec} derived={active} choices={DASA_LINKS} />}
     </div>
   );
 }

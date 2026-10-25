@@ -30,10 +30,21 @@ async function loadSample(name: string) {
   openChart(b, name);
 }
 
+import { newChart, setCurrentLocationAsDefault } from './state/store';
+import { defaultLocationMessage } from '../core/newChart';
+import { AyanamsaDialog } from './AyanamsaDialog';
+
 function Toolbar() {
   const doc = useActiveDoc();
   const style = useStore((s) => s.view.chartStyle);
   const [prefs, setPrefs] = useState(false);
+  // Preferences > Ayanamsa (32993, dialog 155)
+  const [ayanamsa, setAyanamsa] = useState(false);
+  // "Set Current Location as Default" (32934): JHora confirms with a message box
+  const setDefaultLocation = () => {
+    const patch = setCurrentLocationAsDefault();
+    if (patch) window.alert(defaultLocationMessage(patch));
+  };
   // toolbar button 33320 (FUN_004e8db0): matching against a nakshatra/pada or another open chart
   const [matching, setMatching] = useState(false);
   const [ai, setAi] = useState(false);
@@ -55,6 +66,7 @@ function Toolbar() {
         <option value="">Open sample…</option>
         {SAMPLES.map((s) => <option key={s}>{s}</option>)}
       </select>
+      <button onClick={() => newChart()} title="File > New: now, at the default location">New chart</button>
       <label className="file">Open .jhd<input type="file" accept=".jhd" onChange={(e) => e.target.files?.[0] && openFile(e.target.files[0])} /></label>
       <button onClick={save} disabled={!doc}>Save .jhd</button>
       <select aria-label="Chart style" value={style} onChange={(e) => setView({ chartStyle: e.target.value as ChartStyle })}>
@@ -62,10 +74,13 @@ function Toolbar() {
         <option value="north">North Indian</option>
       </select>
       <button onClick={() => setMatching(true)} disabled={!doc}>Horoscope Matching</button>
+      <button onClick={setDefaultLocation} disabled={!doc}>Set location as default</button>
+      <button onClick={() => setAyanamsa(true)}>Ayanamsa…</button>
       <button onClick={() => setPrefs(true)}>Preferences…</button>
       <button onClick={() => { setAi((v) => !v); setAiUsed(true); }} className={ai ? 'active' : undefined}>AI Astrologer</button>
       {aiUsed && <Suspense fallback={null}><AiPanel open={ai} onClose={() => setAi(false)} spec={aiSpec} title={aiTitle} /></Suspense>}
       {prefs && <Preferences onClose={() => setPrefs(false)} />}
+      {ayanamsa && <AyanamsaDialog onClose={() => setAyanamsa(false)} />}
       {matching && doc && (
         <div className="modal-backdrop" onClick={() => setMatching(false)}>
           <div className="modal" role="dialog" aria-label="Horoscope Matching" onClick={(e) => e.stopPropagation()}>
@@ -100,7 +115,7 @@ const FIXED_TABLES: Record<string, string> = { 'Basics/Houses': 'basics.houses',
 function SubView({ top, sub, spec, natalSpec, docId, chart }: { top: TopTab; sub: string | null; spec: ChartSpec; natalSpec: ChartSpec; docId: string; chart: ChartResult | null }) {
   if (top === 'Chakras' && sub && sub in CHAKRA_VIEWS) {
     const View = CHAKRA_VIEWS[sub as ChakraSubTab];
-    return chart ? <div className="subview chakra-view"><View chart={chart} /></div> : <p className="status">Calculating…</p>;
+    return chart ? <div className="subview chakra-view"><View chart={chart} spec={spec} /></div> : <p className="status">Calculating…</p>;
   }
   if (top === 'Tajaka') return <TajakaView natalSpec={natalSpec} docId={docId} />;
   if (top === 'Transits' && sub && sub in TRANSIT_VIEWS) {

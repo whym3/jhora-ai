@@ -14,7 +14,7 @@ import type { Chart } from '../chart';
 import type { Period } from './vimsottari';
 import { charaKarakas } from '../basics';
 import { sortByStrength, strongerSignDignityFirst } from '../signStrength';
-import { buildRasiDasa, JHORA_VARGA_NAMES, lordOfStrong7Run, mod12, narayanaYearsWithLord, rasiCtx, strong7 } from './rasiCommon';
+import { buildRasiDasa, dasaSeedOf, JHORA_VARGA_NAMES, JHORA_VARGAS, lordOfStrong7Run, mod12, narayanaYearsWithLord, rasiCtx, seedShift, strong7 } from './rasiCommon';
 
 export const akKendradiTitle = (vargaIndex = 0) => `Atma Karaka Kendradi Rasi Dasa of ${JHORA_VARGA_NAMES[vargaIndex]} (experiences of soul)`;
 export const AK_KENDRADI_TITLE = akKendradiTitle();
@@ -22,8 +22,12 @@ export const AK_KENDRADI_TITLE = akKendradiTitle();
 /** @param vargaIndex JHora varga index (DAT_008a4b9c, default 0 = D-1) */
 export function akKendradiDasa(chart: Chart, levels = 2, vargaIndex = 0): Period[] {
   const ctx = rasiCtx(chart, vargaIndex);
-  const ak = charaKarakas(chart.positions, 8)[0].planet;
-  const start = strong7(ctx.sign(ak), ctx);
+  const seed = dasaSeedOf(chart);
+  // Tajaka seed: the natal AK's sign moved by Muntha - natal lagna (0x415f3d)
+  const akSign = seed
+    ? seedShift(seed, rasiCtx(seed.natal, vargaIndex).sign(charaKarakas(seed.natal.positions, 8)[0].planet), JHORA_VARGAS[vargaIndex]!)
+    : ctx.sign(charaKarakas(chart.positions, 8)[0].planet);
+  const start = strong7(akSign, ctx);
   const signs = Array.from({ length: 12 }, (_, i) => mod12(start + 3 * (i % 4) + Math.floor(i / 4)));
   const stronger = (a: number, b: number) => strongerSignDignityFirst(a, b, ctx);
   const seq = [0, 4, 8].flatMap((i) => sortByStrength(signs.slice(i, i + 4), stronger));

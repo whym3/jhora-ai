@@ -1,5 +1,7 @@
 // Dasa time: periods are measured in dasa years from the birth moment and
 // turned into Julian days according to JHora's year definition.
+// The per-dasa definitions (ini YearDefinition / YearLength, 75 slots) and the
+// clocks of the other definitions are in yearDefinition.ts.
 import type { Sweph } from '../../sweph';
 import type { Chart } from '../chart';
 import { siderealLongitude } from '../positions';
@@ -7,10 +9,14 @@ import { calcSettingsFromIni } from '../settings';
 import { jhoraCrossing, recordRoundTrip, SUN_SEARCH } from '../tajaka/search';
 
 export type YearDefinition =
-  | 'mean-tropical' | 'savana' | 'user' | 'true-sidereal' | 'tithi-360' | 'mean-sidereal' | 'true-tropical';
+  | 'mean-tropical' | 'savana' | 'user' | 'true-sidereal' | 'tithi-360' | 'lunar' | 'mean-sidereal' | 'true-tropical';
 
-/** JHora's YearDefinition ini values (menu ids 32882..32886, then 33418/33419). */
-export const YEAR_DEFINITIONS: YearDefinition[] = ['mean-tropical', 'savana', 'user', 'true-sidereal', 'tithi-360', 'mean-sidereal', 'true-tropical'];
+/**
+ * JHora's YearDefinition ini values, by value: menu ids 32882 -> 0, 32883 -> 1, 32884 -> 2,
+ * 32885 -> 3, 32886 -> 4, 33418 -> 6, 33419 -> 7 (handlers 0x450220..0x450280 -> FUN_00450290).
+ * Value 5 (FUN_0049e1b0, a Moon-based year) is not reachable from the menu.
+ */
+export const YEAR_DEFINITIONS: YearDefinition[] = ['mean-tropical', 'savana', 'user', 'true-sidereal', 'tithi-360', 'lunar', 'mean-sidereal', 'true-tropical'];
 
 export interface DasaClock { toJd(years: number): number }
 
@@ -34,6 +40,7 @@ export function dasaClock(swe: Sweph, chart: Chart, def: YearDefinition = 'true-
       };
     }
     default:
-      throw new Error(`year definition ${def} not implemented yet`);
+      // tithi, true tropical and lunar years: yearDefinition.ts yearClock
+      throw new Error(`year definition ${def}: use yearClock (dasas/yearDefinition.ts)`);
   }
 }

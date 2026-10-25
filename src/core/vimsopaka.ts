@@ -6,7 +6,8 @@
 // shifted varga order, kept here as it computes them.
 import type { Chart } from './chart';
 import { GRAHAS, type Graha } from './positions';
-import { ALL_VARGAS, vargaLongitude, type VargaName } from './vargas';
+import { vargaLongitude, type VargaName } from './vargas';
+import { vargasOf } from './vargaOptions';
 import { SIGN_LORD } from './lords';
 import { naturalRelation } from './relations';
 
@@ -34,7 +35,8 @@ export function vargaPoints(g: Graha, varga: VargaName, sign: (x: Graha, v: Varg
 
 export function vimsopaka(chart: Chart): Record<Graha, Record<VimsopakaScheme, number>> {
   const lon = (g: Graha) => chart.positions.grahas[g].lon;
-  const sign = (x: Graha, v: VargaName) => Math.floor(vargaLongitude(lon(x), ALL_VARGAS[v]) / 30) % 12;
+  const V = vargasOf(chart.ini);
+  const sign = (x: Graha, v: VargaName) => Math.floor(vargaLongitude(lon(x), V[v]) / 30) % 12;
   const out = {} as Record<Graha, Record<VimsopakaScheme, number>>;
   for (const g of GRAHAS) {
     const r = {} as Record<VimsopakaScheme, number>;

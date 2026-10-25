@@ -6,7 +6,8 @@ import { castBirth } from './jhd';
 import type { Graha } from './positions';
 import { norm360 } from './positions';
 import { SIGN_LORD } from './lords';
-import { ALL_VARGAS, vargaLongitude } from './vargas';
+import { vargaLongitude } from './vargas';
+import { vargasOf } from './vargaOptions';
 import { SEVEN, naturalRelation, temporaryRelation } from './relations';
 
 export type Seven = (typeof SEVEN)[number];
@@ -106,7 +107,8 @@ export function computeShadbala(chart: Chart, opts: ShadbalaOptions = { gradedAs
   const lon = (g: Graha) => p.grahas[g].lon;
   const lagna = p.ascendant;
   const lagnaSign = Math.floor(lagna / 30) % 12;
-  const signIn = (g: Seven, v: (typeof SAPTA_VARGAS)[number]) => Math.floor(vargaLongitude(lon(g), ALL_VARGAS[v]) / 30) % 12;
+  const V = vargasOf(chart.ini);
+  const signIn = (g: Seven, v: (typeof SAPTA_VARGAS)[number]) => Math.floor(vargaLongitude(lon(g), V[v]) / 30) % 12;
   const sign1 = (g: Seven) => Math.floor(lon(g) / 30) % 12;
 
   // ---- benefic / malefic flags (FUN_004bdb90)

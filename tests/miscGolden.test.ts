@@ -59,6 +59,13 @@ const SCENARIOS: Record<string, Find> = {
   'Angular Return: Jupiter-Saturn after': ar(5, 7, false),
   'Progression: NakshatraDasa Rasi Moon Vimsottari': prog('nakshatra', 0, 2, 0),
   'Progression: NakshatraDasa Navamsa Lagna Yogini': prog('nakshatra', 1, 0, 3),
+  // tools/harness/views-progressions-grouped.json (MISC_DIR=golden/jhora-prog-grouped)
+  'Progression: NakshatraDasa Rasi Moon Ashtottari': prog('nakshatra', 0, 2, 1),
+  'Progression: NakshatraDasa Rasi Moon Kalachakra': prog('nakshatra', 0, 2, 2),
+  'Progression: NakshatraDasa Rasi Moon Shashtisama': prog('nakshatra', 0, 2, 11),
+  'Progression: NakshatraDasa Rasi Moon Dwisaptati': prog('nakshatra', 0, 2, 4),
+  'Progression: NakshatraDasa Navamsa Moon Shattrimsa': prog('nakshatra', 1, 2, 5),
+  'Progression: NakshatraDasa Rasi Lagna Panchottari': prog('nakshatra', 0, 0, 10),
   'Progression: Sudarsana Rasi': prog('scd', 0),
   'Progression: Solar Rasi': prog('solar', 0),
   'Progression: Solar D-10': prog('solar', 9),

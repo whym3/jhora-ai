@@ -32,7 +32,7 @@
 // * No copy-to-clipboard command exists in this view's message map.
 import { sahamas } from '../sahamas';
 import {
-  bodiesByIndex, nakshatra28Of, NAK28, planetBodies, yoginiMrityu,
+  bodiesByIndex, nakshatra28Of, NAK28, planetBodies, vargaChart, yoginiMrityu,
   type ChakraBody, type ChakraChart,
 } from './common';
 
@@ -74,6 +74,10 @@ export interface ShoolaOptions {
   baseIsStar?: boolean;
   /** fixed base star (NAK28 index), "Fully customize base nakshatra" */
   fixedBaseStar?: number;
+  /** varga of the base body ("Base planet and division"; JHora varga index, default 0 = D-1) */
+  baseVargaIndex?: number;
+  /** "Divisional chart to be used for planets" (33254): JHora varga index */
+  vargaIndex?: number;
   /** chart whose bodies are drawn (doc+0x76d00); defaults to the natal chart */
   current?: ChakraChart | null;
   /**
@@ -114,7 +118,8 @@ export function shoolaChakra(chart: ChakraChart, opts: ShoolaOptions = {}): Shoo
   let baseStar: number;
   if (opts.fixedBaseStar !== undefined) baseStar = ((opts.fixedBaseStar % 28) + 28) % 28;
   else {
-    const lon = baseBody === 0 ? chart.positions.ascendant : bodiesByIndex(chart, [baseBody])[0]?.lon ?? chart.positions.grahas.Sun.lon;
+    const base = vargaChart(chart, opts.baseVargaIndex ?? 0);
+    const lon = baseBody === 0 ? base.positions.ascendant : bodiesByIndex(base, [baseBody])[0]?.lon ?? base.positions.grahas.Sun.lon;
     baseStar = nakshatra28Of(lon);
     if (opts.baseIsStar === false) baseStar = (baseStar + 1) % 28;
   }
@@ -122,7 +127,7 @@ export function shoolaChakra(chart: ChakraChart, opts: ShoolaOptions = {}): Shoo
     const id = (baseStar + pos) % 28;
     return { pos, id, label: NAK28[id], x, y };
   });
-  const current = opts.current ?? chart;
+  const current = vargaChart(opts.current ?? chart, opts.vargaIndex ?? 0);
   const isTransit = !!opts.current && opts.current !== chart;
   const count = new Array<number>(28).fill(0);
   const place = (body: ChakraBody, star: number, text: string): PlacedBody => {

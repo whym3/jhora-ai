@@ -7,17 +7,20 @@ import {
   grahaDrishtiOn, lattasOn, sarvatobhadra, sarvatobhadraVedhasFrom, sarvatobhadraVedhasOn,
   SBC_BODY_OFFSETS, SBC_WEEKDAYS, type SbcCell, type SbcMark,
 } from '../../core/chakras/sarvatobhadra';
-import { ChakraSvg, bodyClass, type ChakraViewProps } from './common';
+import { vargaChart } from '../../core/chakras/common';
+import { ChakraSvg, bodyClass, VARGA_OPTIONS, type ChakraViewProps } from './common';
 import './sarvatobhadra.css';
 
 const C = 52;           // cell size
 const TX = 9 * C + 24;  // table x
 const W = TX + 300, H = 9 * C + 4;
 
-type Mode = 'from' | 'on' | 'all';
+type Mode = 'from' | 'on' | 'drishti' | 'lattas' | 'all';
 const MODES: [Mode, string][] = [
   ['from', 'Highlight aspects (vedhas) FROM this star'],
   ['on', 'Highlight aspects (vedhas) ON this box'],
+  ['drishti', 'Highlight fixed graha drishti on this star'],
+  ['lattas', 'Highlight lattas on this star'],
   ['all', 'Highlight vedhas, aspects and lattas on this star'],
 ];
 
@@ -42,14 +45,19 @@ function CellText({ cell }: { cell: SbcCell }) {
 }
 
 export function SarvatobhadraView({ chart, transit }: ChakraViewProps) {
-  const sbc = useMemo(() => sarvatobhadra(chart, transit), [chart, transit]);
+  // "Divisional chart used for transit positions" (33244)
+  const [varga, setVarga] = useState(0);
+  const sbc = useMemo(() => sarvatobhadra(chart, transit, varga), [chart, transit, varga]);
   const [sel, setSel] = useState<{ row: number; col: number } | null>(null);
   const [mode, setMode] = useState<Mode>('from');
-  const cur = transit ?? chart;
+  const cur = useMemo(() => vargaChart(transit ?? chart, varga), [chart, transit, varga]);
 
   const { marks, drishti, lattas } = useMemo(() => {
     if (!sel) return { marks: [] as SbcMark[], drishti: [] as number[], lattas: [] as number[] };
     if (mode === 'from') return { marks: sarvatobhadraVedhasFrom(sel.row, sel.col), drishti: [], lattas: [] };
+    // 33249 / 33250 colour the bodies only (FUN_00474000 / FUN_00474270)
+    if (mode === 'drishti') return { marks: [] as SbcMark[], drishti: grahaDrishtiOn(cur, sel.row, sel.col), lattas: [] };
+    if (mode === 'lattas') return { marks: [] as SbcMark[], drishti: [], lattas: lattasOn(cur, sel.row, sel.col) };
     const marks = sarvatobhadraVedhasOn(sel.row, sel.col);
     if (mode === 'on') return { marks, drishti: [], lattas: [] };
     return { marks, drishti: grahaDrishtiOn(cur, sel.row, sel.col), lattas: lattasOn(cur, sel.row, sel.col) };
@@ -61,6 +69,9 @@ export function SarvatobhadraView({ chart, transit }: ChakraViewProps) {
       <div className="sbc-bar">
         <select value={mode} onChange={(e) => setMode(e.target.value as Mode)} aria-label="Highlight mode">
           {MODES.map(([m, l]) => <option key={m} value={m}>{l}</option>)}
+        </select>
+        <select value={varga} onChange={(e) => setVarga(Number(e.target.value))} aria-label="Divisional chart used for transit positions">
+          {VARGA_OPTIONS.map(([v, l]) => <option key={v} value={v}>{l}</option>)}
         </select>
         {sel && <button onClick={() => setSel(null)}>Clear</button>}
         <span className="note">{sbc.transit ? 'Transit planets' : 'Natal planets'} · click a box</span>

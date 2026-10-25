@@ -12,6 +12,10 @@
 //    the maha dasa lords with maha dasa years) and are not built.
 // The title's parenthesis is "of D-1 chart, " verbatim (obj+0x76d38); the
 // seed name ("Moon") goes to a separate "Started from" caption.
+// Tajaka chart with UseDasaSeedFromNatalInTajaka[0] (byte 0x8a184c): title
+// "Rasi-Bhukta Mudda/Vimsottari Dasa", the seed AND the signs of the dasa lords
+// come from the natal chart, the star advanced by the completed years n with
+// ProgressDasaSeedInTajaka[0] (0x411eef).
 import type { Chart } from '../chart';
 import type { Period } from './vimsottari';
 import { vimsottari } from './vimsottari';
@@ -21,13 +25,15 @@ import { bodyPeriod, mod12 } from './otherCommon';
 
 export const rasiBhuktaVimsottariTitle = (vargaIndex = 0) => `Rasi-Bhukta Vimsottari Dasa (of ${JHORA_VARGA_NAMES[vargaIndex]} chart, )`;
 export const RASI_BHUKTA_VIMSOTTARI_TITLE = rasiBhuktaVimsottariTitle();
+export const RASI_BHUKTA_MUDDA_TITLE = 'Rasi-Bhukta Mudda/Vimsottari Dasa (of D-1 chart, )';
 
 const KAKSHYA = [7, 5, 3, 1, 6, 4, 2, 0];
 
 /** @param levels at most 3 (maha, antar, pratyantar) */
-export function rasiBhuktaVimsottariDasa(chart: Chart, levels = 2, vargaIndex = 0): Period[] {
+/** @param seedLon seed longitude (default the chart's Moon; Tajaka: the natal Moon progressed) */
+export function rasiBhuktaVimsottariDasa(chart: Chart, levels = 2, vargaIndex = 0, seedLon = chart.positions.grahas.Moon.lon): Period[] {
   const ctx = rasiCtx(chart, vargaIndex);
-  return vimsottari(chart.positions.grahas.Moon.lon, 1).map((md) => {
+  return vimsottari(seedLon, 1).map((md) => {
     if (levels < 2) return md;
     const len = (md.end - md.start) / 12;
     const from = ctx.sign(md.lord);

@@ -1,6 +1,9 @@
+// Birth data form: JHora's dialog 2005 "Enter Birthdata" (atlas search, date,
+// time, zone, place, altitude and "Use LMT instead and ignore the above").
 import { useState } from 'react';
 import type { BirthData } from '../core/jhd';
-import { dstInEffect, summerZone, type Place } from '../core/atlas';
+import { ATLAS_COUNTRIES, dstInEffect, summerZone, type Place } from '../core/atlas';
+import { lmtZone } from '../core/newChart';
 import { PlaceSearch } from './PlaceSearch';
 
 interface Props { initial: BirthData; onSubmit: (b: BirthData) => void }
@@ -38,27 +41,40 @@ export function BirthForm({ initial, onSubmit }: Props) {
   const [lat, setLat] = useState(toDms(initial.lat));
   const [latDir, setLatDir] = useState(initial.lat < 0 ? 'S' : 'N');
   const [city, setCity] = useState(initial.city);
+  const [alt, setAlt] = useState(String(initial.altitudeM));
+  const [lmt, setLmt] = useState(false);
+  // atlas data of a picked place (zones, region code), written to the .jhd like JHora does
+  const [place, setPlace] = useState<Pick<BirthData, 'country' | 'placeCode' | 'standardTz' | 'summerTz' | 'dst'> | null>(null);
+
+  const longitude = () => fromDms(lon, lonDir === 'W');
 
   /** Fill the place fields from the atlas; the zone follows JHora's DST rules for the entered date and time. */
   const pick = (p: Place) => {
     const [y, m, d] = date.split('-').map(Number);
+    const dst = dstInEffect(p, y, m, d, parseHms(time));
     setCity(p.name);
     setLon(toDms(p.lon)); setLonDir(p.lon < 0 ? 'W' : 'E');
     setLat(toDms(p.lat)); setLatDir(p.lat < 0 ? 'S' : 'N');
-    setTz(String(dstInEffect(p, y, m, d, parseHms(time)) ? summerZone(p) : p.tz));
+    setTz(String(dst ? summerZone(p) : p.tz));
+    setAlt(String(p.altitude));
+    setPlace({ country: ATLAS_COUNTRIES[p.country]?.[1] ?? '', placeCode: p.country, standardTz: p.tz, summerTz: summerZone(p), dst });
   };
 
   const submit = (e: React.FormEvent) => {
     e.preventDefault();
     const [y, m, d] = date.split('-').map(Number);
+    const altitudeM = Number(alt);
     onSubmit({
       ...initial,
+      ...(place ?? {}),
       year: y, month: m, day: d,
       hour: parseHms(time),
-      tzHours: Number(tz),
-      lon: fromDms(lon, lonDir === 'W'),
+      // FUN_00403d80: with "Use LMT" the zone is the longitude's degrees and minutes / 15
+      tzHours: lmt ? lmtZone(longitude()) : Number(tz),
+      lon: longitude(),
       lat: fromDms(lat, latDir === 'S'),
       city,
+      ...(altitudeM !== initial.altitudeM || initial.altitudeGiven !== false ? { altitudeM, altitudeGiven: true } : {}),
     });
   };
 
@@ -67,7 +83,13 @@ export function BirthForm({ initial, onSubmit }: Props) {
       <PlaceSearch onPick={pick} />
       <label>Date<input type="date" value={date} onChange={(e) => setDate(e.target.value)} required /></label>
       <label>Time<input value={time} onChange={(e) => setTime(e.target.value)} placeholder="hh:mm:ss" pattern="\d{1,2}:\d{2}(:\d{2})?" required /></label>
-      <label>Time zone (h, east +)<input type="number" step="0.0001" value={tz} onChange={(e) => setTz(e.target.value)} required /></label>
+      <label>Time zone (h, east +)
+        <input type="number" step="0.0001" value={lmt ? String(+lmtZone(longitude()).toFixed(6)) : tz} disabled={lmt} onChange={(e) => setTz(e.target.value)} required />
+      </label>
+      <label style={{ flexDirection: 'row', alignItems: 'center' }}>
+        <input type="checkbox" checked={lmt} onChange={(e) => setLmt(e.target.checked)} />
+        Use LMT instead and ignore the above (useful for old dates)
+      </label>
       <label>Place<input value={city} onChange={(e) => setCity(e.target.value)} placeholder="City" /></label>
       <label>Longitude
         <span className="coord"><input value={lon} onChange={(e) => setLon(e.target.value)} placeholder="deg min sec" required />
@@ -77,6 +99,7 @@ export function BirthForm({ initial, onSubmit }: Props) {
         <span className="coord"><input value={lat} onChange={(e) => setLat(e.target.value)} placeholder="deg min sec" required />
           <select value={latDir} onChange={(e) => setLatDir(e.target.value)}><option>N</option><option>S</option></select></span>
       </label>
+      <label>Altitude (meters above sea-level)<input type="number" step="any" value={alt} onChange={(e) => setAlt(e.target.value)} required /></label>
       <button type="submit">Cast chart</button>
     </form>
   );

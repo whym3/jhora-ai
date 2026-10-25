@@ -43,7 +43,7 @@
 //   33250 lattas          FUN_00474270 -> lattasOn
 //   33253 vedhas+aspects+lattas = 0x473e60 + 0x474000 + 0x474270 (FUN_00474410)
 import { NAK28, SIGNS } from '../zodiac';
-import { planetBodies, nakshatra28Of, type ChakraBody, type ChakraChart } from './common';
+import { planetBodies, nakshatra28Of, vargaChart, type ChakraBody, type ChakraChart } from './common';
 
 export type SbcKind = 'nakshatra' | 'vowel' | 'consonant' | 'rasi' | 'tithi';
 
@@ -138,9 +138,10 @@ export function sarvatobhadraGrid(): SbcCell[] {
 /** Tithi group (0 Nanda .. 4 Poorna) of a tithi index 0..29. */
 export const tithiGroupOf = (tithi: number) => tithi % 5;
 
-export function sarvatobhadra(chart: ChakraChart, transit?: ChakraChart | null): Sarvatobhadra {
+/** `vargaIndex`: "Divisional chart used for transit positions" (33244, DAT_0088484c; JHora varga index). */
+export function sarvatobhadra(chart: ChakraChart, transit?: ChakraChart | null, vargaIndex = 0): Sarvatobhadra {
   const cells = sarvatobhadraGrid();
-  const cur = transit ?? chart;
+  const cur = vargaChart(transit ?? chart, vargaIndex);
   for (const b of planetBodies(cur, !!transit)) {
     const [r, c] = SBC_STAR_CELLS[nakshatra28Of(b.lon)];
     cells[r * 9 + c].bodies.push(b);

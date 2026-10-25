@@ -31,7 +31,8 @@
 //   "Planets in D-1(from Lagna in D-1)" - no space before "(from" (0x57f810).
 // * No copy-to-clipboard command exists in this view's message map.
 import { bodyText, starChakraBodies, type ChakraSlot, type PlacedBody } from './shoola';
-import { JHORA_BODIES, signOf, type ChakraBody, type ChakraChart } from './common';
+import { JHORA_BODIES, signOf, vargaChart, type ChakraBody, type ChakraChart } from './common';
+import { VARGA_PARTS } from '../vargaOptions';
 import { SIGNS } from '../zodiac';
 
 export type TripatakiMode = 'planets' | 'trisphuta' | 'upagrahas' | 'specialLagnas' | 'sahamas';
@@ -69,6 +70,10 @@ export interface TripatakiOptions {
   baseIsSign?: boolean;
   /** fixed base sign 0..11 */
   fixedBaseSign?: number;
+  /** varga of the base body (0x89679c; JHora varga index, default 0 = D-1) */
+  baseVargaIndex?: number;
+  /** varga of the bodies (0x896798; JHora varga index, default 0 = D-1) */
+  vargaIndex?: number;
   /** chart whose bodies are drawn (doc+0x76d00); defaults to the natal chart */
   current?: ChakraChart | null;
 }
@@ -87,15 +92,16 @@ export function tripatakiChakra(chart: ChakraChart, opts: TripatakiOptions = {})
   let baseSign: number;
   if (opts.fixedBaseSign !== undefined) baseSign = ((opts.fixedBaseSign % 12) + 12) % 12;
   else {
-    const b = starChakraBodies(chart, 'planets').find((x) => x.index === baseBody);
-    baseSign = signOf(b?.lon ?? chart.positions.ascendant);
+    const base = vargaChart(chart, opts.baseVargaIndex ?? 0);
+    const b = starChakraBodies(base, 'planets').find((x) => x.index === baseBody);
+    baseSign = signOf(b?.lon ?? base.positions.ascendant);
     if (opts.baseIsSign === false) baseSign = (baseSign + 1) % 12;
   }
   const slots: ChakraSlot[] = TRIPATAKI_POS.map(([x, y], pos) => {
     const id = (baseSign + pos) % 12;
     return { pos, id, label: SIGNS[id], x, y };
   });
-  const current = opts.current ?? chart;
+  const current = vargaChart(opts.current ?? chart, opts.vargaIndex ?? 0);
   const isTransit = !!opts.current && opts.current !== chart;
   const count = new Array<number>(12).fill(0);
   const xScale = mode === 'sahamas' ? 1.125 : 0.75;
@@ -106,6 +112,7 @@ export function tripatakiChakra(chart: ChakraChart, opts: TripatakiOptions = {})
     return { body, pos, x: x + xScale * (XOFF[k] + 2), y: y + 0.75 * (YOFF[k] + 1), text: bodyText(body) };
   });
   const baseName = JHORA_BODIES[baseBody]?.[0] ?? 'Lagna';
-  const title = `${TRIPATAKI_MODE_NAMES[mode]} in D-1(from ${opts.fixedBaseSign !== undefined ? SIGNS[baseSign] : baseName} in D-1)`;
+  const dn = (v = 0) => `D-${VARGA_PARTS[v] ?? 1}`;
+  const title = `${TRIPATAKI_MODE_NAMES[mode]} in ${dn(opts.vargaIndex)}(from ${opts.fixedBaseSign !== undefined ? SIGNS[baseSign] : baseName} in ${dn(opts.baseVargaIndex)})`;
   return { title, baseSign, slots, lines: TRIPATAKI_LINES, bodies };
 }

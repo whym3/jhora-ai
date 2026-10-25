@@ -14,12 +14,17 @@ import type { Period } from './vimsottari';
 import { DEBILITATION, EXALTATION, signLordJaimini, type VargaCtx } from '../signStrength';
 import { brahmaRudraMaheswara } from '../deities';
 import { charaKarakas } from '../basics';
-import { buildRasiDasa, dasaLord, mod12, rasiCtx, run } from './rasiCommon';
+import { buildRasiDasa, dasaLord, dasaSeedOf, mod12, rasiCtx, run, seedShift } from './rasiCommon';
 
 export const BRAHMA_TITLE = 'Brahma dasa (cycle of life, death and life)';
 
-/** Sign of JHora's Brahma in the rasi chart. */
+/**
+ * Sign of JHora's Brahma in the rasi chart; in a Tajaka chart with the dasa seed flags
+ * (rasiCommon DasaSeed) the natal Brahma's sign moved by Muntha - natal lagna.
+ */
 export function brahmaSign(chart: Chart): number {
+  const seed = dasaSeedOf(chart);
+  if (seed) return seedShift(seed, brahmaSign(seed.natal));
   const ctx = rasiCtx(chart, 0);
   const ak = charaKarakas(chart.positions)[0].planet;
   return ctx.sign(brahmaRudraMaheswara(ctx.lagna, ak, ctx).brahma);

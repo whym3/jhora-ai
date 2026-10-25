@@ -10,8 +10,9 @@
 //   ours within POS_TOL cells of it (text centres; widths estimated from the character count);
 // * colours: JHora's text colour and our class must map one-to-one over the matched strings
 //   (our colours are theme tokens, so only the grouping is compared).
-// Many Vargas (the chart pane): the sign of Lagna and Su..Ke in each of JHora's 12 chart boxes
-// against signsInVarga() for the varga named in the box.
+// Many Vargas (CChartView): besides the string/placement/colour checks above, every body label
+// of each of JHora's 12 chart boxes in the same sign as chartSigns() puts it (standard view) for
+// the varga named in the box, and the same set of labels.
 //
 // CHAKRA_DIR overrides the directory; CHAKRA_DUMP=1 prints both sides' strings.
 import { existsSync, readdirSync, readFileSync } from 'node:fs';
@@ -20,7 +21,8 @@ import { renderToStaticMarkup } from 'react-dom/server';
 import { describe, expect, it } from 'vitest';
 import { nodeSweph } from './helpers';
 import { parseJhd } from '../src/core/jhd';
-import { computeChart, signsInVarga, type Chart } from '../src/core/chart';
+import { computeChart, type Chart } from '../src/core/chart';
+import { chartSigns } from '../src/core/chartBodies';
 import { CHAKRA_VIEWS, type ChakraSubTab } from '../src/ui/chakras/index';
 import type { ChakraViewProps } from '../src/ui/chakras/common';
 import type { VargaName } from '../src/core/vargas';
@@ -46,7 +48,7 @@ interface Item { s: string; x: number; ax: number; align: Align; y: number; colo
 /** Position tolerance, in cells of the chakra (JHora px per cell below). */
 const POS_TOL = 0.2;
 const CELL: Record<ChakraSubTab, number> = {
-  'Mixed 2-Vargas': 100, Kalachakra: 66, Sarvatobhadra: 88, 'Kota Chakra': 88, 'Surya Kalanala': 77,
+  'Many Vargas': 70, 'Mixed 2-Vargas': 100, Kalachakra: 66, Sarvatobhadra: 88, 'Kota Chakra': 88, 'Surya Kalanala': 77,
   'Chandra Kalanala': 66, Sudarsana: 66, Shoola: 66, Tripataki: 66,
 };
 /** JHora x right of which strings belong to a separately laid-out block (see placeChakra). */
@@ -271,7 +273,6 @@ function colourMismatches(pairs: [Item, Item][]): string[] {
 
 /** South Indian box cell (col, row) -> sign, Pisces top-left. */
 const SOUTH: Record<string, number> = { '1,0': 0, '2,0': 1, '3,0': 2, '3,1': 3, '3,2': 4, '3,3': 5, '2,3': 6, '1,3': 7, '0,3': 8, '0,2': 9, '0,1': 10, '0,0': 11 };
-const GRAHA_LABELS = ['As', 'Su', 'Mo', 'Ma', 'Me', 'Ju', 'Ve', 'Sa', 'Ra', 'Ke'];
 
 interface VargaBox { caption: string[]; varga: VargaName | null; bySign: Map<string, number> }
 
@@ -287,7 +288,7 @@ function vargaBoxes(events: GdiEvent[]): VargaBox[] {
     if (!box || e.fn !== 'DrawText' || !e.text?.trim() || !e.rect) continue;
     const s = e.text.trim().replace(/^\((\w\w)\)$/, '$1');   // retrograde planets are drawn as "(Sa)"
     if ((e.fmt ?? 0) & DT_CENTER) box.caption.push(s);
-    else if (GRAHA_LABELS.includes(s)) {
+    else {
       const c = (box.rect[2] - box.rect[0]) / 4;
       const col = Math.floor(((e.rect[0] + e.rect[2]) / 2 - box.rect[0]) / c), row = Math.floor(((e.rect[1] + e.rect[3]) / 2 - box.rect[1]) / c);
       box.bySign.set(s, SOUTH[`${col},${row}`]);
@@ -361,17 +362,18 @@ describe.skipIf(!charts.length)('Chakras match what JHora 8.0 draws', async () =
       }
       const many = draws.find((d) => d.sub === 'Many Vargas');
       if (many) {
-        it('Many Vargas: Lagna and Su..Ke in the same sign of every chart box', () => {
+        it('Many Vargas: every body in the same sign of every chart box', () => {
           const boxes = vargaBoxes(viewEvents(many.events));
           const diff: string[] = [];
           for (const b of boxes) {
             if (!b.varga) { diff.push(`box without a varga caption: ${b.caption.join(' | ')}`); continue; }
-            const signs = signsInVarga(chart, b.varga);
+            const signs = chartSigns(chart, b.varga);
+            const ours = new Map(signs.flatMap((list, sign) => list.map((x) => [x.label.trim(), sign] as [string, number])));
             for (const [label, sign] of b.bySign) {
-              const ours = signs.findIndex((list) => list.some((x) => x.label === label));
-              if (ours !== sign) diff.push(`${b.caption.join(' ')}: ${label} JHora sign ${sign + 1}, ours ${ours + 1}`);
+              if (ours.get(label) !== sign) diff.push(`${b.caption.join(' ')}: ${label} JHora sign ${sign + 1}, ours ${(ours.get(label) ?? -1) + 1}`);
             }
-            if (b.bySign.size !== GRAHA_LABELS.length) diff.push(`${b.caption.join(' ')}: JHora box has ${[...b.bySign.keys()].join(' ')}`);
+            const extra = [...ours.keys()].filter((l) => !b.bySign.has(l));
+            if (extra.length) diff.push(`${b.caption.join(' ')}: JHora box lacks ${extra.join(' ')}`);
           }
           expect(boxes.length).toBeGreaterThan(0);
           expect(diff, diff.join('\n')).toEqual([]);

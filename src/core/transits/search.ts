@@ -25,7 +25,8 @@ import type { Sweph } from '../../sweph';
 import type { Chart } from '../chart';
 import { birthJdUt } from '../jhd';
 import { sahamas } from '../sahamas';
-import { ALL_VARGAS, vargaLongitude } from '../vargas';
+import { vargaLongitude } from '../vargas';
+import { vargaSpec } from '../vargaOptions';
 import { ctxOf, recordSearch } from '../derived/mundane';
 import { transitBirth, VARGA_ORDER, type TransitDate } from './common';
 
@@ -60,7 +61,7 @@ export const NATAL_SEARCH_BODIES = [
 
 /** Longitude of a named natal body (JHora's first 47 body names: Lagna .. Avayoga Sphuta) in varga index v. */
 export function natalBodyLon(natal: Chart, name: string, v: number): number {
-  const spec = ALL_VARGAS[VARGA_ORDER[v] ?? 'D1'];
+  const spec = vargaSpec(VARGA_ORDER[v] ?? 'D1', natal.ini);
   const outer = natal.positions.outer[name as keyof Chart['positions']['outer']];
   const b = name === 'Lagna' ? { lon: natal.positions.ascendant } : outer ?? natal.longitudes.find((x) => x.name === name);
   if (!b) throw new Error(`unknown natal body ${name}`);

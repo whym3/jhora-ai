@@ -8,8 +8,8 @@ describe('CHAKRA_VIEWS', async () => {
   const { CHAKRA_VIEWS } = await import('../../src/ui/chakras/index');
   const natal = fixtureChart([278, 45, 200, 110, 300, 80, 250, 15, 195], 10, ['Mars']);
   const transit = fixtureChart([190, 3, 50, 175, 66, 210, 330, 120, 300], 200);
-  it('covers the nine sub-tabs after Many Vargas', () => {
-    expect(Object.keys(CHAKRA_VIEWS)).toEqual(['Mixed 2-Vargas', 'Kalachakra', 'Sarvatobhadra', 'Kota Chakra',
+  it('covers the ten Chakras sub-tabs', () => {
+    expect(Object.keys(CHAKRA_VIEWS)).toEqual(['Many Vargas', 'Mixed 2-Vargas', 'Kalachakra', 'Sarvatobhadra', 'Kota Chakra',
       'Surya Kalanala', 'Chandra Kalanala', 'Sudarsana', 'Shoola', 'Tripataki']);
   });
   for (const [name, View] of Object.entries(CHAKRA_VIEWS)) {

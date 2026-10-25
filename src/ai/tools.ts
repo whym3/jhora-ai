@@ -5,7 +5,7 @@
 // by anthropicStrictSchema() / openaiStrictSchema().
 import type { ChartSpec, JobRequest, Table } from '../engine/protocol';
 import { DEFAULTS } from '../settings/generated';
-import { calcSettingsFromIni, type AyanamsaId } from '../core/settings';
+import { ayanamsaLabel, calcSettingsFromIni, type AyanamsaId } from '../core/settings';
 import { HOUSE_SYSTEMS } from '../core/kpHouses';
 import { YEAR_DEFINITIONS } from '../core/dasas/time';
 import { SIGN_NAMES as ZODIAC_SIGN_NAMES } from '../core/zodiac';
@@ -151,7 +151,7 @@ function filterBodies(t: Table, bodies: string[] | undefined): Table {
   return { ...t, rows, notes: [...(t.notes ?? []), ...(missing.length ? [`Not found: ${missing.join(', ')}`] : [])] };
 }
 
-const AYANAMSA_NAME: Record<AyanamsaId, string> = {
+const AYANAMSA_NAME: Partial<Record<AyanamsaId, string>> = {
   'true-chitrapaksha': 'True Chitrapaksha (Lahiri; Spica at 180 deg of date)', lahiri: 'Lahiri (Swiss Ephemeris SE_SIDM_LAHIRI)', tropical: 'Tropical (no ayanamsa)',
 };
 
@@ -159,7 +159,7 @@ const AYANAMSA_NAME: Record<AyanamsaId, string> = {
 export function settingsText(ini: ChartSpec['ini']): string {
   const s = calcSettingsFromIni(ini), all = { ...DEFAULTS, ...ini };
   const house = HOUSE_SYSTEMS.find((h) => h[2] === all.HouseTypeWanted)?.[0] ?? `house type ${all.HouseTypeWanted}`;
-  const ayanamsa = s.sssAyanamsa ? 'Surya Siddhanta' : AYANAMSA_NAME[s.ayanamsa];
+  const ayanamsa = s.sssAyanamsa ? 'Surya Siddhanta' : AYANAMSA_NAME[s.ayanamsa] ?? ayanamsaLabel(s.ayanamsa);
   const year = YEAR_DEFINITIONS[all.YearDefinition?.[0] ?? 3] ?? 'true-sidereal';
   return [
     'CALCULATION SETTINGS',

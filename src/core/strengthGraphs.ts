@@ -24,7 +24,8 @@ import { computeShadbala, type PlanetBala } from './shadbala';
 import { vimsopaka, type VimsopakaScheme } from './vimsopaka';
 import { tajakaBalas, vaiseshikamsas } from './otherStrengths';
 import { AV_BODIES, ashtakavarga, type AvBody } from './ashtakavarga';
-import { ALL_VARGAS, vargaLongitude, type VargaName } from './vargas';
+import { vargaLongitude, type VargaName } from './vargas';
+import { vargaSpec } from './vargaOptions';
 
 export interface BarGraph {
   title: string;
@@ -54,7 +55,7 @@ export function strengthBarGraphs(chart: Chart, set: number, avVarga: VargaName 
   const vaisesh = (title: string, group: number, max: number, vs = vaiseshikamsas(chart)) => graph(title, [...GRAHAS], GRAHAS.map((g) => vs[g][group].count), max, true);
   const av = () => {
     const lonOf = (b: AvBody) => (b === 'Lagna' ? chart.positions.ascendant : chart.positions.grahas[b].lon);
-    const sign = (b: AvBody) => Math.floor(vargaLongitude(lonOf(b), ALL_VARGAS[avVarga]) / 30) % 12;
+    const sign = (b: AvBody) => Math.floor(vargaLongitude(lonOf(b), vargaSpec(avVarga, chart.ini)) / 30) % 12;
     return { a: ashtakavarga(sign), lagna: sign('Lagna'), sign };
   };
   switch (set) {

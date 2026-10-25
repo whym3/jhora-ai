@@ -2,16 +2,21 @@
 // zones, 28 stars from the natal Moon's star, Sun..Ketu in their stars, Kota
 // Swami (left-aligned at column 1) and Kota Pala (right-aligned at column 8)
 // above the grid.
+import { useState } from 'react';
 import { kotaChakra, KOTA_BENEFIC, KOTA_SLOT_X, KOTA_SLOT_Y, KOTA_ZONE_LABEL_POS, KOTA_ZONE_LABELS } from '../../core/chakras/kota';
-import { bodyClass, ChakraSvg, type ChakraViewProps } from './common';
+import { BASE_STAR_OPTIONS, bodyClass, ChakraSvg, OptionBar, type ChakraViewProps } from './common';
 import './kota.css';
 
 const C = 60, TOP = 28, N = 9;
 
 export function KotaChakraView({ chart, transit }: ChakraViewProps) {
-  const k = kotaChakra(chart, transit);
+  // "Change the base nakshatra" (33127): default the natal Moon's star
+  const [baseStar, setBaseStar] = useState(-1);
+  const k = kotaChakra(chart, transit, baseStar < 0 ? {} : { baseStar });
   const W = C * N, H = TOP + C * N;
   return (
+    <div>
+    <OptionBar fields={[{ label: 'Base nakshatra', value: baseStar, options: BASE_STAR_OPTIONS, onChange: (v) => setBaseStar(v as number) }]} />
     <ChakraSvg w={W} h={H} title="Kota Chakra">
       <text x={C} y={18} className="ck-label kota-swami">{k.swamiText}</text>
       <text x={W - C} y={18} className="ck-label kota-pala" textAnchor="end">{k.palaText}</text>
@@ -37,5 +42,6 @@ export function KotaChakraView({ chart, transit }: ChakraViewProps) {
         </g>
       ))}
     </ChakraSvg>
+    </div>
   );
 }

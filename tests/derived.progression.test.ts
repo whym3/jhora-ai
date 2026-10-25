@@ -90,7 +90,20 @@ describe('Progressions and angular return', async () => {
     const lordYears = [7, 20, 6, 10, 7, 18, 16, 19, 17][n % 9];
     const next = (1 - frac) * lordYears + 1e-9;
     expect(Math.abs(wrap(progressedSeed(moon, null, next) - norm360((n + 1) * NAK)))).toBeLessThan(1e-6);
-    expect(() => progressedSeed(moon, 'Ashtottari', 1)).toThrow();
+    // FUN_00401820's base is the seed's star only for Vimsottari, Yogini and Sataabdika (and its
+    // pada for Kalachakra); Ashtottari, Shashtihayani, Dwisaptati ... keep the dispatcher's 0
+    const PADA = 360 / 108;
+    for (const key of ['Ashtottari', 'Shashtihayani', 'Dwisaptati sama']) {
+      const s0 = progressedSeed(moon, key, 0);
+      expect(s0).toBeGreaterThanOrEqual(0);
+      expect(s0).toBeLessThan(NAK);
+      // one maha dasa later the running maha dasa index is 1: the seed passed one star
+      expect(progressedSeed(moon, key, 200)).toBeGreaterThan(0);
+    }
+    const kc = progressedSeed(moon, 'Kalachakra', 0);
+    expect(kc).toBeGreaterThanOrEqual(Math.floor(moon / PADA) * PADA - 1e-9);
+    expect(kc).toBeLessThan(Math.floor(moon / PADA) * PADA + PADA);
+    expect(Math.abs(wrap(progressedSeed(moon, 'Yogini', 0) - moon))).toBeLessThan(NAK);
     const p = progression(swe, natal, { kind: 'nakshatra', varga: 0, body: 2, dasa: 0, ...date });
     expect(p.label).toBe('Prog (NaksDasa)');
     expect(Math.abs(wrap(p.seed! - moon - p.shift!))).toBeLessThan(1e-9);

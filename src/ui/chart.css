@@ -1,0 +1,33 @@
+/* Chart diagrams (ChartDiagram.tsx): JHora's chart text colours, light theme first. */
+.cb { font-size: 14px; font-weight: 600; fill: #b43c3c; }
+.cb.cb-corner { font-size: 11px; font-weight: 500; }
+.cb.cb-lagna { fill: #c81eaa; }
+.cb.cb-special { fill: #8c7050; }
+.cb.cb-upagraha { fill: #465f55; }
+.cb.cb-sphuta { fill: #6b5a2e; }
+.cb.cb-al { fill: #7828c8; }
+.cb.cb-arudha { fill: #5078b4; }
+.cb-caption { fill: #0a0a0a; }
+.cb-name { font-size: 14px; }
+.cb-varga1 { font-size: 20px; }
+.cb-varga { font-size: 18px; }
+.cb-short { font-size: 16px; }
+.cb-signnum { font-size: 11px; fill: var(--muted); }
+.cb-frame { fill: none; stroke: var(--line); stroke-width: 2.5; }
+.cb-selbox { fill: none; stroke: var(--accent); stroke-width: 2; stroke-dasharray: 6 4; pointer-events: none; }
+.cb-chart { cursor: default; }
+.many-vargas { width: 100%; height: auto; background: var(--panel); }
+.slot-bar { display: flex; flex-wrap: wrap; gap: 6px; align-items: center; font-size: .85rem; }
+.slot-bar select, .slot-bar button { font-size: .85rem; }
+.slot-bar .copied { color: var(--muted); }
+.slot-bar details { position: relative; }
+.slot-bar details > div { position: absolute; z-index: 5; background: var(--panel); border: 1px solid var(--line);
+  border-radius: 6px; padding: 6px 10px; display: grid; gap: 2px; min-width: 220px; }
+@media (prefers-color-scheme: dark) {
+  .cb { fill: #e07a7a; } .cb.cb-lagna { fill: #e58ad2; } .cb.cb-special { fill: #d2b48c; }
+  .cb.cb-upagraha { fill: #8fb5a5; } .cb.cb-sphuta { fill: #c9b27a; } .cb.cb-al { fill: #b78ae8; }
+  .cb.cb-arudha { fill: #8fb0e0; } .cb-caption { fill: var(--ink); }
+}
+/* relationship colours of the right-click menu (as .body.relboxN in styles.css) */
+.cb.relbox0 { fill: #0000ff; } .cb.relbox1 { fill: #00a000; font-weight: 700; font-style: italic; } .cb.relbox2 { fill: #288c28; }
+.cb.relbox3 { fill: var(--muted); } .cb.relbox4 { fill: #c82828; } .cb.relbox5 { fill: #e00000; font-weight: 700; font-style: italic; }

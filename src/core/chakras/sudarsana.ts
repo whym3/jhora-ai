@@ -40,7 +40,8 @@
 // * No transit date control and no copy-to-clipboard command in this view.
 import type { ChakraBody, ChakraChart } from './common';
 import { bodiesByIndex, chakraBody, signOf } from './common';
-import { ALL_VARGAS, vargaLongitude } from '../vargas';
+import { vargaLongitude } from '../vargas';
+import { vargaSpec } from '../vargaOptions';
 import { JHORA_VARGAS, JHORA_VARGA_NAMES } from '../dasas/rasiCommon';
 import { sahamas } from '../sahamas';
 import { norm360 } from '../positions';
@@ -127,7 +128,7 @@ export function sudarsanaChakra(chart: ChakraChart, opts: SudarsanaOptions = {})
   const vargaIndex = opts.vargaIndex ?? 0;
   const name = JHORA_VARGAS[vargaIndex];
   if (!name) throw new Error(`varga index ${vargaIndex} not supported`);
-  const spec = ALL_VARGAS[name];
+  const spec = vargaSpec(name, chart.ini);
   const vsign = (lon: number) => signOf(vargaLongitude(lon, spec));
   const starts = [0, 2, 1].map((i) => vsign(chakraBody(chart, i)!.lon));
   const src = opts.transit ?? chart;

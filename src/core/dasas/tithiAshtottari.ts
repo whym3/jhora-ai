@@ -9,6 +9,8 @@
 //    listed (the cycle plus the first lord again);
 //  - antardasas start from the lord AFTER the dasa lord and end with it, in
 //    proportion to the years (of 108).
+// Tajaka chart with ProgressDasaSeedInTajaka[69] (0x410aa6): the lord's body id is
+// advanced by the completed years n, ((n + id - 1) mod 8) + 1, before the cycle lookup.
 import type { Chart } from '../chart';
 import type { Period } from './vimsottari';
 import { NAKSHATRA_DASAS } from './nakshatra';
@@ -24,8 +26,10 @@ export const tithiAshtottariTitle = (harmonic = 0, vargaIndex = 0) =>
   `Tithi Ashtottari Dasa of ${TITHI_HARMONICS[harmonic]} in ${JHORA_VARGA_NAMES[vargaIndex]} (useful especially in Tithi Pravesha charts)`;
 export const TITHI_ASHTOTTARI_TITLE = tithiAshtottariTitle();
 
-export function tithiAshtottariDasa(chart: Chart, levels = 2, harmonic = 0): Period[] {
+/** @param progress Tajaka: completed years n added to the lord (ProgressDasaSeedInTajaka) */
+export function tithiAshtottariDasa(chart: Chart, levels = 2, harmonic = 0, progress?: number): Period[] {
   const cycle = NAKSHATRA_DASAS.Ashtottari.lords;
   const t = tithiOf(chart, harmonic);
-  return seededCycleDasa(cycle, cycleIndex(cycle, TITHI_LORD[t.index]), t.remaining, 9, true, levels);
+  const lord = progress === undefined ? TITHI_LORD[t.index] : ((progress + TITHI_LORD[t.index] - 1) % 8) + 1;
+  return seededCycleDasa(cycle, cycleIndex(cycle, lord), t.remaining, 9, true, levels);
 }

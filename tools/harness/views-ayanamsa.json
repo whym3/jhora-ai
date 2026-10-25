@@ -1,0 +1,22 @@
+{
+ "_comment": "Ayanamsa captures (tools/harness/capture-ayanamsa.ps1): one run per UserSelectedAyanamsa value with every ayanamsa key passed via --ini; output golden/jhora-ayanamsa/<mode>/<chart>.json, checked by tests/ayanamsaGolden.test.ts.",
+ "tabs": [
+  {
+   "top": "Basics",
+   "sub": "Key Info",
+   "lists": true,
+   "copies": {
+    "key_info": 32974
+   },
+   "pane_copies": [
+    "key_info"
+   ],
+   "modes": [
+    [
+     "Longitudes & Basic Info",
+     32822
+    ]
+   ]
+  }
+ ]
+}

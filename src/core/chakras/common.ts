@@ -27,6 +27,8 @@ import type { Positions } from '../positions';
 import { GRAHAS, norm360 } from '../positions';
 import { nakshatra28Of, NAK28, signOf } from '../zodiac';
 import { weekdayOf } from '../bodies';
+import { vargaLongitude } from '../vargas';
+import { VARGA_INDEX, vargaSpec } from '../vargaOptions';
 
 /**
  * The chart data a chakra needs. A full core `Chart` satisfies it; so does the
@@ -87,6 +89,28 @@ export function planetBodies(chart: ChakraChart, transit = false): ChakraBody[] 
 /** Bodies by internal index, skipping those the chart data lacks. */
 export function bodiesByIndex(chart: ChakraChart, indices: number[], transit = false): ChakraBody[] {
   return indices.map((i) => chakraBody(chart, i, transit)).filter((b): b is ChakraBody => b !== null);
+}
+
+/**
+ * FUN_004a1260(chart, varga): the chart as the chakras see it in a divisional chart - every
+ * longitude replaced by its varga longitude (the nakshatra bytes chart+0x1705+b follow), used by
+ * the menu-152 options "Divisional chart to be used for planets" (33254) and "Base planet and
+ * division" (33255), and Sarvatobhadra's 33244. JHora varga index; 0 = the chart itself.
+ */
+export function vargaChart(chart: ChakraChart, vargaIndex: number): ChakraChart {
+  const name = VARGA_INDEX[vargaIndex];
+  if (!vargaIndex || !name) return chart;
+  const spec = vargaSpec(name, chart.ini);
+  const v = (lon: number) => vargaLongitude(lon, spec);
+  const p = chart.positions;
+  const grahas = Object.fromEntries(Object.entries(p.grahas).map(([g, b]) => [g, { ...b, lon: v(b.lon) }])) as Positions['grahas'];
+  const outer = Object.fromEntries(Object.entries(p.outer).map(([g, b]) => [g, { ...b, lon: v(b.lon) }])) as Positions['outer'];
+  return {
+    ...chart,
+    positions: { ...p, ascendant: v(p.ascendant), grahas, outer },
+    bodies: chart.bodies.map((b) => ({ ...b, lon: v(b.lon) })),
+    ...(chart.longitudes ? { longitudes: chart.longitudes.map((b) => ({ ...b, lon: v(b.lon) })) } : {}),
+  };
 }
 
 /** Weekday (0 = Sunday) of the chart's (sunrise-based) day, when the chart carries day + birth data. */

@@ -1,21 +1,28 @@
 // Kalachakra wheel in JHora's layout (FUN_004553c0): circle with 8 spokes,
 // 28 stars from the natal Sun's star (East at the top, clockwise), the eight
 // dikpalas, and the selected body set (default Planets: Sun..Ketu).
-import { kalachakraChakra, KC_SLOT_X, KC_SLOT_Y, type KalachakraMode } from '../../core/chakras/kalachakra';
+import { useState } from 'react';
+import { kalachakraChakra, KC_SLOT_X, KC_SLOT_Y, type KalachakraMode, type KalachakraOptions } from '../../core/chakras/kalachakra';
+import { StarChakraOptions } from './StarChakraOptions';
 import { bodyClass, ChakraSvg, type ChakraViewProps } from './common';
 import './kalachakra.css';
 
 const S = 10, TOP = 24, BOX = 72 * S, CELL = BOX / 12;
 const P = (u144: number) => (u144 * BOX) / 144;
 
+const KC_MODES: KalachakraMode[] = ['planets', 'yogini', 'trisphuta', 'upagrahas', 'specialLagnas', 'sahamas'];
+
 export function KalachakraView({ chart, transit, mode }: ChakraViewProps & { mode?: KalachakraMode }) {
-  const kc = kalachakraChakra(chart, transit, { mode });
+  const [opts, setOpts] = useState<KalachakraOptions>({ mode });
+  const kc = kalachakraChakra(chart, transit, opts);
   const cellW = kc.mode === 'sahamas' ? CELL * 1.5 : CELL;
   const lines: [number, number, number, number][] = [
     [20, 20, 55, 55], [89, 89, 124, 124], [124, 20, 89, 55], [20, 124, 55, 89],
     [0, 72, 48, 72], [96, 72, 144, 72], [72, 0, 72, 48], [72, 96, 72, 144],
   ];
   return (
+    <div>
+    <StarChakraOptions modes={KC_MODES} value={opts} onChange={setOpts} />
     <ChakraSvg w={BOX} h={TOP + BOX + 24} title="Kalachakra">
       <text x={4} y={17} className="ck-title">{kc.title}</text>
       <circle cx={P(72)} cy={TOP + P(72)} r={P(24)} className="kc-wheel" />
@@ -40,5 +47,6 @@ export function KalachakraView({ chart, transit, mode }: ChakraViewProps & { mod
         </g>
       ))}
     </ChakraSvg>
+    </div>
   );
 }

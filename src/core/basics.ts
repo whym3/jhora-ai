@@ -147,6 +147,17 @@ export function lordLabel(lon: number, spec: VargaSpec, count: number, n: number
   return signLord(sign);
 }
 
+/**
+ * The "64th navamsa and 22nd drekkana" view (cmd 33159, routine at 0x430700): both lie
+ * 210 degrees on (63 navamsas = 21 drekkanas), so JHora shifts the body by 210 deg and
+ * runs a varga's sign routine on it - the D-9 routine of the chosen navamsa, and the
+ * D-3 routine once per drekkana variant (D3Preference 0..4, then restored).
+ */
+export function maliciousLordLabel(lon: number, spec: VargaSpec): string {
+  const sign = signOf(vargaLongitude(norm360(lon + 210), spec));
+  return sign === 10 ? 'Saturn and Rahu' : signLord(sign);
+}
+
 // ---- Nakshatra aspects and latta ----
 /**
  * Counted in the 28-star scheme from the planet's own star (offset 0 = own star);

@@ -1,0 +1,26 @@
+{
+ "_comment": "Chart diagram views (menu 103) and chart styles. Run once per ChartStyle into its own directory: --ini ChartStyle=0 --out golden/jhora-chartviews (the GDI draws of every body view, slot 0 = D-1, are compared there), then --ini ChartStyle=1/2/3/4 --out golden/jhora-chartviews-style<N> (only the clipboard texts are compared). Restore ChartStyle=0 afterwards. tests/chartViewsGolden.test.ts skips while these directories are absent.",
+ "tabs": [
+  {
+   "top": "Chakras",
+   "sub": "Many Vargas",
+   "draw": true,
+   "copies": {
+    "chart_text": 32985,
+    "chart_text_sne": 32992
+   },
+   "modes": [
+    ["Standard view", 32803],
+    ["Standard view with graha arudhas", 33211],
+    ["Upagraha view", 32805],
+    ["Graha arudha view", 32806],
+    ["Dual graha arudha view", 33081],
+    ["Chandra arudha view (from Moon)", 33107],
+    ["Surya arudha view (from Sun)", 33108],
+    ["Varnada view", 32807],
+    ["Chara Karaka view", 32894],
+    ["Special lagna view", 33052]
+   ]
+  }
+ ]
+}

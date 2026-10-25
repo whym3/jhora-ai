@@ -42,7 +42,7 @@
 //     Mode 2 Trisphuta: bodies 33..36. Mode 3 Upagrahas: 32, 31, 22..30.
 //     Mode 4 Special lagnas: 14, 15, 17, 18, 19, 20. Mode 5 Sahamas: the 36
 //       sahamas (names table 0x8a2088), cells widened to 1.5 W/12.
-import { type ChakraBody, type ChakraChart, bodiesByIndex, chakraBody, NAK28, nakshatra28Of, yoginiMrityu } from './common';
+import { type ChakraBody, type ChakraChart, bodiesByIndex, chakraBody, NAK28, nakshatra28Of, vargaChart, yoginiMrityu } from './common';
 import { sahamas } from '../sahamas';
 
 export const KC_STAR_X = [33, 33, 33, 36, 44, 50, 56, 65, 57, 49, 40, 44, 50, 56, 33, 33, 33, 30, 22, 16, 10, 1, 9, 17, 26, 22, 16, 10];
@@ -109,6 +109,10 @@ export interface KalachakraOptions {
   baseStar?: number;
   /** "Base planet": JHora body index whose star is the base (default 1 = Sun, natal) */
   baseBody?: number;
+  /** "Base planet and division": JHora varga index of the base body (default 0 = D-1) */
+  baseVargaIndex?: number;
+  /** "Divisional chart to be used for planets" (33254, DAT_008846e8): JHora varga index */
+  vargaIndex?: number;
 }
 
 /**
@@ -118,13 +122,13 @@ export interface KalachakraOptions {
  */
 export function kalachakraChakra(chart: ChakraChart, transit?: ChakraChart | null, opts: KalachakraOptions = {}): KalachakraChakra {
   const mode = opts.mode ?? 'planets';
-  const baseLon = chakraBody(chart, opts.baseBody ?? 1)?.lon ?? chart.positions.grahas.Sun.lon;
+  const baseLon = chakraBody(vargaChart(chart, opts.baseVargaIndex ?? 0), opts.baseBody ?? 1)?.lon ?? chart.positions.grahas.Sun.lon;
   const baseStar = opts.baseStar ?? nakshatra28Of(baseLon);
   const stars: KalachakraStar[] = Array.from({ length: 28 }, (_, k) => {
     const star = (baseStar + k) % 28;
     return { k, star, label: NAK28[star], x: KC_STAR_X[k], y: KC_STAR_Y[k], dir: KC_STAR_DIR[k], bodies: [] };
   });
-  const src = transit ?? chart;
+  const src = vargaChart(transit ?? chart, opts.vargaIndex ?? 0);
   let bodies: ChakraBody[] = [];
   let complete = true;
   const idx = MODE_BODIES[mode];

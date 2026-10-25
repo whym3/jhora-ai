@@ -3,10 +3,10 @@
 // with 12 houses; house 1 is the 30-degree sector just above the 3 o'clock
 // radius and the houses run anti-clockwise. Sign names and bodies sit at JHora's
 // table positions (SUD_HOUSE_X/Y, SUD_SLOT_X/Y in src/core/chakras/sudarsana.ts).
-import { useMemo } from 'react';
+import { useMemo, useState } from 'react';
 import { SIGNS } from '../../core/zodiac';
 import { SUD_HOUSE_X, SUD_HOUSE_Y, SUD_SLOT_X, SUD_SLOT_Y, sudarsanaChakra, type SudarsanaMode } from '../../core/chakras/sudarsana';
-import { bodyClass, ChakraSvg, type ChakraViewProps } from './common';
+import { bodyClass, ChakraSvg, OptionBar, VARGA_OPTIONS, type ChakraViewProps } from './common';
 import './sudarsana.css';
 
 const S = 5;              // JHora's 120-unit square scaled to 600 px
@@ -25,12 +25,22 @@ export interface SudarsanaViewProps extends ChakraViewProps {
   showTransit?: boolean;
 }
 
-export function SudarsanaView({ chart, transit, mode = 0, vargaIndex = 0, showTransit = false }: SudarsanaViewProps) {
+/** The body sets with a handler in this view (33091, 33095, 33096). */
+const MODES: [SudarsanaMode, string][] = [[0, 'Planets'], [2, 'Upagrahas'], [3, 'Special Lagnas']];
+
+export function SudarsanaView({ chart, transit, mode: mode0 = 0, vargaIndex: varga0 = 0, showTransit = false }: SudarsanaViewProps) {
+  const [mode, setMode] = useState<SudarsanaMode>(mode0);
+  const [vargaIndex, setVarga] = useState(varga0);
   const data = useMemo(
     () => sudarsanaChakra(chart, { mode, vargaIndex, transit: showTransit ? transit : null }),
     [chart, transit, mode, vargaIndex, showTransit],
   );
   return (
+    <div>
+    <OptionBar fields={[
+      { label: 'Show', value: mode, options: MODES, onChange: (m) => setMode(m as SudarsanaMode) },
+      { label: 'Divisional chart', value: vargaIndex, options: VARGA_OPTIONS, onChange: (v) => setVarga(v as number) },
+    ]} />
     <ChakraSvg w={600} h={640} title={`Sudarsana Chakra: ${data.title}`}>
       <g transform="translate(0 40)">
         <circle cx={C} cy={C} r={R[2]} className="sud-outer" />
@@ -61,5 +71,6 @@ export function SudarsanaView({ chart, transit, mode = 0, vargaIndex = 0, showTr
       </g>
       <text x={4} y={18} className="ck-title">{data.title}</text>
     </ChakraSvg>
+    </div>
   );
 }

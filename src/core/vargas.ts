@@ -4,8 +4,18 @@
 //
 // The default variants below are the ones JHora 8.0 uses with its default
 // settings; each rule was checked against all 772 positions of the bundled
-// sample charts ("All Divisional Longitudes" table). Other variants from
-// JHora's menus can be added as further VargaSpec entries.
+// sample charts ("All Divisional Longitudes" table). The other variants of
+// JHora's chart menu ("Choose hora / drekkana / ...", ini keys HoraPreference,
+// D3Preference .. D108Preference) and the research charts (custom D-n, D-m x n)
+// are 'jh' specs built from the ini by vargaOptions.ts (vargasOf / vargaSpec).
+//
+// 'jh' follows jhora.exe's own split (FUN_004a0a90 / FUN_004a0e40): a varga's
+// sign comes from its sign routine (FUN_004a78b0 D-9, FUN_004a7bc0 D-2, ...),
+// while the divisional longitude inside that sign is generic: n * longitude
+// mod 30 (n = table 0x591ed4), counted from the end of the sign in even signs
+// when DivLongFromEndToo is set and the chosen variant reverses (FUN_0049fea0),
+// or the proportional D-30 degree of FUN_004b6be0 when Use1DegInD30ForDivLong
+// is 0.
 
 export type VargaSpec =
   | { kind: 'zero' }                                    // JHora's empty "D-0" research slot: everything at 0 Aries
@@ -13,7 +23,9 @@ export type VargaSpec =
   | { kind: 'start'; n: number; start: (sign: number) => number; evenReverse?: boolean }
   | { kind: 'parasara-d30' }
   | { kind: 'standard-d5' }
-  | { kind: 'compose'; inner: VargaSpec; outer: VargaSpec };
+  | { kind: 'compose'; inner: VargaSpec; outer: VargaSpec }
+  /** JHora's generic form: sign from a sign routine, degrees n * lon mod 30 (see header) */
+  | { kind: 'jh'; n: number; sign: (lon: number) => number; reverse?: boolean; d30Prop?: boolean };
 
 const odd = (s: number) => s % 2 === 0;               // Ar=0 is an odd sign
 const modality = (s: number) => s % 3;               // 0 movable, 1 fixed, 2 dual
@@ -69,6 +81,25 @@ const D30_EVEN: [number, number][] = [[5, 1], [12, 5], [20, 11], [25, 9], [30, 7
 const D5_ODD = [0, 10, 8, 2, 6];
 const D5_EVEN = [1, 5, 11, 9, 7];
 
+/**
+ * FUN_004b6be0: the D-30 divisional degree with Use1DegInD30ForDivLong = 0 - the
+ * position inside the unequal trimsamsa portion (5, 5, 8, 7, 5 degrees, mirrored in
+ * even signs) stretched to 30 degrees.
+ */
+export function d30ProportionalDegree(inSign: number, evenSign: boolean): number {
+  let x = evenSign ? 30 - inSign : inSign;
+  let size = 5;
+  if (x >= 5) {
+    if (x >= 10) {
+      if (x < 18) { x -= 10; size = 8; }
+      else if (x < 25) { x -= 18; size = 7; }
+      else x -= 25;
+    } else x -= 5;
+  }
+  if (evenSign) x = size - x;
+  return (x * 30) / size;
+}
+
 export function vargaLongitude(lon: number, spec: VargaSpec): number {
   const sign = Math.floor(lon / 30) % 12;
   const inSign = lon - sign * 30;
@@ -104,6 +135,13 @@ export function vargaLongitude(lon: number, spec: VargaSpec): number {
     }
     case 'compose':
       return vargaLongitude(vargaLongitude(lon, spec.inner), spec.outer);
+    case 'jh': {
+      // FUN_004a0a90: degrees from n * lon (or FUN_004b6be0), reversed in even signs,
+      // normalised (FUN_004c1980), then the sign replaced by the sign routine's
+      let deg = (spec.d30Prop ? d30ProportionalDegree(inSign, !odd(sign)) : spec.n * lon) % 30;
+      if (spec.reverse && !odd(sign) && deg !== 0) deg = 30 - deg;
+      return ((((spec.sign(lon) % 12) + 12) % 12) * 30) + deg;
+    }
   }
 }
 

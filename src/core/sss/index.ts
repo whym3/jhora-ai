@@ -36,9 +36,10 @@
 //    longitudes are reduced by); the outer planets still use the drik true-equinox
 //    ayanamsa internally;
 //  - the extra `sss` field carries the intermediate SSS quantities.
-import { SE, type Sweph } from '../../sweph';
+import type { Sweph } from '../../sweph';
 import type { Settings } from '../settings';
-import { computePositions, type BodyPosition, type Graha, type OuterPlanet, type Positions } from '../positions';
+import { jhoraDeltaT } from '../deltat';
+import { computePositions, swissAyanamsa, type BodyPosition, type Graha, type OuterPlanet, type Positions } from '../positions';
 import {
   apparentAhargana, lagna, norm, sssAyanamsa, sunriseHours, trueLongitude, UJJAIN_LON,
 } from './model';
@@ -74,10 +75,8 @@ const SSS_INDEX: Record<Exclude<Graha, 'Rahu' | 'Ketu'>, number> = {
 /** Ayanamsa JHora holds at doc+0x1680 when FUN_004bf640 runs (before the Spica correction). */
 function eotAyanamsa(swe: Sweph, jdUt: number, a: number, s: Settings): number {
   if (s.sssAyanamsa) return sssAyanamsa(a) + s.ayanamsaDelta;
-  if (s.ayanamsa === 'tropical') return s.ayanamsaDelta;
-  // FUN_0049a370: swe_get_ayanamsa_ut (Lahiri mode for the Spica ayanamsas) + delta
-  swe.setSidMode(1);
-  return swe.ayanamsaUt(jdUt, SE.FLG_SWIEPH | SE.FLG_NONUT) + s.ayanamsaDelta;
+  // FUN_0049a370: swe_get_ayanamsa (the user's sid mode, 0 when tropical) + delta
+  return swissAyanamsa(swe, jdUt, jdUt + (jhoraDeltaT(jdUt) ?? swe.deltaT(jdUt)), s);
 }
 
 export function computePositionsSSS(

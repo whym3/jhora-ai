@@ -44,7 +44,7 @@
 //   3 Upagrahas = 32, 31, 22..30; 4 Special lagnas = 0, 14, 15, 17..20;
 //   5 Sahamas = the 36 sahamas (chart+0x214f0, names 0x8a2088).
 import { sahamas } from '../sahamas';
-import { bodiesByIndex, type ChakraBody, type ChakraChart, nakshatra28Of, yoginiMrityu } from './common';
+import { bodiesByIndex, type ChakraBody, type ChakraChart, nakshatra28Of, vargaChart, yoginiMrityu } from './common';
 
 export type KalanalaKind = 'surya' | 'chandra';
 /** Menu 152 body sets, in the order of view+0x12c. */
@@ -117,6 +117,10 @@ export interface KalanalaOptions {
   baseStar?: number;
   /** base body (JHORA_BODIES index) instead of the Sun ("Base planet and division") */
   baseBody?: number;
+  /** varga of the base body ("Base planet and division"; JHora varga index, default 0 = D-1) */
+  baseVargaIndex?: number;
+  /** "Divisional chart to be used for planets" (0x884888 / 0x65c92c): JHora varga index */
+  vargaIndex?: number;
   /** displayed chart is a Tajaka / Tithi Pravesha chart: base = its lagna's star */
   tajaka?: boolean;
   /** chart shown instead of the natal one (transits): bodies come from it */
@@ -136,12 +140,12 @@ export interface Kalanala {
 
 function build(kind: KalanalaKind, chart: ChakraChart, opts: KalanalaOptions = {}): Kalanala {
   const mode = opts.mode ?? 0;
-  const shown = opts.transit ?? chart;
+  const shown = vargaChart(opts.transit ?? chart, opts.vargaIndex ?? 0);
   let baseStar: number;
   if (opts.baseStar !== undefined) baseStar = ((opts.baseStar % 28) + 28) % 28;
-  else if (opts.tajaka) baseStar = nakshatra28Of(shown.positions.ascendant);
+  else if (opts.tajaka) baseStar = nakshatra28Of((opts.transit ?? chart).positions.ascendant);
   else {
-    const b = bodiesByIndex(opts.baseBody !== undefined ? shown : chart, [opts.baseBody ?? 1])[0];
+    const b = bodiesByIndex(vargaChart(opts.baseBody !== undefined ? opts.transit ?? chart : chart, opts.baseVargaIndex ?? 0), [opts.baseBody ?? 1])[0];
     baseStar = b ? nakshatra28Of(b.lon) : 0;
   }
   const xy = kind === 'surya' ? SURYA_STAR_XY : CHANDRA_STAR_XY;

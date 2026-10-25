@@ -3,10 +3,10 @@
 // (inset half a cell) carries the outer varga's bodies, the half of every sign
 // box facing the centre carries the inner varga's. Centre: "Outer: ..." and
 // "Inner: ..." captions with the varga names. Like JHora, no sign names.
-import { useMemo } from 'react';
+import { useMemo, useState } from 'react';
 import type { ChakraBody } from '../../core/chakras/common';
 import { mixedSlots, mixedVargas } from '../../core/chakras/mixedVargas';
-import { bodyClass, ChakraSvg, type ChakraViewProps } from './common';
+import { bodyClass, ChakraSvg, OptionBar, VARGA_OPTIONS, type ChakraViewProps } from './common';
 import './mixed.css';
 
 const SIZE = 480, CELL = SIZE / 4, Q = CELL / 4;
@@ -43,13 +43,21 @@ export interface MixedVargasViewProps extends ChakraViewProps {
   showTransit?: boolean;
 }
 
-export function MixedVargasView({ chart, transit, inner, outer, showTransit = false }: MixedVargasViewProps) {
+export function MixedVargasView({ chart, transit, inner: inner0, outer: outer0, showTransit = false }: MixedVargasViewProps) {
+  // the two vargas: DAT_00579a60 / DAT_00579a64 (DisplayVarga[12], [13]), chosen from the chart menu
+  const [inner, setInner] = useState(inner0);
+  const [outer, setOuter] = useState(outer0);
   const data = useMemo(
     () => mixedVargas(chart, { inner, outer, outerChart: showTransit ? transit : null }),
     [chart, transit, inner, outer, showTransit],
   );
   const half = CELL / 2;
   return (
+    <div>
+    <OptionBar fields={[
+      { label: 'Inner', value: data.innerVarga, options: VARGA_OPTIONS, onChange: (v) => setInner(v as number) },
+      { label: 'Outer', value: data.outerVarga, options: VARGA_OPTIONS, onChange: (v) => setOuter(v as number) },
+    ]} />
     <ChakraSvg w={SIZE} h={SIZE} title={`Mixed chart: ${data.innerCaption[1]} inside, ${data.outerCaption[1]} outside`}>
       <rect x={0} y={0} width={SIZE} height={SIZE} className="mixed-band" />
       <rect x={half} y={half} width={SIZE - CELL} height={SIZE - CELL} className="mixed-innerbg" />
@@ -73,5 +81,6 @@ export function MixedVargasView({ chart, transit, inner, outer, showTransit = fa
       <text x={SIZE / 2} y={(CELL * 17) / 8 + 4} textAnchor="middle" className="mixed-caption">{data.innerCaption[0]}</text>
       <text x={SIZE / 2} y={(CELL * 19) / 8 + 6} textAnchor="middle" className="mixed-varga">{data.innerCaption[1]}</text>
     </ChakraSvg>
+    </div>
   );
 }

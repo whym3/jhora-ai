@@ -1,0 +1,53 @@
+{
+ "_comment": "Dasa year definitions (YearDefinition / YearLength, 75 slots: 0..24 nakshatra dasas, 25..59 rasi, 60..74 other; see src/core/dasas/yearDefinition.ts). capture.py --ini Key=Value replaces EVERY line of an array key, so one run sets one slot: --ini \"YearDefinition=<slot> <def>\" --ini \"YearLength=<slot> <days>\". Vimsottari is slot 0, Narayana 25, Karaka 73; the test (tests/dasaYears.test.ts) reads ini_overrides and checks the dasa of that slot. Restore the copy's jhcore/jhora.ini afterwards (golden/jhora-defaults.ini). Output: golden/jhora-dasa-years/<variant>/.",
+ "tabs": [
+  {
+   "top": "Dasas",
+   "sub": "Nakshatra dasas",
+   "copies": {
+    "dasa": 32972,
+    "dasa_dates": 33236
+   },
+   "modes": [
+    [
+     "Vimsottari",
+     32846
+    ]
+   ],
+   "dasa_levels": true,
+   "dasa_level_rows": 1
+  },
+  {
+   "top": "Dasas",
+   "sub": "Rasi dasas",
+   "copies": {
+    "dasa": 32972,
+    "dasa_dates": 33236
+   },
+   "modes": [
+    [
+     "Narayana",
+     32849
+    ]
+   ],
+   "dasa_levels": true,
+   "dasa_level_rows": 1
+  },
+  {
+   "top": "Dasas",
+   "sub": "Other dasas",
+   "copies": {
+    "dasa": 32972,
+    "dasa_dates": 33236
+   },
+   "modes": [
+    [
+     "Karaka",
+     33267
+    ]
+   ],
+   "dasa_levels": true,
+   "dasa_level_rows": 1
+  }
+ ]
+}

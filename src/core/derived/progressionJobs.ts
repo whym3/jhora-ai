@@ -41,10 +41,12 @@ export const ANGULAR_JOBS: Record<string, AsyncTableFn> = {
     const inp = params as unknown as AngularReturnInput;
     await swe.ensureEphemeris(swe.julday(inp.year, inp.month, inp.day, inp.hour - inp.tzHours));
     const r = angularReturn(swe, natal, inp);
-    return derivedTable(swe, natal, r.label, r.birth, r.start, {
+    const t = derivedTable(swe, natal, r.label, r.birth, r.start, {
       headers: ['Chart', 'Start', 'End'],
       rows: [[r.label, whenText(swe, natal, r.start), whenText(swe, natal, r.end)]],
       notes: [`Natal angle: ${r.angle.toFixed(4)} deg; period ${(r.end - r.start).toFixed(4)} days`],
     });
+    // periodDays = DAT_005922b0, the span the Dasas tab compresses into
+    return { ...t, text: [JSON.stringify({ birth: r.birth, label: r.label, periodDays: r.end - r.start })] };
   },
 };

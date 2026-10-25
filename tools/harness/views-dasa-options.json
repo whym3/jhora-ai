@@ -1,0 +1,41 @@
+{
+ "_comment": "Nakshatra dasa options per slot (ini arrays of 25, CurrentState): NakshatraDasaStartPoint (seed: 0 Moon, 1 Utpanna, 2 Kshema, 3 Aadhaana, 4 Lagna, 5 Maandi, 6 Gulika, 7 Sookshma TriSphuta, 8 Sun ...), NakshatraDasaShift, NaksDasaADMethodPreference (0..5), AntiZodiacalDasa (Vimsottari). capture.py --ini replaces every line of an array key, so one run sets one slot (Vimsottari 0, Ashtottari 1, Yogini 3, Dwisaptati 4, Dwadasottari 6, Shashtihayani 11); tests/nakshatraOptions.test.ts checks the dasa of that slot. Restore the copy's jhcore/jhora.ini afterwards. Output: golden/jhora-dasa-options/<variant>/.",
+ "tabs": [
+  {
+   "top": "Dasas",
+   "sub": "Nakshatra dasas",
+   "copies": {
+    "dasa": 32972,
+    "dasa_dates": 33236
+   },
+   "modes": [
+    [
+     "Vimsottari",
+     32846
+    ],
+    [
+     "Ashtottari",
+     32854
+    ],
+    [
+     "Yogini",
+     32848
+    ],
+    [
+     "Dwisaptati sama",
+     32855
+    ],
+    [
+     "Dwadasottari",
+     32857
+    ],
+    [
+     "Shashtihayani",
+     32862
+    ]
+   ],
+   "dasa_levels": true,
+   "dasa_level_rows": 1
+  }
+ ]
+}

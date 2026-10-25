@@ -1,6 +1,8 @@
 // Miscellany > Angular Return (CAngRetFormView, dialog 2061): two bodies, before/after,
 // date, time and zone; "Find Angular Return Chart" replaces the natal chart by the
-// chart where the angle between the bodies equals the natal angle.
+// chart where the angle between the bodies equals the natal angle. Its dasa buttons
+// (1014 Vimsottari, 1017 Narayana, 1018 Tithi Ashtottari, 1023 Yoga Vimsottari) show
+// those dasas compressed into the return's period (end - start, DAT_005922b0).
 import { useEffect, useState } from 'react';
 import type { ChartSpec } from '../../engine/protocol';
 import type { BirthData } from '../../core/jhd';
@@ -8,12 +10,19 @@ import { ANGRET_BODIES, type AngularReturnInput } from '../../core/derived/angul
 import { useJob } from '../EngineProvider';
 import { TableView } from '../widgets/TableView';
 import { updateChart, useActiveDoc } from '../state/store';
+import { DerivedDasaPane, type DasaTable } from './DasasView';
+
+const DASA_BUTTONS: readonly (readonly [string, DasaTable, string])[] = [
+  ['Vimsottari dasa', 'dasas.nakshatra', 'Vimsottari'], ['Narayana dasa', 'dasas.rasi', 'Narayana'],
+  ['Tithi Ashtottari dasa', 'dasas.other', 'Tithi Ashtottari'], ['Yoga Vimsottari dasa', 'dasas.other', 'Yoga Vimsottari'],
+];
 
 const MONTHS = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
 
 export function AngularReturnView({ natalSpec, docId }: { natalSpec: ChartSpec; docId: string; spec: ChartSpec }) {
   const doc = useActiveDoc();
-  const active = doc?.derived?.kind === 'angularReturn' ? (doc.derived.params as unknown as AngularReturnInput) : null;
+  const derived = doc?.derived?.kind === 'angularReturn' ? doc.derived : null;
+  const active = derived ? (derived.params as unknown as AngularReturnInput) : null;
   const [form, setForm] = useState<AngularReturnInput>(() => {
     if (active) return active;
     const d = new Date();
@@ -25,8 +34,8 @@ export function AngularReturnView({ natalSpec, docId }: { natalSpec: ChartSpec; 
 
   useEffect(() => {
     if (!request || !found.data?.text?.[0]) return;
-    const { birth, label } = JSON.parse(found.data.text[0]) as { birth: BirthData; label: string };
-    updateChart(docId, { derived: { kind: 'angularReturn', label, birth, params: { ...request } } });
+    const { birth, label, periodDays } = JSON.parse(found.data.text[0]) as { birth: BirthData; label: string; periodDays?: number };
+    updateChart(docId, { derived: { kind: 'angularReturn', label, birth, params: { ...request, periodDays } } });
     setRequest(null);
   }, [found.data, request, docId]);
 
@@ -82,6 +91,7 @@ export function AngularReturnView({ natalSpec, docId }: { natalSpec: ChartSpec; 
       {found.status === 'loading' && <p className="status">Searching for the angular return…</p>}
       {found.status === 'error' && <p className="error">{found.error}</p>}
       {active && <TableView job={shown} />}
+      {derived && <DerivedDasaPane key={JSON.stringify(derived.birth)} natalSpec={natalSpec} derived={derived} choices={DASA_BUTTONS} />}
     </div>
   );
 }

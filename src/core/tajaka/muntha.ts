@@ -20,7 +20,8 @@
 import type { Chart } from '../chart';
 import { norm360, type Graha } from '../positions';
 import { SIGN_LORD } from '../lords';
-import { ALL_VARGAS, vargaSign, type VargaName } from '../vargas';
+import { vargaSign, type VargaName } from '../vargas';
+import { vargaSpec } from '../vargaOptions';
 import type { TajakaPeriod } from './annual';
 
 export type MunthaBase = 'Lagna' | 'Sun' | 'Moon';
@@ -42,7 +43,7 @@ export interface Muntha {
 
 export function muntha(natal: Chart, period: TajakaPeriod, preference = natal.ini.MunthaPreference, base: MunthaBase = 'Lagna'): Muntha {
   const baseLon = natalLon(natal, base);
-  const signOf = (b: Graha | 'Lagna', v: VargaName) => vargaSign(natalLon(natal, b), ALL_VARGAS[v]);
+  const signOf = (b: Graha | 'Lagna', v: VargaName) => vargaSign(natalLon(natal, b), vargaSpec(v, natal.ini));
 
   if (preference === 0) {
     const raw = baseLon + 30 * period.startYears;
