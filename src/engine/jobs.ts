@@ -3,15 +3,7 @@
 import type { Chart } from '../core/chart';
 import type { Sweph } from '../sweph';
 import type { Period } from '../core/dasas/vimsottari';
-import { narayanaDasa } from '../core/dasas/narayana';
-import { OTHER_DASAS, RASI_DASAS, type TajakaDasaSeed } from '../core/dasas/registry';
 import { dasaClock } from '../core/dasas/time';
-import { buildDasa } from '../core/dasas/build';
-import { compressDasa, DERIVED_KIND_CODE, NAKSHATRA_SLOTS, slotClock, YEAR_DEFINITION_NAMES, type DasaTableId } from '../core/dasas/yearDefinition';
-import { computeChart } from '../core/chart';
-import type { BirthData } from '../core/jhd';
-import { muntha } from '../core/tajaka/muntha';
-import { angularReturn, type AngularReturnInput } from '../core/derived/angularReturn';
 import { antarDasaText, formatDasaTime, mahaDasaText, periodLabel } from '../core/dasas/format';
 import { GRAHAS } from '../core/positions';
 import { formatLongitude, formatVargaLongitude, NAK28, nakshatra28Of, NAKSHATRAS, signOf, SIGNS } from '../core/zodiac';
@@ -35,7 +27,7 @@ import { SEVEN } from '../core/relations';
 import { findYogas, giversText, YOGA_MODES } from '../core/yogas';
 import { aspectPercent } from '../core/aspects';
 import { birthAt, computeTajakaChart, tajakaWindow, type TajakaSelection, type TajakaVariant } from '../core/tajaka/annual';
-import { muddaDasa, tajakaCompression } from '../core/tajaka/mudda';
+import { muddaDasa } from '../core/tajaka/mudda';
 import { formatSpan, signChange } from '../core/signChange';
 import { compoundRelation } from '../core/relations';
 import { SIGN_LORD } from '../core/lords';
@@ -80,75 +72,6 @@ function dasaTable(chart: Chart, swe: Sweph, title: string, mds: Period[], path:
     rows: list.map((q) => [periodLabel(q), when(q.start), when(q.end)]),
     text: !parent ? mahaDasaText(title, mds, ctx) : path.length === 1 ? antarDasaText(title, parent, ctx) : undefined,
     drill,
-  };
-}
-
-const DASA_DEFAULT: Record<DasaTableId, string> = { 'dasas.nakshatra': 'Vimsottari', 'dasas.rasi': 'Narayana', 'dasas.other': 'Moola' };
-function dasaSystem(table: DasaTableId, params: Record<string, unknown>): string {
-  const s = String(params.system ?? DASA_DEFAULT[table]);
-  const known = table === 'dasas.nakshatra' ? (NAKSHATRA_SLOTS as readonly string[]).includes(s) : s in (table === 'dasas.rasi' ? RASI_DASAS : OTHER_DASAS);
-  return known ? s : DASA_DEFAULT[table];
-}
-
-/** The Dasas tab on a chart whose dasas are not compressed (natal, progressed): YearDefinition[slot] years. */
-function natalDasaJob(table: DasaTableId): TableFn {
-  return (chart, params, swe) => {
-    if (!swe) throw new Error('dasa tables need the ephemeris');
-    const path = (params.path as number[] | undefined) ?? [];
-    const d = buildDasa(chart, table, dasaSystem(table, params), path.length + 1);
-    return dasaTable(chart, swe, d.title, d.periods, path, d.drill, slotClock(swe, chart, d.slot));
-  };
-}
-
-/** The derived chart a doc shows (store.ts DerivedChart), passed to the Dasas jobs as params.derived. */
-export interface DerivedDasaParams {
-  kind: 'tajaka' | 'tithiPravesha' | 'angularReturn' | 'prasna' | 'progression' | 'mundane';
-  label: string;
-  birth: BirthData;
-  /** the form input (Tajaka: selection and variant; others: periodDays = DAT_005922b0) */
-  params: Record<string, unknown>;
-}
-
-/**
- * The Dasas tab with a derived chart shown; the job runs on the NATAL chart (FUN_00408d90):
- *  - progressed charts (kind 4, and the transit kind 3) show the natal chart's dasas,
- *    uncompressed (doc+0x76d00 is pointed back at doc+0x50 around the builder);
- *  - Tajaka (1), Tithi Pravesha (2), mundane / angular return (5) and prasna charts with
- *    "Compress dasas" (6) build every dasa on the derived chart (Tajaka seeds per
- *    build.ts / registry.ts) and compress it into the chart's period (yearDefinition.ts
- *    compressDasa), timed from the derived chart with the compressed year definition.
- */
-function derivedDasaJob(table: DasaTableId) {
-  return async (natal: Chart, params: Record<string, unknown>, swe: Sweph): Promise<Table> => {
-    const d = params.derived as DerivedDasaParams | undefined;
-    if (!d || d.kind === 'progression') return runTable(natal, table, params, swe);
-    const path = (params.path as number[] | undefined) ?? [];
-    const system = dasaSystem(table, params);
-    let chart: Chart, periodDays: number, years: number | undefined;
-    let tajaka: TajakaDasaSeed | undefined;
-    if (d.kind === 'tajaka') {
-      const p = d.params as { selection: TajakaSelection; variant?: TajakaVariant };
-      const t = await computeTajakaChart(swe, natal, p.selection, p.variant ?? 'exact');
-      chart = t.chart;
-      periodDays = t.end - t.start;
-      years = tajakaCompression(swe, t);
-      tajaka = { natal, years: t.period.years, munthaIn: muntha(natal, t.period).signIn };
-    } else {
-      chart = await computeChart(swe, d.birth, natal.ini);
-      periodDays = Number(d.params.periodDays ?? 0);
-      if (d.kind === 'angularReturn' && !periodDays) {
-        const r = angularReturn(swe, natal, d.params as unknown as AngularReturnInput);
-        periodDays = r.end - r.start;
-      }
-    }
-    const compressed = periodDays > 0;
-    const b = buildDasa(chart, table, system, path.length + 1, { compressed, tajaka });
-    if (!compressed) return dasaTable(chart, swe, b.title, b.periods, path, b.drill, slotClock(swe, chart, b.slot));
-    const c = compressDasa(swe, chart, b.slot, b.periods, { periodDays, kindCode: DERIVED_KIND_CODE[d.kind], label: d.label, years });
-    return {
-      ...dasaTable(chart, swe, b.title, c.periods, path, b.drill, c.clock),
-      notes: [`${d.label}: compressed into ${periodDays.toFixed(2)} days = ${c.F.toFixed(4)} years (${YEAR_DEFINITION_NAMES[c.def] ?? c.def}), maha dasa years x ${c.F.toFixed(4)} / ${c.total}`],
-    };
   };
 }
 
@@ -273,12 +196,6 @@ export const TABLES: Record<string, TableFn> = {
     const d = brahmaRudraMaheswara(signOf(p.ascendant), ak, ctx);
     return { headers: ['Special Deity', 'Planet in this chart'], rows: [['Brahma', d.brahma], ['Rudra', d.rudra], ['Maheswara', d.maheswara]] };
   },
-  // Dasas > Nakshatra / Rasi / Other dasas: params.system (a NAKSHATRA_SLOTS / RASI_DASAS / OTHER_DASAS
-  // key), params.path (drill-down indices); timed with the system's YearDefinition slot. A derived chart
-  // (params.derived, see ASYNC_TABLES) is handled by derivedDasaJob.
-  'dasas.nakshatra': natalDasaJob('dasas.nakshatra'),
-  'dasas.rasi': natalDasaJob('dasas.rasi'),
-  'dasas.other': natalDasaJob('dasas.other'),
   // Strengths > Other strengths (menu modes 0..10 of CStrengthsView)
   'strengths.shadbalaSummary': (chart) => shadbalaRows(chart, ['Planet', 'Shadbala', 'In rupas', '% Strength', 'IshtaPhala', 'KashtaPhala'], (b) => [b.total, b.rupas, b.percent, b.ishta, b.kashta]),
   'strengths.shadbalaBreakup': (chart) => shadbalaRows(chart, ['Planet', 'Shadbala Rupas', 'Sthana Bala', 'Kala Bala', 'DigBala', 'Cheshta Bala', 'DrigBala', 'Naisargika Bala'], (b) => [b.rupas, b.sthana, b.kaala, b.dig, b.cheshta, b.drig, b.naisargika]),
@@ -618,10 +535,6 @@ export const ASYNC_TABLES: Record<string, (chart: Chart, params: Record<string, 
     const m = muddaDasa(swe, t, { levels: path.length + 1 });
     return dasaTable(t.chart, swe, m.title, m.periods, path, true, m.clock);
   },
-  // Dasas tab with a derived chart shown (params.derived); without it the TABLES jobs run
-  'dasas.nakshatra': derivedDasaJob('dasas.nakshatra'),
-  'dasas.rasi': derivedDasaJob('dasas.rasi'),
-  'dasas.other': derivedDasaJob('dasas.other'),
   // Derived-chart tabs (src/core/derived): Tithi Pravesha, Mundane, Miscellany sub-tabs
   ...TP_JOBS,
   ...MUNDANE_JOBS,

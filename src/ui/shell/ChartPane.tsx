@@ -239,10 +239,22 @@ function Modal({ title, onClose, children }: { title: string; onClose: () => voi
   );
 }
 
-/** "Aspect table with relationships" (JHora opens it as a separate window). */
+/** "Aspect table with relationships" (JHora opens it as a separate window; its menu 163 sets
+ * AspectValueMax: 33382 = 60, 33383 = 100). */
 function AspectTableDialog({ spec, varga, onClose }: { spec: ChartSpec; varga: VargaName; onClose: () => void }) {
-  const job = useJob({ kind: 'table' as const, chart: spec, table: 'aspects.table', params: { varga } });
-  return <Modal title="Aspect Table with Relationships" onClose={onClose}><TableView job={job} /></Modal>;
+  const max = useStore((s) => s.ini.AspectValueMax);
+  const job = useJob({ kind: 'table' as const, chart: spec, table: 'aspects.table', params: { varga, max } });
+  return (
+    <Modal title="Aspect Table with Relationships" onClose={onClose}>
+      <div className="subview-bar">
+        <select aria-label="Aspect values" value={max} onChange={(e) => setIni({ AspectValueMax: Number(e.target.value) })}>
+          <option value={60}>Aspect values out of 60</option>
+          <option value={100}>Aspect values out of 100</option>
+        </select>
+      </div>
+      <TableView job={job} />
+    </Modal>
+  );
 }
 
 /** 32827 "Show ashtakavarga of this chart": the ashtakavarga view of the slot's chart and varga. */

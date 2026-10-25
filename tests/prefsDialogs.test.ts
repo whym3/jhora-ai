@@ -240,3 +240,21 @@ describe('dialogs render', () => {
     expect(renderToStaticMarkup(createElement(MenuBar))).toContain('Preferences');
   });
 });
+
+describe('Longitudes table lists the Edit-menu special lagna after the 56 bodies', async () => {
+  const { nodeSweph } = await import('./helpers');
+  const { computeChart } = await import('../src/core/chart');
+  const { parseJhd } = await import('../src/core/jhd');
+  const { runTable } = await import('../src/engine/jobs');
+  const { readFileSync } = await import('node:fs');
+  it('appends the special lagna row', async () => {
+    const swe = await nodeSweph();
+    const chart = await computeChart(swe, parseJhd(readFileSync('golden/charts/India.jhd', 'latin1')),
+      { SpecialLagnaOn: 1, SpecialLagnaPlanet: 1, SpecialLagnaSpeedFactor: 5 } as never);
+    const rows = runTable(chart, 'basics.longitudes', {}, swe).rows;
+    const u = chart.userPoints ?? [];
+    expect(u.length).toBe(1);
+    expect(rows.at(-1)![0].trim()).toBe(u[0].name);
+    expect(rows.length).toBe(runTable(await computeChart(swe, chart.birth), 'basics.longitudes', {}, swe).rows.length + 1);
+  });
+});

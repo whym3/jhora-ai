@@ -78,18 +78,24 @@ export function keyInfoVargaLongitude(chart: Chart, body: { name: string; lon: n
 function longitudeRows(chart: Chart, varga: VargaName): string[][] {
   const karaka = new Map(charaKarakas(chart.positions).map((k) => [k.planet as string, k.karaka]));
   const V = vargasOf(chart.ini);
-  return keyInfoBodies(chart).map((b) => {
+  const row = (label: string, lon: number, nav: number) => {
+    // SiderealNaksharasInTropical: nakshatra bytes from lon + FUN_0049a930's offset (chart.ts)
+    const nl = chart.nakshatraShift ? (((lon + chart.nakshatraShift) % 360) + 360) % 360 : lon;
+    return [label, formatLongitude(lon), NAKSHATRAS[nakshatraOf(nl)], String(padaOf(nl)), SIGNS[signOf(lon)], SIGNS[signOf(nav)]];
+  };
+  const rows = keyInfoBodies(chart).map((b) => {
     const lon = varga === 'D1' ? b.lon : keyInfoVargaLongitude(chart, b, varga);
     // navamsa: JHora's per-body D-9 sign (varnadas recomputed in the D-9 like any varga)
     const nav = varga === 'D1' ? keyInfoVargaLongitude(chart, b, 'D9') : vargaLongitude(lon, V.D9);
     const k = karaka.get(b.name);
-    // SiderealNaksharasInTropical: nakshatra bytes from lon + FUN_0049a930's offset (chart.ts)
-    const nl = chart.nakshatraShift ? (((lon + chart.nakshatraShift) % 360) + 360) % 360 : lon;
-    return [
-      `${b.name}${b.retrograde ? ' (R) ' : ' '}${k ? `- ${k}` : ''}`, formatLongitude(lon), NAKSHATRAS[nakshatraOf(nl)],
-      String(padaOf(nl)), SIGNS[signOf(lon)], SIGNS[signOf(nav)],
-    ];
+    return row(`${b.name}${b.retrograde ? ' (R) ' : ' '}${k ? `- ${k}` : ''}`, lon, nav);
   });
+  // the Edit menu's special point and planetary special lagna follow the 56 bodies (bodies 103/104)
+  for (const u of chart.userPoints ?? []) {
+    const lon = varga === 'D1' ? u.lon : vargaLongitude(u.lon, V[varga]);
+    rows.push(row(`${u.name} `, lon, vargaLongitude(u.lon, V.D9)));
+  }
+  return rows;
 }
 
 /** FUN_0042f800: "%.3f deg", "%.3f deg/day", "%.4f AU", "%.6f AU/day" of swe_calc for Sun..Rahu. */

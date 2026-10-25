@@ -11,8 +11,7 @@
 //                                       (Patyayini) of the entry chart compressed into its period
 //   33009 Bhava/Chalit chakra, the varga items, MKS, relationships, highlights, aspect table, copy
 //   and view items as in menu 103.
-// The dasa views of the port do not offer 32892 yet: this window is ready for them
-// (EntryChartWindow). The Patyayini compression uses the mundane-chart rule (kind 5,
+// The dasa pane's "Entry chart of this period" opens it (DasasView.tsx). The Patyayini compression uses the mundane-chart rule (kind 5,
 // DERIVED_KIND_CODE) - JHora's year definition for CEntryDasaView is not traced.
 import { useMemo, useState } from 'react';
 import type { ChartSpec } from '../../engine/protocol';

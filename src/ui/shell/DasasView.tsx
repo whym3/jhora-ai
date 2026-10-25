@@ -11,11 +11,12 @@ import type { ChartSpec } from '../../engine/protocol';
 import { useJob } from '../EngineProvider';
 import { TableView } from '../widgets/TableView';
 import { OTHER_DASAS, RASI_DASAS } from '../../core/dasas/registry';
-import { setIni, updateChart, useActiveDoc, useStore, type DerivedChart } from '../state/store';
+import { setIni, useActiveDoc, useStore, type DerivedChart } from '../state/store';
 import { applyYearDefinition, dasaSlot, YEAR_DEFINITION_NAMES, YEAR_MENU } from '../../core/dasas/yearDefinition';
 import { DASA_LEVEL, datesOnlyLines } from '../../core/dasas/format';
 import { overridesKey, setCycle, setDasaSession, useDasaSession } from './dasaSession';
 import { DasaOptionsDialog, hasDasaOptions, TajakaSeedDialog } from './DasaOptions';
+import { EntryChartWindow } from './EntryChart';
 
 /** Nakshatra dasa systems in JHora's menu order. */
 export const NAKSHATRA_DASA_SYSTEMS = [
@@ -80,6 +81,8 @@ function DasaPane({ spec, table, systems }: { spec: ChartSpec; table: DasaTable;
   const [command, setCommand] = useState<Command>(null);
   const [message, setMessage] = useState<string[] | null>(null);
   const [transit, setTransit] = useState<Command>(null);
+  // 32892 opens a separate entry-chart window (CEntryChartView) on the period's chart, as JHora does
+  const [entry, setEntry] = useState<{ birth: DerivedChart['birth']; label: string; periodDays: number } | null>(null);
   const slot = dasaSlot(table, system);
   const shown = doc?.derived?.birth ?? doc?.birth ?? spec.birth;
   const ov = session.overrides[overridesKey(shown, slot)];
@@ -112,9 +115,8 @@ function DasaPane({ spec, table, systems }: { spec: ChartSpec; table: DasaTable;
       pendingRow.current = r.index;
       setPath(r.path);
       setMessage(t.rows.map((x) => `${x[0]}: ${x[1]}  ${x[2]} - ${x[3]}`));
-    } else if (command.job === 'dasas.entry' && doc) {
-      const r = JSON.parse(t.text![0]) as { birth: DerivedChart['birth']; label: string; periodDays: number };
-      updateChart(doc.id, { derived: { kind: 'entry', label: r.label, birth: r.birth, params: { periodDays: r.periodDays } } });
+    } else if (command.job === 'dasas.entry') {
+      setEntry(JSON.parse(t.text![0]) as { birth: DerivedChart['birth']; label: string; periodDays: number });
     } else {
       setMessage(t.text ?? t.rows.map((x) => x.join(' ')));
     }
@@ -165,6 +167,7 @@ function DasaPane({ spec, table, systems }: { spec: ChartSpec; table: DasaTable;
         <button onClick={() => setDialog('tajakaSeed')}>Dasa seed settings for Tajaka…</button>
         <label><input type="checkbox" checked={!!ini.DasaSeshamInMundaneCharts} onChange={(e) => setIni({ DasaSeshamInMundaneCharts: e.target.checked ? 1 : 0 })} /> Use dasa sesham in compressed mundane dasas</label>
       </div>
+      {entry && <EntryChartWindow natalSpec={{ ...spec, birth: doc?.birth ?? spec.birth }} birth={entry.birth} label={entry.label} periodDays={entry.periodDays} onClose={() => setEntry(null)} />}
       {dialog === 'options' && <DasaOptionsDialog slot={slot} birth={shown} onClose={() => setDialog(null)} />}
       {dialog === 'tajakaSeed' && <TajakaSeedDialog slot={slot} category={category} onClose={() => setDialog(null)} />}
       {dialog === 'locate' && <LocateDialog tz={shown.tzHours} onCancel={() => setDialog(null)}
