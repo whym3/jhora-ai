@@ -24,7 +24,6 @@ function KalanalaSvg({ k, name }: { k: Kalanala; name: string }) {
       {k.lines.map(([x0, y0, x1, y1], i) => <line key={i} x1={X(x0)} y1={Y(y0)} x2={X(x1)} y2={Y(y1)} className="ck-strong" />)}
       {k.slots.map((s) => (
         <g key={s.pos}>
-          {s.pos === 0 && <rect x={X(s.x) - 2} y={Y(s.y) - 1} width={(12 * W) / 144 + 4} height={15} rx={3} className="kl-base" />}
           <text x={X(s.x + 6)} y={Y(s.y) + 11} textAnchor="middle" className="kl-star">{NAK28[s.star]}</text>
           {s.labels.map((l, i) => (
             <text key={i} x={X(l.x)} y={Y(l.y) + 10} className={`${bodyClass(l.body)} kl-body`}>{l.text}</text>
