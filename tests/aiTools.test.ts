@@ -22,9 +22,14 @@ import { ASPECTS, ECLIPSE_TYPES as MUNDANE_ECLIPSES, MUNDANE_BODIES, TRANSIT_DIV
 import { PRASNA_LIMIT } from '../src/core/derived/prasna';
 import { CHAKRAS as CHAKRA_IDS, CHAKRA_BODY_SETS as CHAKRA_SETS } from '../src/core/chakras/chakraJobs';
 import { ARGALA_REFS as JAIMINI_REFS } from '../src/core/jaiminiJobs';
+import { CHARA_SEEDS } from '../src/core/dasas/charaParasara';
+import { KALACHAKRA_METHODS } from '../src/core/dasas/kalachakra';
+import { BAR_GRAPH_SETS } from '../src/core/strengthGraphs';
+import { RASI_VARGA_SLOTS } from '../src/ui/shell/DasaOptions';
+import { RASI_SLOTS } from '../src/core/dasas/yearDefinition';
 import {
   AI_TOOLS, AV_MODES, ECLIPSE_TYPES, MUNDANE_ASPECTS, MUNDANE_DIVISIONS, NAKSHATRA_DASA_SYSTEMS, PRASNA_LIMITS, PROGRESSION_DASAS, PROGRESSION_VARGAS,
-  STATIONARY_PLANETS, ARGALA_REFS, CHAKRAS, CHAKRA_BODY_SETS, OTHER_DASA_SYSTEMS, RASI_DASA_SYSTEMS, SAHAMA_NAMES, SIGN_NAMES, TRANSIT_MODES, VARGAS, YOGA_CATEGORIES,
+  STATIONARY_PLANETS, ARGALA_REFS, CHAKRAS, CHARA_SEED_NAMES, KALACHAKRA_METHOD_NAMES, RASI_DASA_CHART_NAMES, STRENGTH_GRAPH_SETS, CHAKRA_BODY_SETS, OTHER_DASA_SYSTEMS, RASI_DASA_SYSTEMS, SAHAMA_NAMES, SIGN_NAMES, TRANSIT_MODES, VARGAS, YOGA_CATEGORIES,
   anthropicStrictSchema, localDateString, openaiStrictSchema, runTool, stripNulls, validateInput, type ToolContext,
 } from '../src/ai/tools';
 import { SYSTEM_PROMPT, chartContext } from '../src/ai/systemPrompt';
@@ -77,6 +82,12 @@ describe('AI tools', async () => {
     expect(CHAKRAS).toEqual([...CHAKRA_IDS]);
     expect(CHAKRA_BODY_SETS).toEqual([...CHAKRA_SETS]);
     expect(ARGALA_REFS).toEqual(JAIMINI_REFS);
+    expect(CHARA_SEED_NAMES).toEqual([...CHARA_SEEDS]);
+    expect(KALACHAKRA_METHOD_NAMES).toEqual([...KALACHAKRA_METHODS]);
+    expect(STRENGTH_GRAPH_SETS).toEqual([...BAR_GRAPH_SETS]);
+    expect(RASI_DASA_CHART_NAMES).toContain('D-9');
+    // the dasas the rasi_dasa_chart option names are the four that share DAT_008a4b94
+    expect([...RASI_VARGA_SLOTS].map((slot) => RASI_SLOTS[slot - 25]).sort()).toEqual(['Chara (Parasara)', 'Drigdasa', 'Trikona', 'Yogardha']);
   });
 
   it('the system prompt names every tool', () => {
@@ -182,6 +193,21 @@ describe('AI tools', async () => {
     ['get_transit_correlation', { date: { year: 1890, month: 6, day: 1 } }, /\nJupiter \| 19 Cp 51' 25.71"[^\n]*Lagna in D-9/],
     ['get_month_ephemeris', { year: 1890, month: 6 }, /\nEntry of planets into signs \| Sun \| enters \| Gemini \| 13 \| 16:17:50\n/],
     ['get_month_ephemeris', { year: 1890, month: 6, kind: 'panchanga' }, /Monthly Panchanga: 1890-6/],
+    // dasa options (session settings of JHora's Options dialogs) and the remaining pane commands
+    ['get_dasa', { system: 'Chara (Parasara)' }, /^Chara dasa of D-1 \(a popular phalita rasi dasa\)\nMaha Dasas \| Start \| End\nSg /],
+    ['get_dasa', { system: 'Chara (Parasara)', options: { chara_seed: 'Moon' } }, /^Chara dasa of D-1 [^\n]*\nMaha Dasas \| Start \| End\nVi /],
+    ['get_dasa', { system: 'Trikona', options: { rasi_dasa_chart: 'D-9' } }, /^Trikona Dasa of D-9[\s\S]*\d{4}-\d\d-\d\d/],
+    ['get_dasa', { system: 'Kalachakra', options: { kalachakra_method: KALACHAKRA_METHODS[1] } }, /\d{4}-\d\d-\d\d/],
+    ['get_running_dasa', { system: 'Chara (Parasara)', options: { chara_seed: 'Sun' }, date: { year: 1890, month: 6, day: 1 }, levels: 2 }, /level 2:/],
+    ['get_progressed_chart', { method: 'nakshatra_dasa', dasa: 'Kalachakra', kalachakra_method: KALACHAKRA_METHODS[0], date: { year: 2010, month: 6, day: 15 } }, /^Prog \(NaksDasa\)/],
+    ['get_dasa_details', { system: 'Narayana', kind: 'about' }, /^Quick Info on Narayana Dasa\nNarayana dasa is a general purpose rasi dasa/],
+    ['get_dasa_details', { system: 'Vimsottari', kind: 'sum_of_longitudes', path: [2, 1] }, /^Sum of Longitudes\nSum of longitudes of planets upto selected level is /],
+    ['get_supported_yogas', { category: 'Pancha maha purusha yogas' }, /Ruchaka/],
+    ['get_strength_graphs', { set: 'Shadbala' }, /\|/],
+    ['get_nisheka_chart', {}, /LONGITUDES[\s\S]*COMPRESSED VIMSOTTARI/],
+    ['get_prasna_chart', { system: '108', number: 37, dasa_years: 1 }, /COMPRESSED VIMSOTTARI[\s\S]*compressed into 365\.\d\d days/],
+    ['get_mundane_chart', { event: 'solar_new_year', date: { year: 2026, month: 1, day: 1 } }, /COMPRESSED VIMSOTTARI/],
+    ['get_calculations_report', {}, /Vimsottari/],
   ];
   for (const [name, input, want] of cases) {
     it(`${name} ${JSON.stringify(input)}`, async () => {
@@ -203,6 +229,10 @@ describe('AI tools', async () => {
     expect((await runTool(ctx, 'get_prasna_chart', { system: '108', number: 200 })).text).toMatch(/1-108/);
     expect((await runTool(ctx, 'get_mundane_chart', { event: 'aspect', body: 'Sun' })).text).toMatch(/needs `body` and `body2`/);
     expect((await runTool(ctx, 'get_angular_return', { body: 'Sun', body2: 'Sun' })).text).toMatch(/must differ/);
+    expect((await runTool(ctx, 'get_dasa', { system: 'Vimsottari', options: { chara_seed: 'Moon' } })).text).toMatch(/Chara \(Parasara\) only/);
+    expect((await runTool(ctx, 'get_dasa', { system: 'Narayana', options: { rasi_dasa_chart: 'D-9' } })).text).toMatch(/Drigdasa, Trikona/);
+    expect((await runTool(ctx, 'get_progressed_chart', { method: 'solar', kalachakra_method: KALACHAKRA_METHODS[0] })).text).toMatch(/dasa Kalachakra only/);
+    expect((await runTool(ctx, 'get_dasa_details', { system: 'Vimsottari', kind: 'sum_of_longitudes' })).text).toMatch(/at least one/);
   });
 
   it('the range tool refuses rather than truncates', async () => {

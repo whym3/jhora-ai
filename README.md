@@ -114,25 +114,26 @@ To refresh them from an installation, run `JHORA_DIR="/path/to/Jagannatha Hora" 
 
 The **AI Astrologer** button opens a chat about the chart on screen, using Claude or OpenAI with your own API key. Keys are stored only in your browser and sent only to the provider you choose.
 
-The model doesn't guess positions or dates: it reads the chart through 31 tools that run the app's calculations. These cover:
+The model doesn't guess positions or dates: it reads the chart through 36 tools that run the app's calculations. These cover:
 - positions, divisional charts, and houses and KP
-- dasas, with each period's entry chart and the slow planets' transits through it
-- strengths, yogas and Parasara aspects
+- dasas, with each period's entry chart and the slow planets' transits through it, JHora's dasa options (Chara seed from Lagna, Sun or Moon, the varga of Drigdasa, Trikona, Chara and Yogardha, the Kalachakra method), Quick Info and sum of longitudes
+- strengths (with the bar-graph numbers), yogas present and every supported yoga's definition, and Parasara aspects
 - Jaimini rasi drishti and argala
 - transits, exact ingress and conjunction moments, and natal points struck in transit
 - chakras: Sarvatobhadra (vedhas on the special nakshatras), Kota, Sudarsana, Surya and Chandra Kalanala, Shoola, Tripataki
 - monthly planetary movements, ephemeris and panchanga
 - Tajaka, Tithi Pravesha and angular-return charts
-- progressed charts (solar, Bhrigu, Sudarsana chakra, nakshatra dasa)
-- prasna (108, KP 249, Nadi)
+- progressed charts (solar, Bhrigu, Sudarsana chakra, nakshatra dasa, including Kalachakra with any calculation method) and the Nisheka (conception) chart
+- prasna (108, KP 249, Nadi), and mundane and prasna charts with their compressed Vimsottari
 - mundane event charts (ingresses, aspects, stations, eclipses, solar and lunar new years and months, Ardra Pravesha)
 - marriage matching and panchanga
+- JHora's "Copy basic / complete calculations" report
 
 Its readings work through three layers (Parashari with Jaimini, KP, and Bhrigu Nandi Nadi) and quote the data behind each statement. The prompt and tools are in [src/ai](src/ai).
 
 ## MCP server
 
-The same 31 tools are available to any [Model Context Protocol](https://modelcontextprotocol.io) client, alongside the server's own chart and consultation tools. Each conversation runs as a consultation:
+The same 36 tools are available to any [Model Context Protocol](https://modelcontextprotocol.io) client, alongside the server's own chart and consultation tools. Each conversation runs as a consultation:
 
 1. **The chart.** The assistant offers your saved charts, or takes birth details and saves them for next time.
 2. **Past events.** It asks for a few dated events from your life and checks them against the dasas running at the time, to test the chart and birth time.

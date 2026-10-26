@@ -13,6 +13,10 @@ import { SAHAMAS } from '../core/sahamas';
 import { NATAL_REFS as TRANSIT_REFS, VARGA_ORDER, transitBirth, type TransitDate } from '../core/transits/common';
 import { NATAL_SEARCH_BODIES as SEARCH_BODIES, type SpecialSearch } from '../core/transits/search';
 import { CALENDAR_ITEMS as TRANSIT_CALENDAR_ITEMS } from '../core/transits/calendar';
+import { CHARA_SEEDS } from '../core/dasas/charaParasara';
+import { KALACHAKRA_METHODS } from '../core/dasas/kalachakra';
+import { JHORA_VARGA_NAMES, JHORA_VARGAS } from '../core/dasas/rasiCommon';
+import { BAR_GRAPH_SETS } from '../core/strengthGraphs';
 
 export interface ToolContext {
   /** runs a job in the calculation worker */
@@ -86,6 +90,14 @@ const CORRELATION_METHODS: Record<string, number> = { aspect_strength: 0, named_
 /** Panchanga menu copies by tool name -> job. */
 const MONTH_TABLES: Record<string, string> = { planetary_movements: 'panchanga.movements', daily_ephemeris: 'panchanga.ephemeris', panchanga: 'panchanga.monthly' };
 
+/** Dasa options of the dasa pane's Options dialogs (session settings in JHora, so per call here). */
+export const CHARA_SEED_NAMES: string[] = [...CHARA_SEEDS];
+export const KALACHAKRA_METHOD_NAMES: string[] = [...KALACHAKRA_METHODS];
+/** The varga picker of Drigdasa / Trikona / Chara (Parasara) / Yogardha (JHora varga indices). */
+const RASI_DASA_CHARTS = JHORA_VARGA_NAMES.flatMap((n, k) => (JHORA_VARGAS[k] ? [[n, k] as const] : []));
+export const RASI_DASA_CHART_NAMES: string[] = RASI_DASA_CHARTS.map(([n]) => n);
+export const STRENGTH_GRAPH_SETS: string[] = [...BAR_GRAPH_SETS];
+
 /** Strength and special-point tables by name -> engine job. */
 const STRENGTHS: Record<string, string> = {
   shadbala: 'strengths.shadbalaSummary', shadbala_breakup: 'strengths.shadbalaBreakup', sthana_bala: 'strengths.sthana',
@@ -129,6 +141,14 @@ async function derivedChartText(ctx: ToolContext, found: Table): Promise<string>
   return [...(found.caption ? [] : [label]), tableText({ ...found, text: undefined }), '', named, '', 'LONGITUDES', tableText(lons)].join('\n');
 }
 
+/** The Vimsottari of a found derived chart compressed into its period (`*.dasa` job), or [] without a period. */
+async function compressedDasaText(ctx: ToolContext, found: Table, job: string, path: number[] = []): Promise<string[]> {
+  const { birth, label, periodDays } = JSON.parse(found.text![0]) as { birth: ChartSpec['birth']; label: string; periodDays?: number };
+  if (!periodDays) return [];
+  const t = await table(ctx, job, { birth, label, periodDays, path });
+  return ['', 'COMPRESSED VIMSOTTARI (into the chart\'s period; checked for consistency, not yet against JHora\'s output)', tableText(t)];
+}
+
 // ---------------------------------------------------------------------------
 // Schemas
 
@@ -170,6 +190,32 @@ function dasaJob(system: string): string {
   throw new Error(`unknown dasa system "${system}"`);
 }
 const ALL_DASAS = [...NAKSHATRA_DASA_SYSTEMS, ...RASI_DASA_SYSTEMS, ...OTHER_DASA_SYSTEMS];
+const dasaOptionsSchema = obj({
+  rasi_dasa_chart: { type: 'string', enum: RASI_DASA_CHART_NAMES, description: 'Drigdasa, Trikona, Chara (Parasara) and Yogardha only: the divisional chart the dasa runs in, default D-1' },
+  chara_seed: { type: 'string', enum: CHARA_SEED_NAMES, description: 'Chara (Parasara) only: the dasa seed from the tripod of life (its dasas start from that body\'s sign), default Lagna' },
+  kalachakra_method: { type: 'string', enum: KALACHAKRA_METHOD_NAMES, description: 'Kalachakra only: the calculation method, default the chart\'s setting (JHora\'s default is Raghavacharya\'s)' },
+}, [], 'options of JHora\'s dasa Options dialog; omit for the defaults');
+
+interface DasaCall { spec: ChartSpec; params: Json }
+/** The spec and job params of a dasa tool call with its `options` (ini override or session params). */
+function dasaCall(ctx: ToolContext, system: string, options: unknown): DasaCall {
+  const o = (options ?? {}) as { rasi_dasa_chart?: string; chara_seed?: string; kalachakra_method?: string };
+  const params: Json = {};
+  let spec = ctx.spec;
+  if (o.rasi_dasa_chart !== undefined) {
+    if (!['Drigdasa', 'Trikona', 'Chara (Parasara)', 'Yogardha'].includes(system)) throw new Error('`rasi_dasa_chart` applies to Drigdasa, Trikona, Chara (Parasara) and Yogardha only');
+    params.rasiVarga = RASI_DASA_CHARTS.find(([n]) => n === o.rasi_dasa_chart)![1];
+  }
+  if (o.chara_seed !== undefined) {
+    if (system !== 'Chara (Parasara)') throw new Error('`chara_seed` applies to Chara (Parasara) only');
+    params.charaSeed = CHARA_SEED_NAMES.indexOf(o.chara_seed);
+  }
+  if (o.kalachakra_method !== undefined) {
+    if (system !== 'Kalachakra') throw new Error('`kalachakra_method` applies to Kalachakra only');
+    spec = { ...spec, ini: { ...spec.ini, KalachakraDasaCalculation: KALACHAKRA_METHOD_NAMES.indexOf(o.kalachakra_method) } };
+  }
+  return { spec, params };
+}
 /** JHora's varga index (the transit jobs' combos) of a varga name. */
 const vargaIndex = (v: unknown) => Math.max(0, VARGA_ORDER.indexOf(String(v ?? 'D1') as (typeof VARGA_ORDER)[number]));
 
@@ -228,12 +274,12 @@ function relationshipText(t: Table): string[] {
 }
 
 /** Dasa periods of `system` overlapping [from, to) down to `level`, as an indented list. */
-async function periodsInRange(ctx: ToolContext, system: string, level: number, from: number, to: number): Promise<string[]> {
+async function periodsInRange(ctx: ToolContext, system: string, level: number, from: number, to: number, call: DasaCall): Promise<string[]> {
   const job = dasaJob(system);
   const LIMIT = 300;
   let count = 0;
   const walk = async (path: number[], depth: number): Promise<string[]> => {
-    const t = await table(ctx, job, { system, path });
+    const t = await table(ctx, job, { system, path, ...call.params }, call.spec);
     const kept = t.rows.map((r, k) => ({ r, k })).filter(({ r }) => {
       const s = periodDay(r[1] ?? ''), e = periodDay(r[2] ?? '');
       return s !== null && e !== null && s < to && e > from;
@@ -297,11 +343,12 @@ export const AI_TOOLS: AiTool[] = [
     parameters: obj({
       system: { type: 'string', enum: ALL_DASAS },
       path: pathSchema('0-based row indices to drill into, at most 5'),
+      options: dasaOptionsSchema,
     }, ['system']),
-    examples: [{ system: 'Vimsottari' }, { system: 'Vimsottari', path: [2, 0] }, { system: 'Narayana', path: [0] }],
+    examples: [{ system: 'Vimsottari' }, { system: 'Vimsottari', path: [2, 0] }, { system: 'Narayana', path: [0] }, { system: 'Chara (Parasara)', options: { chara_seed: 'Moon' } }],
     run: async (ctx, i) => {
-      const system = String(i.system);
-      return tableText(await table(ctx, dasaJob(system), { system, path: (i.path as number[] | undefined) ?? [] }));
+      const system = String(i.system), call = dasaCall(ctx, system, i.options);
+      return tableText(await table(ctx, dasaJob(system), { system, path: (i.path as number[] | undefined) ?? [], ...call.params }, call.spec));
     },
   },
   {
@@ -311,17 +358,18 @@ export const AI_TOOLS: AiTool[] = [
       system: { type: 'string', enum: ALL_DASAS },
       date: dateSchema('the date to look up, default today'),
       levels: { type: 'integer', minimum: 1, maximum: 5, description: '1-5, default 3' },
+      options: dasaOptionsSchema,
     }, ['system']),
     examples: [{ system: 'Vimsottari' }, { system: 'Yogini', date: { year: 2027, month: 3, day: 15 }, levels: 2 }],
     run: async (ctx, i) => {
-      const system = String(i.system), job = dasaJob(system);
+      const system = String(i.system), job = dasaJob(system), call = dasaCall(ctx, system, i.options);
       const date = (i.date as DateInput | undefined) ?? localDate();
       const at = dayNumber(date);
       const levels = Number(i.levels ?? 3);
       const path: number[] = [];
       const out = [`${system} running on ${dateText(date)}:`];
       for (let level = 0; level < levels; level++) {
-        const t = await table(ctx, job, { system, path });
+        const t = await table(ctx, job, { system, path, ...call.params }, call.spec);
         const k = t.rows.findIndex((r) => {
           const s = periodDay(r[1] ?? ''), e = periodDay(r[2] ?? '');
           return s !== null && e !== null && s <= at && at < e;
@@ -342,13 +390,14 @@ export const AI_TOOLS: AiTool[] = [
       from: dateSchema('start of the range'),
       to: dateSchema('end of the range'),
       level: { type: 'integer', minimum: 1, maximum: 3, description: '1-3, default 2' },
+      options: dasaOptionsSchema,
     }, ['system', 'from', 'to']),
     examples: [{ system: 'Vimsottari', from: { year: 2026, month: 1, day: 1 }, to: { year: 2030, month: 12, day: 31 }, level: 3 }],
     run: async (ctx, i) => {
       const system = String(i.system), from = i.from as DateInput, to = i.to as DateInput;
       const level = Number(i.level ?? 2);
       if (dayNumber(to) <= dayNumber(from)) throw new Error('`to` must be after `from`');
-      const lines = await periodsInRange(ctx, system, level, dayNumber(from), dayNumber(to));
+      const lines = await periodsInRange(ctx, system, level, dayNumber(from), dayNumber(to), dasaCall(ctx, system, i.options));
       return [`${system} periods overlapping ${dateText(from)} - ${dateText(to)} (down to level ${level}):`, ...(lines.length ? lines : ['none: the range is outside the listed periods'])].join('\n');
     },
   },
@@ -372,6 +421,12 @@ export const AI_TOOLS: AiTool[] = [
       const t = await table(ctx, 'strengths.yogas', { mode: i.category ?? YOGA_CATEGORIES[0], varga: i.varga ?? 'D1' });
       return t.rows.length ? tableText(t) : 'No yogas of this category in this varga.';
     },
+  },
+  {
+    name: 'get_supported_yogas',
+    description: 'Every yoga JHora checks (Strengths > "List of supported yogas"), present in the chart or not: index and type, name, brief definition and the results ascribed to it. Use it to see how a yoga is defined; get_yogas lists the ones the chart has.',
+    parameters: obj({ category: { type: 'string', enum: YOGA_CATEGORIES, description: 'default "All yogas"' } }),
+    run: async (ctx, i) => tableText(await table(ctx, 'strengths.yogaList', { mode: i.category ?? YOGA_CATEGORIES[0] })),
   },
   {
     name: 'get_aspects',
@@ -541,14 +596,18 @@ export const AI_TOOLS: AiTool[] = [
       varga: { type: 'string', enum: PROGRESSION_VARGAS, description: 'divisional chart the progression runs in, default Rasi' },
       seed_body: { type: 'string', enum: BODIES, description: 'nakshatra_dasa: seed body of the dasa, default Moon' },
       dasa: { type: 'string', enum: PROGRESSION_DASAS, description: 'nakshatra_dasa: the dasa followed, default Vimsottari' },
+      kalachakra_method: { type: 'string', enum: KALACHAKRA_METHOD_NAMES, description: 'nakshatra_dasa with dasa Kalachakra: its calculation method, default the chart\'s setting' },
     }, ['method']),
     examples: [{ method: 'solar' }, { method: 'nakshatra_dasa', date: { year: 2027, month: 1, day: 1 }, seed_body: 'Moon', dasa: 'Vimsottari' }],
     run: async (ctx, i) => {
       const d = transitDate(i.date as DateInput | undefined);
+      if (i.kalachakra_method !== undefined && !(i.method === 'nakshatra_dasa' && i.dasa === 'Kalachakra')) throw new Error('`kalachakra_method` applies to method nakshatra_dasa with dasa Kalachakra only');
+      const spec = i.kalachakra_method === undefined ? ctx.spec
+        : { ...ctx.spec, ini: { ...ctx.spec.ini, KalachakraDasaCalculation: KALACHAKRA_METHOD_NAMES.indexOf(String(i.kalachakra_method)) } };
       const found = await table(ctx, 'progression.find', {
         kind: PROGRESSION_METHODS[String(i.method)], varga: Math.max(0, PROGRESSION_VARGAS.indexOf(String(i.varga ?? 'Rasi'))),
         body: BODIES.indexOf(String(i.seed_body ?? 'Moon')), dasa: Math.max(0, PROGRESSION_DASAS.indexOf(String(i.dasa ?? 'Vimsottari'))), ...d,
-      });
+      }, spec);
       return derivedChartText(ctx, found);
     },
   },
@@ -559,13 +618,19 @@ export const AI_TOOLS: AiTool[] = [
       system: { type: 'string', enum: Object.keys(PRASNA_LIMITS) },
       number: { type: 'integer', minimum: 1, maximum: 1800, description: 'the number given by the querent, within the system\'s range' },
       replace_lagna: { type: 'boolean', description: 'replace the lagna with the Prasna Lagna, default per the chart settings (no)' },
+      dasa_years: { type: 'integer', minimum: 0, maximum: 120, description: 'with dasa_days: the span the question covers; Vimsottari of the Prasna chart is then compressed into it (JHora\'s "compress dasa into")' },
+      dasa_days: { type: 'integer', minimum: 0, maximum: 366, description: 'days added to dasa_years' },
+      dasa_path: pathSchema('0-based row indices into the compressed Vimsottari'),
     }, ['system', 'number']),
     examples: [{ system: '249', number: 100 }, { system: '108', number: 37, replace_lagna: true }],
     run: async (ctx, i) => {
       const system = String(i.system), n = Number(i.number);
       if (n > PRASNA_LIMITS[system]) throw new Error(`number must be 1-${PRASNA_LIMITS[system]} for system "${system}"`);
-      const found = await table(ctx, 'prasna.find', { mode: system, n, ...(i.replace_lagna === undefined ? {} : { replace: Boolean(i.replace_lagna) }) });
-      return derivedChartText(ctx, found);
+      const years = Number(i.dasa_years ?? 0), days = Number(i.dasa_days ?? 0);
+      const compress = years || days ? { years, days } : undefined;
+      if (!compress && i.dasa_path) throw new Error('`dasa_path` needs dasa_years or dasa_days');
+      const found = await table(ctx, 'prasna.find', { mode: system, n, ...(i.replace_lagna === undefined ? {} : { replace: Boolean(i.replace_lagna) }), ...(compress ? { compress } : {}) });
+      return [await derivedChartText(ctx, found), ...(await compressedDasaText(ctx, found, 'prasna.dasa', i.dasa_path as number[] | undefined))].join('\n');
     },
   },
   {
@@ -582,6 +647,7 @@ export const AI_TOOLS: AiTool[] = [
       planet: { type: 'string', enum: STATIONARY_PLANETS, description: 'station: the planet (Rahu/Ketu need true nodes)' },
       eclipse_type: { type: 'string', enum: ECLIPSE_TYPES, description: 'eclipse: default Lunar; "Local Solar" is for the chart\'s place' },
       eclipse_maximum: { type: 'boolean', description: 'eclipse: cast the chart for the maximum instead of the start, default false' },
+      dasa_path: pathSchema('0-based row indices into the Vimsottari compressed into the chart\'s period (listed when the event has a period)'),
     }, ['event']),
     examples: [{ event: 'eclipse', eclipse_type: 'Lunar', date: { year: 2027, month: 1, day: 1 } }, { event: 'aspect', body: 'Jupiter', body2: 'Saturn', aspect: 'Conjunction (yuti)', direction: 'before' }],
     run: async (ctx, i) => {
@@ -601,7 +667,8 @@ export const AI_TOOLS: AiTool[] = [
         params.body = STATIONARY_PLANETS.indexOf(String(i.planet));
       }
       if (mode === 'eclipse') Object.assign(params, { type: Math.max(0, ECLIPSE_TYPES.indexOf(String(i.eclipse_type ?? 'Lunar'))), maximum: Boolean(i.eclipse_maximum) });
-      return derivedChartText(ctx, await table(ctx, 'mundane.find', params, spec));
+      const found = await table(ctx, 'mundane.find', params, spec);
+      return [await derivedChartText(ctx, found), ...(await compressedDasaText(ctx, found, 'mundane.dasa', i.dasa_path as number[] | undefined))].join('\n');
     },
   },
   {
@@ -672,12 +739,14 @@ export const AI_TOOLS: AiTool[] = [
     parameters: obj({
       system: { type: 'string', enum: ALL_DASAS },
       path: { type: 'array', items: { type: 'integer', minimum: 0 }, maxItems: 5, description: '0-based row indices down to the period (at least one)' },
+      options: dasaOptionsSchema,
     }, ['system', 'path']),
     examples: [{ system: 'Vimsottari', path: [5, 2] }],
     run: async (ctx, i) => {
       const system = String(i.system);
       if (!(i.path as number[]).length) throw new Error('`path` must pick a period: at least one index');
-      return derivedChartText(ctx, await table(ctx, 'dasas.entry', { table: dasaJob(system), system, path: i.path }));
+      const call = dasaCall(ctx, system, i.options);
+      return derivedChartText(ctx, await table(ctx, 'dasas.entry', { table: dasaJob(system), system, path: i.path, ...call.params }, call.spec));
     },
   },
   {
@@ -686,12 +755,14 @@ export const AI_TOOLS: AiTool[] = [
     parameters: obj({
       system: { type: 'string', enum: ALL_DASAS },
       path: { type: 'array', items: { type: 'integer', minimum: 0 }, maxItems: 5, description: '0-based row indices down to the period (at least one)' },
+      options: dasaOptionsSchema,
     }, ['system', 'path']),
     examples: [{ system: 'Narayana', path: [3] }],
     run: async (ctx, i) => {
       const system = String(i.system);
       if (!(i.path as number[]).length) throw new Error('`path` must pick a period: at least one index');
-      return tableText(await table(ctx, 'dasas.transit', { table: dasaJob(system), system, path: i.path }));
+      const call = dasaCall(ctx, system, i.options);
+      return tableText(await table(ctx, 'dasas.transit', { table: dasaJob(system), system, path: i.path, ...call.params }, call.spec));
     },
   },
   {
@@ -716,6 +787,46 @@ export const AI_TOOLS: AiTool[] = [
     }, ['year', 'month']),
     examples: [{ year: 2027, month: 4 }, { year: 2027, month: 4, kind: 'panchanga' }],
     run: async (ctx, i) => tableText(await table(ctx, MONTH_TABLES[String(i.kind ?? 'planetary_movements')], { year: Number(i.year), month: Number(i.month) })),
+  },
+  {
+    name: 'get_nisheka_chart',
+    description: 'Nisheka (Aadhana, conception) chart as JHora finds it (Modes > "Go to Nisheka/Aadhana Chakra"): the conception moment before birth, the gestation period, its Key Info and longitudes, and Vimsottari compressed into the gestation period (`dasa_path` drills into it like get_dasa).',
+    parameters: obj({ dasa_path: pathSchema('0-based row indices into the compressed Vimsottari') }),
+    run: async (ctx, i) => {
+      const found = await table(ctx, 'derived.nisheka');
+      return [await derivedChartText(ctx, found), ...(await compressedDasaText(ctx, found, 'mundane.dasa', i.dasa_path as number[] | undefined))].join('\n');
+    },
+  },
+  {
+    name: 'get_dasa_details',
+    description: 'More about a dasa system or one of its periods, from the dasa pane: "about" (JHora\'s Quick Info: what the dasa is and when to use it) or "sum_of_longitudes" (the sum of the longitudes of the period lords down to the period picked by `path`, as in get_dasa; graha dasas only).',
+    parameters: obj({
+      system: { type: 'string', enum: ALL_DASAS },
+      kind: { type: 'string', enum: ['about', 'sum_of_longitudes'] },
+      path: pathSchema('sum_of_longitudes: 0-based row indices down to the period (at least one)'),
+      options: dasaOptionsSchema,
+    }, ['system', 'kind']),
+    examples: [{ system: 'Narayana', kind: 'about' }, { system: 'Vimsottari', kind: 'sum_of_longitudes', path: [2, 4] }],
+    run: async (ctx, i) => {
+      const system = String(i.system), call = dasaCall(ctx, system, i.options);
+      const path = (i.path as number[] | undefined) ?? [];
+      if (i.kind === 'sum_of_longitudes' && !path.length) throw new Error('`path` must pick a period: at least one index');
+      const job = i.kind === 'about' ? 'dasas.quickInfo' : 'dasas.sumLongitudes';
+      const t = await table(ctx, job, { table: dasaJob(system), system, path, ...call.params }, call.spec);
+      return [t.caption, ...t.rows.map((r) => r[0])].filter(Boolean).join('\n');
+    },
+  },
+  {
+    name: 'get_strength_graphs',
+    description: 'The numbers behind JHora\'s strength bar graphs (Strengths > Bar graphs), one row per graph: "Summary" (the main strengths side by side), "Bhava balas", "Shadbala" (its components), "Vimsopaka balas", "Vaiseshikamsas" or "Rashmis". `varga` is the ashtakavarga chart of the Summary set.',
+    parameters: obj({ set: { type: 'string', enum: STRENGTH_GRAPH_SETS, description: 'default Summary' }, varga: vargaSchema('ashtakavarga chart') }),
+    run: async (ctx, i) => tableText(await table(ctx, 'strengths.barGraphs', { set: Math.max(0, STRENGTH_GRAPH_SETS.indexOf(String(i.set ?? 'Summary'))), varga: i.varga ?? 'D1' })),
+  },
+  {
+    name: 'get_calculations_report',
+    description: 'JHora\'s "Copy basic calculations" (Key Info, longitudes, the rasi chart and Vimsottari) or "Copy complete calculations" (also chara karakas, ashtakavarga and sodhya pindas, shadbala with ishta/kashta, the other strengths, all 23 divisional charts and six dasas) as one text. Long: prefer the specific tools; use this for a full record of the chart.',
+    parameters: obj({ kind: { type: 'string', enum: ['basic', 'complete'], description: 'default basic' } }),
+    run: async (ctx, i) => (await ctx.request({ kind: 'text', chart: ctx.spec, cmd: i.kind === 'complete' ? 32983 : 32982 })) as string,
   },
   {
     name: 'get_panchanga',
