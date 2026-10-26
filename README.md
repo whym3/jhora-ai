@@ -6,34 +6,37 @@ Ask Claude (or Gemini in Antigravity, or GPT in the web app) about your chart, a
 
 The project also includes the full Jagannatha Hora program as a web app that runs in your browser.
 
-## Get a reading in 10 minutes
+## Get a reading in a few minutes
 
-You need a Mac or a Windows PC. Nothing here costs money apart from your Claude plan.
+You need a Mac or a Windows PC and an AI app that can work on your computer: the **Claude desktop app** ([claude.ai/download](https://claude.ai/download)) with its **Code** tab, Google's **Antigravity**, or Cursor.
 
-**1. Install the Claude desktop app** from [claude.ai/download](https://claude.ai/download), open it and sign in.
+**1. Let your AI app set it up.** Paste this into it (in the Claude desktop app, use the **Code** tab):
 
-**2. Install Node.js** from [nodejs.org](https://nodejs.org) (choose the **LTS** version and click through the installer). On a Mac with Homebrew, `brew install node` works too.
-
-**3. Download this project:** click [**Download ZIP**](https://github.com/whym3/jhora-ai/archive/refs/heads/master.zip) and unzip it somewhere you'll keep it, such as your Documents folder. (Or `git clone https://github.com/whym3/jhora-ai.git`.)
-
-**4. Run two commands.** Open a terminal in the unzipped folder:
-- **Mac:** open the **Terminal** app, type `cd ` (with a space), drag the folder onto the window, and press Return.
-- **Windows:** open the folder in File Explorer, right-click inside it, and choose **Open in Terminal**.
-
-Then run:
-
-```bash
-npm install
-npm run setup:claude
+```text
+Set up the Jagannatha Hora astrologer for me: clone https://github.com/whym3/jhora-ai
+into my Documents folder, install Node.js 22 or newer if it isn't installed, and run
+npm install. Then connect its local MCP server to this app: for the Claude desktop app
+run npm run setup:claude; for any other app run npm run setup:print and add the
+printed "jhora" server to this app's MCP settings. Tell me when to restart the app.
 ```
 
-The first command downloads what the project needs (a minute or two). The second builds the astrologer and adds it to Claude's settings, keeping anything else you had there.
+It downloads the project, installs what it needs and connects the astrologer, keeping any other settings you have.
 
-**5. Restart Claude.** Quit it completely (on a Mac, **Claude → Quit Claude**; on Windows, right-click the icon in the taskbar's notification area and choose **Quit**), then open it again.
+**2. Restart the app** when it tells you to. Quit it completely (on a Mac, **Claude → Quit Claude**; on Windows, right-click its icon in the taskbar's notification area and choose **Quit**), then open it again.
 
-**6. Start a new chat** and say:
+**3. Start a new chat** and say:
 
 > I'd like a Vedic astrology consultation.
+
+<details>
+<summary>Setting it up by hand instead</summary>
+
+1. Install [Node.js](https://nodejs.org) (the **LTS** version).
+2. Download the project ([**Download ZIP**](https://github.com/whym3/jhora-ai/archive/refs/heads/master.zip)) and unzip it somewhere you'll keep it.
+3. Open a terminal in that folder. On a Mac, open **Terminal**, type `cd ` (with a space), drag the folder onto the window and press Return. On Windows, right-click inside the folder in File Explorer and choose **Open in Terminal**.
+4. Run `npm install`, then `npm run setup:claude` for the Claude desktop app, or `npm run setup:print` for another app (paste the printed `"jhora"` entry into its MCP settings).
+
+</details>
 
 ### What happens in a consultation
 
@@ -57,12 +60,12 @@ Smaller or faster models can mix up chart details or skip steps of the method.
 
 **Privacy.** Every calculation runs on your computer. Your conversation goes to the AI's provider (Anthropic, Google or OpenAI) like any other chat with it. Saved charts stay in the project's `charts` folder.
 
-**If Claude doesn't offer the tools,** open **Settings → Developer** in Claude: "jhora" should be listed as running. If you moved or renamed the project folder, run `npm run setup:claude` again. On Windows, if the terminal says `npm` is not recognised, close it and open a new one after installing Node.js.
+**If the app doesn't offer the tools,** check its MCP settings (in Claude, **Settings → Developer**): "jhora" should be listed as running. If you moved or renamed the project folder, ask the app to connect it again.
 
 ### Gemini, ChatGPT and other apps
 
 - **ChatGPT:** the ChatGPT desktop app can't yet use a tool running on your own computer, only ones hosted on the internet. Use the AI astrologer built into the web app instead, with your OpenAI API key (see [The web app](#the-web-app) and [AI astrologer](#ai-astrologer)).
-- **Gemini, in Antigravity:** Google's [Antigravity](https://antigravity.google) app runs the astrologer with Gemini models. After steps 2–4 above (with `npm run setup:print` in place of `npm run setup:claude`), the terminal shows a block of settings with this computer's paths filled in. In Antigravity, open the **…** menu in the agent panel, choose **MCP Servers → Manage MCP Servers → View raw config**, and paste the `"jhora"` entry inside `"mcpServers"`. Save, refresh the server list, and start a new conversation with *"I'd like a Vedic astrology consultation."* (Gemini's own desktop app did not give the tools to its model in testing.)
+- **Gemini, in Antigravity:** Google's [Antigravity](https://antigravity.google) app runs the astrologer with Gemini models. Paste the setup prompt above into its agent panel. If the server needs adding by hand, open the **…** menu in the agent panel, choose **MCP Servers → Manage MCP Servers → View raw config**, and paste the `"jhora"` entry that `npm run setup:print` prints inside `"mcpServers"`. (Gemini's own desktop app did not give the tools to its model in testing.)
 - **Claude Code, Cursor and other MCP apps:** see [MCP server](#mcp-server).
 
 ---
