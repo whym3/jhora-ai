@@ -84,7 +84,7 @@ export const PRASNA_JOBS: Record<string, AsyncTableFn> = {
     const plag = prasnaLagna(inp.mode, n, natal.ini.D150Preference);
     const replace = inp.replace ?? natal.ini.ReplaceLagnaInPrasna !== 0;
     const label = PRASNA_LABEL[inp.mode](n);
-    const birth: BirthData = { ...natal.birth, legacy: null, override: replace ? { ascendant: plag } : null };
+    const birth: BirthData = { ...natal.birth, legacy: null, override: replace ? { ascendant: plag, afterBodies: true } : { prasnaLagna: plag } };
     const periodDays = inp.compress ? prasnaSpanDays(inp.compress) : 0;
     const row = (name: string, lon: number) => [name, formatLongitude(lon), NAKSHATRAS[nakshatraOf(lon)], String(padaOf(lon)), SIGNS[signOf(lon)], SIGNS[signOf(vargaLongitude(lon, vargaSpec('D9', natal.ini)))]];
     return {

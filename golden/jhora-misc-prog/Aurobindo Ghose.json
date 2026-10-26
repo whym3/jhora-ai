@@ -1,0 +1,3204 @@
+{
+ "chart": "Aurobindo Ghose.jhd",
+ "window": "Jagannatha Hora - Aurobindo Ghose.jhd",
+ "ini_overrides": {},
+ "views": [
+  {
+   "top": "Basics",
+   "sub": "Key Info",
+   "mode": "Progression: Solar Rasi",
+   "control_id": 59648,
+   "headers": [
+    "Body",
+    "Longitude",
+    "Nakshatra",
+    "Pada",
+    "Rasi",
+    "Navamsa"
+   ],
+   "rows": [
+    [
+     "Lagna ",
+     "26 Sc 53' 21.50\"",
+     "Jye",
+     "4",
+     "Sc",
+     "Pi"
+    ],
+    [
+     "Sun - MK",
+     "25 Cp 18' 55.67\"",
+     "Dhan",
+     "1",
+     "Cp",
+     "Le"
+    ],
+    [
+     "Moon - AK",
+     "29 Ta 40' 59.63\"",
+     "Mrig",
+     "2",
+     "Ta",
+     "Vi"
+    ],
+    [
+     "Mars (R) - PiK",
+     "17 Cn 43' 18.37\"",
+     "Asre",
+     "1",
+     "Cn",
+     "Sg"
+    ],
+    [
+     "Mercury - DK",
+     " 0 Cp 36' 14.52\"",
+     "USha",
+     "2",
+     "Cp",
+     "Cp"
+    ],
+    [
+     "Jupiter (R) - GK",
+     " 5 Cn 00' 29.86\"",
+     "Push",
+     "1",
+     "Cn",
+     "Le"
+    ],
+    [
+     "Venus - AmK",
+     "28 Aq 25' 27.13\"",
+     "PBha",
+     "3",
+     "Aq",
+     "Ge"
+    ],
+    [
+     "Saturn - PK",
+     "10 Ta 58' 58.71\"",
+     "Rohi",
+     "1",
+     "Ta",
+     "Ar"
+    ],
+    [
+     "Rahu - BK",
+     " 4 Li 26' 32.45\"",
+     "Chit",
+     "4",
+     "Li",
+     "Sc"
+    ],
+    [
+     "Ketu ",
+     " 4 Ar 26' 32.45\"",
+     "Aswi",
+     "2",
+     "Ar",
+     "Ta"
+    ],
+    [
+     "Maandi ",
+     "17 Sg 10' 56.01\"",
+     "PSha",
+     "2",
+     "Sg",
+     "Vi"
+    ],
+    [
+     "Gulika ",
+     " 5 Sg 54' 19.22\"",
+     "Mool",
+     "2",
+     "Sg",
+     "Ta"
+    ],
+    [
+     "Bhava Lagna ",
+     "26 Sc 01' 39.59\"",
+     "Jye",
+     "3",
+     "Sc",
+     "Aq"
+    ],
+    [
+     "Hora Lagna ",
+     "27 Vi 35' 17.45\"",
+     "Chit",
+     "2",
+     "Vi",
+     "Vi"
+    ],
+    [
+     "Ghati Lagna ",
+     " 2 Ar 16' 11.02\"",
+     "Aswi",
+     "1",
+     "Ar",
+     "Ar"
+    ],
+    [
+     "Vighati Lagna ",
+     "25 Li 40' 38.88\"",
+     "Visa",
+     "2",
+     "Li",
+     "Ta"
+    ],
+    [
+     "Varnada Lagna ",
+     "26 Ar 53' 21.50\"",
+     "Krit",
+     "1",
+     "Ar",
+     "Le"
+    ],
+    [
+     "Sree Lagna ",
+     "18 Ta 20' 11.62\"",
+     "Rohi",
+     "3",
+     "Ta",
+     "Ge"
+    ],
+    [
+     "Pranapada Lagna ",
+     "26 Li 31' 32.82\"",
+     "Visa",
+     "2",
+     "Li",
+     "Ta"
+    ],
+    [
+     "Indu Lagna ",
+     "29 Vi 40' 59.63\"",
+     "Chit",
+     "2",
+     "Vi",
+     "Vi"
+    ],
+    [
+     "Bhrigu Bindu ",
+     " 2 Aq 03' 46.04\"",
+     "Dhan",
+     "3",
+     "Aq",
+     "Li"
+    ],
+    [
+     "Dhooma ",
+     " 8 Ge 38' 55.67\"",
+     "Ardr",
+     "1",
+     "Ge",
+     "Sg"
+    ],
+    [
+     "Vyatipata ",
+     "21 Cp 21' 04.33\"",
+     "Srav",
+     "4",
+     "Cp",
+     "Cn"
+    ],
+    [
+     "Parivesha ",
+     "21 Cn 21' 04.33\"",
+     "Asre",
+     "2",
+     "Cn",
+     "Cp"
+    ],
+    [
+     "Indra Chapa ",
+     " 8 Sg 38' 55.67\"",
+     "Mool",
+     "3",
+     "Sg",
+     "Ge"
+    ],
+    [
+     "Upaketu ",
+     "25 Sg 18' 55.67\"",
+     "PSha",
+     "4",
+     "Sg",
+     "Sc"
+    ],
+    [
+     "Kaala ",
+     " 5 Le 46' 05.15\"",
+     "Magh",
+     "2",
+     "Le",
+     "Ta"
+    ],
+    [
+     "Mrityu ",
+     "20 Vi 13' 55.73\"",
+     "Hast",
+     "4",
+     "Vi",
+     "Cn"
+    ],
+    [
+     "Artha Prahara ",
+     "12 Li 16' 32.42\"",
+     "Swat",
+     "2",
+     "Li",
+     "Cp"
+    ],
+    [
+     "Yama Ghantaka ",
+     " 3 Sc 44' 33.28\"",
+     "Anu",
+     "1",
+     "Sc",
+     "Le"
+    ],
+    [
+     "Prana Sphuta ",
+     "20 Pi 21' 06.74\"",
+     "Reva",
+     "2",
+     "Pi",
+     "Cp"
+    ],
+    [
+     "Deha Sphuta ",
+     " 3 Ar 22' 16.29\"",
+     "Aswi",
+     "2",
+     "Ar",
+     "Ta"
+    ],
+    [
+     "Mrityu Sphuta ",
+     " 6 Sc 39' 10.18\"",
+     "Anu",
+     "1",
+     "Sc",
+     "Le"
+    ],
+    [
+     "Sookshma TriSphuta ",
+     " 0 Sc 22' 33.21\"",
+     "Visa",
+     "4",
+     "Sc",
+     "Cn"
+    ],
+    [
+     "Tithi Sphuta ",
+     " 4 Le 22' 03.96\"",
+     "Magh",
+     "2",
+     "Le",
+     "Ta"
+    ],
+    [
+     "Yoga Sphuta (Sun-Moon) ",
+     "24 Pi 59' 55.30\"",
+     "Reva",
+     "3",
+     "Pi",
+     "Aq"
+    ],
+    [
+     "Rahu Tithi Sphuta ",
+     " 9 Sg 07' 36.78\"",
+     "Mool",
+     "3",
+     "Sg",
+     "Ge"
+    ],
+    [
+     "Kshetra Sphuta ",
+     "22 Sg 24' 47.86\"",
+     "PSha",
+     "3",
+     "Sg",
+     "Li"
+    ],
+    [
+     "Beeja Sphuta ",
+     "28 Pi 44' 52.66\"",
+     "Reva",
+     "4",
+     "Pi",
+     "Pi"
+    ],
+    [
+     "TriSphuta ",
+     " 2 Li 28' 40.35\"",
+     "Chit",
+     "3",
+     "Li",
+     "Li"
+    ],
+    [
+     "ChatusSphuta ",
+     "27 Cn 47' 36.02\"",
+     "Asre",
+     "4",
+     "Cn",
+     "Pi"
+    ],
+    [
+     "PanchaSphuta ",
+     " 2 Aq 14' 08.48\"",
+     "Dhan",
+     "3",
+     "Aq",
+     "Li"
+    ],
+    [
+     "V2 ",
+     "26 Cn 53' 21.50\"",
+     "Asre",
+     "4",
+     "Cn",
+     "Sc"
+    ],
+    [
+     "V3 ",
+     "26 Le 53' 21.50\"",
+     "UPha",
+     "1",
+     "Le",
+     "Sg"
+    ],
+    [
+     "V4 ",
+     "26 Sc 53' 21.50\"",
+     "Jye",
+     "4",
+     "Sc",
+     "Pi"
+    ],
+    [
+     "V5 ",
+     "26 Sg 53' 21.50\"",
+     "USha",
+     "1",
+     "Sg",
+     "Ar"
+    ],
+    [
+     "V6 ",
+     "26 Pi 53' 21.50\"",
+     "Reva",
+     "4",
+     "Pi",
+     "Cn"
+    ],
+    [
+     "V7 ",
+     "26 Ar 53' 21.50\"",
+     "Krit",
+     "1",
+     "Ar",
+     "Le"
+    ],
+    [
+     "V8 ",
+     "26 Cn 53' 21.50\"",
+     "Asre",
+     "4",
+     "Cn",
+     "Sc"
+    ],
+    [
+     "V9 ",
+     "26 Le 53' 21.50\"",
+     "UPha",
+     "1",
+     "Le",
+     "Sg"
+    ],
+    [
+     "V10 ",
+     "26 Sc 53' 21.50\"",
+     "Jye",
+     "4",
+     "Sc",
+     "Pi"
+    ],
+    [
+     "V11 ",
+     "26 Sg 53' 21.50\"",
+     "USha",
+     "1",
+     "Sg",
+     "Ar"
+    ],
+    [
+     "V12 ",
+     "26 Pi 53' 21.50\"",
+     "Reva",
+     "4",
+     "Pi",
+     "Cn"
+    ],
+    [
+     "Kunda ",
+     "18 Cn 02' 01.88\"",
+     "Asre",
+     "1",
+     "Cn",
+     "Sg"
+    ],
+    [
+     "Yoga Sphuta ",
+     "28 Ge 19' 55.30\"",
+     "Puna",
+     "3",
+     "Ge",
+     "Ge"
+    ],
+    [
+     "Avayoga Sphuta ",
+     " 4 Cp 59' 55.30\"",
+     "USha",
+     "3",
+     "Cp",
+     "Aq"
+    ]
+   ]
+  },
+  {
+   "top": "Basics",
+   "sub": "Key Info",
+   "mode": "Progression: Solar D-10",
+   "control_id": 59648,
+   "headers": [
+    "Body",
+    "Longitude",
+    "Nakshatra",
+    "Pada",
+    "Rasi",
+    "Navamsa"
+   ],
+   "rows": [
+    [
+     "Lagna ",
+     " 8 Sc 06' 02.72\"",
+     "Anu",
+     "2",
+     "Sc",
+     "Vi"
+    ],
+    [
+     "Sun - AmK",
+     "23 Vi 50' 07.38\"",
+     "Chit",
+     "1",
+     "Vi",
+     "Le"
+    ],
+    [
+     "Moon - DK",
+     " 3 Ta 33' 16.95\"",
+     "Krit",
+     "3",
+     "Ta",
+     "Aq"
+    ],
+    [
+     "Mars - PiK",
+     " 4 Sg 36' 06.63\"",
+     "Mool",
+     "2",
+     "Sg",
+     "Ta"
+    ],
+    [
+     "Mercury - GK",
+     " 3 Li 48' 09.29\"",
+     "Chit",
+     "4",
+     "Li",
+     "Sc"
+    ],
+    [
+     "Jupiter - AK",
+     "27 Le 21' 44.42\"",
+     "UPha",
+     "1",
+     "Le",
+     "Sg"
+    ],
+    [
+     "Venus - BK",
+     "21 Le 13' 01.85\"",
+     "PPha",
+     "3",
+     "Le",
+     "Li"
+    ],
+    [
+     "Saturn - PK",
+     " 4 Cp 04' 34.19\"",
+     "USha",
+     "3",
+     "Cp",
+     "Aq"
+    ],
+    [
+     "Rahu - MK",
+     "24 Ar 22' 02.05\"",
+     "Bhar",
+     "4",
+     "Ar",
+     "Sc"
+    ],
+    [
+     "Ketu ",
+     "24 Li 22' 02.05\"",
+     "Visa",
+     "2",
+     "Li",
+     "Ta"
+    ],
+    [
+     "Maandi ",
+     "12 Sc 33' 37.59\"",
+     "Anu",
+     "3",
+     "Sc",
+     "Li"
+    ],
+    [
+     "Gulika ",
+     " 2 Sc 58' 05.17\"",
+     "Visa",
+     "4",
+     "Sc",
+     "Cn"
+    ],
+    [
+     "Bhava Lagna ",
+     "13 Sc 13' 07.16\"",
+     "Anu",
+     "3",
+     "Sc",
+     "Li"
+    ],
+    [
+     "Hora Lagna ",
+     " 2 Cp 44' 16.53\"",
+     "USha",
+     "2",
+     "Cp",
+     "Cp"
+    ],
+    [
+     "Ghati Lagna ",
+     " 1 Ge 17' 44.66\"",
+     "Mrig",
+     "3",
+     "Ge",
+     "Li"
+    ],
+    [
+     "Vighati Lagna ",
+     "24 Ge 05' 05.29\"",
+     "Puna",
+     "2",
+     "Ge",
+     "Ta"
+    ],
+    [
+     "Varnada Lagna ",
+     " 8 Le 06' 02.72\"",
+     "Magh",
+     "3",
+     "Le",
+     "Ge"
+    ],
+    [
+     "Sree Lagna ",
+     "14 Ta 04' 40.43\"",
+     "Rohi",
+     "2",
+     "Ta",
+     "Ta"
+    ],
+    [
+     "Pranapada Lagna ",
+     "24 Li 13' 14.88\"",
+     "Visa",
+     "2",
+     "Li",
+     "Ta"
+    ],
+    [
+     "Indu Lagna ",
+     " 3 Vi 33' 16.95\"",
+     "UPha",
+     "3",
+     "Vi",
+     "Aq"
+    ],
+    [
+     "Bhrigu Bindu ",
+     "28 Ar 57' 39.50\"",
+     "Krit",
+     "1",
+     "Ar",
+     "Sg"
+    ],
+    [
+     "Dhooma ",
+     " 7 Aq 10' 07.38\"",
+     "Sata",
+     "1",
+     "Aq",
+     "Sg"
+    ],
+    [
+     "Vyatipata ",
+     "22 Ta 49' 52.62\"",
+     "Rohi",
+     "4",
+     "Ta",
+     "Cn"
+    ],
+    [
+     "Parivesha ",
+     "22 Sc 49' 52.62\"",
+     "Jye",
+     "2",
+     "Sc",
+     "Cp"
+    ],
+    [
+     "Indra Chapa ",
+     " 7 Le 10' 07.38\"",
+     "Magh",
+     "3",
+     "Le",
+     "Ge"
+    ],
+    [
+     "Upaketu ",
+     "23 Le 50' 07.38\"",
+     "PPha",
+     "4",
+     "Le",
+     "Sc"
+    ],
+    [
+     "Kaala ",
+     "22 Sg 22' 40.43\"",
+     "PSha",
+     "3",
+     "Sg",
+     "Li"
+    ],
+    [
+     "Mrityu ",
+     "11 Aq 06' 26.61\"",
+     "Sata",
+     "2",
+     "Aq",
+     "Cp"
+    ],
+    [
+     "Artha Prahara ",
+     " 9 Pi 43' 41.51\"",
+     "UBha",
+     "2",
+     "Pi",
+     "Vi"
+    ],
+    [
+     "Yama Ghantaka ",
+     " 3 Li 41' 40.19\"",
+     "Chit",
+     "4",
+     "Li",
+     "Sc"
+    ],
+    [
+     "Prana Sphuta ",
+     "13 Sc 28' 18.78\"",
+     "Anu",
+     "4",
+     "Sc",
+     "Sc"
+    ],
+    [
+     "Deha Sphuta ",
+     " 1 Le 24' 20.79\"",
+     "Magh",
+     "1",
+     "Le",
+     "Ar"
+    ],
+    [
+     "Mrityu Sphuta ",
+     "14 Sc 36' 43.58\"",
+     "Anu",
+     "4",
+     "Sc",
+     "Sc"
+    ],
+    [
+     "Sookshma TriSphuta ",
+     "29 Li 29' 23.14\"",
+     "Visa",
+     "3",
+     "Li",
+     "Ge"
+    ],
+    [
+     "Tithi Sphuta ",
+     " 9 Sc 43' 09.58\"",
+     "Anu",
+     "2",
+     "Sc",
+     "Vi"
+    ],
+    [
+     "Yoga Sphuta (Sun-Moon) ",
+     "27 Li 23' 24.33\"",
+     "Visa",
+     "3",
+     "Li",
+     "Ge"
+    ],
+    [
+     "Rahu Tithi Sphuta ",
+     " 0 Sc 31' 54.68\"",
+     "Visa",
+     "4",
+     "Sc",
+     "Cn"
+    ],
+    [
+     "Kshetra Sphuta ",
+     " 5 Ge 31' 08.00\"",
+     "Mrig",
+     "4",
+     "Ge",
+     "Sc"
+    ],
+    [
+     "Beeja Sphuta ",
+     "12 Cn 24' 53.65\"",
+     "Push",
+     "3",
+     "Cn",
+     "Li"
+    ],
+    [
+     "TriSphuta ",
+     "14 Cn 37' 24.84\"",
+     "Push",
+     "4",
+     "Cn",
+     "Sc"
+    ],
+    [
+     "ChatusSphuta ",
+     " 8 Cp 27' 32.22\"",
+     "USha",
+     "4",
+     "Cp",
+     "Pi"
+    ],
+    [
+     "PanchaSphuta ",
+     " 2 Aq 49' 34.27\"",
+     "Dhan",
+     "3",
+     "Aq",
+     "Li"
+    ],
+    [
+     "V2 ",
+     " 8 Sc 06' 02.72\"",
+     "Anu",
+     "2",
+     "Sc",
+     "Vi"
+    ],
+    [
+     "V3 ",
+     " 8 Sg 06' 02.72\"",
+     "Mool",
+     "3",
+     "Sg",
+     "Li"
+    ],
+    [
+     "V4 ",
+     " 8 Pi 06' 02.72\"",
+     "UBha",
+     "2",
+     "Pi",
+     "Cp"
+    ],
+    [
+     "V5 ",
+     " 8 Ar 06' 02.72\"",
+     "Aswi",
+     "3",
+     "Ar",
+     "Aq"
+    ],
+    [
+     "V6 ",
+     " 8 Cn 06' 02.72\"",
+     "Push",
+     "2",
+     "Cn",
+     "Ta"
+    ],
+    [
+     "V7 ",
+     " 8 Le 06' 02.72\"",
+     "Magh",
+     "3",
+     "Le",
+     "Ge"
+    ],
+    [
+     "V8 ",
+     " 8 Sc 06' 02.72\"",
+     "Anu",
+     "2",
+     "Sc",
+     "Vi"
+    ],
+    [
+     "V9 ",
+     " 8 Sg 06' 02.72\"",
+     "Mool",
+     "3",
+     "Sg",
+     "Li"
+    ],
+    [
+     "V10 ",
+     " 8 Pi 06' 02.72\"",
+     "UBha",
+     "2",
+     "Pi",
+     "Cp"
+    ],
+    [
+     "V11 ",
+     " 8 Ar 06' 02.72\"",
+     "Aswi",
+     "3",
+     "Ar",
+     "Aq"
+    ],
+    [
+     "V12 ",
+     " 8 Cn 06' 02.72\"",
+     "Push",
+     "2",
+     "Cn",
+     "Ta"
+    ],
+    [
+     "Kunda ",
+     "26 Ar 09' 40.40\"",
+     "Bhar",
+     "4",
+     "Ar",
+     "Sc"
+    ],
+    [
+     "Yoga Sphuta ",
+     " 0 Aq 43' 24.33\"",
+     "Dhan",
+     "3",
+     "Aq",
+     "Li"
+    ],
+    [
+     "Avayoga Sphuta ",
+     " 7 Le 23' 24.33\"",
+     "Magh",
+     "3",
+     "Le",
+     "Ge"
+    ]
+   ]
+  },
+  {
+   "top": "Basics",
+   "sub": "Key Info",
+   "mode": "Progression: Bhrigu Rasi",
+   "control_id": 59648,
+   "headers": [
+    "Body",
+    "Longitude",
+    "Nakshatra",
+    "Pada",
+    "Rasi",
+    "Navamsa"
+   ],
+   "rows": [
+    [
+     "Lagna ",
+     " 0 Vi 00' 59.16\"",
+     "UPha",
+     "2",
+     "Vi",
+     "Cp"
+    ],
+    [
+     "Sun - DK",
+     " 1 Sc 54' 09.21\"",
+     "Visa",
+     "4",
+     "Sc",
+     "Cn"
+    ],
+    [
+     "Moon - AK",
+     "28 Sg 21' 47.53\"",
+     "USha",
+     "1",
+     "Sg",
+     "Sg"
+    ],
+    [
+     "Mars - GK",
+     " 9 Ta 40' 23.85\"",
+     "Krit",
+     "4",
+     "Ta",
+     "Pi"
+    ],
+    [
+     "Mercury - BK",
+     "22 Le 12' 59.55\"",
+     "PPha",
+     "3",
+     "Le",
+     "Li"
+    ],
+    [
+     "Jupiter - MK",
+     "19 Pi 26' 10.70\"",
+     "Reva",
+     "1",
+     "Pi",
+     "Sg"
+    ],
+    [
+     "Venus - PiK",
+     "16 Vi 19' 27.02\"",
+     "Hast",
+     "2",
+     "Vi",
+     "Ta"
+    ],
+    [
+     "Saturn - AmK",
+     "27 Cn 30' 09.75\"",
+     "Asre",
+     "4",
+     "Cn",
+     "Pi"
+    ],
+    [
+     "Rahu - PK",
+     "18 Sg 53' 34.05\"",
+     "PSha",
+     "2",
+     "Sg",
+     "Vi"
+    ],
+    [
+     "Ketu ",
+     "18 Ge 53' 34.05\"",
+     "Ardr",
+     "4",
+     "Ge",
+     "Pi"
+    ],
+    [
+     "Maandi ",
+     "11 Vi 39' 27.61\"",
+     "Hast",
+     "1",
+     "Vi",
+     "Ar"
+    ],
+    [
+     "Gulika ",
+     " 0 Vi 02' 46.27\"",
+     "UPha",
+     "2",
+     "Vi",
+     "Cp"
+    ],
+    [
+     "Bhava Lagna ",
+     "10 Vi 03' 51.24\"",
+     "Hast",
+     "1",
+     "Vi",
+     "Ar"
+    ],
+    [
+     "Hora Lagna ",
+     "20 Sg 19' 21.16\"",
+     "PSha",
+     "3",
+     "Sg",
+     "Li"
+    ],
+    [
+     "Ghati Lagna ",
+     "21 Li 05' 50.92\"",
+     "Visa",
+     "1",
+     "Li",
+     "Ar"
+    ],
+    [
+     "Vighati Lagna ",
+     "24 Sg 58' 19.73\"",
+     "PSha",
+     "4",
+     "Sg",
+     "Sc"
+    ],
+    [
+     "Varnada Lagna ",
+     " 0 Aq 00' 59.16\"",
+     "Dhan",
+     "3",
+     "Aq",
+     "Sg"
+    ],
+    [
+     "Sree Lagna ",
+     "18 Sg 21' 01.66\"",
+     "PSha",
+     "2",
+     "Sg",
+     "Vi"
+    ],
+    [
+     "Pranapada Lagna ",
+     "25 Ar 14' 17.70\"",
+     "Bhar",
+     "4",
+     "Ar",
+     "Sc"
+    ],
+    [
+     "Indu Lagna ",
+     " 7 Ar 20' 44.54\"",
+     "Aswi",
+     "3",
+     "Ar",
+     "Ge"
+    ],
+    [
+     "Bhrigu Bindu ",
+     "28 Pi 07' 09.29\"",
+     "Reva",
+     "4",
+     "Pi",
+     "Pi"
+    ],
+    [
+     "Dhooma ",
+     "13 Li 24' 19.28\"",
+     "Swat",
+     "3",
+     "Li",
+     "Aq"
+    ],
+    [
+     "Vyatipata ",
+     "16 Vi 35' 40.72\"",
+     "Hast",
+     "2",
+     "Vi",
+     "Ta"
+    ],
+    [
+     "Parivesha ",
+     "16 Pi 35' 40.72\"",
+     "UBha",
+     "4",
+     "Pi",
+     "Sc"
+    ],
+    [
+     "Indra Chapa ",
+     "13 Ar 24' 19.28\"",
+     "Bhar",
+     "1",
+     "Ar",
+     "Le"
+    ],
+    [
+     "Upaketu ",
+     " 0 Ta 04' 19.28\"",
+     "Krit",
+     "2",
+     "Ta",
+     "Cp"
+    ],
+    [
+     "Kaala ",
+     "27 Li 05' 24.75\"",
+     "Visa",
+     "3",
+     "Li",
+     "Ge"
+    ],
+    [
+     "Mrityu ",
+     "11 Ge 22' 15.37\"",
+     "Ardr",
+     "2",
+     "Ge",
+     "Cp"
+    ],
+    [
+     "Artha Prahara ",
+     " 3 Cn 36' 10.98\"",
+     "Push",
+     "1",
+     "Cn",
+     "Le"
+    ],
+    [
+     "Yama Ghantaka ",
+     "25 Cn 45' 12.83\"",
+     "Asre",
+     "3",
+     "Cn",
+     "Aq"
+    ],
+    [
+     "Prana Sphuta ",
+     " 0 Li 07' 42.06\"",
+     "Chit",
+     "3",
+     "Li",
+     "Li"
+    ],
+    [
+     "Deha Sphuta ",
+     "28 Li 48' 42.56\"",
+     "Visa",
+     "3",
+     "Li",
+     "Ge"
+    ],
+    [
+     "Mrityu Sphuta ",
+     " 0 Ta 23' 43.14\"",
+     "Krit",
+     "2",
+     "Ta",
+     "Cp"
+    ],
+    [
+     "Sookshma TriSphuta ",
+     "29 Ta 20' 07.77\"",
+     "Mrig",
+     "2",
+     "Ta",
+     "Vi"
+    ],
+    [
+     "Tithi Sphuta ",
+     " 7 Ta 16' 25.26\"",
+     "Krit",
+     "4",
+     "Ta",
+     "Pi"
+    ],
+    [
+     "Yoga Sphuta (Sun-Moon) ",
+     " 7 Vi 25' 03.81\"",
+     "UPha",
+     "4",
+     "Vi",
+     "Pi"
+    ],
+    [
+     "Rahu Tithi Sphuta ",
+     "18 Li 49' 14.78\"",
+     "Swat",
+     "4",
+     "Li",
+     "Pi"
+    ],
+    [
+     "Kshetra Sphuta ",
+     "24 Li 43' 53.34\"",
+     "Visa",
+     "2",
+     "Li",
+     "Ta"
+    ],
+    [
+     "Beeja Sphuta ",
+     "14 Le 15' 43.94\"",
+     "PPha",
+     "1",
+     "Le",
+     "Le"
+    ],
+    [
+     "TriSphuta ",
+     " 7 Ta 24' 29.96\"",
+     "Krit",
+     "4",
+     "Ta",
+     "Pi"
+    ],
+    [
+     "ChatusSphuta ",
+     " 7 Cn 28' 49.24\"",
+     "Push",
+     "2",
+     "Cn",
+     "Vi"
+    ],
+    [
+     "PanchaSphuta ",
+     "26 Pi 22' 23.29\"",
+     "Reva",
+     "3",
+     "Pi",
+     "Aq"
+    ],
+    [
+     "V2 ",
+     " 0 Cn 00' 59.16\"",
+     "Puna",
+     "4",
+     "Cn",
+     "Vi"
+    ],
+    [
+     "V3 ",
+     " 0 Li 00' 59.16\"",
+     "Chit",
+     "3",
+     "Li",
+     "Le"
+    ],
+    [
+     "V4 ",
+     " 0 Sc 00' 59.16\"",
+     "Visa",
+     "4",
+     "Sc",
+     "Ta"
+    ],
+    [
+     "V5 ",
+     " 0 Aq 00' 59.16\"",
+     "Dhan",
+     "3",
+     "Aq",
+     "Ar"
+    ],
+    [
+     "V6 ",
+     " 0 Pi 00' 59.16\"",
+     "PBha",
+     "4",
+     "Pi",
+     "Ta"
+    ],
+    [
+     "V7 ",
+     " 0 Aq 00' 59.16\"",
+     "Dhan",
+     "3",
+     "Aq",
+     "Le"
+    ],
+    [
+     "V8 ",
+     " 0 Sc 00' 59.16\"",
+     "Visa",
+     "4",
+     "Sc",
+     "Vi"
+    ],
+    [
+     "V9 ",
+     " 0 Li 00' 59.16\"",
+     "Chit",
+     "3",
+     "Li",
+     "Sg"
+    ],
+    [
+     "V10 ",
+     " 0 Cn 00' 59.16\"",
+     "Puna",
+     "4",
+     "Cn",
+     "Ta"
+    ],
+    [
+     "V11 ",
+     " 0 Aq 00' 59.16\"",
+     "Dhan",
+     "3",
+     "Aq",
+     "Ar"
+    ],
+    [
+     "V12 ",
+     " 0 Pi 00' 59.16\"",
+     "PBha",
+     "4",
+     "Pi",
+     "Ta"
+    ],
+    [
+     "Kunda ",
+     " 1 Cp 19' 51.93\"",
+     "USha",
+     "2",
+     "Cp",
+     "Cp"
+    ],
+    [
+     "Yoga Sphuta ",
+     "10 Sg 45' 03.81\"",
+     "Mool",
+     "4",
+     "Sg",
+     "Cn"
+    ],
+    [
+     "Avayoga Sphuta ",
+     "17 Ge 25' 03.81\"",
+     "Ardr",
+     "4",
+     "Ge",
+     "Pi"
+    ]
+   ]
+  },
+  {
+   "top": "Basics",
+   "sub": "Key Info",
+   "mode": "Progression: NakshatraDasa Rasi Moon Vimsottari",
+   "control_id": 59648,
+   "headers": [
+    "Body",
+    "Longitude",
+    "Nakshatra",
+    "Pada",
+    "Rasi",
+    "Navamsa"
+   ],
+   "rows": [
+    [
+     "Lagna ",
+     "12 Le 03' 59.22\"",
+     "Asre",
+     "3",
+     "Le",
+     "Aq"
+    ],
+    [
+     "Sun - DK",
+     "18 Sc 47' 34.99\"",
+     "Visa",
+     "4",
+     "Sc",
+     "Cn"
+    ],
+    [
+     "Moon - AK",
+     "15 Cp 15' 13.31\"",
+     "USha",
+     "1",
+     "Cp",
+     "Sg"
+    ],
+    [
+     "Mars - GK",
+     "26 Ta 33' 49.63\"",
+     "Krit",
+     "4",
+     "Ta",
+     "Pi"
+    ],
+    [
+     "Mercury - BK",
+     " 9 Vi 06' 25.33\"",
+     "PPha",
+     "3",
+     "Vi",
+     "Li"
+    ],
+    [
+     "Jupiter - MK",
+     " 6 Ar 19' 36.48\"",
+     "Reva",
+     "1",
+     "Ar",
+     "Sg"
+    ],
+    [
+     "Venus - PiK",
+     " 3 Li 12' 52.80\"",
+     "Hast",
+     "2",
+     "Li",
+     "Ta"
+    ],
+    [
+     "Saturn (R) - AmK",
+     "14 Le 23' 35.53\"",
+     "Asre",
+     "4",
+     "Le",
+     "Pi"
+    ],
+    [
+     "Rahu - PK",
+     " 3 Ge 31' 23.49\"",
+     "Rohi",
+     "2",
+     "Ge",
+     "Ta"
+    ],
+    [
+     "Ketu ",
+     " 3 Sg 31' 23.49\"",
+     "Anu",
+     "4",
+     "Sg",
+     "Sc"
+    ],
+    [
+     "Maandi ",
+     "19 Cn 23' 50.92\"",
+     "Puna",
+     "4",
+     "Cn",
+     "Cn"
+    ],
+    [
+     "Gulika ",
+     "10 Cn 08' 33.34\"",
+     "Puna",
+     "1",
+     "Cn",
+     "Ar"
+    ],
+    [
+     "Bhava Lagna ",
+     "10 Le 34' 44.13\"",
+     "Asre",
+     "3",
+     "Le",
+     "Aq"
+    ],
+    [
+     "Hora Lagna ",
+     " 4 Le 52' 32.33\"",
+     "Asre",
+     "1",
+     "Le",
+     "Sg"
+    ],
+    [
+     "Ghati Lagna ",
+     "17 Cn 45' 56.92\"",
+     "Puna",
+     "4",
+     "Cn",
+     "Cn"
+    ],
+    [
+     "Vighati Lagna ",
+     "22 Ar 12' 59.92\"",
+     "Aswi",
+     "2",
+     "Ar",
+     "Ta"
+    ],
+    [
+     "Varnada Lagna ",
+     "12 Sc 03' 59.22\"",
+     "Visa",
+     "2",
+     "Sc",
+     "Sc"
+    ],
+    [
+     "Sree Lagna ",
+     "16 Cp 01' 56.18\"",
+     "USha",
+     "1",
+     "Cp",
+     "Sg"
+    ],
+    [
+     "Pranapada Lagna ",
+     "23 Sg 09' 45.09\"",
+     "Mool",
+     "2",
+     "Sg",
+     "Ta"
+    ],
+    [
+     "Indu Lagna ",
+     "22 Pi 35' 34.55\"",
+     "UBha",
+     "1",
+     "Pi",
+     "Le"
+    ],
+    [
+     "Bhrigu Bindu ",
+     "13 Vi 03' 29.02\"",
+     "PPha",
+     "4",
+     "Vi",
+     "Sc"
+    ],
+    [
+     "Dhooma ",
+     " 0 Cp 33' 41.10\"",
+     "PSha",
+     "1",
+     "Cp",
+     "Le"
+    ],
+    [
+     "Vyatipata ",
+     " 3 Le 13' 10.46\"",
+     "Push",
+     "4",
+     "Le",
+     "Sc"
+    ],
+    [
+     "Parivesha ",
+     " 3 Aq 13' 10.46\"",
+     "Srav",
+     "2",
+     "Aq",
+     "Ta"
+    ],
+    [
+     "Indra Chapa ",
+     " 0 Cn 33' 41.10\"",
+     "Ardr",
+     "3",
+     "Cn",
+     "Aq"
+    ],
+    [
+     "Upaketu ",
+     "17 Cn 13' 41.10\"",
+     "Puna",
+     "4",
+     "Cn",
+     "Cn"
+    ],
+    [
+     "Kaala ",
+     "29 Aq 48' 21.61\"",
+     "Sata",
+     "2",
+     "Aq",
+     "Cp"
+    ],
+    [
+     "Mrityu ",
+     "24 Ar 43' 14.28\"",
+     "Aswi",
+     "3",
+     "Ar",
+     "Ge"
+    ],
+    [
+     "Artha Prahara ",
+     "19 Ta 24' 53.27\"",
+     "Krit",
+     "2",
+     "Ta",
+     "Cp"
+    ],
+    [
+     "Yama Ghantaka ",
+     "11 Ge 07' 38.57\"",
+     "Mrig",
+     "1",
+     "Ge",
+     "Le"
+    ],
+    [
+     "Prana Sphuta ",
+     "16 Aq 01' 20.56\"",
+     "Dhan",
+     "2",
+     "Aq",
+     "Vi"
+    ],
+    [
+     "Deha Sphuta ",
+     "25 Sg 45' 43.55\"",
+     "Mool",
+     "3",
+     "Sg",
+     "Ge"
+    ],
+    [
+     "Mrityu Sphuta ",
+     "29 Pi 59' 34.05\"",
+     "UBha",
+     "3",
+     "Pi",
+     "Li"
+    ],
+    [
+     "Sookshma TriSphuta ",
+     " 7 Li 59' 46.60\"",
+     "Hast",
+     "4",
+     "Li",
+     "Cn"
+    ],
+    [
+     "Tithi Sphuta ",
+     "22 Le 15' 19.24\"",
+     "Magh",
+     "2",
+     "Le",
+     "Ta"
+    ],
+    [
+     "Yoga Sphuta (Sun-Moon) ",
+     "22 Ar 55' 49.87\"",
+     "Aswi",
+     "2",
+     "Ar",
+     "Ta"
+    ],
+    [
+     "Rahu Tithi Sphuta ",
+     " 3 Aq 11' 08.17\"",
+     "Srav",
+     "2",
+     "Aq",
+     "Ta"
+    ],
+    [
+     "Kshetra Sphuta ",
+     "19 Cn 36' 27.57\"",
+     "Puna",
+     "4",
+     "Cn",
+     "Cn"
+    ],
+    [
+     "Beeja Sphuta ",
+     "17 Ar 23' 32.97\"",
+     "Aswi",
+     "1",
+     "Ar",
+     "Ar"
+    ],
+    [
+     "TriSphuta ",
+     "11 Cn 01' 15.56\"",
+     "Puna",
+     "2",
+     "Cn",
+     "Ta"
+    ],
+    [
+     "ChatusSphuta ",
+     "11 Sc 21' 30.88\"",
+     "Visa",
+     "2",
+     "Sc",
+     "Ta"
+    ],
+    [
+     "PanchaSphuta ",
+     "27 Sg 59' 28.59\"",
+     "Mool",
+     "4",
+     "Sg",
+     "Cn"
+    ],
+    [
+     "V2 ",
+     "12 Aq 03' 59.22\"",
+     "Dhan",
+     "1",
+     "Aq",
+     "Sg"
+    ],
+    [
+     "V3 ",
+     "12 Pi 03' 59.22\"",
+     "PBha",
+     "2",
+     "Pi",
+     "Pi"
+    ],
+    [
+     "V4 ",
+     "12 Ge 03' 59.22\"",
+     "Mrig",
+     "1",
+     "Ge",
+     "Ar"
+    ],
+    [
+     "V5 ",
+     "12 Cn 03' 59.22\"",
+     "Puna",
+     "2",
+     "Cn",
+     "Cn"
+    ],
+    [
+     "V6 ",
+     "12 Li 03' 59.22\"",
+     "Chit",
+     "1",
+     "Li",
+     "Le"
+    ],
+    [
+     "V7 ",
+     "12 Sc 03' 59.22\"",
+     "Visa",
+     "2",
+     "Sc",
+     "Sc"
+    ],
+    [
+     "V8 ",
+     "12 Aq 03' 59.22\"",
+     "Dhan",
+     "1",
+     "Aq",
+     "Sg"
+    ],
+    [
+     "V9 ",
+     "12 Pi 03' 59.22\"",
+     "PBha",
+     "2",
+     "Pi",
+     "Pi"
+    ],
+    [
+     "V10 ",
+     "12 Ge 03' 59.22\"",
+     "Mrig",
+     "1",
+     "Ge",
+     "Ar"
+    ],
+    [
+     "V11 ",
+     "12 Cn 03' 59.22\"",
+     "Puna",
+     "2",
+     "Cn",
+     "Cn"
+    ],
+    [
+     "V12 ",
+     "12 Li 03' 59.22\"",
+     "Chit",
+     "1",
+     "Li",
+     "Le"
+    ],
+    [
+     "Kunda ",
+     "16 Pi 08' 34.67\"",
+     "PBha",
+     "3",
+     "Pi",
+     "Ge"
+    ],
+    [
+     "Yoga Sphuta ",
+     "26 Cn 15' 49.87\"",
+     "Push",
+     "2",
+     "Cn",
+     "Vi"
+    ],
+    [
+     "Avayoga Sphuta ",
+     " 2 Aq 55' 49.87\"",
+     "Srav",
+     "2",
+     "Aq",
+     "Ta"
+    ]
+   ]
+  },
+  {
+   "top": "Basics",
+   "sub": "Key Info",
+   "mode": "Progression: NakshatraDasa Navamsa Lagna Yogini",
+   "control_id": 59648,
+   "headers": [
+    "Body",
+    "Longitude",
+    "Nakshatra",
+    "Pada",
+    "Rasi",
+    "Navamsa"
+   ],
+   "rows": [
+    [
+     "Lagna ",
+     " 3 Li 59' 54.12\"",
+     "Asre",
+     "3",
+     "Li",
+     "Aq"
+    ],
+    [
+     "Sun - DK",
+     "10 Cp 43' 29.89\"",
+     "Visa",
+     "4",
+     "Cp",
+     "Cn"
+    ],
+    [
+     "Moon - AK",
+     " 7 Pi 11' 08.21\"",
+     "USha",
+     "1",
+     "Pi",
+     "Sg"
+    ],
+    [
+     "Mars - GK",
+     "18 Cn 29' 44.53\"",
+     "Krit",
+     "4",
+     "Cn",
+     "Pi"
+    ],
+    [
+     "Mercury - BK",
+     " 1 Sc 02' 20.23\"",
+     "PPha",
+     "3",
+     "Sc",
+     "Li"
+    ],
+    [
+     "Jupiter - MK",
+     "28 Ta 15' 31.37\"",
+     "Reva",
+     "1",
+     "Ta",
+     "Sg"
+    ],
+    [
+     "Venus - PiK",
+     "25 Sc 08' 47.69\"",
+     "Hast",
+     "2",
+     "Sc",
+     "Ta"
+    ],
+    [
+     "Saturn (R) - AmK",
+     " 6 Li 19' 30.42\"",
+     "Asre",
+     "4",
+     "Li",
+     "Pi"
+    ],
+    [
+     "Rahu - PK",
+     "25 Cn 27' 18.39\"",
+     "Rohi",
+     "2",
+     "Cn",
+     "Ta"
+    ],
+    [
+     "Ketu ",
+     "25 Cp 27' 18.39\"",
+     "Anu",
+     "4",
+     "Cp",
+     "Sc"
+    ],
+    [
+     "Maandi ",
+     "11 Vi 19' 45.82\"",
+     "Puna",
+     "4",
+     "Vi",
+     "Cn"
+    ],
+    [
+     "Gulika ",
+     " 2 Vi 04' 28.24\"",
+     "Puna",
+     "1",
+     "Vi",
+     "Ar"
+    ],
+    [
+     "Bhava Lagna ",
+     " 2 Li 30' 39.03\"",
+     "Asre",
+     "3",
+     "Li",
+     "Aq"
+    ],
+    [
+     "Hora Lagna ",
+     "26 Vi 48' 27.22\"",
+     "Asre",
+     "1",
+     "Vi",
+     "Sg"
+    ],
+    [
+     "Ghati Lagna ",
+     " 9 Vi 41' 51.82\"",
+     "Puna",
+     "4",
+     "Vi",
+     "Cn"
+    ],
+    [
+     "Vighati Lagna ",
+     "14 Ge 08' 54.82\"",
+     "Aswi",
+     "2",
+     "Ge",
+     "Ta"
+    ],
+    [
+     "Varnada Lagna ",
+     " 3 Cp 59' 54.12\"",
+     "Visa",
+     "2",
+     "Cp",
+     "Sc"
+    ],
+    [
+     "Sree Lagna ",
+     " 7 Pi 57' 51.08\"",
+     "USha",
+     "1",
+     "Pi",
+     "Sg"
+    ],
+    [
+     "Pranapada Lagna ",
+     "15 Aq 05' 39.98\"",
+     "Mool",
+     "2",
+     "Aq",
+     "Ta"
+    ],
+    [
+     "Indu Lagna ",
+     "14 Ta 31' 29.45\"",
+     "UBha",
+     "1",
+     "Ta",
+     "Le"
+    ],
+    [
+     "Bhrigu Bindu ",
+     " 4 Sc 59' 23.92\"",
+     "PPha",
+     "4",
+     "Sc",
+     "Sc"
+    ],
+    [
+     "Dhooma ",
+     "22 Aq 29' 35.99\"",
+     "PSha",
+     "1",
+     "Aq",
+     "Le"
+    ],
+    [
+     "Vyatipata ",
+     "25 Vi 09' 05.36\"",
+     "Push",
+     "4",
+     "Vi",
+     "Sc"
+    ],
+    [
+     "Parivesha ",
+     "25 Pi 09' 05.36\"",
+     "Srav",
+     "2",
+     "Pi",
+     "Ta"
+    ],
+    [
+     "Indra Chapa ",
+     "22 Le 29' 35.99\"",
+     "Ardr",
+     "3",
+     "Le",
+     "Aq"
+    ],
+    [
+     "Upaketu ",
+     " 9 Vi 09' 35.99\"",
+     "Puna",
+     "4",
+     "Vi",
+     "Cn"
+    ],
+    [
+     "Kaala ",
+     "21 Ar 44' 16.51\"",
+     "Sata",
+     "2",
+     "Ar",
+     "Cp"
+    ],
+    [
+     "Mrityu ",
+     "16 Ge 39' 09.18\"",
+     "Aswi",
+     "3",
+     "Ge",
+     "Ge"
+    ],
+    [
+     "Artha Prahara ",
+     "11 Cn 20' 48.17\"",
+     "Krit",
+     "2",
+     "Cn",
+     "Cp"
+    ],
+    [
+     "Yama Ghantaka ",
+     " 3 Le 03' 33.47\"",
+     "Mrig",
+     "1",
+     "Le",
+     "Le"
+    ],
+    [
+     "Prana Sphuta ",
+     " 7 Ar 57' 15.46\"",
+     "Dhan",
+     "2",
+     "Ar",
+     "Vi"
+    ],
+    [
+     "Deha Sphuta ",
+     "17 Aq 41' 38.45\"",
+     "Mool",
+     "3",
+     "Aq",
+     "Ge"
+    ],
+    [
+     "Mrityu Sphuta ",
+     "21 Ta 55' 28.95\"",
+     "UBha",
+     "3",
+     "Ta",
+     "Li"
+    ],
+    [
+     "Sookshma TriSphuta ",
+     "29 Sc 55' 41.50\"",
+     "Hast",
+     "4",
+     "Sc",
+     "Cn"
+    ],
+    [
+     "Tithi Sphuta ",
+     "14 Li 11' 14.13\"",
+     "Magh",
+     "2",
+     "Li",
+     "Ta"
+    ],
+    [
+     "Yoga Sphuta (Sun-Moon) ",
+     "14 Ge 51' 44.77\"",
+     "Aswi",
+     "2",
+     "Ge",
+     "Ta"
+    ],
+    [
+     "Rahu Tithi Sphuta ",
+     "25 Pi 07' 03.07\"",
+     "Srav",
+     "2",
+     "Pi",
+     "Ta"
+    ],
+    [
+     "Kshetra Sphuta ",
+     "11 Vi 32' 22.47\"",
+     "Puna",
+     "4",
+     "Vi",
+     "Cn"
+    ],
+    [
+     "Beeja Sphuta ",
+     " 9 Ge 19' 27.87\"",
+     "Aswi",
+     "1",
+     "Ge",
+     "Ar"
+    ],
+    [
+     "TriSphuta ",
+     " 2 Vi 57' 10.46\"",
+     "Puna",
+     "2",
+     "Vi",
+     "Ta"
+    ],
+    [
+     "ChatusSphuta ",
+     " 3 Cp 17' 25.78\"",
+     "Visa",
+     "2",
+     "Cp",
+     "Ta"
+    ],
+    [
+     "PanchaSphuta ",
+     "19 Aq 55' 23.49\"",
+     "Mool",
+     "4",
+     "Aq",
+     "Cn"
+    ],
+    [
+     "V2 ",
+     " 3 Ar 59' 54.12\"",
+     "Dhan",
+     "1",
+     "Ar",
+     "Sg"
+    ],
+    [
+     "V3 ",
+     " 3 Ta 59' 54.12\"",
+     "PBha",
+     "2",
+     "Ta",
+     "Pi"
+    ],
+    [
+     "V4 ",
+     " 3 Le 59' 54.12\"",
+     "Mrig",
+     "1",
+     "Le",
+     "Ar"
+    ],
+    [
+     "V5 ",
+     " 3 Vi 59' 54.12\"",
+     "Puna",
+     "2",
+     "Vi",
+     "Cn"
+    ],
+    [
+     "V6 ",
+     " 3 Sg 59' 54.12\"",
+     "Chit",
+     "1",
+     "Sg",
+     "Le"
+    ],
+    [
+     "V7 ",
+     " 3 Cp 59' 54.12\"",
+     "Visa",
+     "2",
+     "Cp",
+     "Sc"
+    ],
+    [
+     "V8 ",
+     " 3 Ar 59' 54.12\"",
+     "Dhan",
+     "1",
+     "Ar",
+     "Sg"
+    ],
+    [
+     "V9 ",
+     " 3 Ta 59' 54.12\"",
+     "PBha",
+     "2",
+     "Ta",
+     "Pi"
+    ],
+    [
+     "V10 ",
+     " 3 Le 59' 54.12\"",
+     "Mrig",
+     "1",
+     "Le",
+     "Ar"
+    ],
+    [
+     "V11 ",
+     " 3 Vi 59' 54.12\"",
+     "Puna",
+     "2",
+     "Vi",
+     "Cn"
+    ],
+    [
+     "V12 ",
+     " 3 Sg 59' 54.12\"",
+     "Chit",
+     "1",
+     "Sg",
+     "Le"
+    ],
+    [
+     "Kunda ",
+     " 8 Ta 04' 29.57\"",
+     "PBha",
+     "3",
+     "Ta",
+     "Ge"
+    ],
+    [
+     "Yoga Sphuta ",
+     "18 Vi 11' 44.77\"",
+     "Push",
+     "2",
+     "Vi",
+     "Vi"
+    ],
+    [
+     "Avayoga Sphuta ",
+     "24 Pi 51' 44.77\"",
+     "Srav",
+     "2",
+     "Pi",
+     "Ta"
+    ]
+   ]
+  },
+  {
+   "top": "Basics",
+   "sub": "Key Info",
+   "mode": "Progression: Sudarsana Rasi",
+   "control_id": 59648,
+   "headers": [
+    "Body",
+    "Longitude",
+    "Nakshatra",
+    "Pada",
+    "Rasi",
+    "Navamsa"
+   ],
+   "rows": [
+    [
+     "Lagna ",
+     "20 Cp 09' 13.77\"",
+     "Asre",
+     "3",
+     "Cp",
+     "Aq"
+    ],
+    [
+     "Sun - DK",
+     "26 Ar 52' 49.54\"",
+     "Visa",
+     "4",
+     "Ar",
+     "Cn"
+    ],
+    [
+     "Moon - AK",
+     "23 Ge 20' 27.86\"",
+     "USha",
+     "1",
+     "Ge",
+     "Sg"
+    ],
+    [
+     "Mars - GK",
+     " 4 Sc 39' 04.18\"",
+     "Krit",
+     "4",
+     "Sc",
+     "Pi"
+    ],
+    [
+     "Mercury - BK",
+     "17 Aq 11' 39.88\"",
+     "PPha",
+     "3",
+     "Aq",
+     "Li"
+    ],
+    [
+     "Jupiter - MK",
+     "14 Vi 24' 51.03\"",
+     "Reva",
+     "1",
+     "Vi",
+     "Sg"
+    ],
+    [
+     "Venus - PiK",
+     "11 Pi 18' 07.35\"",
+     "Hast",
+     "2",
+     "Pi",
+     "Ta"
+    ],
+    [
+     "Saturn (R) - AmK",
+     "22 Cp 28' 50.08\"",
+     "Asre",
+     "4",
+     "Cp",
+     "Pi"
+    ],
+    [
+     "Rahu - PK",
+     "11 Sc 36' 38.04\"",
+     "Rohi",
+     "2",
+     "Sc",
+     "Ta"
+    ],
+    [
+     "Ketu ",
+     "11 Ta 36' 38.04\"",
+     "Anu",
+     "4",
+     "Ta",
+     "Sc"
+    ],
+    [
+     "Maandi ",
+     "27 Sg 29' 05.47\"",
+     "Puna",
+     "4",
+     "Sg",
+     "Cn"
+    ],
+    [
+     "Gulika ",
+     "18 Sg 13' 47.89\"",
+     "Puna",
+     "1",
+     "Sg",
+     "Ar"
+    ],
+    [
+     "Bhava Lagna ",
+     "18 Cp 39' 58.68\"",
+     "Asre",
+     "3",
+     "Cp",
+     "Aq"
+    ],
+    [
+     "Hora Lagna ",
+     "12 Cp 57' 46.88\"",
+     "Asre",
+     "1",
+     "Cp",
+     "Sg"
+    ],
+    [
+     "Ghati Lagna ",
+     "25 Sg 51' 11.48\"",
+     "Puna",
+     "4",
+     "Sg",
+     "Cn"
+    ],
+    [
+     "Vighati Lagna ",
+     " 0 Li 18' 14.47\"",
+     "Aswi",
+     "2",
+     "Li",
+     "Ta"
+    ],
+    [
+     "Varnada Lagna ",
+     "20 Ar 09' 13.77\"",
+     "Visa",
+     "2",
+     "Ar",
+     "Sc"
+    ],
+    [
+     "Sree Lagna ",
+     "24 Ge 07' 10.74\"",
+     "USha",
+     "1",
+     "Ge",
+     "Sg"
+    ],
+    [
+     "Pranapada Lagna ",
+     " 1 Ge 14' 59.64\"",
+     "Mool",
+     "2",
+     "Ge",
+     "Ta"
+    ],
+    [
+     "Indu Lagna ",
+     " 0 Vi 40' 49.11\"",
+     "UBha",
+     "1",
+     "Vi",
+     "Le"
+    ],
+    [
+     "Bhrigu Bindu ",
+     "21 Aq 08' 43.57\"",
+     "PPha",
+     "4",
+     "Aq",
+     "Sc"
+    ],
+    [
+     "Dhooma ",
+     " 8 Ge 38' 55.65\"",
+     "PSha",
+     "1",
+     "Ge",
+     "Le"
+    ],
+    [
+     "Vyatipata ",
+     "11 Cp 18' 25.01\"",
+     "Push",
+     "4",
+     "Cp",
+     "Sc"
+    ],
+    [
+     "Parivesha ",
+     "11 Cn 18' 25.01\"",
+     "Srav",
+     "2",
+     "Cn",
+     "Ta"
+    ],
+    [
+     "Indra Chapa ",
+     " 8 Sg 38' 55.65\"",
+     "Ardr",
+     "3",
+     "Sg",
+     "Aq"
+    ],
+    [
+     "Upaketu ",
+     "25 Sg 18' 55.65\"",
+     "Puna",
+     "4",
+     "Sg",
+     "Cn"
+    ],
+    [
+     "Kaala ",
+     " 7 Le 53' 36.17\"",
+     "Sata",
+     "2",
+     "Le",
+     "Cp"
+    ],
+    [
+     "Mrityu ",
+     " 2 Li 48' 28.83\"",
+     "Aswi",
+     "3",
+     "Li",
+     "Ge"
+    ],
+    [
+     "Artha Prahara ",
+     "27 Li 30' 07.82\"",
+     "Krit",
+     "2",
+     "Li",
+     "Cp"
+    ],
+    [
+     "Yama Ghantaka ",
+     "19 Sc 12' 53.13\"",
+     "Mrig",
+     "1",
+     "Sc",
+     "Le"
+    ],
+    [
+     "Prana Sphuta ",
+     "24 Cn 06' 35.11\"",
+     "Dhan",
+     "2",
+     "Cn",
+     "Vi"
+    ],
+    [
+     "Deha Sphuta ",
+     " 3 Ge 50' 58.11\"",
+     "Mool",
+     "3",
+     "Ge",
+     "Ge"
+    ],
+    [
+     "Mrityu Sphuta ",
+     " 8 Vi 04' 48.60\"",
+     "UBha",
+     "3",
+     "Vi",
+     "Li"
+    ],
+    [
+     "Sookshma TriSphuta ",
+     "16 Pi 05' 01.16\"",
+     "Hast",
+     "4",
+     "Pi",
+     "Cn"
+    ],
+    [
+     "Tithi Sphuta ",
+     " 0 Aq 20' 33.79\"",
+     "Magh",
+     "2",
+     "Aq",
+     "Ta"
+    ],
+    [
+     "Yoga Sphuta (Sun-Moon) ",
+     " 1 Li 01' 04.42\"",
+     "Aswi",
+     "2",
+     "Li",
+     "Ta"
+    ],
+    [
+     "Rahu Tithi Sphuta ",
+     "11 Cn 16' 22.72\"",
+     "Srav",
+     "2",
+     "Cn",
+     "Ta"
+    ],
+    [
+     "Kshetra Sphuta ",
+     "27 Sg 41' 42.12\"",
+     "Puna",
+     "4",
+     "Sg",
+     "Cn"
+    ],
+    [
+     "Beeja Sphuta ",
+     "25 Vi 28' 47.52\"",
+     "Aswi",
+     "1",
+     "Vi",
+     "Ar"
+    ],
+    [
+     "TriSphuta ",
+     "19 Sg 06' 30.11\"",
+     "Puna",
+     "2",
+     "Sg",
+     "Ta"
+    ],
+    [
+     "ChatusSphuta ",
+     "19 Ar 26' 45.43\"",
+     "Visa",
+     "2",
+     "Ar",
+     "Ta"
+    ],
+    [
+     "PanchaSphuta ",
+     " 6 Ge 04' 43.14\"",
+     "Mool",
+     "4",
+     "Ge",
+     "Cn"
+    ],
+    [
+     "V2 ",
+     "20 Cn 09' 13.77\"",
+     "Dhan",
+     "1",
+     "Cn",
+     "Sg"
+    ],
+    [
+     "V3 ",
+     "20 Le 09' 13.77\"",
+     "PBha",
+     "2",
+     "Le",
+     "Pi"
+    ],
+    [
+     "V4 ",
+     "20 Sc 09' 13.77\"",
+     "Mrig",
+     "1",
+     "Sc",
+     "Ar"
+    ],
+    [
+     "V5 ",
+     "20 Sg 09' 13.77\"",
+     "Puna",
+     "2",
+     "Sg",
+     "Cn"
+    ],
+    [
+     "V6 ",
+     "20 Pi 09' 13.77\"",
+     "Chit",
+     "1",
+     "Pi",
+     "Le"
+    ],
+    [
+     "V7 ",
+     "20 Ar 09' 13.77\"",
+     "Visa",
+     "2",
+     "Ar",
+     "Sc"
+    ],
+    [
+     "V8 ",
+     "20 Cn 09' 13.77\"",
+     "Dhan",
+     "1",
+     "Cn",
+     "Sg"
+    ],
+    [
+     "V9 ",
+     "20 Le 09' 13.77\"",
+     "PBha",
+     "2",
+     "Le",
+     "Pi"
+    ],
+    [
+     "V10 ",
+     "20 Sc 09' 13.77\"",
+     "Mrig",
+     "1",
+     "Sc",
+     "Ar"
+    ],
+    [
+     "V11 ",
+     "20 Sg 09' 13.77\"",
+     "Puna",
+     "2",
+     "Sg",
+     "Cn"
+    ],
+    [
+     "V12 ",
+     "20 Pi 09' 13.77\"",
+     "Chit",
+     "1",
+     "Pi",
+     "Le"
+    ],
+    [
+     "Kunda ",
+     "24 Le 13' 49.23\"",
+     "PBha",
+     "3",
+     "Le",
+     "Ge"
+    ],
+    [
+     "Yoga Sphuta ",
+     " 4 Cp 21' 04.42\"",
+     "Push",
+     "2",
+     "Cp",
+     "Vi"
+    ],
+    [
+     "Avayoga Sphuta ",
+     "11 Cn 01' 04.42\"",
+     "Srav",
+     "2",
+     "Cn",
+     "Ta"
+    ]
+   ]
+  }
+ ],
+ "texts": [
+  {
+   "top": "Basics",
+   "sub": "Key Info",
+   "mode": "Progression: Solar Rasi",
+   "name": "key_info",
+   "cmd": 32974,
+   "lines": [
+    "C:\\Users\\remoteuser\\Documents\\jhora-web\\golden\\charts\\Aurobindo Ghose",
+    "",
+    "Progressed (30 deg)",
+    "",
+    "Date:          February 7, 1884",
+    "Time:          2:47:12",
+    "Time Zone:     5:53:00 (East of GMT)",
+    "Place:         88 E 20' 00\", 22 N 30' 00\"",
+    "Altitude:      425.00 meters",
+    "",
+    "Lunar Yr-Mo:   Subhanu - Magha",
+    "Tithi:         Sukla Ekadasi (Ma) (63.60% left)",
+    "Vedic Weekday: Wednesday (Me)",
+    "Nakshatra:     Mrigasira (Ma) (52.38% left)",
+    "Yoga:          Vaidhriti (Ju) (37.51% left)",
+    "Karana:        Vanija (Ve) (27.20% left)",
+    "Hora Lord:     Venus (5 min sign: Ge)",
+    "Mahakala Hora: Venus (5 min sign: Aq)",
+    "Kaala Lord:    Venus (Mahakala: Venus)",
+    "",
+    "Sunrise:       6:40:58 (February 6)",
+    "Sunset:        17:47:14 (February 6)",
+    "Janma Ghatis:  50.2601",
+    "",
+    "Ayanamsa:      22-13-27.06",
+    "Sidereal Time: 11:53:09",
+    "",
+    "C:\\Users\\remoteuser\\Documents\\jhora-web\\golden\\charts\\Aurobindo Ghose",
+    "",
+    "Natal Chart",
+    "",
+    "Date:          August 15, 1872",
+    "Time:          5:17:00",
+    "Time Zone:     5:53:00 (East of GMT)",
+    "Place:         88 E 20' 00\", 22 N 30' 00\"",
+    "Altitude:      425.00 meters",
+    "",
+    "Lunar Yr-Mo:   Angirasa - Sravana",
+    "Tithi:         Sukla Ekadasi (Ma) (55.29% left)",
+    "Vedic Weekday: Wednesday (Me)",
+    "Nakshatra:     Moola (Ke) (57.23% left)",
+    "Yoga:          Vishkambha (Sa) (54.70% left)",
+    "Karana:        Vanija (Ve) (10.59% left)",
+    "Hora Lord:     Saturn (5 min sign: Le)",
+    "Mahakala Hora: Saturn (5 min sign: Ar)",
+    "Kaala Lord:    Moon (Mahakala: Moon)",
+    "",
+    "Sunrise:       5:39:49 (August 14)",
+    "Sunset:        18:28:06 (August 14)",
+    "Janma Ghatis:  59.0495",
+    "",
+    "Ayanamsa:      22-03-50.55",
+    "Sidereal Time: 2:52:04",
+    "",
+    ""
+   ]
+  },
+  {
+   "top": "Dasas",
+   "sub": "Nakshatra dasas",
+   "mode": "Progression: Solar Rasi",
+   "name": "dasa",
+   "cmd": 32972,
+   "lines": [
+    "Vimsottari Dasa:",
+    "",
+    " Maha Dasas:",
+    "",
+    " Ket: 1869-08-17 (18:43:07) - 1876-08-17 (13:49:46)",
+    " Ven: 1876-08-17 (13:49:46) - 1896-08-17 (16:42:27)",
+    " Sun: 1896-08-17 (16:42:27) - 1902-08-19 (5:34:08)",
+    " Moon: 1902-08-19 (5:34:08) - 1912-08-18 (19:07:05)",
+    " Mars: 1912-08-18 (19:07:05) - 1919-08-19 (14:10:41)",
+    " Rah: 1919-08-19 (14:10:41) - 1937-08-19 (4:51:23)",
+    " Jup: 1937-08-19 (4:51:23) - 1953-08-19 (7:12:13)",
+    " Sat: 1953-08-19 (7:12:13) - 1972-08-19 (4:06:15)",
+    " Merc: 1972-08-19 (4:06:15) - 1989-08-19 (12:41:50)",
+    "",
+    ""
+   ]
+  },
+  {
+   "top": "Dasas",
+   "sub": "Nakshatra dasas",
+   "mode": "Progression: Solar D-10",
+   "name": "dasa",
+   "cmd": 32972,
+   "lines": [
+    "Vimsottari Dasa:",
+    "",
+    " Maha Dasas:",
+    "",
+    " Ket: 1869-08-17 (18:43:07) - 1876-08-17 (13:49:46)",
+    " Ven: 1876-08-17 (13:49:46) - 1896-08-17 (16:42:27)",
+    " Sun: 1896-08-17 (16:42:27) - 1902-08-19 (5:34:08)",
+    " Moon: 1902-08-19 (5:34:08) - 1912-08-18 (19:07:05)",
+    " Mars: 1912-08-18 (19:07:05) - 1919-08-19 (14:10:41)",
+    " Rah: 1919-08-19 (14:10:41) - 1937-08-19 (4:51:23)",
+    " Jup: 1937-08-19 (4:51:23) - 1953-08-19 (7:12:13)",
+    " Sat: 1953-08-19 (7:12:13) - 1972-08-19 (4:06:15)",
+    " Merc: 1972-08-19 (4:06:15) - 1989-08-19 (12:41:50)",
+    "",
+    ""
+   ]
+  },
+  {
+   "top": "Dasas",
+   "sub": "Nakshatra dasas",
+   "mode": "Progression: Bhrigu Rasi",
+   "name": "dasa",
+   "cmd": 32972,
+   "lines": [
+    "Vimsottari Dasa:",
+    "",
+    " Maha Dasas:",
+    "",
+    " Ket: 1869-08-17 (18:43:07) - 1876-08-17 (13:49:46)",
+    " Ven: 1876-08-17 (13:49:46) - 1896-08-17 (16:42:27)",
+    " Sun: 1896-08-17 (16:42:27) - 1902-08-19 (5:34:08)",
+    " Moon: 1902-08-19 (5:34:08) - 1912-08-18 (19:07:05)",
+    " Mars: 1912-08-18 (19:07:05) - 1919-08-19 (14:10:41)",
+    " Rah: 1919-08-19 (14:10:41) - 1937-08-19 (4:51:23)",
+    " Jup: 1937-08-19 (4:51:23) - 1953-08-19 (7:12:13)",
+    " Sat: 1953-08-19 (7:12:13) - 1972-08-19 (4:06:15)",
+    " Merc: 1972-08-19 (4:06:15) - 1989-08-19 (12:41:50)",
+    "",
+    ""
+   ]
+  },
+  {
+   "top": "Basics",
+   "sub": "Key Info",
+   "mode": "Progression: NakshatraDasa Rasi Moon Vimsottari",
+   "name": "key_info",
+   "cmd": 32974,
+   "lines": [
+    "C:\\Users\\remoteuser\\Documents\\jhora-web\\golden\\charts\\Aurobindo Ghose",
+    "",
+    "Prog (NaksDasa)",
+    "",
+    "Date:          June 15, 2010",
+    "Time:          12:00:00",
+    "Time Zone:     5:53:00 (East of GMT)",
+    "Place:         88 E 20' 00\", 22 N 30' 00\"",
+    "Altitude:      425.00 meters",
+    "",
+    "Lunar Yr-Mo:   Angirasa - Sravana",
+    "Tithi:         Sukla Panchami (Ju) (29.49% left)",
+    "Vedic Weekday: Wednesday (Me)",
+    "Nakshatra:     Uttarashadha (Su) (87.28% left)",
+    "Yoga:          Ganda (Sa) (98.01% left)",
+    "Karana:        Balava (Mo) (58.99% left)",
+    "Hora Lord:     Saturn (5 min sign: Le)",
+    "Mahakala Hora: Saturn (5 min sign: Ar)",
+    "Kaala Lord:    Moon (Mahakala: Moon)",
+    "",
+    "Sunrise:       5:39:49 (August 14)",
+    "Sunset:        18:28:06 (August 14)",
+    "Janma Ghatis:  59.0495",
+    "",
+    "Ayanamsa:      22-03-50.55",
+    "Sidereal Time: 2:52:04",
+    "",
+    "C:\\Users\\remoteuser\\Documents\\jhora-web\\golden\\charts\\Aurobindo Ghose",
+    "",
+    "Natal Chart",
+    "",
+    "Date:          August 15, 1872",
+    "Time:          5:17:00",
+    "Time Zone:     5:53:00 (East of GMT)",
+    "Place:         88 E 20' 00\", 22 N 30' 00\"",
+    "Altitude:      425.00 meters",
+    "",
+    "Lunar Yr-Mo:   Angirasa - Sravana",
+    "Tithi:         Sukla Ekadasi (Ma) (55.29% left)",
+    "Vedic Weekday: Wednesday (Me)",
+    "Nakshatra:     Moola (Ke) (57.23% left)",
+    "Yoga:          Vishkambha (Sa) (54.70% left)",
+    "Karana:        Vanija (Ve) (10.59% left)",
+    "Hora Lord:     Saturn (5 min sign: Le)",
+    "Mahakala Hora: Saturn (5 min sign: Ar)",
+    "Kaala Lord:    Moon (Mahakala: Moon)",
+    "",
+    "Sunrise:       5:39:49 (August 14)",
+    "Sunset:        18:28:06 (August 14)",
+    "Janma Ghatis:  59.0495",
+    "",
+    "Ayanamsa:      22-03-50.55",
+    "Sidereal Time: 2:52:04",
+    "",
+    ""
+   ]
+  },
+  {
+   "top": "Dasas",
+   "sub": "Nakshatra dasas",
+   "mode": "Progression: NakshatraDasa Rasi Moon Vimsottari",
+   "name": "dasa",
+   "cmd": 32972,
+   "lines": [
+    "Vimsottari Dasa:",
+    "",
+    " Ven MD: 1996-08-19 (7:43:12) - 2016-08-19 (10:50:41)",
+    "  Sat AD: 2009-06-17 (20:53:00) - 2012-08-19 (10:07:00)",
+    "   Ket PD: 2010-05-30 (7:25:43) - 2010-08-07 (22:20:37)",
+    "    Sun SD: 2010-06-14 (22:37:14) - 2010-06-18 (10:09:54)",
+    "     Mars PAD: 2010-06-15 (9:45:21) - 2010-06-15 (14:37:40)",
+    "",
+    "      Deha-antardasas in this PAD:",
+    "",
+    "      Mars: 2010-06-15 (9:45:21) - 2010-06-15 (10:02:24)",
+    "      Rah: 2010-06-15 (10:02:24) - 2010-06-15 (10:46:15)",
+    "      Jup: 2010-06-15 (10:46:15) - 2010-06-15 (11:25:13)",
+    "      Sat: 2010-06-15 (11:25:13) - 2010-06-15 (12:11:30)",
+    "      Merc: 2010-06-15 (12:11:30) - 2010-06-15 (12:52:55)",
+    "      Ket: 2010-06-15 (12:52:55) - 2010-06-15 (13:09:58)",
+    "      Ven: 2010-06-15 (13:09:58) - 2010-06-15 (13:58:41)",
+    "      Sun: 2010-06-15 (13:58:41) - 2010-06-15 (14:13:18)",
+    "      Moon: 2010-06-15 (14:13:18) - 2010-06-15 (14:37:40)",
+    "",
+    ""
+   ]
+  },
+  {
+   "top": "Basics",
+   "sub": "Key Info",
+   "mode": "Progression: NakshatraDasa Navamsa Lagna Yogini",
+   "name": "key_info",
+   "cmd": 32974,
+   "lines": [
+    "C:\\Users\\remoteuser\\Documents\\jhora-web\\golden\\charts\\Aurobindo Ghose",
+    "",
+    "Prog (NaksDasa)",
+    "",
+    "Date:          June 15, 2010",
+    "Time:          12:00:00",
+    "Time Zone:     5:53:00 (East of GMT)",
+    "Place:         88 E 20' 00\", 22 N 30' 00\"",
+    "Altitude:      425.00 meters",
+    "",
+    "Lunar Yr-Mo:   Angirasa - Sravana",
+    "Tithi:         Sukla Panchami (Ju) (29.49% left)",
+    "Vedic Weekday: Wednesday (Me)",
+    "Nakshatra:     Uttarashadha (Su) (87.28% left)",
+    "Yoga:          Ganda (Sa) (98.01% left)",
+    "Karana:        Balava (Mo) (58.99% left)",
+    "Hora Lord:     Saturn (5 min sign: Le)",
+    "Mahakala Hora: Saturn (5 min sign: Ar)",
+    "Kaala Lord:    Moon (Mahakala: Moon)",
+    "",
+    "Sunrise:       5:39:49 (August 14)",
+    "Sunset:        18:28:06 (August 14)",
+    "Janma Ghatis:  59.0495",
+    "",
+    "Ayanamsa:      22-03-50.55",
+    "Sidereal Time: 2:52:04",
+    "",
+    "C:\\Users\\remoteuser\\Documents\\jhora-web\\golden\\charts\\Aurobindo Ghose",
+    "",
+    "Natal Chart",
+    "",
+    "Date:          August 15, 1872",
+    "Time:          5:17:00",
+    "Time Zone:     5:53:00 (East of GMT)",
+    "Place:         88 E 20' 00\", 22 N 30' 00\"",
+    "Altitude:      425.00 meters",
+    "",
+    "Lunar Yr-Mo:   Angirasa - Sravana",
+    "Tithi:         Sukla Ekadasi (Ma) (55.29% left)",
+    "Vedic Weekday: Wednesday (Me)",
+    "Nakshatra:     Moola (Ke) (57.23% left)",
+    "Yoga:          Vishkambha (Sa) (54.70% left)",
+    "Karana:        Vanija (Ve) (10.59% left)",
+    "Hora Lord:     Saturn (5 min sign: Le)",
+    "Mahakala Hora: Saturn (5 min sign: Ar)",
+    "Kaala Lord:    Moon (Mahakala: Moon)",
+    "",
+    "Sunrise:       5:39:49 (August 14)",
+    "Sunset:        18:28:06 (August 14)",
+    "Janma Ghatis:  59.0495",
+    "",
+    "Ayanamsa:      22-03-50.55",
+    "Sidereal Time: 2:52:04",
+    "",
+    ""
+   ]
+  },
+  {
+   "top": "Dasas",
+   "sub": "Nakshatra dasas",
+   "mode": "Progression: NakshatraDasa Navamsa Lagna Yogini",
+   "name": "dasa",
+   "cmd": 32972,
+   "lines": [
+    "Vimsottari Dasa:",
+    "",
+    " Rah MD: 2003-05-22 (16:38:53) - 2011-05-22 (17:48:05)",
+    "  Ven AD: 2009-11-03 (14:02:27) - 2011-05-22 (17:48:05)",
+    "   Rah PD: 2010-02-18 (22:57:20) - 2010-06-26 (7:42:49)",
+    "    Ven SD: 2010-06-01 (0:05:55) - 2010-06-26 (7:42:49)",
+    "     Jup PAD: 2010-06-13 (15:29:48) - 2010-06-15 (18:08:18)",
+    "",
+    "      Deha-antardasas in this PAD:",
+    "",
+    "      Jup: 2010-06-13 (15:29:48) - 2010-06-13 (19:42:57)",
+    "      Mars: 2010-06-13 (19:42:57) - 2010-06-14 (1:20:30)",
+    "      Merc: 2010-06-14 (1:20:30) - 2010-06-14 (8:22:28)",
+    "      Sat: 2010-06-14 (8:22:28) - 2010-06-14 (16:48:52)",
+    "      Ven: 2010-06-14 (16:48:52) - 2010-06-15 (2:39:42)",
+    "      Rah: 2010-06-15 (2:39:42) - 2010-06-15 (13:55:02)",
+    "      Moon: 2010-06-15 (13:55:02) - 2010-06-15 (15:19:27)",
+    "      Sun: 2010-06-15 (15:19:27) - 2010-06-15 (18:08:18)",
+    "",
+    ""
+   ]
+  },
+  {
+   "top": "Basics",
+   "sub": "Key Info",
+   "mode": "Progression: Sudarsana Rasi",
+   "name": "key_info",
+   "cmd": 32974,
+   "lines": [
+    "C:\\Users\\remoteuser\\Documents\\jhora-web\\golden\\charts\\Aurobindo Ghose",
+    "",
+    "Progressed (SCD)",
+    "",
+    "Date:          June 15, 2010",
+    "Time:          12:00:00",
+    "Time Zone:     5:53:00 (East of GMT)",
+    "Place:         88 E 20' 00\", 22 N 30' 00\"",
+    "Altitude:      425.00 meters",
+    "",
+    "Lunar Yr-Mo:   Angirasa - Sravana",
+    "Tithi:         Sukla Panchami (Ju) (29.49% left)",
+    "Vedic Weekday: Wednesday (Me)",
+    "Nakshatra:     Uttarashadha (Su) (87.28% left)",
+    "Yoga:          Ganda (Sa) (98.01% left)",
+    "Karana:        Balava (Mo) (58.99% left)",
+    "Hora Lord:     Saturn (5 min sign: Le)",
+    "Mahakala Hora: Saturn (5 min sign: Ar)",
+    "Kaala Lord:    Moon (Mahakala: Moon)",
+    "",
+    "Sunrise:       5:39:49 (August 14)",
+    "Sunset:        18:28:06 (August 14)",
+    "Janma Ghatis:  59.0495",
+    "",
+    "Ayanamsa:      22-03-50.55",
+    "Sidereal Time: 2:52:04",
+    "",
+    "C:\\Users\\remoteuser\\Documents\\jhora-web\\golden\\charts\\Aurobindo Ghose",
+    "",
+    "Natal Chart",
+    "",
+    "Date:          August 15, 1872",
+    "Time:          5:17:00",
+    "Time Zone:     5:53:00 (East of GMT)",
+    "Place:         88 E 20' 00\", 22 N 30' 00\"",
+    "Altitude:      425.00 meters",
+    "",
+    "Lunar Yr-Mo:   Angirasa - Sravana",
+    "Tithi:         Sukla Ekadasi (Ma) (55.29% left)",
+    "Vedic Weekday: Wednesday (Me)",
+    "Nakshatra:     Moola (Ke) (57.23% left)",
+    "Yoga:          Vishkambha (Sa) (54.70% left)",
+    "Karana:        Vanija (Ve) (10.59% left)",
+    "Hora Lord:     Saturn (5 min sign: Le)",
+    "Mahakala Hora: Saturn (5 min sign: Ar)",
+    "Kaala Lord:    Moon (Mahakala: Moon)",
+    "",
+    "Sunrise:       5:39:49 (August 14)",
+    "Sunset:        18:28:06 (August 14)",
+    "Janma Ghatis:  59.0495",
+    "",
+    "Ayanamsa:      22-03-50.55",
+    "Sidereal Time: 2:52:04",
+    "",
+    ""
+   ]
+  },
+  {
+   "top": "Dasas",
+   "sub": "Nakshatra dasas",
+   "mode": "Progression: Sudarsana Rasi",
+   "name": "dasa",
+   "cmd": 32972,
+   "lines": [
+    "Vimsottari Dasa:",
+    "",
+    " Maha Dasas:",
+    "",
+    " Ket: 1989-08-19 (12:41:50) - 1996-08-19 (7:43:12)",
+    " Ven: 1996-08-19 (7:43:12) - 2016-08-19 (10:50:41)",
+    " Sun: 2016-08-19 (10:50:41) - 2022-08-19 (23:32:32)",
+    " Moon: 2022-08-19 (23:32:32) - 2032-08-19 (13:09:35)",
+    " Mars: 2032-08-19 (13:09:35) - 2039-08-20 (8:08:27)",
+    " Rah: 2039-08-20 (8:08:27) - 2057-08-19 (22:48:04)",
+    " Jup: 2057-08-19 (22:48:04) - 2073-08-20 (1:10:04)",
+    " Sat: 2073-08-20 (1:10:04) - 2092-08-19 (22:05:11)",
+    " Merc: 2092-08-19 (22:05:11) - 2109-08-21 (6:39:06)",
+    "",
+    ""
+   ]
+  }
+ ]
+}

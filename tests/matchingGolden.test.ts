@@ -24,7 +24,9 @@ describe.skipIf(!charts.length)('Horoscope matching matches JHora 8.0', async ()
       // combo items: 0 = Bride, 1 = Bridegroom (the other person)
       expect(g.default_who === 1).toBe(defaultOtherIsGroom(chart.birth.field18));
       const bad: string[] = [];
-      for (const c of g.cases) {
+      // a case whose window is the input dialog itself ("Horoscope Matching for Marriage")
+      // was read before the result box opened: not captured, skipped
+      for (const c of g.cases.filter((x) => x.title !== 'Horoscope Matching for Marriage')) {
         const t = runTable(chart, 'matching.result', { otherNak: c.nak, otherPada: c.pada, otherIsGroom: c.who === 1 });
         if (c.title !== MATCH_TITLE) bad.push(`title ${c.title}`);
         const have = norm(t.text!.join('\n')), want = norm(c.text);

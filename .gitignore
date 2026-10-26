@@ -7,3 +7,4 @@ charts/
 scratch/
 public/atlas/
 __pycache__/
+tools/harness/run_all.out

@@ -1,0 +1,1607 @@
+{
+ "chart": "Swami Vivekananda.jhd",
+ "dialog": [
+  {
+   "id": 1005,
+   "class": "ComboBox",
+   "text": "Bride",
+   "items": [
+    "Bride",
+    "Bridegroom"
+   ],
+   "selected": 0
+  },
+  {
+   "id": 1003,
+   "class": "ComboBox",
+   "text": "Aswini",
+   "items": [
+    "Aswini",
+    "Bharani",
+    "Krittika",
+    "Rohini",
+    "Mrigasira",
+    "Ardra",
+    "Punarvasu",
+    "Pushyami",
+    "Asresha",
+    "Magha",
+    "Poorva Phalguni",
+    "Uttara Phalguni",
+    "Hasta",
+    "Chitra",
+    "Swaati",
+    "Visaakha",
+    "Anooradha",
+    "Jyeshtha",
+    "Moola",
+    "Poorvashadha",
+    "Uttarashadha",
+    "Sravanam",
+    "Dhanishtha",
+    "Satabhisham",
+    "Poorvabhadra",
+    "Uttarabhadra",
+    "Revati"
+   ],
+   "selected": 0
+  },
+  {
+   "id": 1007,
+   "class": "ComboBox",
+   "text": "First",
+   "items": [
+    "First",
+    "Second",
+    "Third",
+    "Fourth"
+   ],
+   "selected": 0
+  },
+  {
+   "id": 1,
+   "class": "Button",
+   "text": "OK"
+  },
+  {
+   "id": 2,
+   "class": "Button",
+   "text": "Cancel"
+  },
+  {
+   "id": 1004,
+   "class": "Static",
+   "text": "Consider a"
+  },
+  {
+   "id": 1008,
+   "class": "Static",
+   "text": "with the following nakshatra"
+  },
+  {
+   "id": 1006,
+   "class": "Static",
+   "text": "for the native,"
+  },
+  {
+   "id": 1009,
+   "class": "Static",
+   "text": "and the following pada (quarter)"
+  }
+ ],
+ "default_who": 0,
+ "cases": [
+  {
+   "who": 0,
+   "nak": 0,
+   "pada": 0,
+   "title": "Horoscope Matching for Marriage",
+   "text": "Consider a\nwith the following nakshatra\nfor the native,\nand the following pada (quarter)"
+  },
+  {
+   "who": 0,
+   "nak": 0,
+   "pada": 1,
+   "title": "Result of Horoscope Matching for Marriage",
+   "text": "Native: Hastha (3rd pada)\nBride: Aswini (2nd pada)\n\nGunanka score after matching ashta koota (group of eight factors) = 9 (out of 36).\n\nThe level of match (below average/average/fair/good/excellent) = Below Average.\n\nPlease note that this thumbrule is a coarse indicator. You may want to\nconsult a good astrologer to verify subjective factors manually."
+  },
+  {
+   "who": 0,
+   "nak": 0,
+   "pada": 2,
+   "title": "Result of Horoscope Matching for Marriage",
+   "text": "Native: Hastha (3rd pada)\nBride: Aswini (3rd pada)\n\nGunanka score after matching ashta koota (group of eight factors) = 9 (out of 36).\n\nThe level of match (below average/average/fair/good/excellent) = Below Average.\n\nPlease note that this thumbrule is a coarse indicator. You may want to\nconsult a good astrologer to verify subjective factors manually."
+  },
+  {
+   "who": 0,
+   "nak": 0,
+   "pada": 3,
+   "title": "Horoscope Matching for Marriage",
+   "text": "Consider a\nwith the following nakshatra\nfor the native,\nand the following pada (quarter)"
+  },
+  {
+   "who": 0,
+   "nak": 1,
+   "pada": 0,
+   "title": "Horoscope Matching for Marriage",
+   "text": "Consider a\nwith the following nakshatra\nfor the native,\nand the following pada (quarter)"
+  },
+  {
+   "who": 0,
+   "nak": 1,
+   "pada": 1,
+   "title": "Result of Horoscope Matching for Marriage",
+   "text": "Native: Hastha (3rd pada)\nBride: Bharani (2nd pada)\n\nGunanka score after matching ashta koota (group of eight factors) = 19 (out of 36).\n\nThe level of match (below average/average/fair/good/excellent) = Average.\n\nPlease note that this thumbrule is a coarse indicator. You may want to\nconsult a good astrologer to verify subjective factors manually."
+  },
+  {
+   "who": 0,
+   "nak": 1,
+   "pada": 2,
+   "title": "Horoscope Matching for Marriage",
+   "text": "Consider a\nwith the following nakshatra\nfor the native,\nand the following pada (quarter)"
+  },
+  {
+   "who": 0,
+   "nak": 1,
+   "pada": 3,
+   "title": "Horoscope Matching for Marriage",
+   "text": "Consider a\nwith the following nakshatra\nfor the native,\nand the following pada (quarter)"
+  },
+  {
+   "who": 0,
+   "nak": 2,
+   "pada": 0,
+   "title": "Result of Horoscope Matching for Marriage",
+   "text": "Native: Hastha (3rd pada)\nBride: Krittika (1st pada)\n\nGunanka score after matching ashta koota (group of eight factors) = 15 (out of 36).\n\nThe level of match (below average/average/fair/good/excellent) = Below Average.\n\nPlease note that this thumbrule is a coarse indicator. You may want to\nconsult a good astrologer to verify subjective factors manually."
+  },
+  {
+   "who": 0,
+   "nak": 2,
+   "pada": 1,
+   "title": "Result of Horoscope Matching for Marriage",
+   "text": "Native: Hastha (3rd pada)\nBride: Krittika (2nd pada)\n\nGunanka score after matching ashta koota (group of eight factors) = 21 (out of 36).\n\nThe level of match (below average/average/fair/good/excellent) = Average.\n\nPlease note that this thumbrule is a coarse indicator. You may want to\nconsult a good astrologer to verify subjective factors manually."
+  },
+  {
+   "who": 0,
+   "nak": 2,
+   "pada": 2,
+   "title": "Horoscope Matching for Marriage",
+   "text": "Consider a\nwith the following nakshatra\nfor the native,\nand the following pada (quarter)"
+  },
+  {
+   "who": 0,
+   "nak": 2,
+   "pada": 3,
+   "title": "Horoscope Matching for Marriage",
+   "text": "Consider a\nwith the following nakshatra\nfor the native,\nand the following pada (quarter)"
+  },
+  {
+   "who": 0,
+   "nak": 3,
+   "pada": 0,
+   "title": "Horoscope Matching for Marriage",
+   "text": "Consider a\nwith the following nakshatra\nfor the native,\nand the following pada (quarter)"
+  },
+  {
+   "who": 0,
+   "nak": 3,
+   "pada": 1,
+   "title": "Horoscope Matching for Marriage",
+   "text": "Consider a\nwith the following nakshatra\nfor the native,\nand the following pada (quarter)"
+  },
+  {
+   "who": 0,
+   "nak": 3,
+   "pada": 2,
+   "title": "Result of Horoscope Matching for Marriage",
+   "text": "Native: Hastha (3rd pada)\nBride: Rohini (3rd pada)\n\nGunanka score after matching ashta koota (group of eight factors) = 26 (out of 36).\n\nThe level of match (below average/average/fair/good/excellent) = Good.\n\nPlease note that this thumbrule is a coarse indicator. You may want to\nconsult a good astrologer to verify subjective factors manually."
+  },
+  {
+   "who": 0,
+   "nak": 3,
+   "pada": 3,
+   "title": "Result of Horoscope Matching for Marriage",
+   "text": "Native: Hastha (3rd pada)\nBride: Rohini (4th pada)\n\nGunanka score after matching ashta koota (group of eight factors) = 26 (out of 36).\n\nThe level of match (below average/average/fair/good/excellent) = Good.\n\nPlease note that this thumbrule is a coarse indicator. You may want to\nconsult a good astrologer to verify subjective factors manually."
+  },
+  {
+   "who": 0,
+   "nak": 4,
+   "pada": 0,
+   "title": "Horoscope Matching for Marriage",
+   "text": "Consider a\nwith the following nakshatra\nfor the native,\nand the following pada (quarter)"
+  },
+  {
+   "who": 0,
+   "nak": 4,
+   "pada": 1,
+   "title": "Horoscope Matching for Marriage",
+   "text": "Consider a\nwith the following nakshatra\nfor the native,\nand the following pada (quarter)"
+  },
+  {
+   "who": 0,
+   "nak": 4,
+   "pada": 2,
+   "title": "Result of Horoscope Matching for Marriage",
+   "text": "Native: Hastha (3rd pada)\nBride: Mrigasira (3rd pada)\n\nGunanka score after matching ashta koota (group of eight factors) = 34 (out of 36).\n\nThe level of match (below average/average/fair/good/excellent) = Excellent.\n\nPlease note that this thumbrule is a coarse indicator. You may want to\nconsult a good astrologer to verify subjective factors manually."
+  },
+  {
+   "who": 0,
+   "nak": 4,
+   "pada": 3,
+   "title": "Horoscope Matching for Marriage",
+   "text": "Consider a\nwith the following nakshatra\nfor the native,\nand the following pada (quarter)"
+  },
+  {
+   "who": 0,
+   "nak": 5,
+   "pada": 0,
+   "title": "Result of Horoscope Matching for Marriage",
+   "text": "Native: Hastha (3rd pada)\nBride: Aardra (1st pada)\n\nGunanka score after matching ashta koota (group of eight factors) = 24 (out of 36).\n\nThe level of match (below average/average/fair/good/excellent) = Fair.\n\nPlease note that this thumbrule is a coarse indicator. You may want to\nconsult a good astrologer to verify subjective factors manually."
+  },
+  {
+   "who": 0,
+   "nak": 5,
+   "pada": 1,
+   "title": "Result of Horoscope Matching for Marriage",
+   "text": "Native: Hastha (3rd pada)\nBride: Aardra (2nd pada)\n\nGunanka score after matching ashta koota (group of eight factors) = 24 (out of 36).\n\nThe level of match (below average/average/fair/good/excellent) = Fair.\n\nPlease note that this thumbrule is a coarse indicator. You may want to\nconsult a good astrologer to verify subjective factors manually."
+  },
+  {
+   "who": 0,
+   "nak": 5,
+   "pada": 2,
+   "title": "Result of Horoscope Matching for Marriage",
+   "text": "Native: Hastha (3rd pada)\nBride: Aardra (3rd pada)\n\nGunanka score after matching ashta koota (group of eight factors) = 24 (out of 36).\n\nThe level of match (below average/average/fair/good/excellent) = Fair.\n\nPlease note that this thumbrule is a coarse indicator. You may want to\nconsult a good astrologer to verify subjective factors manually."
+  },
+  {
+   "who": 0,
+   "nak": 5,
+   "pada": 3,
+   "title": "Result of Horoscope Matching for Marriage",
+   "text": "Native: Hastha (3rd pada)\nBride: Aardra (4th pada)\n\nGunanka score after matching ashta koota (group of eight factors) = 24 (out of 36).\n\nThe level of match (below average/average/fair/good/excellent) = Fair.\n\nPlease note that this thumbrule is a coarse indicator. You may want to\nconsult a good astrologer to verify subjective factors manually."
+  },
+  {
+   "who": 0,
+   "nak": 6,
+   "pada": 0,
+   "title": "Horoscope Matching for Marriage",
+   "text": "Consider a\nwith the following nakshatra\nfor the native,\nand the following pada (quarter)"
+  },
+  {
+   "who": 0,
+   "nak": 6,
+   "pada": 1,
+   "title": "Horoscope Matching for Marriage",
+   "text": "Consider a\nwith the following nakshatra\nfor the native,\nand the following pada (quarter)"
+  },
+  {
+   "who": 0,
+   "nak": 6,
+   "pada": 2,
+   "title": "Horoscope Matching for Marriage",
+   "text": "Consider a\nwith the following nakshatra\nfor the native,\nand the following pada (quarter)"
+  },
+  {
+   "who": 0,
+   "nak": 6,
+   "pada": 3,
+   "title": "Result of Horoscope Matching for Marriage",
+   "text": "Native: Hastha (3rd pada)\nBride: Punarvasu (4th pada)\n\nGunanka score after matching ashta koota (group of eight factors) = 18 (out of 36).\n\nThe level of match (below average/average/fair/good/excellent) = Average.\n\nPlease note that this thumbrule is a coarse indicator. You may want to\nconsult a good astrologer to verify subjective factors manually."
+  },
+  {
+   "who": 0,
+   "nak": 7,
+   "pada": 0,
+   "title": "Result of Horoscope Matching for Marriage",
+   "text": "Native: Hastha (3rd pada)\nBride: Pushyami (1st pada)\n\nGunanka score after matching ashta koota (group of eight factors) = 27 (out of 36).\n\nThe level of match (below average/average/fair/good/excellent) = Good.\n\nPlease note that this thumbrule is a coarse indicator. You may want to\nconsult a good astrologer to verify subjective factors manually."
+  },
+  {
+   "who": 0,
+   "nak": 7,
+   "pada": 1,
+   "title": "Horoscope Matching for Marriage",
+   "text": "Consider a\nwith the following nakshatra\nfor the native,\nand the following pada (quarter)"
+  },
+  {
+   "who": 0,
+   "nak": 7,
+   "pada": 2,
+   "title": "Horoscope Matching for Marriage",
+   "text": "Consider a\nwith the following nakshatra\nfor the native,\nand the following pada (quarter)"
+  },
+  {
+   "who": 0,
+   "nak": 7,
+   "pada": 3,
+   "title": "Horoscope Matching for Marriage",
+   "text": "Consider a\nwith the following nakshatra\nfor the native,\nand the following pada (quarter)"
+  },
+  {
+   "who": 0,
+   "nak": 8,
+   "pada": 0,
+   "title": "Horoscope Matching for Marriage",
+   "text": "Consider a\nwith the following nakshatra\nfor the native,\nand the following pada (quarter)"
+  },
+  {
+   "who": 0,
+   "nak": 8,
+   "pada": 1,
+   "title": "Result of Horoscope Matching for Marriage",
+   "text": "Native: Hastha (3rd pada)\nBride: Aasresha (2nd pada)\n\nGunanka score after matching ashta koota (group of eight factors) = 20 (out of 36).\n\nThe level of match (below average/average/fair/good/excellent) = Average.\n\nPlease note that this thumbrule is a coarse indicator. You may want to\nconsult a good astrologer to verify subjective factors manually."
+  },
+  {
+   "who": 0,
+   "nak": 8,
+   "pada": 2,
+   "title": "Result of Horoscope Matching for Marriage",
+   "text": "Native: Hastha (3rd pada)\nBride: Aasresha (3rd pada)\n\nGunanka score after matching ashta koota (group of eight factors) = 20 (out of 36).\n\nThe level of match (below average/average/fair/good/excellent) = Average.\n\nPlease note that this thumbrule is a coarse indicator. You may want to\nconsult a good astrologer to verify subjective factors manually."
+  },
+  {
+   "who": 0,
+   "nak": 8,
+   "pada": 3,
+   "title": "Horoscope Matching for Marriage",
+   "text": "Consider a\nwith the following nakshatra\nfor the native,\nand the following pada (quarter)"
+  },
+  {
+   "who": 0,
+   "nak": 9,
+   "pada": 0,
+   "title": "Result of Horoscope Matching for Marriage",
+   "text": "Native: Hastha (3rd pada)\nBride: Magha (1st pada)\n\nGunanka score after matching ashta koota (group of eight factors) = 16 (out of 36).\n\nThe level of match (below average/average/fair/good/excellent) = Below Average.\n\nPlease note that this thumbrule is a coarse indicator. You may want to\nconsult a good astrologer to verify subjective factors manually."
+  },
+  {
+   "who": 0,
+   "nak": 9,
+   "pada": 1,
+   "title": "Result of Horoscope Matching for Marriage",
+   "text": "Native: Hastha (3rd pada)\nBride: Magha (2nd pada)\n\nGunanka score after matching ashta koota (group of eight factors) = 16 (out of 36).\n\nThe level of match (below average/average/fair/good/excellent) = Below Average.\n\nPlease note that this thumbrule is a coarse indicator. You may want to\nconsult a good astrologer to verify subjective factors manually."
+  },
+  {
+   "who": 0,
+   "nak": 9,
+   "pada": 2,
+   "title": "Horoscope Matching for Marriage",
+   "text": "Consider a\nwith the following nakshatra\nfor the native,\nand the following pada (quarter)"
+  },
+  {
+   "who": 0,
+   "nak": 9,
+   "pada": 3,
+   "title": "Result of Horoscope Matching for Marriage",
+   "text": "Native: Hastha (3rd pada)\nBride: Magha (4th pada)\n\nGunanka score after matching ashta koota (group of eight factors) = 16 (out of 36).\n\nThe level of match (below average/average/fair/good/excellent) = Below Average.\n\nPlease note that this thumbrule is a coarse indicator. You may want to\nconsult a good astrologer to verify subjective factors manually."
+  },
+  {
+   "who": 0,
+   "nak": 10,
+   "pada": 0,
+   "title": "Result of Horoscope Matching for Marriage",
+   "text": "Native: Hastha (3rd pada)\nBride: Poorva Phalguni (1st pada)\n\nGunanka score after matching ashta koota (group of eight factors) = 22 (out of 36).\n\nThe level of match (below average/average/fair/good/excellent) = Fair.\n\nPlease note that this thumbrule is a coarse indicator. You may want to\nconsult a good astrologer to verify subjective factors manually."
+  },
+  {
+   "who": 0,
+   "nak": 10,
+   "pada": 1,
+   "title": "Horoscope Matching for Marriage",
+   "text": "Consider a\nwith the following nakshatra\nfor the native,\nand the following pada (quarter)"
+  },
+  {
+   "who": 0,
+   "nak": 10,
+   "pada": 2,
+   "title": "Result of Horoscope Matching for Marriage",
+   "text": "Native: Hastha (3rd pada)\nBride: Poorva Phalguni (3rd pada)\n\nGunanka score after matching ashta koota (group of eight factors) = 22 (out of 36).\n\nThe level of match (below average/average/fair/good/excellent) = Fair.\n\nPlease note that this thumbrule is a coarse indicator. You may want to\nconsult a good astrologer to verify subjective factors manually."
+  },
+  {
+   "who": 0,
+   "nak": 10,
+   "pada": 3,
+   "title": "Result of Horoscope Matching for Marriage",
+   "text": "Native: Hastha (3rd pada)\nBride: Poorva Phalguni (4th pada)\n\nGunanka score after matching ashta koota (group of eight factors) = 22 (out of 36).\n\nThe level of match (below average/average/fair/good/excellent) = Fair.\n\nPlease note that this thumbrule is a coarse indicator. You may want to\nconsult a good astrologer to verify subjective factors manually."
+  },
+  {
+   "who": 0,
+   "nak": 11,
+   "pada": 0,
+   "title": "Result of Horoscope Matching for Marriage",
+   "text": "Native: Hastha (3rd pada)\nBride: Uttara Phalguni (1st pada)\n\nGunanka score after matching ashta koota (group of eight factors) = 16 (out of 36).\n\nThe level of match (below average/average/fair/good/excellent) = Below Average.\n\nPlease note that this thumbrule is a coarse indicator. You may want to\nconsult a good astrologer to verify subjective factors manually."
+  },
+  {
+   "who": 0,
+   "nak": 11,
+   "pada": 1,
+   "title": "Horoscope Matching for Marriage",
+   "text": "Consider a\nwith the following nakshatra\nfor the native,\nand the following pada (quarter)"
+  },
+  {
+   "who": 0,
+   "nak": 11,
+   "pada": 2,
+   "title": "Result of Horoscope Matching for Marriage",
+   "text": "Native: Hastha (3rd pada)\nBride: Uttara Phalguni (3rd pada)\n\nGunanka score after matching ashta koota (group of eight factors) = 25 (out of 36).\n\nThe level of match (below average/average/fair/good/excellent) = Fair.\n\nPlease note that this thumbrule is a coarse indicator. You may want to\nconsult a good astrologer to verify subjective factors manually."
+  },
+  {
+   "who": 0,
+   "nak": 11,
+   "pada": 3,
+   "title": "Result of Horoscope Matching for Marriage",
+   "text": "Native: Hastha (3rd pada)\nBride: Uttara Phalguni (4th pada)\n\nGunanka score after matching ashta koota (group of eight factors) = 25 (out of 36).\n\nThe level of match (below average/average/fair/good/excellent) = Fair.\n\nPlease note that this thumbrule is a coarse indicator. You may want to\nconsult a good astrologer to verify subjective factors manually."
+  },
+  {
+   "who": 0,
+   "nak": 12,
+   "pada": 0,
+   "title": "Horoscope Matching for Marriage",
+   "text": "Consider a\nwith the following nakshatra\nfor the native,\nand the following pada (quarter)"
+  },
+  {
+   "who": 0,
+   "nak": 12,
+   "pada": 1,
+   "title": "Result of Horoscope Matching for Marriage",
+   "text": "Native: Hastha (3rd pada)\nBride: Hastha (2nd pada)\n\nGunanka score after matching ashta koota (group of eight factors) = 28 (out of 36).\n\nThe level of match (below average/average/fair/good/excellent) = Good.\n\nPlease note that this thumbrule is a coarse indicator. You may want to\nconsult a good astrologer to verify subjective factors manually."
+  },
+  {
+   "who": 0,
+   "nak": 12,
+   "pada": 2,
+   "title": "Result of Horoscope Matching for Marriage",
+   "text": "Native: Hastha (3rd pada)\nBride: Hastha (3rd pada)\n\nGunanka score after matching ashta koota (group of eight factors) = 28 (out of 36).\n\nThe level of match (below average/average/fair/good/excellent) = Good.\n\nPlease note that this thumbrule is a coarse indicator. You may want to\nconsult a good astrologer to verify subjective factors manually."
+  },
+  {
+   "who": 0,
+   "nak": 12,
+   "pada": 3,
+   "title": "Horoscope Matching for Marriage",
+   "text": "Consider a\nwith the following nakshatra\nfor the native,\nand the following pada (quarter)"
+  },
+  {
+   "who": 0,
+   "nak": 13,
+   "pada": 0,
+   "title": "Horoscope Matching for Marriage",
+   "text": "Consider a\nwith the following nakshatra\nfor the native,\nand the following pada (quarter)"
+  },
+  {
+   "who": 0,
+   "nak": 13,
+   "pada": 1,
+   "title": "Horoscope Matching for Marriage",
+   "text": "Consider a\nwith the following nakshatra\nfor the native,\nand the following pada (quarter)"
+  },
+  {
+   "who": 0,
+   "nak": 13,
+   "pada": 2,
+   "title": "Horoscope Matching for Marriage",
+   "text": "Consider a\nwith the following nakshatra\nfor the native,\nand the following pada (quarter)"
+  },
+  {
+   "who": 0,
+   "nak": 13,
+   "pada": 3,
+   "title": "Horoscope Matching for Marriage",
+   "text": "Consider a\nwith the following nakshatra\nfor the native,\nand the following pada (quarter)"
+  },
+  {
+   "who": 0,
+   "nak": 14,
+   "pada": 0,
+   "title": "Horoscope Matching for Marriage",
+   "text": "Consider a\nwith the following nakshatra\nfor the native,\nand the following pada (quarter)"
+  },
+  {
+   "who": 0,
+   "nak": 14,
+   "pada": 1,
+   "title": "Result of Horoscope Matching for Marriage",
+   "text": "Native: Hastha (3rd pada)\nBride: Swaati (2nd pada)\n\nGunanka score after matching ashta koota (group of eight factors) = 27 (out of 36).\n\nThe level of match (below average/average/fair/good/excellent) = Good.\n\nPlease note that this thumbrule is a coarse indicator. You may want to\nconsult a good astrologer to verify subjective factors manually."
+  },
+  {
+   "who": 0,
+   "nak": 14,
+   "pada": 2,
+   "title": "Result of Horoscope Matching for Marriage",
+   "text": "Native: Hastha (3rd pada)\nBride: Swaati (3rd pada)\n\nGunanka score after matching ashta koota (group of eight factors) = 27 (out of 36).\n\nThe level of match (below average/average/fair/good/excellent) = Good.\n\nPlease note that this thumbrule is a coarse indicator. You may want to\nconsult a good astrologer to verify subjective factors manually."
+  },
+  {
+   "who": 0,
+   "nak": 14,
+   "pada": 3,
+   "title": "Result of Horoscope Matching for Marriage",
+   "text": "Native: Hastha (3rd pada)\nBride: Swaati (4th pada)\n\nGunanka score after matching ashta koota (group of eight factors) = 27 (out of 36).\n\nThe level of match (below average/average/fair/good/excellent) = Good.\n\nPlease note that this thumbrule is a coarse indicator. You may want to\nconsult a good astrologer to verify subjective factors manually."
+  },
+  {
+   "who": 0,
+   "nak": 15,
+   "pada": 0,
+   "title": "Result of Horoscope Matching for Marriage",
+   "text": "Native: Hastha (3rd pada)\nBride: Visakha (1st pada)\n\nGunanka score after matching ashta koota (group of eight factors) = 18 (out of 36).\n\nThe level of match (below average/average/fair/good/excellent) = Average.\n\nPlease note that this thumbrule is a coarse indicator. You may want to\nconsult a good astrologer to verify subjective factors manually."
+  },
+  {
+   "who": 0,
+   "nak": 15,
+   "pada": 1,
+   "title": "Horoscope Matching for Marriage",
+   "text": "Consider a\nwith the following nakshatra\nfor the native,\nand the following pada (quarter)"
+  },
+  {
+   "who": 0,
+   "nak": 15,
+   "pada": 2,
+   "title": "Horoscope Matching for Marriage",
+   "text": "Consider a\nwith the following nakshatra\nfor the native,\nand the following pada (quarter)"
+  },
+  {
+   "who": 0,
+   "nak": 15,
+   "pada": 3,
+   "title": "Horoscope Matching for Marriage",
+   "text": "Consider a\nwith the following nakshatra\nfor the native,\nand the following pada (quarter)"
+  },
+  {
+   "who": 0,
+   "nak": 16,
+   "pada": 0,
+   "title": "Result of Horoscope Matching for Marriage",
+   "text": "Native: Hastha (3rd pada)\nBride: Anuraadha (1st pada)\n\nGunanka score after matching ashta koota (group of eight factors) = 27 (out of 36).\n\nThe level of match (below average/average/fair/good/excellent) = Good.\n\nPlease note that this thumbrule is a coarse indicator. You may want to\nconsult a good astrologer to verify subjective factors manually."
+  },
+  {
+   "who": 0,
+   "nak": 16,
+   "pada": 1,
+   "title": "Result of Horoscope Matching for Marriage",
+   "text": "Native: Hastha (3rd pada)\nBride: Anuraadha (2nd pada)\n\nGunanka score after matching ashta koota (group of eight factors) = 27 (out of 36).\n\nThe level of match (below average/average/fair/good/excellent) = Good.\n\nPlease note that this thumbrule is a coarse indicator. You may want to\nconsult a good astrologer to verify subjective factors manually."
+  },
+  {
+   "who": 0,
+   "nak": 16,
+   "pada": 2,
+   "title": "Horoscope Matching for Marriage",
+   "text": "Consider a\nwith the following nakshatra\nfor the native,\nand the following pada (quarter)"
+  },
+  {
+   "who": 0,
+   "nak": 16,
+   "pada": 3,
+   "title": "Result of Horoscope Matching for Marriage",
+   "text": "Native: Hastha (3rd pada)\nBride: Anuraadha (4th pada)\n\nGunanka score after matching ashta koota (group of eight factors) = 27 (out of 36).\n\nThe level of match (below average/average/fair/good/excellent) = Good.\n\nPlease note that this thumbrule is a coarse indicator. You may want to\nconsult a good astrologer to verify subjective factors manually."
+  },
+  {
+   "who": 0,
+   "nak": 17,
+   "pada": 0,
+   "title": "Result of Horoscope Matching for Marriage",
+   "text": "Native: Hastha (3rd pada)\nBride: Jyeshtha (1st pada)\n\nGunanka score after matching ashta koota (group of eight factors) = 12 (out of 36).\n\nThe level of match (below average/average/fair/good/excellent) = Below Average.\n\nPlease note that this thumbrule is a coarse indicator. You may want to\nconsult a good astrologer to verify subjective factors manually."
+  },
+  {
+   "who": 0,
+   "nak": 17,
+   "pada": 1,
+   "title": "Result of Horoscope Matching for Marriage",
+   "text": "Native: Hastha (3rd pada)\nBride: Jyeshtha (2nd pada)\n\nGunanka score after matching ashta koota (group of eight factors) = 12 (out of 36).\n\nThe level of match (below average/average/fair/good/excellent) = Below Average.\n\nPlease note that this thumbrule is a coarse indicator. You may want to\nconsult a good astrologer to verify subjective factors manually."
+  },
+  {
+   "who": 0,
+   "nak": 17,
+   "pada": 2,
+   "title": "Horoscope Matching for Marriage",
+   "text": "Consider a\nwith the following nakshatra\nfor the native,\nand the following pada (quarter)"
+  },
+  {
+   "who": 0,
+   "nak": 17,
+   "pada": 3,
+   "title": "Result of Horoscope Matching for Marriage",
+   "text": "Native: Hastha (3rd pada)\nBride: Jyeshtha (4th pada)\n\nGunanka score after matching ashta koota (group of eight factors) = 12 (out of 36).\n\nThe level of match (below average/average/fair/good/excellent) = Below Average.\n\nPlease note that this thumbrule is a coarse indicator. You may want to\nconsult a good astrologer to verify subjective factors manually."
+  },
+  {
+   "who": 0,
+   "nak": 18,
+   "pada": 0,
+   "title": "Result of Horoscope Matching for Marriage",
+   "text": "Native: Hastha (3rd pada)\nBride: Moola (1st pada)\n\nGunanka score after matching ashta koota (group of eight factors) = 13 (out of 36).\n\nThe level of match (below average/average/fair/good/excellent) = Below Average.\n\nPlease note that this thumbrule is a coarse indicator. You may want to\nconsult a good astrologer to verify subjective factors manually."
+  },
+  {
+   "who": 0,
+   "nak": 18,
+   "pada": 1,
+   "title": "Horoscope Matching for Marriage",
+   "text": "Consider a\nwith the following nakshatra\nfor the native,\nand the following pada (quarter)"
+  },
+  {
+   "who": 0,
+   "nak": 18,
+   "pada": 2,
+   "title": "Result of Horoscope Matching for Marriage",
+   "text": "Native: Hastha (3rd pada)\nBride: Moola (3rd pada)\n\nGunanka score after matching ashta koota (group of eight factors) = 13 (out of 36).\n\nThe level of match (below average/average/fair/good/excellent) = Below Average.\n\nPlease note that this thumbrule is a coarse indicator. You may want to\nconsult a good astrologer to verify subjective factors manually."
+  },
+  {
+   "who": 0,
+   "nak": 18,
+   "pada": 3,
+   "title": "Result of Horoscope Matching for Marriage",
+   "text": "Native: Hastha (3rd pada)\nBride: Moola (4th pada)\n\nGunanka score after matching ashta koota (group of eight factors) = 13 (out of 36).\n\nThe level of match (below average/average/fair/good/excellent) = Below Average.\n\nPlease note that this thumbrule is a coarse indicator. You may want to\nconsult a good astrologer to verify subjective factors manually."
+  },
+  {
+   "who": 0,
+   "nak": 19,
+   "pada": 0,
+   "title": "Horoscope Matching for Marriage",
+   "text": "Consider a\nwith the following nakshatra\nfor the native,\nand the following pada (quarter)"
+  },
+  {
+   "who": 0,
+   "nak": 19,
+   "pada": 1,
+   "title": "Horoscope Matching for Marriage",
+   "text": "Consider a\nwith the following nakshatra\nfor the native,\nand the following pada (quarter)"
+  },
+  {
+   "who": 0,
+   "nak": 19,
+   "pada": 2,
+   "title": "Horoscope Matching for Marriage",
+   "text": "Consider a\nwith the following nakshatra\nfor the native,\nand the following pada (quarter)"
+  },
+  {
+   "who": 0,
+   "nak": 19,
+   "pada": 3,
+   "title": "Result of Horoscope Matching for Marriage",
+   "text": "Native: Hastha (3rd pada)\nBride: Poorvashadha (4th pada)\n\nGunanka score after matching ashta koota (group of eight factors) = 26 (out of 36).\n\nThe level of match (below average/average/fair/good/excellent) = Good.\n\nPlease note that this thumbrule is a coarse indicator. You may want to\nconsult a good astrologer to verify subjective factors manually."
+  },
+  {
+   "who": 0,
+   "nak": 20,
+   "pada": 0,
+   "title": "Horoscope Matching for Marriage",
+   "text": "Consider a\nwith the following nakshatra\nfor the native,\nand the following pada (quarter)"
+  },
+  {
+   "who": 0,
+   "nak": 20,
+   "pada": 1,
+   "title": "Result of Horoscope Matching for Marriage",
+   "text": "Native: Hastha (3rd pada)\nBride: Uttarashadha (2nd pada)\n\nGunanka score after matching ashta koota (group of eight factors) = 25 (out of 36).\n\nThe level of match (below average/average/fair/good/excellent) = Fair.\n\nPlease note that this thumbrule is a coarse indicator. You may want to\nconsult a good astrologer to verify subjective factors manually."
+  },
+  {
+   "who": 0,
+   "nak": 20,
+   "pada": 2,
+   "title": "Result of Horoscope Matching for Marriage",
+   "text": "Native: Hastha (3rd pada)\nBride: Uttarashadha (3rd pada)\n\nGunanka score after matching ashta koota (group of eight factors) = 25 (out of 36).\n\nThe level of match (below average/average/fair/good/excellent) = Fair.\n\nPlease note that this thumbrule is a coarse indicator. You may want to\nconsult a good astrologer to verify subjective factors manually."
+  },
+  {
+   "who": 0,
+   "nak": 20,
+   "pada": 3,
+   "title": "Horoscope Matching for Marriage",
+   "text": "Consider a\nwith the following nakshatra\nfor the native,\nand the following pada (quarter)"
+  },
+  {
+   "who": 0,
+   "nak": 21,
+   "pada": 0,
+   "title": "Horoscope Matching for Marriage",
+   "text": "Consider a\nwith the following nakshatra\nfor the native,\nand the following pada (quarter)"
+  },
+  {
+   "who": 0,
+   "nak": 21,
+   "pada": 1,
+   "title": "Horoscope Matching for Marriage",
+   "text": "Consider a\nwith the following nakshatra\nfor the native,\nand the following pada (quarter)"
+  },
+  {
+   "who": 0,
+   "nak": 21,
+   "pada": 2,
+   "title": "Result of Horoscope Matching for Marriage",
+   "text": "Native: Hastha (3rd pada)\nBride: Sravanam (3rd pada)\n\nGunanka score after matching ashta koota (group of eight factors) = 25 (out of 36).\n\nThe level of match (below average/average/fair/good/excellent) = Fair.\n\nPlease note that this thumbrule is a coarse indicator. You may want to\nconsult a good astrologer to verify subjective factors manually."
+  },
+  {
+   "who": 0,
+   "nak": 21,
+   "pada": 3,
+   "title": "Result of Horoscope Matching for Marriage",
+   "text": "Native: Hastha (3rd pada)\nBride: Sravanam (4th pada)\n\nGunanka score after matching ashta koota (group of eight factors) = 25 (out of 36).\n\nThe level of match (below average/average/fair/good/excellent) = Fair.\n\nPlease note that this thumbrule is a coarse indicator. You may want to\nconsult a good astrologer to verify subjective factors manually."
+  },
+  {
+   "who": 0,
+   "nak": 22,
+   "pada": 0,
+   "title": "Horoscope Matching for Marriage",
+   "text": "Consider a\nwith the following nakshatra\nfor the native,\nand the following pada (quarter)"
+  },
+  {
+   "who": 0,
+   "nak": 22,
+   "pada": 1,
+   "title": "Result of Horoscope Matching for Marriage",
+   "text": "Native: Hastha (3rd pada)\nBride: Dhanishtha (2nd pada)\n\nGunanka score after matching ashta koota (group of eight factors) = 18 (out of 36).\n\nThe level of match (below average/average/fair/good/excellent) = Average.\n\nPlease note that this thumbrule is a coarse indicator. You may want to\nconsult a good astrologer to verify subjective factors manually."
+  },
+  {
+   "who": 0,
+   "nak": 22,
+   "pada": 2,
+   "title": "Result of Horoscope Matching for Marriage",
+   "text": "Native: Hastha (3rd pada)\nBride: Dhanishtha (3rd pada)\n\nGunanka score after matching ashta koota (group of eight factors) = 21 (out of 36).\n\nThe level of match (below average/average/fair/good/excellent) = Average.\n\nPlease note that this thumbrule is a coarse indicator. You may want to\nconsult a good astrologer to verify subjective factors manually."
+  },
+  {
+   "who": 0,
+   "nak": 22,
+   "pada": 3,
+   "title": "Horoscope Matching for Marriage",
+   "text": "Consider a\nwith the following nakshatra\nfor the native,\nand the following pada (quarter)"
+  },
+  {
+   "who": 0,
+   "nak": 23,
+   "pada": 0,
+   "title": "Horoscope Matching for Marriage",
+   "text": "Consider a\nwith the following nakshatra\nfor the native,\nand the following pada (quarter)"
+  },
+  {
+   "who": 0,
+   "nak": 23,
+   "pada": 1,
+   "title": "Result of Horoscope Matching for Marriage",
+   "text": "Native: Hastha (3rd pada)\nBride: Satabhishak (2nd pada)\n\nGunanka score after matching ashta koota (group of eight factors) = 8 (out of 36).\n\nThe level of match (below average/average/fair/good/excellent) = Below Average.\n\nPlease note that this thumbrule is a coarse indicator. You may want to\nconsult a good astrologer to verify subjective factors manually."
+  },
+  {
+   "who": 0,
+   "nak": 23,
+   "pada": 2,
+   "title": "Result of Horoscope Matching for Marriage",
+   "text": "Native: Hastha (3rd pada)\nBride: Satabhishak (3rd pada)\n\nGunanka score after matching ashta koota (group of eight factors) = 8 (out of 36).\n\nThe level of match (below average/average/fair/good/excellent) = Below Average.\n\nPlease note that this thumbrule is a coarse indicator. You may want to\nconsult a good astrologer to verify subjective factors manually."
+  },
+  {
+   "who": 0,
+   "nak": 23,
+   "pada": 3,
+   "title": "Horoscope Matching for Marriage",
+   "text": "Consider a\nwith the following nakshatra\nfor the native,\nand the following pada (quarter)"
+  },
+  {
+   "who": 0,
+   "nak": 24,
+   "pada": 0,
+   "title": "Horoscope Matching for Marriage",
+   "text": "Consider a\nwith the following nakshatra\nfor the native,\nand the following pada (quarter)"
+  },
+  {
+   "who": 0,
+   "nak": 24,
+   "pada": 1,
+   "title": "Horoscope Matching for Marriage",
+   "text": "Consider a\nwith the following nakshatra\nfor the native,\nand the following pada (quarter)"
+  },
+  {
+   "who": 0,
+   "nak": 24,
+   "pada": 2,
+   "title": "Horoscope Matching for Marriage",
+   "text": "Consider a\nwith the following nakshatra\nfor the native,\nand the following pada (quarter)"
+  },
+  {
+   "who": 0,
+   "nak": 24,
+   "pada": 3,
+   "title": "Result of Horoscope Matching for Marriage",
+   "text": "Native: Hastha (3rd pada)\nBride: Poorvabhadra (4th pada)\n\nGunanka score after matching ashta koota (group of eight factors) = 18 (out of 36).\n\nThe level of match (below average/average/fair/good/excellent) = Average.\n\nPlease note that this thumbrule is a coarse indicator. You may want to\nconsult a good astrologer to verify subjective factors manually."
+  },
+  {
+   "who": 0,
+   "nak": 25,
+   "pada": 0,
+   "title": "Horoscope Matching for Marriage",
+   "text": "Consider a\nwith the following nakshatra\nfor the native,\nand the following pada (quarter)"
+  },
+  {
+   "who": 0,
+   "nak": 25,
+   "pada": 1,
+   "title": "Horoscope Matching for Marriage",
+   "text": "Consider a\nwith the following nakshatra\nfor the native,\nand the following pada (quarter)"
+  },
+  {
+   "who": 0,
+   "nak": 25,
+   "pada": 2,
+   "title": "Horoscope Matching for Marriage",
+   "text": "Consider a\nwith the following nakshatra\nfor the native,\nand the following pada (quarter)"
+  },
+  {
+   "who": 0,
+   "nak": 25,
+   "pada": 3,
+   "title": "Result of Horoscope Matching for Marriage",
+   "text": "Native: Hastha (3rd pada)\nBride: Uttarabhadra (4th pada)\n\nGunanka score after matching ashta koota (group of eight factors) = 26 (out of 36).\n\nThe level of match (below average/average/fair/good/excellent) = Good.\n\nPlease note that this thumbrule is a coarse indicator. You may want to\nconsult a good astrologer to verify subjective factors manually."
+  },
+  {
+   "who": 0,
+   "nak": 26,
+   "pada": 0,
+   "title": "Result of Horoscope Matching for Marriage",
+   "text": "Native: Hastha (3rd pada)\nBride: Revati (1st pada)\n\nGunanka score after matching ashta koota (group of eight factors) = 26 (out of 36).\n\nThe level of match (below average/average/fair/good/excellent) = Good.\n\nPlease note that this thumbrule is a coarse indicator. You may want to\nconsult a good astrologer to verify subjective factors manually."
+  },
+  {
+   "who": 0,
+   "nak": 26,
+   "pada": 1,
+   "title": "Result of Horoscope Matching for Marriage",
+   "text": "Native: Hastha (3rd pada)\nBride: Revati (2nd pada)\n\nGunanka score after matching ashta koota (group of eight factors) = 26 (out of 36).\n\nThe level of match (below average/average/fair/good/excellent) = Good.\n\nPlease note that this thumbrule is a coarse indicator. You may want to\nconsult a good astrologer to verify subjective factors manually."
+  },
+  {
+   "who": 0,
+   "nak": 26,
+   "pada": 2,
+   "title": "Horoscope Matching for Marriage",
+   "text": "Consider a\nwith the following nakshatra\nfor the native,\nand the following pada (quarter)"
+  },
+  {
+   "who": 0,
+   "nak": 26,
+   "pada": 3,
+   "title": "Horoscope Matching for Marriage",
+   "text": "Consider a\nwith the following nakshatra\nfor the native,\nand the following pada (quarter)"
+  },
+  {
+   "who": 1,
+   "nak": 0,
+   "pada": 0,
+   "title": "Result of Horoscope Matching for Marriage",
+   "text": "Native: Hastha (3rd pada)\nBridegroom: Aswini (1st pada)\n\nGunanka score after matching ashta koota (group of eight factors) = 11 (out of 36).\n\nThe level of match (below average/average/fair/good/excellent) = Below Average.\n\nPlease note that this thumbrule is a coarse indicator. You may want to\nconsult a good astrologer to verify subjective factors manually."
+  },
+  {
+   "who": 1,
+   "nak": 0,
+   "pada": 1,
+   "title": "Result of Horoscope Matching for Marriage",
+   "text": "Native: Hastha (3rd pada)\nBridegroom: Aswini (2nd pada)\n\nGunanka score after matching ashta koota (group of eight factors) = 11 (out of 36).\n\nThe level of match (below average/average/fair/good/excellent) = Below Average.\n\nPlease note that this thumbrule is a coarse indicator. You may want to\nconsult a good astrologer to verify subjective factors manually."
+  },
+  {
+   "who": 1,
+   "nak": 0,
+   "pada": 2,
+   "title": "Horoscope Matching for Marriage",
+   "text": "Consider a\nwith the following nakshatra\nfor the native,\nand the following pada (quarter)"
+  },
+  {
+   "who": 1,
+   "nak": 0,
+   "pada": 3,
+   "title": "Horoscope Matching for Marriage",
+   "text": "Consider a\nwith the following nakshatra\nfor the native,\nand the following pada (quarter)"
+  },
+  {
+   "who": 1,
+   "nak": 1,
+   "pada": 0,
+   "title": "Result of Horoscope Matching for Marriage",
+   "text": "Native: Hastha (3rd pada)\nBridegroom: Bharani (1st pada)\n\nGunanka score after matching ashta koota (group of eight factors) = 20 (out of 36).\n\nThe level of match (below average/average/fair/good/excellent) = Average.\n\nPlease note that this thumbrule is a coarse indicator. You may want to\nconsult a good astrologer to verify subjective factors manually."
+  },
+  {
+   "who": 1,
+   "nak": 1,
+   "pada": 1,
+   "title": "Result of Horoscope Matching for Marriage",
+   "text": "Native: Hastha (3rd pada)\nBridegroom: Bharani (2nd pada)\n\nGunanka score after matching ashta koota (group of eight factors) = 20 (out of 36).\n\nThe level of match (below average/average/fair/good/excellent) = Average.\n\nPlease note that this thumbrule is a coarse indicator. You may want to\nconsult a good astrologer to verify subjective factors manually."
+  },
+  {
+   "who": 1,
+   "nak": 1,
+   "pada": 2,
+   "title": "Result of Horoscope Matching for Marriage",
+   "text": "Native: Hastha (3rd pada)\nBridegroom: Bharani (3rd pada)\n\nGunanka score after matching ashta koota (group of eight factors) = 20 (out of 36).\n\nThe level of match (below average/average/fair/good/excellent) = Average.\n\nPlease note that this thumbrule is a coarse indicator. You may want to\nconsult a good astrologer to verify subjective factors manually."
+  },
+  {
+   "who": 1,
+   "nak": 1,
+   "pada": 3,
+   "title": "Result of Horoscope Matching for Marriage",
+   "text": "Native: Hastha (3rd pada)\nBridegroom: Bharani (4th pada)\n\nGunanka score after matching ashta koota (group of eight factors) = 20 (out of 36).\n\nThe level of match (below average/average/fair/good/excellent) = Average.\n\nPlease note that this thumbrule is a coarse indicator. You may want to\nconsult a good astrologer to verify subjective factors manually."
+  },
+  {
+   "who": 1,
+   "nak": 2,
+   "pada": 0,
+   "title": "Horoscope Matching for Marriage",
+   "text": "Consider a\nwith the following nakshatra\nfor the native,\nand the following pada (quarter)"
+  },
+  {
+   "who": 1,
+   "nak": 2,
+   "pada": 1,
+   "title": "Horoscope Matching for Marriage",
+   "text": "Consider a\nwith the following nakshatra\nfor the native,\nand the following pada (quarter)"
+  },
+  {
+   "who": 1,
+   "nak": 2,
+   "pada": 2,
+   "title": "Horoscope Matching for Marriage",
+   "text": "Consider a\nwith the following nakshatra\nfor the native,\nand the following pada (quarter)"
+  },
+  {
+   "who": 1,
+   "nak": 2,
+   "pada": 3,
+   "title": "Horoscope Matching for Marriage",
+   "text": "Consider a\nwith the following nakshatra\nfor the native,\nand the following pada (quarter)"
+  },
+  {
+   "who": 1,
+   "nak": 3,
+   "pada": 0,
+   "title": "Horoscope Matching for Marriage",
+   "text": "Consider a\nwith the following nakshatra\nfor the native,\nand the following pada (quarter)"
+  },
+  {
+   "who": 1,
+   "nak": 3,
+   "pada": 1,
+   "title": "Result of Horoscope Matching for Marriage",
+   "text": "Native: Hastha (3rd pada)\nBridegroom: Rohini (2nd pada)\n\nGunanka score after matching ashta koota (group of eight factors) = 26 (out of 36).\n\nThe level of match (below average/average/fair/good/excellent) = Good.\n\nPlease note that this thumbrule is a coarse indicator. You may want to\nconsult a good astrologer to verify subjective factors manually."
+  },
+  {
+   "who": 1,
+   "nak": 3,
+   "pada": 2,
+   "title": "Result of Horoscope Matching for Marriage",
+   "text": "Native: Hastha (3rd pada)\nBridegroom: Rohini (3rd pada)\n\nGunanka score after matching ashta koota (group of eight factors) = 26 (out of 36).\n\nThe level of match (below average/average/fair/good/excellent) = Good.\n\nPlease note that this thumbrule is a coarse indicator. You may want to\nconsult a good astrologer to verify subjective factors manually."
+  },
+  {
+   "who": 1,
+   "nak": 3,
+   "pada": 3,
+   "title": "Result of Horoscope Matching for Marriage",
+   "text": "Native: Hastha (3rd pada)\nBridegroom: Rohini (4th pada)\n\nGunanka score after matching ashta koota (group of eight factors) = 26 (out of 36).\n\nThe level of match (below average/average/fair/good/excellent) = Good.\n\nPlease note that this thumbrule is a coarse indicator. You may want to\nconsult a good astrologer to verify subjective factors manually."
+  },
+  {
+   "who": 1,
+   "nak": 4,
+   "pada": 0,
+   "title": "Result of Horoscope Matching for Marriage",
+   "text": "Native: Hastha (3rd pada)\nBridegroom: Mrigasira (1st pada)\n\nGunanka score after matching ashta koota (group of eight factors) = 26 (out of 36).\n\nThe level of match (below average/average/fair/good/excellent) = Good.\n\nPlease note that this thumbrule is a coarse indicator. You may want to\nconsult a good astrologer to verify subjective factors manually."
+  },
+  {
+   "who": 1,
+   "nak": 4,
+   "pada": 1,
+   "title": "Horoscope Matching for Marriage",
+   "text": "Consider a\nwith the following nakshatra\nfor the native,\nand the following pada (quarter)"
+  },
+  {
+   "who": 1,
+   "nak": 4,
+   "pada": 2,
+   "title": "Result of Horoscope Matching for Marriage",
+   "text": "Native: Hastha (3rd pada)\nBridegroom: Mrigasira (3rd pada)\n\nGunanka score after matching ashta koota (group of eight factors) = 33 (out of 36).\n\nThe level of match (below average/average/fair/good/excellent) = Excellent.\n\nPlease note that this thumbrule is a coarse indicator. You may want to\nconsult a good astrologer to verify subjective factors manually."
+  },
+  {
+   "who": 1,
+   "nak": 4,
+   "pada": 3,
+   "title": "Result of Horoscope Matching for Marriage",
+   "text": "Native: Hastha (3rd pada)\nBridegroom: Mrigasira (4th pada)\n\nGunanka score after matching ashta koota (group of eight factors) = 33 (out of 36).\n\nThe level of match (below average/average/fair/good/excellent) = Excellent.\n\nPlease note that this thumbrule is a coarse indicator. You may want to\nconsult a good astrologer to verify subjective factors manually."
+  },
+  {
+   "who": 1,
+   "nak": 5,
+   "pada": 0,
+   "title": "Result of Horoscope Matching for Marriage",
+   "text": "Native: Hastha (3rd pada)\nBridegroom: Aardra (1st pada)\n\nGunanka score after matching ashta koota (group of eight factors) = 23 (out of 36).\n\nThe level of match (below average/average/fair/good/excellent) = Fair.\n\nPlease note that this thumbrule is a coarse indicator. You may want to\nconsult a good astrologer to verify subjective factors manually."
+  },
+  {
+   "who": 1,
+   "nak": 5,
+   "pada": 1,
+   "title": "Result of Horoscope Matching for Marriage",
+   "text": "Native: Hastha (3rd pada)\nBridegroom: Aardra (2nd pada)\n\nGunanka score after matching ashta koota (group of eight factors) = 23 (out of 36).\n\nThe level of match (below average/average/fair/good/excellent) = Fair.\n\nPlease note that this thumbrule is a coarse indicator. You may want to\nconsult a good astrologer to verify subjective factors manually."
+  },
+  {
+   "who": 1,
+   "nak": 5,
+   "pada": 2,
+   "title": "Horoscope Matching for Marriage",
+   "text": "Consider a\nwith the following nakshatra\nfor the native,\nand the following pada (quarter)"
+  },
+  {
+   "who": 1,
+   "nak": 5,
+   "pada": 3,
+   "title": "Result of Horoscope Matching for Marriage",
+   "text": "Native: Hastha (3rd pada)\nBridegroom: Aardra (4th pada)\n\nGunanka score after matching ashta koota (group of eight factors) = 23 (out of 36).\n\nThe level of match (below average/average/fair/good/excellent) = Fair.\n\nPlease note that this thumbrule is a coarse indicator. You may want to\nconsult a good astrologer to verify subjective factors manually."
+  },
+  {
+   "who": 1,
+   "nak": 6,
+   "pada": 0,
+   "title": "Horoscope Matching for Marriage",
+   "text": "Consider a\nwith the following nakshatra\nfor the native,\nand the following pada (quarter)"
+  },
+  {
+   "who": 1,
+   "nak": 6,
+   "pada": 1,
+   "title": "Result of Horoscope Matching for Marriage",
+   "text": "Native: Hastha (3rd pada)\nBridegroom: Punarvasu (2nd pada)\n\nGunanka score after matching ashta koota (group of eight factors) = 23 (out of 36).\n\nThe level of match (below average/average/fair/good/excellent) = Fair.\n\nPlease note that this thumbrule is a coarse indicator. You may want to\nconsult a good astrologer to verify subjective factors manually."
+  },
+  {
+   "who": 1,
+   "nak": 6,
+   "pada": 2,
+   "title": "Horoscope Matching for Marriage",
+   "text": "Consider a\nwith the following nakshatra\nfor the native,\nand the following pada (quarter)"
+  },
+  {
+   "who": 1,
+   "nak": 6,
+   "pada": 3,
+   "title": "Result of Horoscope Matching for Marriage",
+   "text": "Native: Hastha (3rd pada)\nBridegroom: Punarvasu (4th pada)\n\nGunanka score after matching ashta koota (group of eight factors) = 19 (out of 36).\n\nThe level of match (below average/average/fair/good/excellent) = Average.\n\nPlease note that this thumbrule is a coarse indicator. You may want to\nconsult a good astrologer to verify subjective factors manually."
+  },
+  {
+   "who": 1,
+   "nak": 7,
+   "pada": 0,
+   "title": "Horoscope Matching for Marriage",
+   "text": "Consider a\nwith the following nakshatra\nfor the native,\nand the following pada (quarter)"
+  },
+  {
+   "who": 1,
+   "nak": 7,
+   "pada": 1,
+   "title": "Horoscope Matching for Marriage",
+   "text": "Consider a\nwith the following nakshatra\nfor the native,\nand the following pada (quarter)"
+  },
+  {
+   "who": 1,
+   "nak": 7,
+   "pada": 2,
+   "title": "Result of Horoscope Matching for Marriage",
+   "text": "Native: Hastha (3rd pada)\nBridegroom: Pushyami (3rd pada)\n\nGunanka score after matching ashta koota (group of eight factors) = 28 (out of 36).\n\nThe level of match (below average/average/fair/good/excellent) = Good.\n\nPlease note that this thumbrule is a coarse indicator. You may want to\nconsult a good astrologer to verify subjective factors manually."
+  },
+  {
+   "who": 1,
+   "nak": 7,
+   "pada": 3,
+   "title": "Horoscope Matching for Marriage",
+   "text": "Consider a\nwith the following nakshatra\nfor the native,\nand the following pada (quarter)"
+  },
+  {
+   "who": 1,
+   "nak": 8,
+   "pada": 0,
+   "title": "Result of Horoscope Matching for Marriage",
+   "text": "Native: Hastha (3rd pada)\nBridegroom: Aasresha (1st pada)\n\nGunanka score after matching ashta koota (group of eight factors) = 21 (out of 36).\n\nThe level of match (below average/average/fair/good/excellent) = Average.\n\nPlease note that this thumbrule is a coarse indicator. You may want to\nconsult a good astrologer to verify subjective factors manually."
+  },
+  {
+   "who": 1,
+   "nak": 8,
+   "pada": 1,
+   "title": "Result of Horoscope Matching for Marriage",
+   "text": "Native: Hastha (3rd pada)\nBridegroom: Aasresha (2nd pada)\n\nGunanka score after matching ashta koota (group of eight factors) = 21 (out of 36).\n\nThe level of match (below average/average/fair/good/excellent) = Average.\n\nPlease note that this thumbrule is a coarse indicator. You may want to\nconsult a good astrologer to verify subjective factors manually."
+  },
+  {
+   "who": 1,
+   "nak": 8,
+   "pada": 2,
+   "title": "Horoscope Matching for Marriage",
+   "text": "Consider a\nwith the following nakshatra\nfor the native,\nand the following pada (quarter)"
+  },
+  {
+   "who": 1,
+   "nak": 8,
+   "pada": 3,
+   "title": "Result of Horoscope Matching for Marriage",
+   "text": "Native: Hastha (3rd pada)\nBridegroom: Aasresha (4th pada)\n\nGunanka score after matching ashta koota (group of eight factors) = 21 (out of 36).\n\nThe level of match (below average/average/fair/good/excellent) = Average.\n\nPlease note that this thumbrule is a coarse indicator. You may want to\nconsult a good astrologer to verify subjective factors manually."
+  },
+  {
+   "who": 1,
+   "nak": 9,
+   "pada": 0,
+   "title": "Horoscope Matching for Marriage",
+   "text": "Consider a\nwith the following nakshatra\nfor the native,\nand the following pada (quarter)"
+  },
+  {
+   "who": 1,
+   "nak": 9,
+   "pada": 1,
+   "title": "Result of Horoscope Matching for Marriage",
+   "text": "Native: Hastha (3rd pada)\nBridegroom: Magha (2nd pada)\n\nGunanka score after matching ashta koota (group of eight factors) = 17 (out of 36).\n\nThe level of match (below average/average/fair/good/excellent) = Below Average.\n\nPlease note that this thumbrule is a coarse indicator. You may want to\nconsult a good astrologer to verify subjective factors manually."
+  },
+  {
+   "who": 1,
+   "nak": 9,
+   "pada": 2,
+   "title": "Result of Horoscope Matching for Marriage",
+   "text": "Native: Hastha (3rd pada)\nBridegroom: Magha (3rd pada)\n\nGunanka score after matching ashta koota (group of eight factors) = 17 (out of 36).\n\nThe level of match (below average/average/fair/good/excellent) = Below Average.\n\nPlease note that this thumbrule is a coarse indicator. You may want to\nconsult a good astrologer to verify subjective factors manually."
+  },
+  {
+   "who": 1,
+   "nak": 9,
+   "pada": 3,
+   "title": "Horoscope Matching for Marriage",
+   "text": "Consider a\nwith the following nakshatra\nfor the native,\nand the following pada (quarter)"
+  },
+  {
+   "who": 1,
+   "nak": 10,
+   "pada": 0,
+   "title": "Result of Horoscope Matching for Marriage",
+   "text": "Native: Hastha (3rd pada)\nBridegroom: Poorva Phalguni (1st pada)\n\nGunanka score after matching ashta koota (group of eight factors) = 22 (out of 36).\n\nThe level of match (below average/average/fair/good/excellent) = Fair.\n\nPlease note that this thumbrule is a coarse indicator. You may want to\nconsult a good astrologer to verify subjective factors manually."
+  },
+  {
+   "who": 1,
+   "nak": 10,
+   "pada": 1,
+   "title": "Horoscope Matching for Marriage",
+   "text": "Consider a\nwith the following nakshatra\nfor the native,\nand the following pada (quarter)"
+  },
+  {
+   "who": 1,
+   "nak": 10,
+   "pada": 2,
+   "title": "Result of Horoscope Matching for Marriage",
+   "text": "Native: Hastha (3rd pada)\nBridegroom: Poorva Phalguni (3rd pada)\n\nGunanka score after matching ashta koota (group of eight factors) = 22 (out of 36).\n\nThe level of match (below average/average/fair/good/excellent) = Fair.\n\nPlease note that this thumbrule is a coarse indicator. You may want to\nconsult a good astrologer to verify subjective factors manually."
+  },
+  {
+   "who": 1,
+   "nak": 10,
+   "pada": 3,
+   "title": "Result of Horoscope Matching for Marriage",
+   "text": "Native: Hastha (3rd pada)\nBridegroom: Poorva Phalguni (4th pada)\n\nGunanka score after matching ashta koota (group of eight factors) = 22 (out of 36).\n\nThe level of match (below average/average/fair/good/excellent) = Fair.\n\nPlease note that this thumbrule is a coarse indicator. You may want to\nconsult a good astrologer to verify subjective factors manually."
+  },
+  {
+   "who": 1,
+   "nak": 11,
+   "pada": 0,
+   "title": "Horoscope Matching for Marriage",
+   "text": "Consider a\nwith the following nakshatra\nfor the native,\nand the following pada (quarter)"
+  },
+  {
+   "who": 1,
+   "nak": 11,
+   "pada": 1,
+   "title": "Result of Horoscope Matching for Marriage",
+   "text": "Native: Hastha (3rd pada)\nBridegroom: Uttara Phalguni (2nd pada)\n\nGunanka score after matching ashta koota (group of eight factors) = 26 (out of 36).\n\nThe level of match (below average/average/fair/good/excellent) = Good.\n\nPlease note that this thumbrule is a coarse indicator. You may want to\nconsult a good astrologer to verify subjective factors manually."
+  },
+  {
+   "who": 1,
+   "nak": 11,
+   "pada": 2,
+   "title": "Result of Horoscope Matching for Marriage",
+   "text": "Native: Hastha (3rd pada)\nBridegroom: Uttara Phalguni (3rd pada)\n\nGunanka score after matching ashta koota (group of eight factors) = 26 (out of 36).\n\nThe level of match (below average/average/fair/good/excellent) = Good.\n\nPlease note that this thumbrule is a coarse indicator. You may want to\nconsult a good astrologer to verify subjective factors manually."
+  },
+  {
+   "who": 1,
+   "nak": 11,
+   "pada": 3,
+   "title": "Horoscope Matching for Marriage",
+   "text": "Consider a\nwith the following nakshatra\nfor the native,\nand the following pada (quarter)"
+  },
+  {
+   "who": 1,
+   "nak": 12,
+   "pada": 0,
+   "title": "Result of Horoscope Matching for Marriage",
+   "text": "Native: Hastha (3rd pada)\nBridegroom: Hastha (1st pada)\n\nGunanka score after matching ashta koota (group of eight factors) = 28 (out of 36).\n\nThe level of match (below average/average/fair/good/excellent) = Good.\n\nPlease note that this thumbrule is a coarse indicator. You may want to\nconsult a good astrologer to verify subjective factors manually."
+  },
+  {
+   "who": 1,
+   "nak": 12,
+   "pada": 1,
+   "title": "Result of Horoscope Matching for Marriage",
+   "text": "Native: Hastha (3rd pada)\nBridegroom: Hastha (2nd pada)\n\nGunanka score after matching ashta koota (group of eight factors) = 28 (out of 36).\n\nThe level of match (below average/average/fair/good/excellent) = Good.\n\nPlease note that this thumbrule is a coarse indicator. You may want to\nconsult a good astrologer to verify subjective factors manually."
+  },
+  {
+   "who": 1,
+   "nak": 12,
+   "pada": 2,
+   "title": "Result of Horoscope Matching for Marriage",
+   "text": "Native: Hastha (3rd pada)\nBridegroom: Hastha (3rd pada)\n\nGunanka score after matching ashta koota (group of eight factors) = 28 (out of 36).\n\nThe level of match (below average/average/fair/good/excellent) = Good.\n\nPlease note that this thumbrule is a coarse indicator. You may want to\nconsult a good astrologer to verify subjective factors manually."
+  },
+  {
+   "who": 1,
+   "nak": 12,
+   "pada": 3,
+   "title": "Horoscope Matching for Marriage",
+   "text": "Consider a\nwith the following nakshatra\nfor the native,\nand the following pada (quarter)"
+  },
+  {
+   "who": 1,
+   "nak": 13,
+   "pada": 0,
+   "title": "Result of Horoscope Matching for Marriage",
+   "text": "Native: Hastha (3rd pada)\nBridegroom: Chitra (1st pada)\n\nGunanka score after matching ashta koota (group of eight factors) = 27 (out of 36).\n\nThe level of match (below average/average/fair/good/excellent) = Good.\n\nPlease note that this thumbrule is a coarse indicator. You may want to\nconsult a good astrologer to verify subjective factors manually."
+  },
+  {
+   "who": 1,
+   "nak": 13,
+   "pada": 1,
+   "title": "Result of Horoscope Matching for Marriage",
+   "text": "Native: Hastha (3rd pada)\nBridegroom: Chitra (2nd pada)\n\nGunanka score after matching ashta koota (group of eight factors) = 27 (out of 36).\n\nThe level of match (below average/average/fair/good/excellent) = Good.\n\nPlease note that this thumbrule is a coarse indicator. You may want to\nconsult a good astrologer to verify subjective factors manually."
+  },
+  {
+   "who": 1,
+   "nak": 13,
+   "pada": 2,
+   "title": "Horoscope Matching for Marriage",
+   "text": "Consider a\nwith the following nakshatra\nfor the native,\nand the following pada (quarter)"
+  },
+  {
+   "who": 1,
+   "nak": 13,
+   "pada": 3,
+   "title": "Result of Horoscope Matching for Marriage",
+   "text": "Native: Hastha (3rd pada)\nBridegroom: Chitra (4th pada)\n\nGunanka score after matching ashta koota (group of eight factors) = 19 (out of 36).\n\nThe level of match (below average/average/fair/good/excellent) = Average.\n\nPlease note that this thumbrule is a coarse indicator. You may want to\nconsult a good astrologer to verify subjective factors manually."
+  },
+  {
+   "who": 1,
+   "nak": 14,
+   "pada": 0,
+   "title": "Result of Horoscope Matching for Marriage",
+   "text": "Native: Hastha (3rd pada)\nBridegroom: Swaati (1st pada)\n\nGunanka score after matching ashta koota (group of eight factors) = 36 (out of 36).\n\nThe level of match (below average/average/fair/good/excellent) = Excellent.\n\nPlease note that this thumbrule is a coarse indicator. You may want to\nconsult a good astrologer to verify subjective factors manually."
+  },
+  {
+   "who": 1,
+   "nak": 14,
+   "pada": 1,
+   "title": "Horoscope Matching for Marriage",
+   "text": "Consider a\nwith the following nakshatra\nfor the native,\nand the following pada (quarter)"
+  },
+  {
+   "who": 1,
+   "nak": 14,
+   "pada": 2,
+   "title": "Result of Horoscope Matching for Marriage",
+   "text": "Native: Hastha (3rd pada)\nBridegroom: Swaati (3rd pada)\n\nGunanka score after matching ashta koota (group of eight factors) = 36 (out of 36).\n\nThe level of match (below average/average/fair/good/excellent) = Excellent.\n\nPlease note that this thumbrule is a coarse indicator. You may want to\nconsult a good astrologer to verify subjective factors manually."
+  },
+  {
+   "who": 1,
+   "nak": 14,
+   "pada": 3,
+   "title": "Result of Horoscope Matching for Marriage",
+   "text": "Native: Hastha (3rd pada)\nBridegroom: Swaati (4th pada)\n\nGunanka score after matching ashta koota (group of eight factors) = 36 (out of 36).\n\nThe level of match (below average/average/fair/good/excellent) = Excellent.\n\nPlease note that this thumbrule is a coarse indicator. You may want to\nconsult a good astrologer to verify subjective factors manually."
+  },
+  {
+   "who": 1,
+   "nak": 15,
+   "pada": 0,
+   "title": "Horoscope Matching for Marriage",
+   "text": "Consider a\nwith the following nakshatra\nfor the native,\nand the following pada (quarter)"
+  },
+  {
+   "who": 1,
+   "nak": 15,
+   "pada": 1,
+   "title": "Horoscope Matching for Marriage",
+   "text": "Consider a\nwith the following nakshatra\nfor the native,\nand the following pada (quarter)"
+  },
+  {
+   "who": 1,
+   "nak": 15,
+   "pada": 2,
+   "title": "Result of Horoscope Matching for Marriage",
+   "text": "Native: Hastha (3rd pada)\nBridegroom: Visakha (3rd pada)\n\nGunanka score after matching ashta koota (group of eight factors) = 17 (out of 36).\n\nThe level of match (below average/average/fair/good/excellent) = Below Average.\n\nPlease note that this thumbrule is a coarse indicator. You may want to\nconsult a good astrologer to verify subjective factors manually."
+  },
+  {
+   "who": 1,
+   "nak": 15,
+   "pada": 3,
+   "title": "Result of Horoscope Matching for Marriage",
+   "text": "Native: Hastha (3rd pada)\nBridegroom: Visakha (4th pada)\n\nGunanka score after matching ashta koota (group of eight factors) = 19 (out of 36).\n\nThe level of match (below average/average/fair/good/excellent) = Average.\n\nPlease note that this thumbrule is a coarse indicator. You may want to\nconsult a good astrologer to verify subjective factors manually."
+  },
+  {
+   "who": 1,
+   "nak": 16,
+   "pada": 0,
+   "title": "Result of Horoscope Matching for Marriage",
+   "text": "Native: Hastha (3rd pada)\nBridegroom: Anuraadha (1st pada)\n\nGunanka score after matching ashta koota (group of eight factors) = 26 (out of 36).\n\nThe level of match (below average/average/fair/good/excellent) = Good.\n\nPlease note that this thumbrule is a coarse indicator. You may want to\nconsult a good astrologer to verify subjective factors manually."
+  },
+  {
+   "who": 1,
+   "nak": 16,
+   "pada": 1,
+   "title": "Result of Horoscope Matching for Marriage",
+   "text": "Native: Hastha (3rd pada)\nBridegroom: Anuraadha (2nd pada)\n\nGunanka score after matching ashta koota (group of eight factors) = 26 (out of 36).\n\nThe level of match (below average/average/fair/good/excellent) = Good.\n\nPlease note that this thumbrule is a coarse indicator. You may want to\nconsult a good astrologer to verify subjective factors manually."
+  },
+  {
+   "who": 1,
+   "nak": 16,
+   "pada": 2,
+   "title": "Horoscope Matching for Marriage",
+   "text": "Consider a\nwith the following nakshatra\nfor the native,\nand the following pada (quarter)"
+  },
+  {
+   "who": 1,
+   "nak": 16,
+   "pada": 3,
+   "title": "Result of Horoscope Matching for Marriage",
+   "text": "Native: Hastha (3rd pada)\nBridegroom: Anuraadha (4th pada)\n\nGunanka score after matching ashta koota (group of eight factors) = 26 (out of 36).\n\nThe level of match (below average/average/fair/good/excellent) = Good.\n\nPlease note that this thumbrule is a coarse indicator. You may want to\nconsult a good astrologer to verify subjective factors manually."
+  },
+  {
+   "who": 1,
+   "nak": 17,
+   "pada": 0,
+   "title": "Result of Horoscope Matching for Marriage",
+   "text": "Native: Hastha (3rd pada)\nBridegroom: Jyeshtha (1st pada)\n\nGunanka score after matching ashta koota (group of eight factors) = 12 (out of 36).\n\nThe level of match (below average/average/fair/good/excellent) = Below Average.\n\nPlease note that this thumbrule is a coarse indicator. You may want to\nconsult a good astrologer to verify subjective factors manually."
+  },
+  {
+   "who": 1,
+   "nak": 17,
+   "pada": 1,
+   "title": "Horoscope Matching for Marriage",
+   "text": "Consider a\nwith the following nakshatra\nfor the native,\nand the following pada (quarter)"
+  },
+  {
+   "who": 1,
+   "nak": 17,
+   "pada": 2,
+   "title": "Result of Horoscope Matching for Marriage",
+   "text": "Native: Hastha (3rd pada)\nBridegroom: Jyeshtha (3rd pada)\n\nGunanka score after matching ashta koota (group of eight factors) = 12 (out of 36).\n\nThe level of match (below average/average/fair/good/excellent) = Below Average.\n\nPlease note that this thumbrule is a coarse indicator. You may want to\nconsult a good astrologer to verify subjective factors manually."
+  },
+  {
+   "who": 1,
+   "nak": 17,
+   "pada": 3,
+   "title": "Result of Horoscope Matching for Marriage",
+   "text": "Native: Hastha (3rd pada)\nBridegroom: Jyeshtha (4th pada)\n\nGunanka score after matching ashta koota (group of eight factors) = 12 (out of 36).\n\nThe level of match (below average/average/fair/good/excellent) = Below Average.\n\nPlease note that this thumbrule is a coarse indicator. You may want to\nconsult a good astrologer to verify subjective factors manually."
+  },
+  {
+   "who": 1,
+   "nak": 18,
+   "pada": 0,
+   "title": "Horoscope Matching for Marriage",
+   "text": "Consider a\nwith the following nakshatra\nfor the native,\nand the following pada (quarter)"
+  },
+  {
+   "who": 1,
+   "nak": 18,
+   "pada": 1,
+   "title": "Horoscope Matching for Marriage",
+   "text": "Consider a\nwith the following nakshatra\nfor the native,\nand the following pada (quarter)"
+  },
+  {
+   "who": 1,
+   "nak": 18,
+   "pada": 2,
+   "title": "Result of Horoscope Matching for Marriage",
+   "text": "Native: Hastha (3rd pada)\nBridegroom: Moola (3rd pada)\n\nGunanka score after matching ashta koota (group of eight factors) = 14 (out of 36).\n\nThe level of match (below average/average/fair/good/excellent) = Below Average.\n\nPlease note that this thumbrule is a coarse indicator. You may want to\nconsult a good astrologer to verify subjective factors manually."
+  },
+  {
+   "who": 1,
+   "nak": 18,
+   "pada": 3,
+   "title": "Horoscope Matching for Marriage",
+   "text": "Consider a\nwith the following nakshatra\nfor the native,\nand the following pada (quarter)"
+  },
+  {
+   "who": 1,
+   "nak": 19,
+   "pada": 0,
+   "title": "Result of Horoscope Matching for Marriage",
+   "text": "Native: Hastha (3rd pada)\nBridegroom: Poorvashadha (1st pada)\n\nGunanka score after matching ashta koota (group of eight factors) = 26 (out of 36).\n\nThe level of match (below average/average/fair/good/excellent) = Good.\n\nPlease note that this thumbrule is a coarse indicator. You may want to\nconsult a good astrologer to verify subjective factors manually."
+  },
+  {
+   "who": 1,
+   "nak": 19,
+   "pada": 1,
+   "title": "Result of Horoscope Matching for Marriage",
+   "text": "Native: Hastha (3rd pada)\nBridegroom: Poorvashadha (2nd pada)\n\nGunanka score after matching ashta koota (group of eight factors) = 26 (out of 36).\n\nThe level of match (below average/average/fair/good/excellent) = Good.\n\nPlease note that this thumbrule is a coarse indicator. You may want to\nconsult a good astrologer to verify subjective factors manually."
+  },
+  {
+   "who": 1,
+   "nak": 19,
+   "pada": 2,
+   "title": "Result of Horoscope Matching for Marriage",
+   "text": "Native: Hastha (3rd pada)\nBridegroom: Poorvashadha (3rd pada)\n\nGunanka score after matching ashta koota (group of eight factors) = 26 (out of 36).\n\nThe level of match (below average/average/fair/good/excellent) = Good.\n\nPlease note that this thumbrule is a coarse indicator. You may want to\nconsult a good astrologer to verify subjective factors manually."
+  },
+  {
+   "who": 1,
+   "nak": 19,
+   "pada": 3,
+   "title": "Result of Horoscope Matching for Marriage",
+   "text": "Native: Hastha (3rd pada)\nBridegroom: Poorvashadha (4th pada)\n\nGunanka score after matching ashta koota (group of eight factors) = 26 (out of 36).\n\nThe level of match (below average/average/fair/good/excellent) = Good.\n\nPlease note that this thumbrule is a coarse indicator. You may want to\nconsult a good astrologer to verify subjective factors manually."
+  },
+  {
+   "who": 1,
+   "nak": 20,
+   "pada": 0,
+   "title": "Horoscope Matching for Marriage",
+   "text": "Consider a\nwith the following nakshatra\nfor the native,\nand the following pada (quarter)"
+  },
+  {
+   "who": 1,
+   "nak": 20,
+   "pada": 1,
+   "title": "Horoscope Matching for Marriage",
+   "text": "Consider a\nwith the following nakshatra\nfor the native,\nand the following pada (quarter)"
+  },
+  {
+   "who": 1,
+   "nak": 20,
+   "pada": 2,
+   "title": "Result of Horoscope Matching for Marriage",
+   "text": "Native: Hastha (3rd pada)\nBridegroom: Uttarashadha (3rd pada)\n\nGunanka score after matching ashta koota (group of eight factors) = 23 (out of 36).\n\nThe level of match (below average/average/fair/good/excellent) = Fair.\n\nPlease note that this thumbrule is a coarse indicator. You may want to\nconsult a good astrologer to verify subjective factors manually."
+  },
+  {
+   "who": 1,
+   "nak": 20,
+   "pada": 3,
+   "title": "Horoscope Matching for Marriage",
+   "text": "Consider a\nwith the following nakshatra\nfor the native,\nand the following pada (quarter)"
+  },
+  {
+   "who": 1,
+   "nak": 21,
+   "pada": 0,
+   "title": "Horoscope Matching for Marriage",
+   "text": "Consider a\nwith the following nakshatra\nfor the native,\nand the following pada (quarter)"
+  },
+  {
+   "who": 1,
+   "nak": 21,
+   "pada": 1,
+   "title": "Result of Horoscope Matching for Marriage",
+   "text": "Native: Hastha (3rd pada)\nBridegroom: Sravanam (2nd pada)\n\nGunanka score after matching ashta koota (group of eight factors) = 24 (out of 36).\n\nThe level of match (below average/average/fair/good/excellent) = Fair.\n\nPlease note that this thumbrule is a coarse indicator. You may want to\nconsult a good astrologer to verify subjective factors manually."
+  },
+  {
+   "who": 1,
+   "nak": 21,
+   "pada": 2,
+   "title": "Result of Horoscope Matching for Marriage",
+   "text": "Native: Hastha (3rd pada)\nBridegroom: Sravanam (3rd pada)\n\nGunanka score after matching ashta koota (group of eight factors) = 24 (out of 36).\n\nThe level of match (below average/average/fair/good/excellent) = Fair.\n\nPlease note that this thumbrule is a coarse indicator. You may want to\nconsult a good astrologer to verify subjective factors manually."
+  },
+  {
+   "who": 1,
+   "nak": 21,
+   "pada": 3,
+   "title": "Result of Horoscope Matching for Marriage",
+   "text": "Native: Hastha (3rd pada)\nBridegroom: Sravanam (4th pada)\n\nGunanka score after matching ashta koota (group of eight factors) = 24 (out of 36).\n\nThe level of match (below average/average/fair/good/excellent) = Fair.\n\nPlease note that this thumbrule is a coarse indicator. You may want to\nconsult a good astrologer to verify subjective factors manually."
+  },
+  {
+   "who": 1,
+   "nak": 22,
+   "pada": 0,
+   "title": "Result of Horoscope Matching for Marriage",
+   "text": "Native: Hastha (3rd pada)\nBridegroom: Dhanishtha (1st pada)\n\nGunanka score after matching ashta koota (group of eight factors) = 19 (out of 36).\n\nThe level of match (below average/average/fair/good/excellent) = Average.\n\nPlease note that this thumbrule is a coarse indicator. You may want to\nconsult a good astrologer to verify subjective factors manually."
+  },
+  {
+   "who": 1,
+   "nak": 22,
+   "pada": 1,
+   "title": "Horoscope Matching for Marriage",
+   "text": "Consider a\nwith the following nakshatra\nfor the native,\nand the following pada (quarter)"
+  },
+  {
+   "who": 1,
+   "nak": 22,
+   "pada": 2,
+   "title": "Horoscope Matching for Marriage",
+   "text": "Consider a\nwith the following nakshatra\nfor the native,\nand the following pada (quarter)"
+  },
+  {
+   "who": 1,
+   "nak": 22,
+   "pada": 3,
+   "title": "Result of Horoscope Matching for Marriage",
+   "text": "Native: Hastha (3rd pada)\nBridegroom: Dhanishtha (4th pada)\n\nGunanka score after matching ashta koota (group of eight factors) = 19 (out of 36).\n\nThe level of match (below average/average/fair/good/excellent) = Average.\n\nPlease note that this thumbrule is a coarse indicator. You may want to\nconsult a good astrologer to verify subjective factors manually."
+  },
+  {
+   "who": 1,
+   "nak": 23,
+   "pada": 0,
+   "title": "Result of Horoscope Matching for Marriage",
+   "text": "Native: Hastha (3rd pada)\nBridegroom: Satabhishak (1st pada)\n\nGunanka score after matching ashta koota (group of eight factors) = 7 (out of 36).\n\nThe level of match (below average/average/fair/good/excellent) = Below Average.\n\nPlease note that this thumbrule is a coarse indicator. You may want to\nconsult a good astrologer to verify subjective factors manually."
+  },
+  {
+   "who": 1,
+   "nak": 23,
+   "pada": 1,
+   "title": "Horoscope Matching for Marriage",
+   "text": "Consider a\nwith the following nakshatra\nfor the native,\nand the following pada (quarter)"
+  },
+  {
+   "who": 1,
+   "nak": 23,
+   "pada": 2,
+   "title": "Result of Horoscope Matching for Marriage",
+   "text": "Native: Hastha (3rd pada)\nBridegroom: Satabhishak (3rd pada)\n\nGunanka score after matching ashta koota (group of eight factors) = 7 (out of 36).\n\nThe level of match (below average/average/fair/good/excellent) = Below Average.\n\nPlease note that this thumbrule is a coarse indicator. You may want to\nconsult a good astrologer to verify subjective factors manually."
+  },
+  {
+   "who": 1,
+   "nak": 23,
+   "pada": 3,
+   "title": "Result of Horoscope Matching for Marriage",
+   "text": "Native: Hastha (3rd pada)\nBridegroom: Satabhishak (4th pada)\n\nGunanka score after matching ashta koota (group of eight factors) = 7 (out of 36).\n\nThe level of match (below average/average/fair/good/excellent) = Below Average.\n\nPlease note that this thumbrule is a coarse indicator. You may want to\nconsult a good astrologer to verify subjective factors manually."
+  },
+  {
+   "who": 1,
+   "nak": 24,
+   "pada": 0,
+   "title": "Horoscope Matching for Marriage",
+   "text": "Consider a\nwith the following nakshatra\nfor the native,\nand the following pada (quarter)"
+  },
+  {
+   "who": 1,
+   "nak": 24,
+   "pada": 1,
+   "title": "Result of Horoscope Matching for Marriage",
+   "text": "Native: Hastha (3rd pada)\nBridegroom: Poorvabhadra (2nd pada)\n\nGunanka score after matching ashta koota (group of eight factors) = 14 (out of 36).\n\nThe level of match (below average/average/fair/good/excellent) = Below Average.\n\nPlease note that this thumbrule is a coarse indicator. You may want to\nconsult a good astrologer to verify subjective factors manually."
+  },
+  {
+   "who": 1,
+   "nak": 24,
+   "pada": 2,
+   "title": "Result of Horoscope Matching for Marriage",
+   "text": "Native: Hastha (3rd pada)\nBridegroom: Poorvabhadra (3rd pada)\n\nGunanka score after matching ashta koota (group of eight factors) = 14 (out of 36).\n\nThe level of match (below average/average/fair/good/excellent) = Below Average.\n\nPlease note that this thumbrule is a coarse indicator. You may want to\nconsult a good astrologer to verify subjective factors manually."
+  },
+  {
+   "who": 1,
+   "nak": 24,
+   "pada": 3,
+   "title": "Horoscope Matching for Marriage",
+   "text": "Consider a\nwith the following nakshatra\nfor the native,\nand the following pada (quarter)"
+  },
+  {
+   "who": 1,
+   "nak": 25,
+   "pada": 0,
+   "title": "Result of Horoscope Matching for Marriage",
+   "text": "Native: Hastha (3rd pada)\nBridegroom: Uttarabhadra (1st pada)\n\nGunanka score after matching ashta koota (group of eight factors) = 27 (out of 36).\n\nThe level of match (below average/average/fair/good/excellent) = Good.\n\nPlease note that this thumbrule is a coarse indicator. You may want to\nconsult a good astrologer to verify subjective factors manually."
+  },
+  {
+   "who": 1,
+   "nak": 25,
+   "pada": 1,
+   "title": "Result of Horoscope Matching for Marriage",
+   "text": "Native: Hastha (3rd pada)\nBridegroom: Uttarabhadra (2nd pada)\n\nGunanka score after matching ashta koota (group of eight factors) = 27 (out of 36).\n\nThe level of match (below average/average/fair/good/excellent) = Good.\n\nPlease note that this thumbrule is a coarse indicator. You may want to\nconsult a good astrologer to verify subjective factors manually."
+  },
+  {
+   "who": 1,
+   "nak": 25,
+   "pada": 2,
+   "title": "Result of Horoscope Matching for Marriage",
+   "text": "Native: Hastha (3rd pada)\nBridegroom: Uttarabhadra (3rd pada)\n\nGunanka score after matching ashta koota (group of eight factors) = 27 (out of 36).\n\nThe level of match (below average/average/fair/good/excellent) = Good.\n\nPlease note that this thumbrule is a coarse indicator. You may want to\nconsult a good astrologer to verify subjective factors manually."
+  },
+  {
+   "who": 1,
+   "nak": 25,
+   "pada": 3,
+   "title": "Result of Horoscope Matching for Marriage",
+   "text": "Native: Hastha (3rd pada)\nBridegroom: Uttarabhadra (4th pada)\n\nGunanka score after matching ashta koota (group of eight factors) = 27 (out of 36).\n\nThe level of match (below average/average/fair/good/excellent) = Good.\n\nPlease note that this thumbrule is a coarse indicator. You may want to\nconsult a good astrologer to verify subjective factors manually."
+  },
+  {
+   "who": 1,
+   "nak": 26,
+   "pada": 0,
+   "title": "Horoscope Matching for Marriage",
+   "text": "Consider a\nwith the following nakshatra\nfor the native,\nand the following pada (quarter)"
+  },
+  {
+   "who": 1,
+   "nak": 26,
+   "pada": 1,
+   "title": "Result of Horoscope Matching for Marriage",
+   "text": "Native: Hastha (3rd pada)\nBridegroom: Revati (2nd pada)\n\nGunanka score after matching ashta koota (group of eight factors) = 27 (out of 36).\n\nThe level of match (below average/average/fair/good/excellent) = Good.\n\nPlease note that this thumbrule is a coarse indicator. You may want to\nconsult a good astrologer to verify subjective factors manually."
+  },
+  {
+   "who": 1,
+   "nak": 26,
+   "pada": 2,
+   "title": "Result of Horoscope Matching for Marriage",
+   "text": "Native: Hastha (3rd pada)\nBridegroom: Revati (3rd pada)\n\nGunanka score after matching ashta koota (group of eight factors) = 27 (out of 36).\n\nThe level of match (below average/average/fair/good/excellent) = Good.\n\nPlease note that this thumbrule is a coarse indicator. You may want to\nconsult a good astrologer to verify subjective factors manually."
+  },
+  {
+   "who": 1,
+   "nak": 26,
+   "pada": 3,
+   "title": "Horoscope Matching for Marriage",
+   "text": "Consider a\nwith the following nakshatra\nfor the native,\nand the following pada (quarter)"
+  }
+ ]
+}

@@ -130,7 +130,7 @@ describe('Progressions and angular return', async () => {
     const t = await PROGRESSION_JOBS['progression.find'](natal, { kind: 'scd', varga: 1, ...date }, swe);
     const { birth, label } = JSON.parse(t.text![0]) as { birth: BirthData; label: string };
     expect(label).toBe('Progressed (SCD)');
-    expect(birth.override?.ascendant).toBeDefined();
+    expect(birth.override?.shift).toBeDefined();
     expect(t.rows.length).toBe(10);
     const a = await ANGULAR_JOBS['angularReturn.find'](natal, { a: 1, b: 2, before: false, ...date, tzHours: natal.birth.tzHours }, swe);
     expect(JSON.parse(a.text![0]).label).toBe('Ang Ret Su-Mo');

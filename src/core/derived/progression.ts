@@ -235,26 +235,20 @@ export function dasaYearsAt(swe: Sweph, natal: Chart, jd: number, slot = 0): num
   return y;
 }
 
-/** Natal longitudes (lagna + grahas) shifted by `shift` degrees, as an override. */
-function shifted(natal: Chart, shift: number): PositionOverride {
-  const grahas: PositionOverride['grahas'] = {};
-  for (const g of GRAHAS) grahas[g] = norm360(natal.positions.grahas[g].lon + shift);
-  return { ascendant: norm360(natal.positions.ascendant + shift), grahas };
-}
-
 /**
  * Birth data of a shifted progression (SCD, nakshatra dasa): FUN_004196b0 /
  * FUN_00419aa0 write the progression date into the derived record and set its flags
  * +0x275c8..ca, so FUN_00403120 computes the chart from the natal date, time and zone
  * and FUN_004a0520 adds the shift at its end: Key Info shows the progression date
- * with the natal panchanga, sunrise and sidereal time, the longitudes are natal + shift.
+ * with the natal panchanga, sunrise and sidereal time, and every body (lagna, grahas,
+ * upagrahas, special lagnas, arudhas...) is natal + shift.
  */
 function shiftedBirth(natal: Chart, inp: ProgressionInput, shift: number): BirthData {
   const b = natal.birth;
   return {
     ...b, year: inp.year, month: inp.month, day: inp.day, hour: inp.hour, legacy: null,
     castAt: { year: b.year, month: b.month, day: b.day, hour: b.hour },
-    override: { ...shifted(natal, shift), afterPanchanga: true },
+    override: { shift, afterPanchanga: true },
   };
 }
 
@@ -275,7 +269,7 @@ export function progression(swe: Sweph, natal: Chart, inp: ProgressionInput): Pr
       const grahas: PositionOverride['grahas'] = {};
       for (const [g, k] of Object.entries(BHRIGU_YEARS) as [Graha, number][]) grahas[g] = norm360(natal.positions.grahas[g].lon + arc / k);
       const at = { ...b, year: inp.year, month: inp.month, day: inp.day, hour: inp.hour };
-      return { ...base, kind: 'bhrigu', label: 'Progressed (Bhrigu)', birth: birthWithOverride(b, { grahas }, at), chartJd: jd };
+      return { ...base, kind: 'bhrigu', label: 'Progressed (Bhrigu)', birth: birthWithOverride(b, { grahas, afterBodies: true }, at), chartJd: jd };
     }
     case 'scd': {
       let a = arc;

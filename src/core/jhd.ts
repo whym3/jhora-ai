@@ -66,6 +66,23 @@ export interface PositionOverride {
    * positions; otherwise (Prasna) they use these.
    */
   afterPanchanga?: boolean;
+  /**
+   * Degrees added to every body - lagna, grahas, outer planets, the 56 Longitudes
+   * bodies and the user points - after the whole chart is computed from the unshifted
+   * positions (JHora's shifted progressions: FUN_004a0520 adds chart+0x275d0 to all
+   * 105 bodies at its end, so arudhas, upagrahas and special lagnas move too).
+   */
+  shift?: number;
+  /**
+   * The ascendant and grahas replace the computed ones only after the other bodies are
+   * worked out, so Sree and Indu Lagna, the sphutas, Bhrigu Bindu and Kunda keep the real
+   * positions (Prasna with ReplaceLagnaInPrasna: FUN_00403120 replaces the lagna at the
+   * end; Bhrigu progression: the document's Sun..Saturn overrides). The varnadas are
+   * still worked out from the replaced lagna.
+   */
+  afterBodies?: boolean;
+  /** Prasna Lagna listed as a separate body after the others (ReplaceLagnaInPrasna = 0). */
+  prasnaLagna?: number;
 }
 
 /** Decode JHora's H.MMSS / D.MMSS number to decimal units, keeping the sign. */

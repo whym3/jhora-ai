@@ -16,6 +16,7 @@ from capture import Session, kill_harness_jhora, WM_COMMAND  # noqa: E402
 from jh_dump import check_ini  # noqa: E402
 
 CMD = 33320
+RESULT_TITLE = "Result of Horoscope Matching for Marriage"
 
 
 def wait_dialog(s, exclude=(), timeout=5.0):
@@ -40,24 +41,40 @@ def controls(w):
     return out
 
 
-def run_case(s, groom_idx, nak, pada, ids):
-    s.main.post_message(WM_COMMAND, CMD, 0)
-    dlg = wait_dialog(s)
-    if dlg is None:
-        raise RuntimeError("matching dialog did not open")
-    by_id = {c.control_id(): c for c in dlg.children()}
-    by_id[ids["who"]].select(groom_idx)
-    by_id[ids["nak"]].select(nak)
-    by_id[ids["pada"]].select(pada)
-    by_id[1].click()
-    box = wait_dialog(s, exclude=(dlg.handle,))
-    if box is None:
-        box = wait_dialog(s)
-    text = "\n".join(c.window_text() for c in box.children() if c.class_name() == "Static" and c.window_text())
-    title = box.window_text()
-    box.close()
-    time.sleep(0.1)
-    return title, text
+def wait_closed(s, timeout=5.0):
+    """Until no dialog of the copy is visible (a closing box must not pass for the next one)."""
+    deadline = time.time() + timeout
+    while time.time() < deadline:
+        if not any(w.class_name() == "#32770" and w.is_visible() for w in s.app.windows()):
+            return
+        time.sleep(0.05)
+    raise RuntimeError("a dialog stayed open")
+
+
+def run_case(s, groom_idx, nak, pada, ids, tries=3):
+    for attempt in range(tries):
+        wait_closed(s)
+        s.main.post_message(WM_COMMAND, CMD, 0)
+        dlg = wait_dialog(s)
+        if dlg is None:
+            raise RuntimeError("matching dialog did not open")
+        by_id = {c.control_id(): c for c in dlg.children()}
+        by_id[ids["who"]].select(groom_idx)
+        by_id[ids["nak"]].select(nak)
+        by_id[ids["pada"]].select(pada)
+        # IDOK posted to the dialog: a mouse click was lost ~45% of the time, and the
+        # input dialog itself was then read as the result
+        dlg.post_message(WM_COMMAND, 1, by_id[1].handle)
+        box = wait_dialog(s, exclude=(dlg.handle,))
+        if box is not None and box.window_text() == RESULT_TITLE:
+            text = "\n".join(c.window_text() for c in box.children() if c.class_name() == "Static" and c.window_text())
+            box.close()
+            return RESULT_TITLE, text
+        for w in (box, dlg):
+            if w is not None and w.exists():
+                w.close()
+        print(f"   retry {groom_idx}/{nak}/{pada} (attempt {attempt + 1})")
+    raise RuntimeError(f"no result box for {groom_idx}/{nak}/{pada}")
 
 
 def main():

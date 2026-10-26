@@ -95,6 +95,9 @@ function longitudeRows(chart: Chart, varga: VargaName): string[][] {
     const lon = varga === 'D1' ? u.lon : vargaLongitude(u.lon, V[varga]);
     rows.push(row(`${u.name} `, lon, vargaLongitude(u.lon, V.D9)));
   }
+  // a Prasna chart that leaves the lagna as it is lists Prasna Lagna last (no trailing blank)
+  const plag = chart.birth.override?.prasnaLagna;
+  if (plag !== undefined) rows.push(row('Prasna Lagna', varga === 'D1' ? plag : vargaLongitude(plag, V[varga]), vargaLongitude(plag, V.D9)));
   return rows;
 }
 

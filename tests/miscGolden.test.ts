@@ -19,8 +19,10 @@ import { PRASNA_JOBS } from '../src/core/derived/tpPrasnaJobs';
 import type { Sweph } from '../src/sweph';
 
 interface Captured { views: { mode: string; rows: string[][] }[]; texts: { mode?: string | null; name?: string; lines?: string[] }[] }
-const DIR = process.env.MISC_DIR ?? 'golden/jhora-misc';
-const charts = existsSync(DIR) ? readdirSync(DIR).filter((f) => f.endsWith('.json')).map((f) => f.slice(0, -5)) : [];
+// golden/jhora-misc-prog clicks the progressions in another order (Solar and Bhrigu first),
+// which exercises the history effects below; MISC_DIR picks one folder
+const DIRS = process.env.MISC_DIR ? [process.env.MISC_DIR] : ['golden/jhora-misc', 'golden/jhora-misc-prog'];
+const charts = DIRS.filter((d) => existsSync(d)).flatMap((d) => readdirSync(d).filter((f) => f.endsWith('.json')).map((f) => ({ dir: d, name: f.slice(0, -5) })));
 
 type Find = (natal: Chart, swe: Sweph) => Promise<{ birth: BirthData; label: string; periodDays?: number }>;
 const job = (jobs: Record<string, (c: Chart, p: Record<string, unknown>, s: Sweph) => Promise<{ text?: string[] }>>, name: string, params: Record<string, unknown>): Find =>
@@ -91,9 +93,9 @@ const birthMoment = (b: BirthData) => {
 
 describe.skipIf(!charts.length)('Mundane / Angular Return / Progressions / Prasna match JHora 8.0', async () => {
   const swe = await nodeSweph();
-  for (const name of charts) {
-    const g: Captured = JSON.parse(readFileSync(`${DIR}/${name}.json`, 'utf8'));
-    describe(name, async () => {
+  for (const { dir, name } of charts) {
+    const g: Captured = JSON.parse(readFileSync(`${dir}/${name}.json`, 'utf8'));
+    describe(`${name} (${dir.slice(7)})`, async () => {
       const natal = await computeChart(swe, parseJhd(readFileSync(`golden/charts/${name}.jhd`, 'latin1')));
       for (const [label, find] of Object.entries(SCENARIOS)) {
         const ki = g.texts.find((t) => t.mode === label && t.name === 'key_info' && t.lines);
@@ -116,14 +118,39 @@ describe.skipIf(!charts.length)('Mundane / Angular Return / Progressions / Prasn
           expect.soft(Math.abs(dt), `found ${found.birth.year}-${found.birth.month}-${found.birth.day} ${found.birth.hour}h, ${dt} s from JHora`).toBeLessThanOrEqual(MOMENT_TOL[label] ?? 0);
           const chart = await computeChart(swe, found.birth, natal.ini);
           const have = keyInfoText(swe, chart).slice(2);
+          // The reverse history effect: a nakshatra dasa or Sudarsana progression shown right
+          // after a Solar or Bhrigu one keeps that chart's Tithi, Nakshatra, Yoga and Karana
+          // lines (golden/jhora-misc-prog clicks Solar, Solar D-10, Bhrigu first), and so do the
+          // nakshatra dasa / Sudarsana ones after it. Those lines must then equal ours for that
+          // last Solar or Bhrigu progression (g.views keeps the click order).
+          const order = g.views.map((v) => v.mode).filter((m) => m.startsWith('Progression:'));
+          const prev = order.slice(0, order.indexOf(label)).reverse().find((m) => !/^Progression: (NakshatraDasa|Sudarsana)/.test(m));
+          // A Bhrigu progression's Sun..Saturn replacements live in the document (doc+0x4f030,
+          // flags doc+0x4efb8), not in the derived record, so they also survive into the
+          // shifted chart: its Sun..Saturn are then Bhrigu's plus the shift.
+          const carried = new Map<string, number>();
+          if (/^Progression: (NakshatraDasa|Sudarsana)/.test(label) && prev && /^Progression: (Solar|Bhrigu)/.test(prev)) {
+            const p = await SCENARIOS[prev](natal, swe);
+            const before = keyInfoText(swe, await computeChart(swe, p.birth, natal.ini)).slice(2);
+            have.forEach((l, i) => { if (/^(Tithi|Nakshatra|Yoga|Karana):/.test(l)) have[i] = before[i]; });
+            for (const [gr, lon] of Object.entries(p.birth.override?.grahas ?? {})) carried.set(gr, lon! + (found.birth.override?.shift ?? 0));
+          }
           const diff = want.flatMap((w, i) => (w === have[i] ? [] : [`want ${w} | have ${have[i]}`]));
           expect(diff, diff.join('\n')).toEqual([]);
           const table = g.views.find((v) => v.mode === label);
           if (table) {
+            // all 56 rows: a shifted progression moves every body, upagrahas and arudhas too
             const ours = runTable(chart, 'basics.longitudes', {});
-            for (let i = 0; i < 10; i++) {
-              const d = Math.abs(((parseLongitude(ours.rows[i][1]) - parseLongitude(table.rows[i][1]) + 540) % 360) - 180) * 3600;
-              expect(d, `${table.rows[i][0]}: ${ours.rows[i][1]} vs ${table.rows[i][1]}`).toBeLessThan(0.0101);
+            expect(ours.rows.length).toBe(table.rows.length);
+            for (let i = 0; i < table.rows.length; i++) {
+              const body = table.rows[i][0].split(' ')[0];
+              const lon = carried.has(body) ? carried.get(body)! : parseLongitude(ours.rows[i][1]);
+              const d = Math.abs(((lon - parseLongitude(table.rows[i][1]) + 540) % 360) - 180) * 3600;
+              // a found moment agrees to the printed second, not to JHora's fraction of it: the
+              // lagna then agrees to its 0.0101" but Kunda (lagna x 81) and the fast points
+              // built from the lagna or the ghatis amplify that
+              const tol = /^Kunda/.test(body) ? 81 * 0.0101 : /^(Vighati|Sookshma|Prana|Pranapada|Mrityu|TriSphuta)/.test(body) ? 0.1 : 0.0101;
+              expect.soft(d, `${table.rows[i][0]}: ${ours.rows[i][1]} vs ${table.rows[i][1]}`).toBeLessThan(tol);
             }
           }
         });

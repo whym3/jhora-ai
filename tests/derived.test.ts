@@ -141,7 +141,8 @@ describe('Prasna', async () => {
     expect(c.positions.grahas.Moon.lon).toBeCloseTo(natal.positions.grahas.Moon.lon, 9);
     const u = await ASYNC_TABLES['prasna.find'](natal, { mode: '108', n: 5, compress: { years: 1, days: 0 } }, swe);
     const p = JSON.parse(u.text![0]) as { birth: BirthData; periodDays: number; label: string };
-    expect(p.birth.override ?? null).toBeNull();
+    // the lagna stays; Prasna Lagna is listed as a separate body
+    expect(p.birth.override).toEqual({ prasnaLagna: prasnaLagna('108', 5) });
     expect(p.periodDays).toBeCloseTo(365.24219, 9);
     const d = await ASYNC_TABLES['prasna.dasa'](natal, { birth: p.birth, label: p.label, periodDays: p.periodDays, path: [] }, swe);
     expect(d.rows.length).toBe(9);

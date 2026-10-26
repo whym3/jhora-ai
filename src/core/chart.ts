@@ -10,6 +10,7 @@ import { DEFAULTS, type JhoraIni } from '../settings/generated';
 import { allBodies, type NamedBody } from './longitudes';
 import { dayFrame, type DayFrame } from './day';
 import { userPoints, type UserPoint } from './userPoints';
+import { varnada } from './bodies';
 
 export interface ChartBody { id: Graha | 'Lagna'; label: string; lon: number; retrograde: boolean }
 
@@ -49,9 +50,21 @@ export async function computeChart(swe: Sweph, input: BirthData, iniOverrides: P
   await swe.ensureEphemeris(jd);
   const geo = { lat: birth.lat, lon: birth.lon, alt: birth.altitudeM, pressure: birth.pressureMbar, temperature: birth.temperatureC };
   const settings = calcSettingsFromIni(ini);
-  const positions = applyOverride(computePositions(swe, jd, geo, settings), birth);
+  const raw = computePositions(swe, jd, geo, settings);
+  const computed = applyOverride(raw, birth);
   const day = dayFrame(swe, jd, geo, settings, ini.SunriseDefinition);
-  const longitudes = allBodies(swe, positions, geo, birth.tzHours, settings, ini, day);
+  let computedBodies = allBodies(swe, birth.override?.afterBodies ? raw : computed, geo, birth.tzHours, settings, ini, day);
+  if (birth.override?.afterBodies) {
+    // ... but the varnadas are worked out from the replaced lagna
+    const hl = computedBodies.find((b) => b.name === 'Hora Lagna')!.lon;
+    computedBodies = computedBodies.map((b) => {
+      const h = b.name === 'Varnada Lagna' ? 1 : /^V(\d+)$/.test(b.name) ? Number(b.name.slice(1)) : 0;
+      return h ? { ...b, lon: varnada(norm(computed.ascendant + 30 * (h - 1)), norm(hl + 30 * (h - 1))) } : b;
+    });
+  }
+  const sh = birth.override?.shift;
+  const positions = sh === undefined ? computed : shiftPositions(computed, sh);
+  const longitudes = sh === undefined ? computedBodies : computedBodies.map((b) => ({ ...b, lon: norm(b.lon + sh) }));
   const bodies: ChartBody[] = [
     { id: 'Lagna', label: SHORT_LABEL.Lagna, lon: positions.ascendant, retrograde: false },
     ...GRAHAS.map((g) => ({
@@ -62,8 +75,21 @@ export async function computeChart(swe: Sweph, input: BirthData, iniOverrides: P
   const chart: Chart = { birth, ini, positions, bodies, longitudes, day };
   const shift = nakshatraShift(swe, jd, settings);
   if (shift) chart.nakshatraShift = shift;
-  chart.userPoints = userPoints(swe, chart);
+  // the user points are bodies 103/104: computed unshifted like the rest, then shifted
+  const points = userPoints(swe, sh === undefined ? chart : { ...chart, positions: computed, longitudes: computedBodies });
+  chart.userPoints = sh === undefined ? points : points.map((u) => ({ ...u, lon: norm(u.lon + sh) }));
   return chart;
+}
+
+const norm = (lon: number) => ((lon % 360) + 360) % 360;
+
+/** Positions with `shift` degrees added to the lagna, the grahas and the outer planets (PositionOverride.shift). */
+function shiftPositions(p: Positions, shift: number): Positions {
+  const grahas = { ...p.grahas };
+  for (const g of GRAHAS) grahas[g] = { ...grahas[g], lon: norm(grahas[g].lon + shift) };
+  const outer = { ...p.outer };
+  for (const o of Object.keys(outer) as (keyof Positions['outer'])[]) outer[o] = { ...outer[o], lon: norm(outer[o].lon + shift) };
+  return { ...p, grahas, outer, ascendant: norm(p.ascendant + shift) };
 }
 
 /** Substitute a derived chart's fixed longitudes (BirthData.override) into computed positions. */
