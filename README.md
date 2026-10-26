@@ -2,29 +2,62 @@
 
 **A Vedic astrology consultation with an AI that calculates exactly like Jagannatha Hora.**
 
-Ask Claude (or Gemini in Antigravity, or GPT in the web app) about your chart, and it works from real calculations, not guesses. It casts your chart with the same calculations as **Jagannatha Hora 8.0**, P.V.R. Narasimha Rao's astrology program, and checks the chart against your past events before it answers. It then gives you a reading that quotes the data behind each point.
+[![Matches Jagannatha Hora: 3690 of 3690 tests](https://img.shields.io/badge/matches_Jagannatha_Hora-3690%2F3690-2ea44f)](PARITY.md)
+[![Node.js 22+](https://img.shields.io/badge/Node.js-22%2B-5FA04E?logo=nodedotjs&logoColor=white)](https://nodejs.org)
+[![MCP server](https://img.shields.io/badge/MCP-server-000000?logo=modelcontextprotocol&logoColor=white)](#mcp-server)
+[![Runs locally](https://img.shields.io/badge/runs-locally-informational)](#about-the-project)
+
+Ask Claude, ChatGPT (in OpenAI's Codex app) or Gemini (in Antigravity) about your chart, and it works from real calculations, not guesses. It casts your chart with the same calculations as **Jagannatha Hora 8.0**, P.V.R. Narasimha Rao's astrology program, and checks the chart against your past events before it answers. It then gives you a reading that quotes the data behind each point.
 
 The project also includes the full Jagannatha Hora program as a web app that runs in your browser.
 
+![The web app: a sample chart's rasi, navamsa and other divisional charts beside its Key Info](docs/images/web-app.png)
+
 ## Get a reading in a few minutes
 
-You need a Mac or a Windows PC and an AI app that can work on your computer: the **Claude desktop app** ([claude.ai/download](https://claude.ai/download)) with its **Code** tab, Google's **Antigravity**, or Cursor.
+The easiest way is to let an AI desktop app install the astrologer for you. You need a Mac or a Windows PC and one of these apps:
 
-**1. Let your AI app set it up.** Paste this into it (in the Claude desktop app, use the **Code** tab):
+| App | Models | Get it |
+|---|---|---|
+| [![Claude desktop app][badge-claude]](https://claude.ai/download) | Claude | [claude.ai/download](https://claude.ai/download), then use its **Code** tab |
+| [![Codex app (ChatGPT)][badge-codex]](https://developers.openai.com/codex/app) | ChatGPT's GPT models; sign in with your ChatGPT account | [developers.openai.com/codex/app](https://developers.openai.com/codex/app) |
+| [![Antigravity (Gemini)][badge-antigravity]](https://antigravity.google) | Gemini | [antigravity.google](https://antigravity.google) |
+| [![Cursor][badge-cursor]](https://cursor.com) | your choice of models | [cursor.com](https://cursor.com) |
+
+[badge-claude]: https://img.shields.io/badge/Claude-desktop_app-D97757?style=for-the-badge&logo=claude&logoColor=white
+[badge-codex]: https://img.shields.io/badge/Codex-ChatGPT-000000?style=for-the-badge&logo=data:image/svg%2bxml;base64,PHN2ZyBmaWxsPSJ3aGl0ZSIgcm9sZT0iaW1nIiB2aWV3Qm94PSIwIDAgMjQgMjQiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PHRpdGxlPk9wZW5BSTwvdGl0bGU+PHBhdGggZD0iTTIyLjI4MTkgOS44MjExYTUuOTg0NyA1Ljk4NDcgMCAwIDAtLjUxNTctNC45MTA4IDYuMDQ2MiA2LjA0NjIgMCAwIDAtNi41MDk4LTIuOUE2LjA2NTEgNi4wNjUxIDAgMCAwIDQuOTgwNyA0LjE4MThhNS45ODQ3IDUuOTg0NyAwIDAgMC0zLjk5NzcgMi45IDYuMDQ2MiA2LjA0NjIgMCAwIDAgLjc0MjcgNy4wOTY2IDUuOTggNS45OCAwIDAgMCAuNTExIDQuOTEwNyA2LjA1MSA2LjA1MSAwIDAgMCA2LjUxNDYgMi45MDAxQTUuOTg0NyA1Ljk4NDcgMCAwIDAgMTMuMjU5OSAyNGE2LjA1NTcgNi4wNTU3IDAgMCAwIDUuNzcxOC00LjIwNTggNS45ODk0IDUuOTg5NCAwIDAgMCAzLjk5NzctMi45MDAxIDYuMDU1NyA2LjA1NTcgMCAwIDAtLjc0NzUtNy4wNzI5em0tOS4wMjIgMTIuNjA4MWE0LjQ3NTUgNC40NzU1IDAgMCAxLTIuODc2NC0xLjA0MDhsLjE0MTktLjA4MDQgNC43NzgzLTIuNzU4MmEuNzk0OC43OTQ4IDAgMCAwIC4zOTI3LS42ODEzdi02LjczNjlsMi4wMiAxLjE2ODZhLjA3MS4wNzEgMCAwIDEgLjAzOC4wNTJ2NS41ODI2YTQuNTA0IDQuNTA0IDAgMCAxLTQuNDk0NSA0LjQ5NDR6bS05LjY2MDctNC4xMjU0YTQuNDcwOCA0LjQ3MDggMCAwIDEtLjUzNDYtMy4wMTM3bC4xNDIuMDg1MiA0Ljc4MyAyLjc1ODJhLjc3MTIuNzcxMiAwIDAgMCAuNzgwNiAwbDUuODQyOC0zLjM2ODV2Mi4zMzI0YS4wODA0LjA4MDQgMCAwIDEtLjAzMzIuMDYxNUw5Ljc0IDE5Ljk1MDJhNC40OTkyIDQuNDk5MiAwIDAgMS02LjE0MDgtMS42NDY0ek0yLjM0MDggNy44OTU2YTQuNDg1IDQuNDg1IDAgMCAxIDIuMzY1NS0xLjk3MjhWMTEuNmEuNzY2NC43NjY0IDAgMCAwIC4zODc5LjY3NjVsNS44MTQ0IDMuMzU0My0yLjAyMDEgMS4xNjg1YS4wNzU3LjA3NTcgMCAwIDEtLjA3MSAwbC00LjgzMDMtMi43ODY1QTQuNTA0IDQuNTA0IDAgMCAxIDIuMzQwOCA3Ljg3MnptMTYuNTk2MyAzLjg1NThMMTMuMTAzOCA4LjM2NCAxNS4xMTkyIDcuMmEuMDc1Ny4wNzU3IDAgMCAxIC4wNzEgMGw0LjgzMDMgMi43OTEzYTQuNDk0NCA0LjQ5NDQgMCAwIDEtLjY3NjUgOC4xMDQydi01LjY3NzJhLjc5Ljc5IDAgMCAwLS40MDctLjY2N3ptMi4wMTA3LTMuMDIzMWwtLjE0Mi0uMDg1Mi00Ljc3MzUtMi43ODE4YS43NzU5Ljc3NTkgMCAwIDAtLjc4NTQgMEw5LjQwOSA5LjIyOTdWNi44OTc0YS4wNjYyLjA2NjIgMCAwIDEgLjAyODQtLjA2MTVsNC44MzAzLTIuNzg2NmE0LjQ5OTIgNC40OTkyIDAgMCAxIDYuNjgwMiA0LjY2ek04LjMwNjUgMTIuODYzbC0yLjAyLTEuMTYzOGEuMDgwNC4wODA0IDAgMCAxLS4wMzgtLjA1NjdWNi4wNzQyYTQuNDk5MiA0LjQ5OTIgMCAwIDEgNy4zNzU3LTMuNDUzN2wtLjE0Mi4wODA1TDguNzA0IDUuNDU5YS43OTQ4Ljc5NDggMCAwIDAtLjM5MjcuNjgxM3ptMS4wOTc2LTIuMzY1NGwyLjYwMi0xLjQ5OTggMi42MDY5IDEuNDk5OHYyLjk5OTRsLTIuNTk3NCAxLjQ5OTctMi42MDY3LTEuNDk5N1oiLz48L3N2Zz4=
+[badge-antigravity]: https://img.shields.io/badge/Antigravity-Gemini-4285F4?style=for-the-badge&logo=googlegemini&logoColor=white
+[badge-cursor]: https://img.shields.io/badge/Cursor-any_model-000000?style=for-the-badge&logo=cursor&logoColor=white
+
+**ChatGPT users:** the ChatGPT chat app can only use tools hosted on the internet, not one running on your own computer. Use OpenAI's **Codex app** instead. It signs in with the same ChatGPT account and can both install the astrologer and use it.
+
+None of these apps? You can still use the [web app's AI astrologer](#no-desktop-ai-app-use-the-web-app) with an API key.
+
+### 1. Let your AI app set it up
+
+Paste this into the app: in the Claude desktop app, the **Code** tab; in Codex, a new thread; in Antigravity, the agent panel; in Cursor, the agent chat.
 
 ```text
 Set up the Jagannatha Hora astrologer for me: clone https://github.com/whym3/jhora-ai
 into my Documents folder, install Node.js 22 or newer if it isn't installed, and run
-npm install. Then connect its local MCP server to this app: for the Claude desktop app
-run npm run setup:claude; for any other app run npm run setup:print and add the
-printed "jhora" server to this app's MCP settings. Tell me when to restart the app.
+npm install. Then connect its local MCP server to this app:
+- Claude desktop app: run npm run setup:claude
+- Codex app: run npm run setup:print and add the printed "jhora" server to
+  ~/.codex/config.toml as [mcp_servers.jhora] with the same command and args
+- any other app: run npm run setup:print and add the printed "jhora" server to
+  this app's MCP settings
+Keep my other settings. Tell me when to restart the app.
 ```
 
 It downloads the project, installs what it needs and connects the astrologer, keeping any other settings you have.
 
-**2. Restart the app** when it tells you to. Quit it completely (on a Mac, **Claude → Quit Claude**; on Windows, right-click its icon in the taskbar's notification area and choose **Quit**), then open it again.
+### 2. Restart the app
 
-**3. Start a new chat** and say:
+Restart the app when it tells you to. Quit it completely, then open it again. On a Mac, use the app's menu, for example **Claude → Quit Claude**. On Windows, right-click its icon in the taskbar's notification area and choose **Quit**.
+
+### 3. Start a new chat
+
+Say:
 
 > I'd like a Vedic astrology consultation.
 
@@ -34,13 +67,32 @@ It downloads the project, installs what it needs and connects the astrologer, ke
 1. Install [Node.js](https://nodejs.org) (the **LTS** version).
 2. Download the project ([**Download ZIP**](https://github.com/whym3/jhora-ai/archive/refs/heads/master.zip)) and unzip it somewhere you'll keep it.
 3. Open a terminal in that folder. On a Mac, open **Terminal**, type `cd ` (with a space), drag the folder onto the window and press Return. On Windows, right-click inside the folder in File Explorer and choose **Open in Terminal**.
-4. Run `npm install`, then `npm run setup:claude` for the Claude desktop app, or `npm run setup:print` for another app (paste the printed `"jhora"` entry into its MCP settings).
+4. Run `npm install`, then connect the server to your app:
+   - **Claude desktop app:** `npm run setup:claude`
+   - **Codex app:** run `npm run setup:print` and add its `command` and `args` to `~/.codex/config.toml` (on Windows, `%USERPROFILE%\.codex\config.toml`):
+     ```toml
+     [mcp_servers.jhora]
+     command = "/full/path/to/node"
+     args = ["/full/path/to/jhora-ai/dist-mcp/jhora-mcp.mjs"]
+     ```
+   - **Antigravity:** open the **…** menu in the agent panel, choose **MCP Servers → Manage MCP Servers → View raw config**, and paste the `"jhora"` entry that `npm run setup:print` prints inside `"mcpServers"`.
+   - **Cursor and other MCP apps:** paste the `"jhora"` entry that `npm run setup:print` prints into the app's MCP settings (for Cursor, `~/.cursor/mcp.json`). See [MCP server](#mcp-server).
 
 </details>
 
+### No desktop AI app? Use the web app
+
+If none of the desktop apps above is available, use the AI astrologer built into the web app. It runs the same calculations. It needs an API key from Anthropic ([console.anthropic.com](https://console.anthropic.com)) or OpenAI ([platform.openai.com](https://platform.openai.com)). API use is billed by the provider separately from a Claude or ChatGPT subscription.
+
+1. Install [Node.js](https://nodejs.org) (the **LTS** version), download the project and open a terminal in its folder, as in steps 1-3 of *Setting it up by hand* above.
+2. Run `npm install`, then `npm run dev`, and open [http://localhost:5173](http://localhost:5173) in your browser.
+3. Open or enter the chart, click **AI Astrologer**, choose Claude or OpenAI and paste your key. The key is stored only in your browser.
+
+See [The web app](#the-web-app) and [AI astrologer](#ai-astrologer) for more.
+
 ### What happens in a consultation
 
-1. **Your chart.** Claude asks whose chart it is and for the birth date, time and place. It works out the place's coordinates and time zone, shows them for you to confirm, and saves the chart so it is there next time.
+1. **Your chart.** The AI asks whose chart it is and for the birth date, time and place. It works out the place's coordinates and time zone, shows them for you to confirm, and saves the chart so it is there next time.
 2. **Your past events.** Before any prediction, it asks for a few dated events from your life: studies, jobs, marriage, children, moves, illnesses, losses. It checks them against the planetary periods (dasas) running at the time, to make sure the chart and birth time fit your life.
 3. **Your question.** Then ask anything: career, money, relationships, health, the year ahead. The answer draws on the dasas, transits, yogas, divisional charts and more, and says which data each point comes from.
 
@@ -53,20 +105,91 @@ The calculations are exact whatever model you use, but the reading is only as go
 | App | Model | Setting |
 |---|---|---|
 | Claude desktop app | **Fable 5.1** | extended thinking on |
+| Codex app (ChatGPT) | **the latest GPT model** | reasoning effort high |
 | Antigravity (Gemini) | **Gemini Argon** | high thinking |
 | Web app's AI astrologer (OpenAI key) | **the latest GPT model** | reasoning effort high |
 
 Smaller or faster models can mix up chart details or skip steps of the method.
 
-**Privacy.** Every calculation runs on your computer. Your conversation goes to the AI's provider (Anthropic, Google or OpenAI) like any other chat with it. Saved charts stay in the project's `charts` folder.
+**Privacy.** Every calculation runs on your computer. Your conversation goes to the AI's provider (Anthropic, OpenAI or Google) like any other chat with it. Saved charts stay in the project's `charts` folder.
 
-**If the app doesn't offer the tools,** check its MCP settings (in Claude, **Settings → Developer**): "jhora" should be listed as running. If you moved or renamed the project folder, ask the app to connect it again.
+**If the app doesn't offer the tools,** check its MCP settings (in Claude, **Settings → Developer**; in Codex, `~/.codex/config.toml`): "jhora" should be listed. If you moved or renamed the project folder, ask the app to connect it again. Gemini's own desktop app did not give the tools to its model in testing; use Antigravity for Gemini.
 
-### Gemini, ChatGPT and other apps
+### What the AI can look up
 
-- **ChatGPT:** the ChatGPT desktop app can't yet use a tool running on your own computer, only ones hosted on the internet. Use the AI astrologer built into the web app instead, with your OpenAI API key (see [The web app](#the-web-app) and [AI astrologer](#ai-astrologer)).
-- **Gemini, in Antigravity:** Google's [Antigravity](https://antigravity.google) app runs the astrologer with Gemini models. Paste the setup prompt above into its agent panel. If the server needs adding by hand, open the **…** menu in the agent panel, choose **MCP Servers → Manage MCP Servers → View raw config**, and paste the `"jhora"` entry that `npm run setup:print` prints inside `"mcpServers"`. (Gemini's own desktop app did not give the tools to its model in testing.)
-- **Claude Code, Cursor and other MCP apps:** see [MCP server](#mcp-server).
+These are the tools the MCP server gives the AI. The calculations behind them are exact, so the AI never has to guess a position or a date.
+
+**Consultation** (desktop apps only)
+
+| Tool | What it does |
+|---|---|
+| `start_consultation` | Called first in every new chat. Returns the consultation steps to follow, your saved charts and what has been done so far. |
+| `list_saved_charts` | Your saved charts, then the sample charts of well-known people. |
+| `open_chart` | Opens the chart the other tools work on: a saved or sample chart, a Jagannatha Hora `.jhd` file, or new birth details, which can be saved for next time. It also sets the gender (for Nadi readings), the house system and true or mean nodes. |
+| `record_life_events` | Records dated events from your past and gives the Vimsottari maha, antar and pratyantar dasa running at each, to test the chart and birth time. |
+
+**The birth chart**
+
+| Tool | What it does |
+|---|---|
+| `get_chart_overview` | Birth data and Key Info: tithi, nakshatra, yoga, karana, sunrise and sunset, hora lord, ayanamsa, and the calculation settings in use. |
+| `get_longitudes` | Exact positions of the 56 bodies (planets, lagna, special lagnas, upagrahas, arudhas, sphutas) with nakshatra, pada, sign, navamsa, retrogression and chara karakas. |
+| `get_divisional_charts` | The sign of every body in every divisional chart (D-1 to D-60, D-81, D-108, D-144) at once. |
+| `get_divisional_longitudes` | The exact degree of every body in every divisional chart. |
+| `get_houses_and_kp` | House cusps and the planets in each house, KP star, sub and deeper lords of every cusp and planet, and which planets sit in each planet's nakshatra. |
+| `get_special_points` | Chara karakas, taras, yogi and avayogi, combustion, planetary war, sahamas, drekkanas, special tithis, pushkara and mrityu bhaga, deities, D-60 amsa names, declinations, Laghu Parasari functional benefics and malefics. |
+| `get_sign_change_sensitivity` | How much earlier or later the birth time would have to be for a body to change sign in a divisional chart, for birth-time rectification. |
+| `get_nisheka_chart` | The conception (Nisheka) chart and gestation period, with Vimsottari compressed into it. |
+| `get_calculations_report` | Jagannatha Hora's full "Copy basic" or "Copy complete calculations" report as one text. |
+
+**Dasas (planetary periods)**
+
+| Tool | What it does |
+|---|---|
+| `get_dasa` | The periods of any of 49 dasa systems (Vimsottari, Yogini, Narayana, Chara, Kalachakra ...), down to five levels. |
+| `get_running_dasa` | The periods running on a given date, from maha dasa down. |
+| `get_dasa_periods_in_range` | Every period that overlaps a date range, for timing windows such as "which antardasas run from 2026 to 2030". |
+| `get_dasa_period_chart` | The chart cast for the moment a period begins, read for what the period brings. |
+| `get_dasa_transits` | When Jupiter, Saturn, Rahu and Ketu move through each house counted from a period's sign, to time events within the period. |
+| `get_dasa_details` | Jagannatha Hora's notes on what a dasa is and when to use it, or the sum of the period lords' longitudes. |
+
+**Strengths, yogas and aspects**
+
+| Tool | What it does |
+|---|---|
+| `get_strengths` | Shadbala, bhava bala, ishta and kashta phala, rashmis, vimsopaka bala, vaiseshikamsas, avasthas and the Tajaka balas. |
+| `get_strength_graphs` | The numbers behind Jagannatha Hora's strength bar graphs. |
+| `get_ashtakavarga` | Bhinnashtakavarga and sarvashtakavarga, the reduced (sodhita) and prastara forms, and the sodhya pindas. |
+| `get_yogas` | The yogas present in the chart or a divisional chart, with the planets forming them and their results. |
+| `get_supported_yogas` | Every yoga Jagannatha Hora checks, present or not, with its definition and results. |
+| `get_aspects` | Parasara aspect strengths of each planet on every body and house, and the relationship (friend, enemy ...) of each planet to the others. |
+| `get_argala_and_rasi_drishti` | Jaimini sign aspects (rasi drishti) and argala (intervention) on each house, for use with the Jaimini rasi dasas. |
+
+**Transits and timing**
+
+| Tool | What it does |
+|---|---|
+| `get_transits` | Planetary positions on a date against the natal chart, in Jagannatha Hora's transit modes: houses, taras, vedha, ashtakavarga bindus, special nakshatras, aspects and latta. |
+| `get_transit_search` | The exact moment a planet reaches a natal point, a sahama or the start of a sign, for example Saturn entering Pisces or Jupiter crossing the natal Moon. |
+| `get_transit_calendar` | Day-by-day (or week-by-week) transit scores of the nine planets, to scan weeks or months for good and bad stretches. |
+| `get_transit_correlation` | Which natal points each transiting planet strikes on a date, across the main divisional charts. |
+| `get_chakra` | The Sarvatobhadra, Kota, Sudarsana, Surya and Chandra Kalanala, Shoola and Tripataki chakras, with natal or transit planets placed in them. |
+| `get_month_ephemeris` | A month's sign and nakshatra ingresses and planetary aspects, a daily ephemeris, or a daily panchanga. |
+| `get_panchanga` | The panchanga of a day: tithi, nakshatra, yoga and karana with end times, sunrise, moonrise, rahu kaala, varjya, durmuhurta, horas and choghadiyas. |
+
+**Other charts**
+
+| Tool | What it does |
+|---|---|
+| `get_annual_chart` | The Tajaka annual chart (varshaphala) or a monthly chart, with its Mudda dasa. |
+| `get_tithi_pravesha` | The Tithi Pravesha chart for a year, lunar month or day of life. |
+| `get_progressed_chart` | Progressed charts: solar, Bhrigu, Sudarsana chakra and nakshatra-dasa progressions. |
+| `get_angular_return` | The next moment the angle between two bodies returns to its birth value (Sun to Moon gives a tithi return). |
+| `get_prasna_chart` | A horary (prasna) chart from a number the querent gives: 1-108, KP 1-249, or Nadi 1-1800. |
+| `get_mundane_chart` | Event charts: a planet entering a sign, two planets forming an aspect, a station, an eclipse, a solar or lunar new year or month, or Ardra Pravesha. |
+| `get_marriage_match` | Ashta koota marriage matching from both Moon nakshatras: the score out of 36 and the level of match. |
+
+The web app's AI astrologer uses the same 36 `get_` tools; the four consultation tools belong to the MCP server. The server also offers a `jyotish_reading` prompt that starts a consultation.
 
 ---
 
