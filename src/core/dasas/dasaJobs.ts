@@ -13,7 +13,7 @@
 //  - tribhagi, nakVarga: the session settings of build.ts (Tribhagi 32971, dialog 2055's varga);
 //  - overrides: temporary rasi dasa strengths (overrides.ts);
 //  - shift: "Shift dasa dates" (33196) in days (shiftedClock), noted under the title;
-//  - narayanaKind, shoolaFromHouse, tithiSeed, rbvVarga: the Options dialogs' session globals
+//  - narayanaKind, shoolaFromHouse, tithiSeed, rbvVarga, rasiVarga, charaSeed: the Options dialogs' session globals
 //    (registry.ts DasaOptions);
 //  - datesOnly: the text of "Copy to clipboard (only dates)" (33236) instead of 32972's;
 //  - derived: the derived chart shown (Tajaka etc., see dasaOf).
@@ -58,6 +58,7 @@ import type { DasaClock } from './time';
 import type { DasaOptions } from './registry';
 import type { NarayanaKind } from './narayana';
 import type { TithiSeedOptions } from './tithiAshtottari';
+import type { CharaSeed } from './charaParasara';
 
 type TableFn = (chart: Chart, params: Record<string, unknown>, swe?: Sweph) => Table;
 type AsyncTableFn = (chart: Chart, params: Record<string, unknown>, swe: Sweph) => Promise<Table>;
@@ -115,6 +116,8 @@ function buildOpts(params: Record<string, unknown>, swe: Sweph | undefined, char
     ...(params.shoolaFromHouse ? { shoolaFromHouse: Number(params.shoolaFromHouse) } : {}),
     ...(params.tithiSeed ? { tithiSeed: params.tithiSeed as TithiSeedOptions } : {}),
     ...(params.rbvVarga ? { rbvVarga: Number(params.rbvVarga) } : {}),
+    ...(params.rasiVarga ? { rasiVarga: Number(params.rasiVarga) } : {}),
+    ...(params.charaSeed ? { charaSeed: Number(params.charaSeed) as CharaSeed } : {}),
   };
 }
 

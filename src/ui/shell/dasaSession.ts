@@ -8,11 +8,13 @@
 //    is opened or recalculated): days, per chart and slot like the overrides;
 //  - narayanaKind (dialog 2006, DAT_00597eec..ee), shoolaFromHouse (dialog 2007, DAT_00597ed0),
 //    tithiSeed (dialog 2034, DAT_008a4b74 / 78, DAT_005922cc / d0), rbvVarga (dialog 2044,
-//    DAT_008a4b90): the Options dialogs' session globals.
+//    DAT_008a4b90), rasiVarga (the varga picker of Drigdasa / Trikona / Chara (Parasara) / Yogardha,
+//    DAT_008a4b94), charaSeed (dialog 2079, DAT_008a4c48): the Options dialogs' session globals.
 import { useSyncExternalStore } from 'react';
 import type { StrengthOverrides } from '../../core/dasas/overrides';
 import type { NarayanaKind } from '../../core/dasas/narayana';
 import type { TithiSeedOptions } from '../../core/dasas/tithiAshtottari';
+import type { CharaSeed } from '../../core/dasas/charaParasara';
 
 export interface DasaSession {
   tribhagi: boolean;
@@ -24,9 +26,11 @@ export interface DasaSession {
   shoolaFromHouse: number;
   tithiSeed: TithiSeedOptions;
   rbvVarga: number;
+  rasiVarga: number;
+  charaSeed: CharaSeed;
 }
 
-let session: DasaSession = { tribhagi: false, nakVarga: 0, cycles: {}, overrides: {}, shifts: {}, narayanaKind: 0, shoolaFromHouse: 0, tithiSeed: {}, rbvVarga: 0 };
+let session: DasaSession = { tribhagi: false, nakVarga: 0, cycles: {}, overrides: {}, shifts: {}, narayanaKind: 0, shoolaFromHouse: 0, tithiSeed: {}, rbvVarga: 0, rasiVarga: 0, charaSeed: 0 };
 const listeners = new Set<() => void>();
 
 export function getDasaSession(): DasaSession { return session; }

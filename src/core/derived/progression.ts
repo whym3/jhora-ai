@@ -184,12 +184,15 @@ const STAR = 13.333333333333334, PADA = 3.3333333333333335;
  * Shashtihayani) run their maha dasas from the seed's group as the Dasas tab lists them;
  * Kalachakra its nine maha padas with the antardasas of each pada's row.
  */
-export function progressedSeed(seedLon: number, dasaKey: string | null, years: number, rohini4InLeo = true): number {
+export function progressedSeed(seedLon: number, dasaKey: string | null, years: number, rohini4InLeo = true, kcMethod = 5): number {
   type Node = { period: Period; id: number; maha: boolean };
   let list: Node[], sub: (n: Node) => Node[], base: number, unit: number, n: number;
   if (dasaKey === 'Kalachakra') {
-    list = kalachakraDasa(seedLon, 9, rohini4InLeo, 1).periods.map((period, i) => ({ period, id: kalachakraMahaId(seedLon, i), maha: true }));
-    sub = (x) => kalachakraLevel(x.period, x.id, x.maha, rohini4InLeo).map((c) => ({ ...c, maha: false }));
+    // the Dasas tab's Kalachakra (KalachakraDasaCalculation): the builder FUN_0040c540 sets
+    // base / unit (0x40d3a9) before and independently of the method's maha dasa order
+    const from = { seed: 'Moon', varga: 'D-1' };
+    list = kalachakraDasa(seedLon, 9, rohini4InLeo, 1, from, kcMethod).periods.map((period, i) => ({ period, id: kalachakraMahaId(seedLon, i, rohini4InLeo, kcMethod), maha: true }));
+    sub = (x) => kalachakraLevel(x.period, x.id, x.maha, rohini4InLeo, kcMethod).map((c) => ({ ...c, maha: false }));
     base = Math.trunc(seedLon * 0.3) * PADA;
     unit = PADA;
     n = 9;
@@ -281,7 +284,8 @@ export function progression(swe: Sweph, natal: Chart, inp: ProgressionInput): Pr
       const body = PROG_BODIES[inp.body ?? 2];
       const dasaKey = PROG_DASAS[inp.dasa ?? 0][1];
       const seed0 = vargaLongitude(lonOf(natal, body), vargaSpec(vargaNameOf(n), natal.ini));
-      const seed = progressedSeed(seed0, dasaKey, dasaYearsAt(swe, natal, jd, inp.dasa ?? 0), natal.ini.KCDRohini4NavamsaInLeo !== 0);
+      const seed = progressedSeed(seed0, dasaKey, dasaYearsAt(swe, natal, jd, inp.dasa ?? 0), natal.ini.KCDRohini4NavamsaInLeo !== 0,
+        natal.ini.KalachakraDasaCalculation ?? 5);
       const shift = norm360(seed - seed0);
       return { ...base, kind: 'nakshatra', label: 'Prog (NaksDasa)', shift, seed, birth: shiftedBirth(natal, inp, shift), chartJd: natal.positions.jdUt };
     }

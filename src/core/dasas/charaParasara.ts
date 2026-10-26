@@ -1,7 +1,9 @@
 // Chara dasa (Parasara) (FUN_004172f0), with JHora 8.0's default rules:
 //  - the chart is DAT_008a4b94 (default 0 = D-1, shared with Drigdasa and
-//    Trikona); the dasas start from the sign of body DAT_008a4c48 (default 0 =
-//    the lagna) in that chart;
+//    Trikona); the dasas start from the sign of body DAT_008a4c48 in that chart
+//    (chart+0x17d7 + 0x1d x body + varga): dialog 2079's "Choose the dasa seed from
+//    the tripod of life" (combo 1003, DLGINIT: Lagna / Sun / Moon = bodies 0 / 1 / 2;
+//    a session global, default 0), unless "Start dasas from" (chart+0x17eb4[33]) is set;
 //  - they run sign by sign, zodiacally when (s+8)/3 is even (Ar Le Vi Li Aq
 //    Pi) and backwards otherwise; no Saturn/Ketu exception;
 //  - years FUN_004acce0: signs from the dasa sign to its lord (lord by
@@ -36,14 +38,20 @@ export function charaParasaraYears(sign: number, ctx: VargaCtx, exaltationExcept
   return y;
 }
 
+/** Dialog 2079's seeds, in combo order (DAT_008a4c48). */
+export const CHARA_SEEDS = ['Lagna', 'Sun', 'Moon'] as const;
+export type CharaSeed = 0 | 1 | 2;
+
 /**
  * @param vargaIndex JHora varga index (DAT_008a4b94, default 0 = D-1)
+ * @param seed DAT_008a4c48: 0 Lagna, 1 Sun, 2 Moon
  * @param exaltationException CharaDasaExaltationException (default: the chart's ini, JHora default 1)
  */
 export function charaParasaraDasa(chart: Chart, levels = 2, vargaIndex = 0,
-  exaltationException: boolean = (chart.ini.CharaDasaExaltationException ?? 1) !== 0): Period[] {
+  exaltationException: boolean = (chart.ini.CharaDasaExaltationException ?? 1) !== 0, seed: CharaSeed = 0): Period[] {
   const ctx = rasiCtx(chart, vargaIndex);
-  const start = startOverride(ctx) ?? ctx.lagna; // chart+0x17eb4[33] (0x41734d)
+  const seedSign = seed === 1 ? ctx.sign('Sun') : seed === 2 ? ctx.sign('Moon') : ctx.lagna;
+  const start = startOverride(ctx) ?? seedSign; // chart+0x17eb4[33] (0x41734d)
   const seq = run(start, Math.floor((start + 8) / 3) % 2 === 0 ? 1 : -1);
   return buildRasiDasa(seq, seq.map((s) => charaParasaraYears(s, ctx, exaltationException)), (s) => parasaraAntardasas(s, ctx), levels, true);
 }

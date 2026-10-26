@@ -28,14 +28,14 @@ import { narayanaDasa, type NarayanaKind } from './narayana';
 import { SUDASA_TITLE, sudasa, type SudasaADOption } from './sudasa';
 import { LAGNAMSAKA_TITLE, lagnamsakaDasa } from './lagnamsaka';
 import { PADANATHAMSA_TITLE, padanathamsaDasa } from './padanathamsa';
-import { DRIGDASA_TITLE, drigDasa } from './drigdasa';
+import { drigdasaTitle, drigDasa } from './drigdasa';
 import { LAGNA_KENDRADI_TITLE, lagnaKendradiDasa } from './lagnaKendradi';
 import { AK_KENDRADI_TITLE, akKendradiDasa } from './akKendradi';
-import { TRIKONA_TITLE, trikonaDasa } from './trikona';
-import { CHARA_PARASARA_TITLE, charaParasaraDasa } from './charaParasara';
+import { trikonaTitle, trikonaDasa } from './trikona';
+import { charaParasaraTitle, charaParasaraDasa, type CharaSeed } from './charaParasara';
 import { CHARA_KN_RAO_TITLE, charaKNRaoDasa } from './charaKNRao';
 import { CHARA_IRANGANTI_TITLE, charaIrangantiDasa } from './charaIranganti';
-import { YOGARDHA_TITLE, yogardhaDasa } from './yogardha';
+import { yogardhaTitle, yogardhaDasa } from './yogardha';
 import { paryaayaDasa } from './paryaaya';
 import { shoolaDasa, shoolaTitle } from './shoola';
 import { NIRYAANA_SHOOLA_TITLE, niryaanaShoolaDasa } from './niryaanaShoola';
@@ -93,6 +93,10 @@ export interface DasaOptions {
   tithiSeed?: TithiSeedOptions;
   /** DAT_008a4b90: varga index of the Rasi-Bhukta Vimsottari antardasa signs (dialog 2044, session) */
   rbvVarga?: number;
+  /** DAT_008a4b94: varga index of Drigdasa, Trikona, Chara (Parasara) and Yogardha (the varga picker FUN_004d8730 their Options open first; session) */
+  rasiVarga?: number;
+  /** DAT_008a4c48: Chara dasa (Parasara)'s seed from the tripod of life (dialog 2079, session; 0 Lagna, 1 Sun, 2 Moon) */
+  charaSeed?: CharaSeed;
 }
 export type DasaBuilder = (chart: Chart, levels: number, opts?: DasaOptions) => BuiltDasa;
 
@@ -150,14 +154,14 @@ export const RASI_DASAS: Record<string, DasaBuilder> = {
     const ad = (c.ini.SudasaADOption ?? 4) as SudasaADOption;
     return { title: SUDASA_TITLE, periods: sudasa(c.longitudes.find((x) => x.name === 'Sree Lagna')!.lon, ctx, levels, ad) };
   },
-  Drigdasa: seededPlain(29, DRIGDASA_TITLE, (c, l) => drigDasa(c, l)),
+  Drigdasa: munthaSeeded(29, (c, l, opts) => { const v = opts?.rasiVarga ?? 0; return { title: drigdasaTitle(v), periods: drigDasa(c, l, v) }; }),
   'Lagna Kendradi': seededPlain(30, LAGNA_KENDRADI_TITLE, (c, l) => lagnaKendradiDasa(c, l)),
   'AK Kendradi Rasi': seededPlain(31, AK_KENDRADI_TITLE, (c, l) => akKendradiDasa(c, l)),
-  Trikona: seededPlain(32, TRIKONA_TITLE, (c, l) => trikonaDasa(c, l)),
-  'Chara (Parasara)': plain(CHARA_PARASARA_TITLE, (c, l) => charaParasaraDasa(c, l)),
+  Trikona: munthaSeeded(32, (c, l, opts) => { const v = opts?.rasiVarga ?? 0; return { title: trikonaTitle(v), periods: trikonaDasa(c, l, v) }; }),
+  'Chara (Parasara)': (c, l, opts) => { const v = opts?.rasiVarga ?? 0; return { title: charaParasaraTitle(v), periods: charaParasaraDasa(c, l, v, undefined, opts?.charaSeed ?? 0) }; },
   'Chara (K.N. Rao)': seededPlain(34, CHARA_KN_RAO_TITLE, charaKNRaoDasa),
   'Chara (Rangacharya)': seededPlain(35, CHARA_IRANGANTI_TITLE, (c, l) => charaIrangantiDasa(c, l)),
-  Yogardha: seededPlain(36, YOGARDHA_TITLE, (c, l) => yogardhaDasa(c, l)),
+  Yogardha: munthaSeeded(36, (c, l, opts) => { const v = opts?.rasiVarga ?? 0; return { title: yogardhaTitle(v), periods: yogardhaDasa(c, l, v) }; }),
   Paryaaya: munthaSeeded(37, (c, levels) => { const p = paryaayaDasa(c, levels, c.ini.ParyaayaDasaChart ?? 6); return { title: p.title, periods: p.periods }; }),
   Shoola: munthaSeeded(38, (c, l, opts) => { const h = opts?.shoolaFromHouse ?? 0; return { title: shoolaTitle(h), periods: shoolaDasa(c, l, h) }; }),
   'Niryaana Shoola': seededPlain(39, NIRYAANA_SHOOLA_TITLE, niryaanaShoolaDasa),

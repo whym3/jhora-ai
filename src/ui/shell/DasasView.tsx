@@ -15,7 +15,7 @@ import { setIni, useActiveDoc, useStore, type DerivedChart } from '../state/stor
 import { applyYearDefinition, dasaSlot, YEAR_DEFINITION_NAMES, YEAR_MENU } from '../../core/dasas/yearDefinition';
 import { canStepCycle, DASA_LEVEL, datesOnlyLines } from '../../core/dasas/format';
 import { overridesKey, setCycle, setDasaSession, useDasaSession } from './dasaSession';
-import { DasaOptionsDialog, hasDasaOptions, TajakaSeedDialog } from './DasaOptions';
+import { DasaOptionsDialog, hasDasaOptions, RASI_VARGA_SLOTS, TajakaSeedDialog } from './DasaOptions';
 import { EntryChartWindow } from './EntryChart';
 
 /** Nakshatra dasa systems in JHora's menu order. */
@@ -99,6 +99,8 @@ function DasaPane({ spec, table, systems }: { spec: ChartSpec; table: DasaTable;
     ...(slot === 25 && session.narayanaKind ? { narayanaKind: session.narayanaKind } : {}),
     ...(slot === 38 && session.shoolaFromHouse ? { shoolaFromHouse: session.shoolaFromHouse } : {}),
     ...(slot === 68 && session.rbvVarga ? { rbvVarga: session.rbvVarga } : {}),
+    ...(RASI_VARGA_SLOTS.has(slot) && session.rasiVarga ? { rasiVarga: session.rasiVarga } : {}),
+    ...(slot === 33 && session.charaSeed ? { charaSeed: session.charaSeed } : {}),
     ...(slot === 69 && Object.keys(session.tithiSeed).length ? { tithiSeed: session.tithiSeed } : {}),
   };
   const job = useJob(dasaJob(spec, doc?.birth, doc?.derived, table, system, path, extra));

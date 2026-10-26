@@ -10,13 +10,14 @@
 //                PadanathamsaDasaChart, ParyaayaDasaChart + the temporary strengths (overrides.ts);
 //                2006's combo 1013 Normal / Paka / Sama / Ayur Narayana Dasa (session)
 //   28 29        dialogs 2049 Sudasa (SudasaADOption), 2064 Drigdasa (DrigdasaOfParasara) + strengths
-//   30..36 39..41 dialog 2022 "Rasi dasa options": strengths (Chara Parasara: dialog 2079's
-//                CharaDasaExaltationException); 38 dialog 2007: the start house (session) and
-//                ShoolaDasaAntardasaStart
+//   30..36 39..41 dialog 2022 "Rasi dasa options": strengths; 29 32 33 36 (Drigdasa, Trikona,
+//                Chara (Parasara), Yogardha) first open the varga picker FUN_004d8730 (DAT_008a4b94,
+//                session, shared by the four); 33 then dialog 2079 (FUN_0044e6c0): the seed from
+//                the tripod of life (DAT_008a4c48, session) and CharaDasaExaltationException;
+//                38 dialog 2007: the start house (session) and ShoolaDasaAntardasaStart
 //   60 2008 Moola, 61 2046 Naisargika, 62 2075 Tara, 66 / 67 2056 Sudarsana chakra / Buddhi gati,
 //   68 2044 RBV starting point and varga (session), 69 2034 Tithi Ashtottari seed (session)
-// Only the keys the dasa builders read are offered (dialog 2079's "dasa seed from the tripod of
-// life" is not ported). Tithi Yogini has no Options dialog (DAT_008a4b7c is never written).
+// Only the keys the dasa builders read are offered. Tithi Yogini has no Options dialog (DAT_008a4b7c is never written).
 // Menu 108's 33019 "Dasa seed settings for Tajaka" (dialog 159, FUN_004508a0) writes
 // UseDasaSeedFromNatalInTajaka / ProgressDasaSeedInTajaka for this dasa, all 75 or this category.
 import { useState, type ReactElement } from 'react';
@@ -26,6 +27,7 @@ import { NAKSHATRA_SEEDS } from '../../core/dasas/nakshatra';
 import { adIndex } from '../../core/dasas/vimsottari';
 import { JHORA_VARGAS } from '../../core/dasas/rasiCommon';
 import { vargaLabel, type StrengthOverrides } from '../../core/dasas/overrides';
+import { CHARA_SEEDS, type CharaSeed } from '../../core/dasas/charaParasara';
 import { KALACHAKRA_METHODS, KALACHAKRA_METHOD_EXPLANATIONS } from '../../core/dasas/kalachakra';
 import { NARAYANA_KINDS, type NarayanaKind } from '../../core/dasas/narayana';
 import type { TithiSeedOptions } from '../../core/dasas/tithiAshtottari';
@@ -54,6 +56,8 @@ const DN_KEY: Partial<Record<number, 'NarayanaDasaChart' | 'LagnamsakaDasaChart'
 const DN_LABEL: Partial<Record<number, string>> = {
   25: 'Narayana dasa of which D-n:', 26: 'Lagnamsaka dasa of which D-n:', 27: 'Padanaathaamsa dasa of which D-n:', 37: 'Paryaya dasa of which D-n:',
 };
+/** Drigdasa, Trikona, Chara (Parasara), Yogardha: the shared varga DAT_008a4b94. */
+export const RASI_VARGA_SLOTS = new Set([29, 32, 33, 36]);
 const STRENGTH_SLOTS = new Set([25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 39, 40, 41]);
 /** The dialogs with "Start dasas from" / "Does Saturn or Ketu exception apply?" (all but Drigdasa's 2064). */
 const START_SLOTS = new Set([25, 26, 27, 28, 30, 31, 32, 33, 34, 35, 36, 37, 39, 40, 41]);
@@ -80,7 +84,7 @@ export function hasDasaOptions(slot: number): boolean {
   return NAK_SLOTS.has(slot) || slot === 2 || STRENGTH_SLOTS.has(slot) || [38, 60, 61, 62, 66, 67, 68, 69].includes(slot);
 }
 
-type SessionDraft = Partial<Pick<DasaSession, 'narayanaKind' | 'shoolaFromHouse' | 'tithiSeed' | 'rbvVarga'>>;
+type SessionDraft = Partial<Pick<DasaSession, 'narayanaKind' | 'shoolaFromHouse' | 'tithiSeed' | 'rbvVarga' | 'rasiVarga' | 'charaSeed'>>;
 
 type IntKey = { [K in keyof JhoraIni]: JhoraIni[K] extends number ? K : never }[keyof JhoraIni];
 type ArrKey = 'NakshatraDasaStartPoint' | 'NakshatraDasaShift' | 'NaksDasaADMethodPreference' | 'AntiZodiacalDasa';
@@ -173,7 +177,19 @@ export function DasaOptionsDialog({ slot, birth, onClose }: { slot: number; birt
     );
   }
   if (slot === 29) sections.push(<fieldset key="drig"><legend>Which version of drigdasa to use</legend>{check('DrigdasaOfParasara', "Parasara's (96 years)")}</fieldset>);
-  if (slot === 33) sections.push(<fieldset key="chara"><legend>Chara dasa (Parasara)</legend>{check('CharaDasaExaltationException', 'Add/subtract one year to/from dasa length if lord exalted/debilitated')}</fieldset>);
+  if (RASI_VARGA_SLOTS.has(slot)) {
+    sections.push(<fieldset key="rvarga"><legend>Divisional chart</legend>
+      {vargaSelect(sv('rasiVarga'), (v) => setSess((s) => ({ ...s, rasiVarga: v })), 'Dasa of which divisional chart (shared by Drigdasa, Trikona, Chara (Parasara) and Yogardha):')}</fieldset>);
+  }
+  if (slot === 33) {
+    sections.push(
+      <fieldset key="chara"><legend>Choose the dasa seed</legend>
+        <label>Choose the dasa seed from the tripod of life: <select value={sv('charaSeed')} onChange={(e) => setSess((s) => ({ ...s, charaSeed: Number(e.target.value) as CharaSeed }))}>
+          {CHARA_SEEDS.map((n, i) => <option key={n} value={i}>{n}</option>)}</select></label>
+        {check('CharaDasaExaltationException', 'Add/subtract one year to/from dasa length if lord exalted/debilitated')}
+      </fieldset>,
+    );
+  }
   if (STRENGTH_SLOTS.has(slot)) {
     const pair = (i: number) => ov.stronger?.[i] ?? null;
     const setPair = (i: number, v: number | null) => setOv((o) => ({ ...o, stronger: Array.from({ length: 6 }, (_, k) => (k === i ? v : o.stronger?.[k] ?? null)) }));
