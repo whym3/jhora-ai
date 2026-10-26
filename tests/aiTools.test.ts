@@ -20,9 +20,11 @@ import { VARGA_ORDER } from '../src/core/transits/common';
 import { PROG_DASAS, PROG_VARGA_LABELS } from '../src/core/derived/progression';
 import { ASPECTS, ECLIPSE_TYPES as MUNDANE_ECLIPSES, MUNDANE_BODIES, TRANSIT_DIVISIONS } from '../src/core/derived/mundane';
 import { PRASNA_LIMIT } from '../src/core/derived/prasna';
+import { CHAKRAS as CHAKRA_IDS, CHAKRA_BODY_SETS as CHAKRA_SETS } from '../src/core/chakras/chakraJobs';
+import { ARGALA_REFS as JAIMINI_REFS } from '../src/core/jaiminiJobs';
 import {
   AI_TOOLS, AV_MODES, ECLIPSE_TYPES, MUNDANE_ASPECTS, MUNDANE_DIVISIONS, NAKSHATRA_DASA_SYSTEMS, PRASNA_LIMITS, PROGRESSION_DASAS, PROGRESSION_VARGAS,
-  STATIONARY_PLANETS, OTHER_DASA_SYSTEMS, RASI_DASA_SYSTEMS, SAHAMA_NAMES, SIGN_NAMES, TRANSIT_MODES, VARGAS, YOGA_CATEGORIES,
+  STATIONARY_PLANETS, ARGALA_REFS, CHAKRAS, CHAKRA_BODY_SETS, OTHER_DASA_SYSTEMS, RASI_DASA_SYSTEMS, SAHAMA_NAMES, SIGN_NAMES, TRANSIT_MODES, VARGAS, YOGA_CATEGORIES,
   anthropicStrictSchema, localDateString, openaiStrictSchema, runTool, stripNulls, validateInput, type ToolContext,
 } from '../src/ai/tools';
 import { SYSTEM_PROMPT, chartContext } from '../src/ai/systemPrompt';
@@ -72,6 +74,9 @@ describe('AI tools', async () => {
     expect(ECLIPSE_TYPES).toEqual(MUNDANE_ECLIPSES);
     expect(STATIONARY_PLANETS).toEqual(MUNDANE_BODIES.slice(3));
     expect(PRASNA_LIMITS).toEqual(PRASNA_LIMIT);
+    expect(CHAKRAS).toEqual([...CHAKRA_IDS]);
+    expect(CHAKRA_BODY_SETS).toEqual([...CHAKRA_SETS]);
+    expect(ARGALA_REFS).toEqual(JAIMINI_REFS);
   });
 
   it('the system prompt names every tool', () => {
@@ -162,6 +167,20 @@ describe('AI tools', async () => {
     ['get_mundane_chart', { event: 'solar_new_year', date: { year: 2026, month: 1, day: 1 } }, /Date: +April 1\d, 2026/],
     ['get_angular_return', { body: 'Sun', body2: 'Moon', date: { year: 2001, month: 3, day: 15 } }, /^Ang Ret Su-Mo[\s\S]*Date: +March 16, 2001\s+Time: +1:16:36/],
     ['get_marriage_match', { other_nakshatra: 'Rohini', other_pada: 2 }, /Gunanka score[^\n]*= \d+ \(out of 36\)/],
+    // Jaimini relationships, chakras, period charts, month tables (positions as verified elsewhere)
+    ['get_argala_and_rasi_drishti', { kind: 'argala' }, /^Argala on the houses from Lagna \(Sg\)[\s\S]*\n1st \| Sg \| Su \| Cp 2nd: Me Ve \| vs Sc 12th: Ra \|/],
+    ['get_argala_and_rasi_drishti', { kind: 'argala', ref: 'AL' }, /from AL \(/],
+    ['get_argala_and_rasi_drishti', { kind: 'rasi_drishti' }, /\nAr \| Ma \| Le Sc Aq \| Ra\n/],
+    ['get_chakra', { chakra: 'kota' }, /from Hast[\s\S]*\n1 \| Hast \| Bahya \/ Exterior \| Mo Sa\n[\s\S]*Kota Swami/],
+    ['get_chakra', { chakra: 'sarvatobhadra', date: { year: 1890, month: 6, day: 1 } }, /transit bodies[\s\S]*Janma: Hast/],
+    ['get_chakra', { chakra: 'sudarsana' }, /\n1 \| Sg: As Su \| Vi: Mo Sa \| Sg: As Su\n/],
+    ['get_chakra', { chakra: 'surya_kalanala', bodies: 'upagrahas' }, /Surya Kalanala chakra/],
+    ['get_chakra', { chakra: 'tripataki' }, /\n1 \| Sg \| As Su\n/],
+    ['get_dasa_period_chart', { system: 'Vimsottari', path: [2, 1] }, /^Period Entry: Rah\/Jup\nPeriod \| Start \| End\nRah\/Jup \| 1877-02-19 \(5:46:14\)[\s\S]*Date: +February 19, 1877\s+Time: +5:46:14[\s\S]*LONGITUDES/],
+    ['get_dasa_transits', { system: 'Narayana', path: [2] }, /\n1st \| Ar \| Saturn \| 1881-01-11 \| 1882-06-30\n/],
+    ['get_transit_correlation', { date: { year: 1890, month: 6, day: 1 } }, /\nJupiter \| 19 Cp 51' 25.71"[^\n]*Lagna in D-9/],
+    ['get_month_ephemeris', { year: 1890, month: 6 }, /\nEntry of planets into signs \| Sun \| enters \| Gemini \| 13 \| 16:17:50\n/],
+    ['get_month_ephemeris', { year: 1890, month: 6, kind: 'panchanga' }, /Monthly Panchanga: 1890-6/],
   ];
   for (const [name, input, want] of cases) {
     it(`${name} ${JSON.stringify(input)}`, async () => {

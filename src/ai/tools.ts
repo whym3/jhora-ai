@@ -77,6 +77,14 @@ const MUNDANE_EVENTS: Record<string, string> = {
   new_lunar_day: 'lunarDay', fortnight: 'fortnight', ardra_pravesha: 'ardra',
 };
 export const PRASNA_LIMITS: Record<string, number> = { '108': 108, '249': 249, nadi: 1800 };
+/** Chakras tab (src/core/chakras/chakraJobs.ts) and the bodies a chakra can place. */
+export const CHAKRAS = ['sarvatobhadra', 'kota', 'sudarsana', 'surya_kalanala', 'chandra_kalanala', 'shoola', 'tripataki'];
+export const CHAKRA_BODY_SETS = ['planets', 'trisphuta', 'upagrahas', 'specialLagnas', 'sahamas'];
+export const ARGALA_REFS = ['Lagna', 'AL', 'UL', 'Moon', 'Sun', 'AK'];
+/** Longitude Correlation modes (radio 201..204). */
+const CORRELATION_METHODS: Record<string, number> = { aspect_strength: 0, named_aspects: 1, conjunction_and_quadrants: 2, conjunction_trines_and_7th: 3 };
+/** Panchanga menu copies by tool name -> job. */
+const MONTH_TABLES: Record<string, string> = { planetary_movements: 'panchanga.movements', daily_ephemeris: 'panchanga.ephemeris', panchanga: 'panchanga.monthly' };
 
 /** Strength and special-point tables by name -> engine job. */
 const STRENGTHS: Record<string, string> = {
@@ -631,6 +639,83 @@ export const AI_TOOLS: AiTool[] = [
       });
       return [t.caption ?? '', ...(t.text ?? [])].join('\n').trim();
     },
+  },
+  {
+    name: 'get_argala_and_rasi_drishti',
+    description: 'Jaimini sign relationships in a varga. kind "rasi_drishti": for each sign its occupants, the signs it aspects and the bodies aspecting it (planets aspect what their sign aspects). kind "argala": for each house from `ref` (Lagna, Arudha Lagna, Upapada, Moon, Sun, Atmakaraka or a sign), the planets giving argala (intervention) from the 2nd, 4th, 11th and secondarily 5th, set against those obstructing it from the 12th, 10th, 3rd and 9th; reversed when Ketu is in the house. Use with the Jaimini rasi dasas (Narayana, Chara ...): a period\'s sign and its argalas show what it brings.',
+    parameters: obj({
+      kind: { type: 'string', enum: ['rasi_drishti', 'argala'] },
+      varga: vargaSchema(),
+      ref: { type: 'string', enum: [...ARGALA_REFS, ...SIGN_NAMES], description: 'argala: the house 1 the houses count from, default Lagna' },
+    }, ['kind']),
+    examples: [{ kind: 'argala', ref: 'AL' }, { kind: 'rasi_drishti', varga: 'D9' }],
+    run: async (ctx, i) => tableText(await table(ctx, i.kind === 'argala' ? 'jaimini.argala' : 'jaimini.rasiDrishti', { varga: i.varga ?? 'D1', ref: i.ref ?? 'Lagna' })),
+  },
+  {
+    name: 'get_chakra',
+    description: 'A chakra of JHora\'s Chakras tab, with the natal bodies or, given `date`, the transit bodies of that day placed in it. "sarvatobhadra": each body\'s vedhas (nakshatras, signs, tithis, weekdays, letters it strikes) and, for the natal special nakshatras (Janma, Karma, Naidhana ...), which bodies cast vedha, graha drishti or latta on them - the classic transit check. "kota": the fort chakra from the natal Moon\'s star (Stambha, Durgantara, Praakaara, Bahya zones) with Kota Swami and Kota Pala, for health and danger. "sudarsana": houses counted from lagna, Moon and Sun together (the year-by-year chakra). "surya_kalanala", "chandra_kalanala", "shoola" (trident from the Sun\'s star) and "tripataki" (from the lagna sign): positions counted from the base star or sign, for afflicted periods.',
+    parameters: obj({
+      chakra: { type: 'string', enum: CHAKRAS },
+      date: dateSchema('place the transit bodies of this day instead of the natal ones'),
+      bodies: { type: 'string', enum: CHAKRA_BODY_SETS, description: 'bodies placed (sudarsana, kalanala, shoola, tripataki), default planets' },
+      varga: vargaSchema('divisional chart of the bodies'),
+    }, ['chakra']),
+    examples: [{ chakra: 'sarvatobhadra', date: { year: 2027, month: 1, day: 1 } }, { chakra: 'kota' }],
+    run: async (ctx, i) => {
+      const date = i.date ? transitDate(i.date as DateInput) : undefined;
+      return tableText(await table(ctx, 'chakras.table', { chakra: i.chakra, bodies: i.bodies ?? 'planets', varga: i.varga ?? 'D1', ...(date ? { date } : {}) }));
+    },
+  },
+  {
+    name: 'get_dasa_period_chart',
+    description: 'Entry chart of a dasa period: the chart cast for the moment the period begins, read like a natal chart for what the period brings. `path` picks the period as in get_dasa ([2] = the 3rd maha dasa, [2,0] = its first antardasa). Returns the period, its start and end, the Key Info and longitudes.',
+    parameters: obj({
+      system: { type: 'string', enum: ALL_DASAS },
+      path: { type: 'array', items: { type: 'integer', minimum: 0 }, maxItems: 5, description: '0-based row indices down to the period (at least one)' },
+    }, ['system', 'path']),
+    examples: [{ system: 'Vimsottari', path: [5, 2] }],
+    run: async (ctx, i) => {
+      const system = String(i.system);
+      if (!(i.path as number[]).length) throw new Error('`path` must pick a period: at least one index');
+      return derivedChartText(ctx, await table(ctx, 'dasas.entry', { table: dasaJob(system), system, path: i.path }));
+    },
+  },
+  {
+    name: 'get_dasa_transits',
+    description: 'Dasa-transit correlation (JHora\'s command 33269): over a dasa period picked by `path` (as in get_dasa), when Jupiter, Saturn, Rahu and Ketu transit each house counted from the period\'s sign (for rasi dasas the dasa sign, otherwise the lord\'s sign). Rows "house | sign | planet | from | to". Use it to time events inside a period.',
+    parameters: obj({
+      system: { type: 'string', enum: ALL_DASAS },
+      path: { type: 'array', items: { type: 'integer', minimum: 0 }, maxItems: 5, description: '0-based row indices down to the period (at least one)' },
+    }, ['system', 'path']),
+    examples: [{ system: 'Narayana', path: [3] }],
+    run: async (ctx, i) => {
+      const system = String(i.system);
+      if (!(i.path as number[]).length) throw new Error('`path` must pick a period: at least one index');
+      return tableText(await table(ctx, 'dasas.transit', { table: dasaJob(system), system, path: i.path }));
+    },
+  },
+  {
+    name: 'get_transit_correlation',
+    description: 'Natal points aspected in transit on a date (JHora\'s Longitude Correlation): for each transiting planet (Jupiter, Saturn, Rahu, Ketu, Mars, Sun, Venus, Mercury, Moon), the natal points it strikes - lagna, planets, arudha padas, bhava/hora/ghati lagnas - in the natal D-1, D-9, D-7, D-10, D-11, D-12, D-16, D-20, D-24, D-30 and D-60. `method`: "aspect_strength" (Parasara aspect of 80% or more, default), "named_aspects", "conjunction_and_quadrants" or "conjunction_trines_and_7th" (within 4 degrees).',
+    parameters: obj({
+      date: dateSchema('transit date, default today'),
+      method: { type: 'string', enum: Object.keys(CORRELATION_METHODS) },
+    }),
+    examples: [{ date: { year: 2027, month: 3, day: 1 }, method: 'conjunction_and_quadrants' }],
+    run: async (ctx, i) => tableText(await table(ctx, 'transits.correlation', {
+      date: transitDate(i.date as DateInput | undefined), tz: ctx.spec.birth.tzHours, mode: CORRELATION_METHODS[String(i.method ?? 'aspect_strength')],
+    })),
+  },
+  {
+    name: 'get_month_ephemeris',
+    description: 'A calendar month at the chart\'s place: "planetary_movements" (every sign and nakshatra ingress of the planets, including re-entries while retrograde, and the month\'s conjunctions, oppositions and graha aspects between planets, with day and time), "daily_ephemeris" (sunrise, sunset and every planet\'s longitude at 5:30 am clock time each day; a station shows where a longitude turns back) or "panchanga" (tithi, nakshatra, yoga, karana and sunrise for every day). Use it to time things within a month.',
+    parameters: obj({
+      year: { type: 'integer' },
+      month: { type: 'integer', minimum: 1, maximum: 12 },
+      kind: { type: 'string', enum: Object.keys(MONTH_TABLES), description: 'default planetary_movements' },
+    }, ['year', 'month']),
+    examples: [{ year: 2027, month: 4 }, { year: 2027, month: 4, kind: 'panchanga' }],
+    run: async (ctx, i) => tableText(await table(ctx, MONTH_TABLES[String(i.kind ?? 'planetary_movements')], { year: Number(i.year), month: Number(i.month) })),
   },
   {
     name: 'get_panchanga',

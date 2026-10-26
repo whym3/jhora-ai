@@ -47,6 +47,8 @@ import { ANGULAR_JOBS, PROGRESSION_JOBS } from '../core/derived/progressionJobs'
 import { LAGHU_TABLES, PANCHANGA_JOBS } from '../core/derived/panchangaJobs';
 import { PRASNA_JOBS, TP_JOBS } from '../core/derived/tpPrasnaJobs';
 import { TRANSIT_JOBS } from '../core/transits/jobs';
+import { JAIMINI_JOBS } from '../core/jaiminiJobs';
+import { CHAKRA_JOBS } from '../core/chakras/chakraJobs';
 import { strengthBarGraphs, type BarGraph } from '../core/strengthGraphs';
 import { OPTION_ASYNC_JOBS } from './optionJobs';
 import { bhavaArudhaOptions, bhavaArudhaSigns } from '../core/arudhaPadas';
@@ -483,6 +485,8 @@ export const TABLES: Record<string, TableFn> = {
   ...BASICS_JOBS,
   // chart right-click menu (src/core/chartJobs.ts)
   ...CHART_JOBS,
+  // rasi drishti and argala as tables (src/core/jaiminiJobs.ts)
+  ...JAIMINI_JOBS,
   // Dasas tab (src/core/dasas/dasaJobs.ts): replaces the 'dasas.*' entries above (cycle, Tribhagi, varga, options)
   ...DASA_TABLES,
 };
@@ -548,6 +552,8 @@ export const ASYNC_TABLES: Record<string, (chart: Chart, params: Record<string, 
   ...DASA_ASYNC_JOBS,
   // calculation options ported from jhora.exe (Nisheka chart, ...)
   ...OPTION_ASYNC_JOBS,
+  // the chakras as tables (src/core/chakras/chakraJobs.ts)
+  ...CHAKRA_JOBS,
 };
 
 export function runTable(chart: Chart, table: string, params: Record<string, unknown>, swe?: Sweph): Table {

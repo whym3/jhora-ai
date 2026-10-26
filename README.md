@@ -114,10 +114,14 @@ To refresh them from an installation, run `JHORA_DIR="/path/to/Jagannatha Hora" 
 
 The **AI Astrologer** button opens a chat about the chart on screen, using Claude or OpenAI with your own API key. Keys are stored only in your browser and sent only to the provider you choose.
 
-The model doesn't guess positions or dates: it reads the chart through 25 tools that run the app's calculations. These cover:
+The model doesn't guess positions or dates: it reads the chart through 31 tools that run the app's calculations. These cover:
 - positions, divisional charts, and houses and KP
-- dasas, strengths, yogas and aspects
-- transits, and exact ingress and conjunction moments
+- dasas, with each period's entry chart and the slow planets' transits through it
+- strengths, yogas and Parasara aspects
+- Jaimini rasi drishti and argala
+- transits, exact ingress and conjunction moments, and natal points struck in transit
+- chakras: Sarvatobhadra (vedhas on the special nakshatras), Kota, Sudarsana, Surya and Chandra Kalanala, Shoola, Tripataki
+- monthly planetary movements, ephemeris and panchanga
 - Tajaka, Tithi Pravesha and angular-return charts
 - progressed charts (solar, Bhrigu, Sudarsana chakra, nakshatra dasa)
 - prasna (108, KP 249, Nadi)
@@ -128,7 +132,7 @@ Its readings work through three layers (Parashari with Jaimini, KP, and Bhrigu N
 
 ## MCP server
 
-The same 25 tools are available to any [Model Context Protocol](https://modelcontextprotocol.io) client, alongside the server's own chart and consultation tools. Each conversation runs as a consultation:
+The same 31 tools are available to any [Model Context Protocol](https://modelcontextprotocol.io) client, alongside the server's own chart and consultation tools. Each conversation runs as a consultation:
 
 1. **The chart.** The assistant offers your saved charts, or takes birth details and saves them for next time.
 2. **Past events.** It asks for a few dated events from your life and checks them against the dasas running at the time, to test the chart and birth time.
