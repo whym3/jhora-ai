@@ -1,0 +1,49 @@
+{
+ "_comment": "TimeDisplayWithAmPm (DAT_008a4b88, src/core/format/clock.ts, tests/ampm.test.ts). Run with --ini TimeDisplayWithAmPm=1 into golden/jhora-ampm: python tools/harness/capture.py --jhora <copy> --views tools/harness/views-ampm.json --out golden/jhora-ampm --ini TimeDisplayWithAmPm=1 \"golden/charts/Mahatma Gandhi.jhd\" \"golden/charts/Swami Vivekananda.jhd\". JHora writes the flag back to the copy's jhora.ini on exit: restore TimeDisplayWithAmPm=0 there afterwards. Captures: the Transit Calendar (dialog 2048 pinned to 2000-01-01 15:20:00, 15 rows, then CTransitCalenView drawn: OnDraw 0x487e50 row labels with FUN_004c1bf0), the Key Info copy (FUN_004b1400 Time/Sunrise/Sunset with FUN_004c1e20) and the Vimsottari copy (FUN_00401620 period start times, for the Dasas port).",
+ "_charts": [
+  "golden/charts/Mahatma Gandhi.jhd",
+  "golden/charts/Swami Vivekananda.jhd"
+ ],
+ "_runs": [
+  {
+   "out": "golden/jhora-ampm",
+   "ini": {
+    "TimeDisplayWithAmPm": 1
+   }
+  }
+ ],
+ "tabs": [
+  {
+   "top": "Transits",
+   "sub": "Transit Calendar",
+   "draw": true,
+   "form": [
+    ["combo", 1003, 0],
+    ["edit", 100, "1"],
+    ["edit", 101, "2000"],
+    ["edit", 1004, "15"],
+    ["edit", 1005, "20"],
+    ["edit", 1006, "0"],
+    ["edit", 1011, "15"],
+    ["click", 1000, 8.0]
+   ]
+  },
+  {
+   "top": "Basics",
+   "sub": "Key Info",
+   "copies": {
+    "key_info": 32974
+   },
+   "pane_copies": [
+    "key_info"
+   ]
+  },
+  {
+   "top": "Dasas",
+   "sub": "Nakshatra dasas",
+   "copies": {
+    "dasa": 32972
+   }
+  }
+ ]
+}

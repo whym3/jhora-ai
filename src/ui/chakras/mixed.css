@@ -15,3 +15,9 @@
 }
 .chakra .mixed-caption { font-size: 12px; fill: var(--muted); }
 .chakra .mixed-varga { font-size: 16px; fill: var(--ink); }
+.chakra .mixed-short { font-size: 14px; fill: var(--ink); }
+.chakra .mixed-note { font-size: 13px; fill: var(--muted); }
+/* relationship colours of menu 153 (32944..32946), as .body.relboxN in styles.css */
+.chakra .ck-body.relbox0 { fill: #0000ff; } .chakra .ck-body.relbox1 { fill: #00a000; font-weight: 700; font-style: italic; }
+.chakra .ck-body.relbox2 { fill: #288c28; } .chakra .ck-body.relbox3 { fill: var(--muted); }
+.chakra .ck-body.relbox4 { fill: #c82828; } .chakra .ck-body.relbox5 { fill: #e00000; font-weight: 700; font-style: italic; }

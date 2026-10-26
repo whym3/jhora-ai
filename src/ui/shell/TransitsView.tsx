@@ -5,7 +5,7 @@
 //   Longitude Correlation  CTranResearchFormView (dialog 2069) + CTranResearchView list
 // `spec` is the natal chart. Dates are natal-zone clock times except on the
 // Longitude Correlation form, whose time zone JHora does apply.
-import { useState, type ComponentType } from 'react';
+import { useMemo, useState, type ComponentType } from 'react';
 import type { ChartSpec } from '../../engine/protocol';
 import type { TransitDate, NatalRef } from '../../core/transits/common';
 import { NATAL_REFS, VARGA_LABEL } from '../../core/transits/common';
@@ -19,6 +19,7 @@ import { useJob } from '../EngineProvider';
 import { TableView } from '../widgets/TableView';
 import { transitBirth } from '../../core/transits/common';
 import { MixedChartButton } from './MixedChartDialog';
+import { calendarLabelAmPm } from '../../core/format/clock';
 
 const MONTHS = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
 const BODIES = ['Lagna', 'Sun', 'Moon', 'Mars', 'Mercury', 'Jupiter', 'Venus', 'Saturn', 'Rahu', 'Ketu'];
@@ -103,7 +104,12 @@ export function BasicTransitView({ spec }: { spec: ChartSpec }) {
 export function TransitCalendarView({ spec }: { spec: ChartSpec }) {
   const [form, setForm] = useState({ start: now(), stepDays: 1, rows: 15, natalVarga: 0, transitVarga: 0, items: [true, true, true, true, true, true] });
   const [request, setRequest] = useState<typeof form | null>(null);
-  const job = useJob(request ? { kind: 'table' as const, chart: spec, table: 'transits.calendar', params: { ...request } } : null);
+  const raw = useJob(request ? { kind: 'table' as const, chart: spec, table: 'transits.calendar', params: { ...request } } : null);
+  // OnDraw 0x487e50 (0x48847a): the row time is "h:mm am" with TimeDisplayWithAmPm (core/format/clock.ts)
+  const ampm = !!spec.ini?.TimeDisplayWithAmPm;
+  const job = useMemo(() => (ampm && raw.data
+    ? { ...raw, data: { ...raw.data, rows: raw.data.rows.map((r) => [calendarLabelAmPm(r[0]), ...r.slice(1)]) } }
+    : raw), [raw, ampm]);
   return (
     <div className="subview transits-form">
       <div className="subview-bar">

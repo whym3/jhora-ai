@@ -7,11 +7,14 @@ import { setIni, setView, useActiveDoc, useStore } from '../state/store';
 import { AV_MODE_LABELS, AV_MODES, KEY_INFO_MODES, OTHER_STRENGTH_MODES, VIMSOPAKA_PANE_MODES } from './tabs';
 import { NotPorted } from './NotPorted';
 import { YOGA_MODES } from '../../core/yogas';
-import { HOUSE_SYSTEMS, KP_MODES } from '../../core/kpHouses';
+import { HOUSE_SYSTEMS, KP_MODES, SSS_HOUSE_SYSTEM } from '../../core/kpHouses';
 import { AvasthaOptionsBar, AvLagnaBar, HouseReferenceSelect } from './StrengthOptions';
 import { BODY_GROUPS } from '../../core/basics';
 import { AMSA_RULER_VARGAS } from '../../core/amsaRulers';
 import { VARGA_INDEX, vargaColumnLabel } from '../../core/vargaOptions';
+import type { VargaName } from '../../core/vargas';
+import { NATAL_CHART_NAME } from '../../core/chakras/mixedVargas';
+import { AshtakavargaChart } from './AshtakavargaChart';
 
 /** A sub-tab that is one fixed table (Houses, KP, ...); Amsa rulers has its own bar. */
 export function TableSubView({ spec, table }: { spec: ChartSpec; table: string }) {
@@ -171,27 +174,47 @@ export function OtherStrengthsView({ spec }: { spec: ChartSpec }) {
   );
 }
 
-/** Strengths > Ashtakavarga: JHora's AV modes for any divisional chart, shown as tables. */
+/**
+ * Strengths > Ashtakavarga: JHora's AV modes for any divisional chart, drawn as JHora draws them
+ * (AshtakavargaChart.tsx) or as tables. Menu 106: 32840 the varga (also resets the highlight
+ * varga), 32841 the highlight varga, 32839 highlighting on/off, 32973/33097 lagna, 33117.
+ */
 export function AshtakavargaView({ spec, natalSpec }: { spec: ChartSpec; natalSpec?: ChartSpec }) {
   const [mode, setMode] = useState<string>(AV_MODES[0]);
   const [varga, setVarga] = useState<string>('D1');
+  const [hlVarga, setHlVarga] = useState<string>('D1');
+  const [highlight, setHighlight] = useState(true);
+  const [asTable, setAsTable] = useState(false);
   const [lagnaShift, setLagnaShift] = useState(0);
   const [useNatal, setUseNatal] = useState(false);
+  const doc = useActiveDoc();
   const derived = !!natalSpec && natalSpec.birth !== spec.birth;
   const chart = derived && useNatal ? natalSpec! : spec;
-  const job = useJob({ kind: 'table' as const, chart, table: 'strengths.ashtakavarga', params: { mode, varga, lagnaShift } });
+  const chartName = derived && !useNatal ? doc?.derived?.label ?? NATAL_CHART_NAME : NATAL_CHART_NAME;
+  const job = useJob(asTable ? { kind: 'table' as const, chart, table: 'strengths.ashtakavarga', params: { mode, varga, lagnaShift } } : null);
   return (
     <div className="subview">
       <div className="subview-bar">
         <select aria-label="Ashtakavarga mode" value={mode} onChange={(e) => setMode(e.target.value)}>
           {AV_MODES.map((m) => <option key={m} value={m}>{AV_MODE_LABELS[m]}</option>)}
         </select>
-        <select aria-label="Divisional chart" value={varga} onChange={(e) => { setVarga(e.target.value); setLagnaShift(0); }}>
+        <select aria-label="Divisional chart" value={varga} onChange={(e) => { setVarga(e.target.value); setHlVarga(e.target.value); setLagnaShift(0); }}>
           {Object.keys(ALL_VARGAS).map((v) => <option key={v} value={v}>{v}</option>)}
         </select>
         <AvLagnaBar shift={lagnaShift} onShift={setLagnaShift} natal={useNatal} onNatal={setUseNatal} derived={derived} />
+        {!asTable && (
+          <>
+            <label><input type="checkbox" checked={highlight} onChange={(e) => setHighlight(e.target.checked)} /> Highlight the rasi containing planet</label>
+            <select aria-label="Highlight rasis occupied in this divisional chart" value={hlVarga} disabled={!highlight} onChange={(e) => setHlVarga(e.target.value)}>
+              {Object.keys(ALL_VARGAS).map((v) => <option key={v} value={v}>{`Positions in ${v}`}</option>)}
+            </select>
+          </>
+        )}
+        <label><input type="checkbox" checked={asTable} onChange={(e) => setAsTable(e.target.checked)} /> As a table</label>
       </div>
-      <TableView job={job} />
+      {asTable
+        ? <TableView job={job} />
+        : <AshtakavargaChart spec={chart} varga={varga as VargaName} mode={mode} chartName={chartName} lagnaShift={lagnaShift} highlight={highlight} highlightVarga={hlVarga as VargaName} />}
     </div>
   );
 }
@@ -200,10 +223,13 @@ export function AshtakavargaView({ spec, natalSpec }: { spec: ChartSpec; natalSp
 function HouseSystemBar() {
   const type = useStore((s) => Number(s.ini.HouseTypeWanted));
   const middle = useStore((s) => Number(s.ini.HouseCuspsInMiddle) !== 0);
+  // the SSS house system (33388, HouseTypeWanted 11) is offered only with Siddhanta = 1 (FUN_00454dc0)
+  const sss = useStore((s) => Number(s.ini.Siddhanta) === 1);
+  const systems = sss ? [...HOUSE_SYSTEMS, SSS_HOUSE_SYSTEM] : HOUSE_SYSTEMS;
   return (
     <>
       <select aria-label="House system" value={type} onChange={(e) => setIni({ HouseTypeWanted: Number(e.target.value) })}>
-        {HOUSE_SYSTEMS.map(([label, id, value]) => <option key={id} value={value}>{label}</option>)}
+        {systems.map(([label, id, value]) => <option key={id} value={value}>{label}</option>)}
       </select>
       <select aria-label="Lagna position in the first house" value={middle ? 1 : 0} onChange={(e) => setIni({ HouseCuspsInMiddle: Number(e.target.value) })}>
         <option value={1}>Ascendant is the middle of first house</option>

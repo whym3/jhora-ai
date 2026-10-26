@@ -10,7 +10,8 @@
 // and outer varga D-1 (DAT_00579a64 = 0, D-9 only when the document shows the plain natal chart):
 // i.e. the derived chart's D-1 around the natal D-1, captioned "Outer: <chart name>" (chart+0x1698,
 // e.g. "Tajaka annual", "Transit") and "Inner: Natal Chart". The drawing is the Chakras > Mixed
-// 2-Vargas one (src/ui/chakras/MixedVargas.tsx, core/chakras/mixedVargas.ts), here in a dialog.
+// 2-Vargas one (src/ui/chakras/MixedVargas.tsx, core/chakras/mixedVargas.ts), here in a dialog,
+// with the view's own right-click menu 153 (context menu 0x45c8d0).
 // Dialog 2025 (CTransitChartFormView, 0x48a330) is never created by JHora 8.0 (its runtime class
 // is only returned by GetRuntimeClass); the port puts its button on Basic Transit Results.
 import { useState } from 'react';
@@ -31,8 +32,9 @@ function MixedChartModal({ title, natalSpec, outerSpec, outerName, onClose }: {
         <div className="note-bar"><strong>{title}</strong><button onClick={onClose}>Close</button></div>
         {natal.data && outer.data
           ? (outerSpec
-            ? <MixedVargasView chart={natal.data as ChakraChart} transit={outer.data as ChakraChart} showTransit inner={0} outer={0} outerName={outerName} />
-            : <MixedVargasView chart={natal.data as ChakraChart} inner={0} outer={1} />)
+            ? <MixedVargasView chart={natal.data as ChakraChart} transit={outer.data as ChakraChart} showTransit inner={0} outer={0} outerName={outerName}
+              natalSpec={natalSpec} currentSpec={outerSpec} />
+            : <MixedVargasView chart={natal.data as ChakraChart} inner={0} outer={1} natalSpec={natalSpec} currentSpec={natalSpec} />)
           : <p className="status">Calculating…</p>}
       </div>
     </div>

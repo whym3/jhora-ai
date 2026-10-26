@@ -21,8 +21,9 @@
 // 32803..33052, core/chartBodies.ts), the display mode (32801 Automatic: the chart on screen,
 // e.g. a Tajaka chart; 32802 Natal chart only: DAT_0065b8a4[slot] = 1 draws doc+0x50, the
 // natal chart) and "Copy chart > as text" (32985 current style / 32992 south-north-east,
-// core/chartText.ts). "Optional bodies in standard view" (33053..33061, 33268, 33270) are
-// global preferences (the Show*InCharts ini keys), as in JHora.
+// core/chartText.ts; the Bhava/Chalit chakra too: varga 28 goes through the same builders).
+// "Optional bodies in standard view" (33053..33061, 33268, 33270) are global preferences (the
+// Show*InCharts ini keys), as in JHora.
 //
 // Right-click commands (ChartMenu.tsx) handled here:
 // * 33076 / 33160 "When will lagna / this planet change sign" (FUN_004427a0, worker job
@@ -34,7 +35,11 @@
 //   all changes" (0x441790) to the first. The document is marked modified unless back at the
 //   first entry. Here the stack is kept per open chart.
 // * 32827 "Show ashtakavarga of this chart" (0x440fb0): a new CAshtakaVargaView window for the
-//   slot's chart (DAT_00597fac) and varga (DAT_00597fb4 / DAT_00597fb8); here a dialog.
+//   slot's chart (DAT_00597fac) and varga (DAT_00597fb4 / DAT_00597fb8); here a dialog with
+//   JHora's drawing (AshtakavargaChart.tsx) or the tables.
+// * Menu 153 (the mixed chart, src/ui/chakras/MixedVargas.tsx) adds, per half: the varga items,
+//   the views, the optional bodies, the display mode and the text copies (SlotControl
+//   setView / setNatalOnly; the copies use the store's ChartStyle like the slot bar).
 // * Bhava/Chalit chakra (core/bhavaChart.ts): 33330..33362 set BhavaChartVarga (DAT_008a4b8c)
 //   and the slot's varga to 28 (handlers 0x43bb20..0x43c620), 33009 (menus 138/153, 0x43bab0)
 //   only the slot's varga; 33353 opens dialog 2068 (BhavaChartDialog). Varga 28 has the short
@@ -56,7 +61,7 @@ import { highlightSigns, maranaKarakaSthana, pachakadiOfPlanet, pachakadiOfRasi,
 import { GRAHAS } from '../../core/positions';
 import { SIGN_NAMES } from '../../core/zodiac';
 import { CHART_VIEWS, chartSigns, OPTIONAL_BODIES, type ChartPoint, type ChartView } from '../../core/chartBodies';
-import { chartText, chartTextSne } from '../../core/chartText';
+import { chartText, chartTextSne, type ChartTextOptions } from '../../core/chartText';
 import { JHORA_VARGA_LONG_NAMES } from '../../core/chakras/mixedVargas';
 import { BHAVA_LONG_NAME, BHAVA_VARGA_INDEX, bhavaShortName, bhavaSigns, needsCusps } from '../../core/bhavaChart';
 import type { ChakraChart } from '../../core/chakras/common';
@@ -67,6 +72,7 @@ import { getState, setIni, setView, updateChart, useActiveDoc, useStore } from '
 import { AV_MODES, AV_MODE_LABELS } from './tabs';
 import { BhavaChartDialog } from './BhavaChartDialog';
 import { BODY_NAMES, ChartMenu, type MenuAction, type MenuKind, type MenuTarget } from './ChartMenu';
+import { AshtakavargaChart } from './AshtakavargaChart';
 
 export const VARGA_TITLES: Record<VargaName, string> = {
   D1: 'Rasi', D2: 'Hora', D3: 'Drekkana', D4: 'Chaturthamsa', D5: 'Panchamsa', D6: 'Shashthamsa',
@@ -115,6 +121,8 @@ export interface SlotChart {
   spec?: ChartSpec | null;
   /** "Bhava from %s" (33294) */
   extraCaption?: string;
+  /** the Bhava/Chalit chakra: sign of every body index (the text copies) */
+  bhavaSigns?: (number | null)[] | null;
 }
 
 /** Centre captions of a slot: chart name, the long varga name, the short one for vargas other than D-1. */
@@ -149,7 +157,14 @@ export function slotChart(chart: ChakraChart, ini: Partial<JhoraIni>, varga: Slo
   return {
     varga: v, bhava, short: bhava ? 'D-1 (B)' : dn(v), signs, lagna: where('Lagna'), caption, grahaSign: (g) => where(g), chart, ini,
     spec: opts.spec ?? null, extraCaption: hf !== null && hf !== undefined ? `Bhava from ${BODY_NAMES[hf]}` : undefined,
+    bhavaSigns: override ?? null,
   };
+}
+
+/** "Copy chart > as text" of a slot (32985 in `style`, 32992 south-north-east when `sne`). */
+export function slotText(slot: SlotChart, style: number, sne: boolean): string {
+  const opts: ChartTextOptions = slot.bhava && slot.bhavaSigns ? { bhavaSigns: slot.bhavaSigns } : {};
+  return sne ? chartTextSne(slot.chart, slot.varga, slot.ini, opts) : chartText(slot.chart, slot.varga, style, slot.ini, opts);
 }
 
 /**
@@ -258,17 +273,19 @@ function AspectTableDialog({ spec, varga, onClose }: { spec: ChartSpec; varga: V
 }
 
 /** 32827 "Show ashtakavarga of this chart": the ashtakavarga view of the slot's chart and varga. */
-function AshtakavargaDialog({ spec, varga, onClose }: { spec: ChartSpec; varga: VargaName; onClose: () => void }) {
+function AshtakavargaDialog({ spec, varga, chartName, onClose }: { spec: ChartSpec; varga: VargaName; chartName: string; onClose: () => void }) {
   const [mode, setMode] = useState<string>(AV_MODES[0]);
-  const job = useJob({ kind: 'table' as const, chart: spec, table: 'strengths.ashtakavarga', params: { mode, varga } });
+  const [asTable, setAsTable] = useState(false);
+  const job = useJob(asTable ? { kind: 'table' as const, chart: spec, table: 'strengths.ashtakavarga', params: { mode, varga } } : null);
   return (
     <Modal title={`Ashtakavarga (${dn(varga)})`} onClose={onClose}>
       <div className="subview-bar">
         <select aria-label="Ashtakavarga mode" value={mode} onChange={(e) => setMode(e.target.value)}>
           {AV_MODES.map((m) => <option key={m} value={m}>{AV_MODE_LABELS[m]}</option>)}
         </select>
+        <label><input type="checkbox" checked={asTable} onChange={(e) => setAsTable(e.target.checked)} /> As a table</label>
       </div>
-      <TableView job={job} />
+      {asTable ? <TableView job={job} /> : <AshtakavargaChart spec={spec} varga={varga} mode={mode} chartName={chartName} />}
     </Modal>
   );
 }
@@ -322,6 +339,11 @@ export interface SlotControl {
   setHousesFrom?: (slot: number, body: number | null) => void;
   /** menu 138: 32970 compressed Patyayini of the entry chart */
   onPatyayini?: (slot: number) => void;
+  /** menu 153: the slot's body view (32803..33052) and display mode (32801 / 32802) */
+  setView?: (slot: number, view: ChartView) => void;
+  setNatalOnly?: (slot: number, natalOnly: boolean) => void;
+  /** menu 153: extra menu state of a slot (check marks) */
+  targetExtra?: (slot: number) => Partial<MenuTarget>;
 }
 
 /**
@@ -333,12 +355,14 @@ export function useSlotMenu(slots: (SlotChart | null)[], spec: ChartSpec | null,
   const [marks, setMarks] = useState<Record<number, SlotMarks>>({});
   const closeMenu = useCallback(() => setMenu(null), []);
   const [aspectTable, setAspectTable] = useState<{ spec: ChartSpec; varga: VargaName } | null>(null);
-  const [av, setAv] = useState<{ spec: ChartSpec; varga: VargaName } | null>(null);
+  const [av, setAv] = useState<{ spec: ChartSpec; varga: VargaName; name: string } | null>(null);
   const [longitudes, setLongitudes] = useState<ChartSpec | null>(null);
   const [bhavaDialog, setBhavaDialog] = useState(false);
   const [move, setMove] = useState<{ spec: ChartSpec; natal: BirthData; varga: VargaName; dir: 'prev' | 'next'; docId: string } | null>(null);
   const doc = useActiveDoc();
   const packed = useStore((s) => (s.ini.MoreChartsOnBigDisplay ?? DEFAULTS.MoreChartsOnBigDisplay) !== 0);
+  const prefs = useStore((s) => s.ini);
+  const chartStyle = useStore((s) => s.view.chartStyle);
   const moveDone = useCallback(() => setMove(null), []);
 
   const onAction = (a: MenuAction) => {
@@ -349,7 +373,7 @@ export function useSlotMenu(slots: (SlotChart | null)[], spec: ChartSpec | null,
     const timing: VargaName = slot.bhava ? 'D9' : slot.varga;
     switch (a.kind) {
       case 'aspectTable': if (slotSpec) setAspectTable({ spec: slotSpec, varga: slot.varga }); return;
-      case 'ashtakavarga': if (slotSpec) setAv({ spec: slotSpec, varga: slot.varga }); return;
+      case 'ashtakavarga': if (slotSpec) setAv({ spec: slotSpec, varga: slot.varga, name: slot.caption.name }); return;
       case 'longitudes': if (slotSpec) setLongitudes(slotSpec); return;
       case 'patyayini': ctl.onPatyayini?.(menu.slot); return;
       case 'bhavaOptions': setBhavaDialog(true); return;
@@ -364,6 +388,12 @@ export function useSlotMenu(slots: (SlotChart | null)[], spec: ChartSpec | null,
         return;
       }
       case 'packed': setIni({ MoreChartsOnBigDisplay: packed ? 0 : 1 }); return;
+      case 'varga': ctl.setVarga?.(menu.slot, a.varga); return;
+      case 'view': ctl.setView?.(menu.slot, a.view); return;
+      case 'displayMode': ctl.setNatalOnly?.(menu.slot, a.natalOnly); return;
+      // menu 153 33053..33061: toggle the global flag (each handler re-applies the standard view)
+      case 'optionalBody': setIni({ [a.key]: ((prefs[a.key] ?? DEFAULTS[a.key]) as number) !== 0 ? 0 : 1 } as Partial<JhoraIni>); return;
+      case 'copyText': void toClipboard(slotText(slot, styleIndex(chartStyle), a.sne)); return;
       case 'moveLagna':
         if (slotSpec && doc) setMove({ spec: slotSpec, natal: doc.birth, varga: timing, dir: a.dir, docId: doc.id });
         return;
@@ -409,14 +439,14 @@ export function useSlotMenu(slots: (SlotChart | null)[], spec: ChartSpec | null,
     const slot = slots[i];
     setMenu({
       x: e.clientX, y: e.clientY, slot: i, sign, body, varga: slot?.short, packed,
-      undo: doc ? lagnaUndoDepth(doc.id, doc.birth) : 0,
+      undo: doc ? lagnaUndoDepth(doc.id, doc.birth) : 0, ...ctl.targetExtra?.(i),
     });
   };
   const overlay = (
     <>
       {menu && <ChartMenu target={menu} onAction={onAction} onClose={closeMenu} menu={ctl.menu} />}
       {aspectTable && <AspectTableDialog spec={aspectTable.spec} varga={aspectTable.varga} onClose={() => setAspectTable(null)} />}
-      {av && <AshtakavargaDialog spec={av.spec} varga={av.varga} onClose={() => setAv(null)} />}
+      {av && <AshtakavargaDialog spec={av.spec} varga={av.varga} chartName={av.name} onClose={() => setAv(null)} />}
       {longitudes && <LongitudesDialog spec={longitudes} onClose={() => setLongitudes(null)} />}
       {bhavaDialog && <BhavaChartDialog onClose={() => setBhavaDialog(false)} />}
       {move && <LagnaMover req={move} onDone={moveDone} />}
@@ -454,12 +484,10 @@ export function SlotBar({ label, slot, settings, onSettings, varga, onVarga, sty
   const [copied, setCopied] = useState<string | null>(null);
   const copy = async (sne: boolean) => {
     if (!slot) return;
-    const text = sne ? chartTextSne(slot.chart, slot.varga, slot.ini) : chartText(slot.chart, slot.varga, styleIndex(style), slot.ini);
-    setCopied((await toClipboard(text)) ? 'Copied' : 'Clipboard not available');
+    setCopied((await toClipboard(slotText(slot, styleIndex(style), sne))) ? 'Copied' : 'Clipboard not available');
     setTimeout(() => setCopied(null), 1500);
   };
-  // the text copies are not ported for the Bhava/Chalit chakra
-  const noCopy = !slot || slot.bhava;
+  const noCopy = !slot || (slot.bhava && !slot.bhavaSigns);
   return (
     <div className="slot-bar">
       {varga && onVarga && (

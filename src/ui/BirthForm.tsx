@@ -5,6 +5,8 @@ import type { BirthData } from '../core/jhd';
 import { ATLAS_COUNTRIES, dstInEffect, summerZone, type Place } from '../core/atlas';
 import { lmtZone } from '../core/newChart';
 import { PlaceSearch } from './PlaceSearch';
+import { BIRTH_AMPM_OPTIONS, birthHourFromFields, birthTimeFields, type BirthAmPm } from '../core/format/clock';
+import { setIni, useStore } from './state/store';
 
 interface Props { initial: BirthData; onSubmit: (b: BirthData) => void }
 
@@ -34,7 +36,11 @@ function fromDms(s: string, negative: boolean): number {
 
 export function BirthForm({ initial, onSubmit }: Props) {
   const [date, setDate] = useState(`${String(initial.year).padStart(4, '0')}-${pad(initial.month)}-${pad(initial.day)}`);
-  const [time, setTime] = useState(hoursToHms(initial.hour));
+  // combo 1080 (am / pm / 0-24 hrs) and the hours shown, from TimeDisplayWithAmPm (FUN_00403d80)
+  const ampmPref = useStore((s) => !!s.ini.TimeDisplayWithAmPm);
+  const [shown] = useState(() => birthTimeFields(initial.hour, ampmPref));
+  const [time, setTime] = useState(hoursToHms(shown.hour));
+  const [ampm, setAmPm] = useState<BirthAmPm>(shown.mode);
   const [tz, setTz] = useState(String(initial.tzHours));
   const [lon, setLon] = useState(toDms(initial.lon));
   const [lonDir, setLonDir] = useState(initial.lon < 0 ? 'W' : 'E');
@@ -51,7 +57,7 @@ export function BirthForm({ initial, onSubmit }: Props) {
   /** Fill the place fields from the atlas; the zone follows JHora's DST rules for the entered date and time. */
   const pick = (p: Place) => {
     const [y, m, d] = date.split('-').map(Number);
-    const dst = dstInEffect(p, y, m, d, parseHms(time));
+    const dst = dstInEffect(p, y, m, d, birthHourFromFields(parseHms(time), ampm).hour);
     setCity(p.name);
     setLon(toDms(p.lon)); setLonDir(p.lon < 0 ? 'W' : 'E');
     setLat(toDms(p.lat)); setLatDir(p.lat < 0 ? 'S' : 'N');
@@ -64,11 +70,14 @@ export function BirthForm({ initial, onSubmit }: Props) {
     e.preventDefault();
     const [y, m, d] = date.split('-').map(Number);
     const altitudeM = Number(alt);
+    // on OK "0-24 hrs" clears TimeDisplayWithAmPm, am / pm set it (FUN_00403d80)
+    const t = birthHourFromFields(parseHms(time), ampm);
+    if (t.ampm !== ampmPref) setIni({ TimeDisplayWithAmPm: t.ampm ? 1 : 0 });
     onSubmit({
       ...initial,
       ...(place ?? {}),
       year: y, month: m, day: d,
-      hour: parseHms(time),
+      hour: t.hour,
       // FUN_00403d80: with "Use LMT" the zone is the longitude's degrees and minutes / 15
       tzHours: lmt ? lmtZone(longitude()) : Number(tz),
       lon: longitude(),
@@ -82,7 +91,10 @@ export function BirthForm({ initial, onSubmit }: Props) {
     <form className="birth-form" onSubmit={submit}>
       <PlaceSearch onPick={pick} />
       <label>Date<input type="date" value={date} onChange={(e) => setDate(e.target.value)} required /></label>
-      <label>Time<input value={time} onChange={(e) => setTime(e.target.value)} placeholder="hh:mm:ss" pattern="\d{1,2}:\d{2}(:\d{2})?" required /></label>
+      <label>Time<input value={time} onChange={(e) => setTime(e.target.value)} placeholder="hh:mm:ss" pattern="\d{1,2}:\d{2}(:\d{2})?" required />
+        <select aria-label="am / pm" value={ampm} onChange={(e) => setAmPm(Number(e.target.value) as BirthAmPm)}>
+          {BIRTH_AMPM_OPTIONS.map((o, i) => <option key={o} value={i}>{o}</option>)}
+        </select></label>
       <label>Time zone (h, east +)
         <input type="number" step="0.0001" value={lmt ? String(+lmtZone(longitude()).toFixed(6)) : tz} disabled={lmt} onChange={(e) => setTz(e.target.value)} required />
       </label>

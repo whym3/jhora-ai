@@ -1,0 +1,27 @@
+{
+ "_comment": "Strengths > Ashtakavarga as CAshtakaVargaView draws it (OnDraw 0x422820, gditrace): every menu 106 draw mode of the D-1 natal chart at the default ChartStyle 0, then BAVs and SAV with 'Highlight the rasi containing planet' (32839) toggled off and back on. Output: golden/jhora-av. tests/ashtakavargaChartGolden.test.ts skips these modes while the directory is absent (BAVs and SAV is already compared against the AV view in golden/jhora-misc's Mixed 2-Vargas draws).",
+ "tabs": [
+  {
+   "top": "Strengths",
+   "sub": "Ashtakavarga",
+   "draw": true,
+   "modes": [
+    ["BAVs and SAV", 32829],
+    ["SoAV", 32830],
+    ["PAV of Sun", 32831],
+    ["PAV of Moon", 32832],
+    ["PAV of Mars", 32833],
+    ["PAV of Mercury", 32834],
+    ["PAV of Jupiter", 32835],
+    ["PAV of Venus", 32836],
+    ["PAV of Saturn", 32837],
+    ["PAV of Lagna", 32838],
+    ["Sodhya pindas", 32842],
+    ["Nakshatras & rasis", 32843],
+    ["BAVs and SAV again", 32829],
+    ["BAVs and SAV, no highlight", 32839],
+    ["BAVs and SAV, highlight back on", 32839]
+   ]
+  }
+ ]
+}

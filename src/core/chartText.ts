@@ -23,11 +23,18 @@
 //   centred in 49 columns, other vargas the long name at column 0, the short name right-aligned.
 // * East (templates 0x57aab4 with frame / 0x57a5b4 without): signs fixed, box offset
 //   row*408 + col*16, slot group EAST_GROUP[sign]; captions as South.
+// * The Bhava/Chalit chakra (DisplayVarga 28, core/bhavaChart.ts) goes through the same code:
+//   the three builders read the body signs from chart+0x17d7+varga+b*0x1d, i.e. the varga-28
+//   column FUN_004a76b0 fills, and the North copy's lagna is body 0's sign in that column. As
+//   28 != 0 the captions are the "other varga" ones: South/East the long name "Bhava/Chalit"
+//   (0x8a4110[28]) one line up and the short name 0x8a2874[28] ("D-1 (Moon)", written at
+//   0x405360) below; North the long name at column 0 and the short one right-aligned.
 import type { ChakraChart } from './chakras/common';
 import { chartSigns } from './chartBodies';
 import type { VargaName } from './vargas';
 import { VARGA_INDEX, vargaColumnLabel } from './vargaOptions';
 import { JHORA_VARGA_LONG_NAMES } from './chakras/mixedVargas';
+import { BHAVA_LONG_NAME, bhavaShortName } from './bhavaChart';
 import type { JhoraIni } from '../settings/generated';
 
 /** JHora's ChartStyle values (DAT_0065b930). */
@@ -191,7 +198,21 @@ function put(buf: string[], at: number, s: string) {
 interface TextBody { label: string; retrograde: boolean }
 interface TextInput { signs: TextBody[][]; lagna: number; long: string; short: string; first: boolean }
 
-function textInput(chart: ChakraChart, varga: VargaName, ini: Partial<JhoraIni>): TextInput {
+/** Options of the text copies. */
+export interface ChartTextOptions {
+  /**
+   * The Bhava/Chalit chakra (varga 28): the sign of every body index (core/bhavaChart.ts
+   * bhavaSigns); `varga` is then ignored.
+   */
+  bhavaSigns?: (number | null)[];
+}
+
+function textInput(chart: ChakraChart, varga: VargaName, ini: Partial<JhoraIni>, opts: ChartTextOptions = {}): TextInput {
+  if (opts.bhavaSigns) {
+    const signs = chartSigns(chart, 'D1', { ini, indices: TEXT_BODIES, signs: opts.bhavaSigns });
+    const lagna = signs.findIndex((l) => l.some((b) => b.index === 0));
+    return { signs, lagna, first: false, long: BHAVA_LONG_NAME, short: bhavaShortName({ ...(chart.ini ?? {}), ...ini }) };
+  }
   const signs = chartSigns(chart, varga, { ini, indices: TEXT_BODIES });
   const lagna = signs.findIndex((l) => l.some((b) => b.index === 0));
   const v = VARGA_INDEX.indexOf(varga);
@@ -246,8 +267,8 @@ function eastText(t: TextInput, frame: boolean): string {
 }
 
 /** 32985: the chart in one ChartStyle (0..4). */
-export function chartText(chart: ChakraChart, varga: VargaName, style: number, ini: Partial<JhoraIni> = {}): string {
-  const t = textInput(chart, varga, ini);
+export function chartText(chart: ChakraChart, varga: VargaName, style: number, ini: Partial<JhoraIni> = {}, opts: ChartTextOptions = {}): string {
+  const t = textInput(chart, varga, ini, opts);
   switch (style) {
     case 1: return southText(t, true);
     case 2: return northText(t);
@@ -258,7 +279,7 @@ export function chartText(chart: ChakraChart, varga: VargaName, style: number, i
 }
 
 /** 32992: South, North and East (with frame) one after the other. */
-export function chartTextSne(chart: ChakraChart, varga: VargaName, ini: Partial<JhoraIni> = {}): string {
-  const t = textInput(chart, varga, ini);
+export function chartTextSne(chart: ChakraChart, varga: VargaName, ini: Partial<JhoraIni> = {}, opts: ChartTextOptions = {}): string {
+  const t = textInput(chart, varga, ini, opts);
   return southText(t, false) + northText(t) + eastText(t, true);
 }

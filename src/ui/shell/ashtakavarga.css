@@ -1,0 +1,11 @@
+/* JHora's drawn Ashtakavarga view (src/core/ashtakavargaChart.ts): Preferences > Colors 0x8977b4..0x8977d0 as theme tokens. */
+.av-chart { width: 100%; height: auto; background: var(--panel); font-family: inherit; }
+.av-chart .av-box { fill: var(--cell); }
+.av-chart .av-hl { fill: var(--hl); }
+.av-chart .av-grid { stroke: var(--line); stroke-width: 1; fill: none; }
+.av-chart .av-caption { fill: var(--lagna); }
+.av-chart .av-label { fill: var(--accent); }
+.av-chart .av-number { fill: var(--ink); }
+.av-chart .av-note { fill: var(--muted); }
+.av-chart .av-bold { font-weight: 600; }
+.av-chart .av-narrow { font-stretch: condensed; }

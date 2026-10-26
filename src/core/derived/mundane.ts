@@ -65,7 +65,7 @@ import { vimsottari, type Period } from '../dasas/vimsottari';
 import { dasaClock, type DasaClock } from '../dasas/time';
 import { compressPeriods, jhoraSunClock } from '../tajaka/mudda';
 import { solarYearsToJd } from '../tajaka/annual';
-import { formatHms } from '../keyInfo';
+import { clockTime } from '../keyInfo';
 import type { JhoraIni } from '../../settings/generated';
 import { DEFAULTS } from '../../settings/generated';
 
@@ -377,11 +377,14 @@ export function eclipse(c: Ctx, type: EclipseType, base: number, next: boolean, 
   return { jd, periodDays: again.tret[idx] - jd, label: eclipseLabel(type, first.ret), type, tret: first.tret, contacts };
 }
 
-/** FUN_004b2370 date text: "h:mm:ss (Month d, yyyy)" in the chart's zone. */
-export function contactTime(swe: Sweph, jd: number, tzHours: number): string {
+/**
+ * FUN_004b2370 date text: "h:mm:ss (Month d, yyyy)" in the chart's zone; "h:mm:ss am" with
+ * TimeDisplayWithAmPm (0x4b2492: FUN_004c1e20 instead of FUN_004c1f00, core/format/clock.ts).
+ */
+export function contactTime(swe: Sweph, jd: number, tzHours: number, ampm = false): string {
   const r = swe.revjul(jd + tzHours / 24);
   const MONTHS = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
-  return `${formatHms(r.hour)} (${MONTHS[r.month - 1]} ${r.day}, ${r.year})`;
+  return `${clockTime(r.hour, ampm)} (${MONTHS[r.month - 1]} ${r.day}, ${r.year})`;
 }
 
 // ---------------------------------------------------------------------------

@@ -71,7 +71,7 @@ async function find(natal: Chart, params: Record<string, unknown>, swe: Sweph): 
       const tz = natal.birth.tzHours;
       return {
         ...e,
-        rows: e.contacts.map(([name, jd]) => [name.replace(/: $/, ''), contactTime(swe, jd, tz), '']),
+        rows: e.contacts.map(([name, jd]) => [name.replace(/: $/, ''), contactTime(swe, jd, tz, !!natal.ini.TimeDisplayWithAmPm), '']),
         notes: [`${e.label}: Contact Times`, ECLIPSE_NOTES[type]],
       };
     }

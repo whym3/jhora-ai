@@ -54,6 +54,7 @@ import { OPTION_ASYNC_JOBS } from './optionJobs';
 import { bhavaArudhaOptions, bhavaArudhaSigns } from '../core/arudhaPadas';
 import { applyNodalExaltation } from '../core/signStrength';
 import { DASA_ASYNC_JOBS, DASA_TABLES } from '../core/dasas/dasaJobs';
+import { AV_CHART_JOBS } from '../core/ashtakavargaChart';
 
 const yes = (b: boolean) => (b ? 'Yes' : '-');
 
@@ -489,6 +490,8 @@ export const TABLES: Record<string, TableFn> = {
   ...JAIMINI_JOBS,
   // Dasas tab (src/core/dasas/dasaJobs.ts): replaces the 'dasas.*' entries above (cycle, Tribhagi, varga, options)
   ...DASA_TABLES,
+  // Strengths > Ashtakavarga drawn as JHora draws it (src/core/ashtakavargaChart.ts)
+  ...AV_CHART_JOBS,
 };
 
 function navaTarasTable(lon: number, from: string): Table {

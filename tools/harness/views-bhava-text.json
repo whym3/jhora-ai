@@ -1,0 +1,16 @@
+{
+ "_comment": "Copy chart as text of the Bhava/Chalit chakra (varga 28 through FUN_00434ac0 / FUN_00432790, core/chartText.ts). 33330 puts the Bhava/Chalit chakra (based on D-1) in Many Vargas slot 0 (view+0x8ad0 = 0 until a chart is clicked), then 32985 (current ChartStyle, default 0 South Indian) and 32992 (south-north-east) copy it. Run with the defaults (BhavaChartRef=2 Moon, HouseCuspsInMiddle=1) into golden/jhora-bhava-text. JHora saves DisplayVarga and BhavaChartVarga to the copy's jhora.ini on exit, so restore DisplayVarga (first entry 0) and BhavaChartVarga=0 there afterwards. tests/bhavaText.test.ts skips while golden/jhora-bhava-text is absent.",
+ "tabs": [
+  {
+   "top": "Chakras",
+   "sub": "Many Vargas",
+   "copies": {
+    "chart_text": 32985,
+    "chart_text_sne": 32992
+   },
+   "modes": [
+    ["Bhava D-1", 33330]
+   ]
+  }
+ ]
+}
