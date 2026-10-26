@@ -1,0 +1,93 @@
+{
+ "_comment": "Solar-system-plane ayanamsas (Jagannatha, custom star on the fixed plane) outside the natal chart: Key Info, the monthly panchanga, its JD-format ephemeris and movements copies, and the transits of 2024-03-15 12:00 (natal zone) - tests/calcVariants.test.ts skips while the output is absent. One run per variant, each into golden/jhora-plane-ayanamsa/<variant>/ with capture.py --ini overrides (all ayanamsa keys, as capture-ayanamsa.ps1 does): jagannatha (UserSelectedAyanamsa=1, DeltaFromUserSelectedAyanamsa=0.000000, FixedPlaneInCustomStarAyanamsa=0, CustomStarCode=,alVir, CustomStarLongitude=180.000000); custom-plane (UserSelectedAyanamsa=19, DeltaFromUserSelectedAyanamsa=0.000000, FixedPlaneInCustomStarAyanamsa=1, CustomStarCode=,alVir, CustomStarLongitude=180.000000). Restore the copy's jhcore/jhora.ini (golden/jhora-defaults.ini) afterwards.",
+ "tabs": [
+  {
+   "top": "Basics",
+   "sub": "Key Info",
+   "lists": true,
+   "copies": {
+    "key_info": 32974,
+    "table": 32975
+   },
+   "pane_copies": [
+    "key_info"
+   ],
+   "modes": [
+    [
+     "Longitudes & Basic Info",
+     32822
+    ]
+   ]
+  },
+  {
+   "top": "Miscellany",
+   "sub": "Panchanga",
+   "copies": {
+    "monthly": 33085,
+    "ephemeris": 33087,
+    "movements": 33088
+   },
+   "copy_wait": 10
+  },
+  {
+   "top": "Transits",
+   "sub": "Basic Transit Results",
+   "form": [
+    [
+     "combo",
+     1003,
+     2
+    ],
+    [
+     "edit",
+     100,
+     "15"
+    ],
+    [
+     "edit",
+     101,
+     "2024"
+    ],
+    [
+     "edit",
+     1004,
+     "12"
+    ],
+    [
+     "edit",
+     1005,
+     "0"
+    ],
+    [
+     "edit",
+     1006,
+     "0"
+    ],
+    [
+     "click",
+     1001
+    ]
+   ],
+   "lists": true,
+   "copies": {
+    "transit": 32979
+   },
+   "modes": [
+    [
+     "Standard",
+     32948
+    ]
+   ]
+  },
+  {
+   "top": "Transits",
+   "sub": "Basic Transit Results",
+   "form": [
+    [
+     "click",
+     1000
+    ]
+   ]
+  }
+ ]
+}

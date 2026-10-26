@@ -73,8 +73,17 @@ export function bhriguBindu(moon: number, rahu: number): number {
 }
 
 // ---- Upagrahas -------------------------------------------------------------
-/** Sun-based upagrahas (JHora's Dhuma family, VyatipataMethod=0). */
-export function sunUpagrahas(sun: number) {
+/**
+ * Sun-based upagrahas (JHora's Dhuma family, FUN_004a2670, chart+0x520.. stride 0x30).
+ * VyatipataMethod (DAT_00897020, dialog 170 combo 1013) 0: Vyatipata = 360 - Dhuma and the
+ * chain below; 1: Vyatipata = Dhuma + 53 deg 20 min, i.e. every body is Sun + c / 3 with
+ * c = 400, 560, 1100, 940, 990 (Indra Chapa and Upaketu come out as with method 0).
+ */
+export function sunUpagrahas(sun: number, method = 0) {
+  if (method === 1) {
+    const [dhuma, vyatipata, parivesha, indraChapa, upaketu] = [400, 560, 1100, 940, 990].map((c) => norm360(c * 0.3333333333333333 + sun));
+    return { dhuma, vyatipata, parivesha, indraChapa, upaketu };
+  }
   const dhuma = norm360(sun + 133 + 20 / 60);
   const vyatipata = norm360(360 - dhuma);
   const parivesha = norm360(vyatipata + 180);

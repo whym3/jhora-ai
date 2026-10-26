@@ -345,8 +345,11 @@ export function sunriseHours(t: number, dl: number, lat: number): number {
   return out;
 }
 
-/** FUN_004bf960 (flag 0): oblique ascension of ecliptic arc `ang` from the equinox/solstice, minutes of time. */
-function obliqueAscension(lat: number, ang: number, sgn: number): number {
+/**
+ * FUN_004bf960: oblique ascension of ecliptic arc `ang` from the equinox/solstice, minutes of
+ * time; with flag 1 (raOnly) the ascensional difference is left out (right ascension only).
+ */
+function obliqueAscension(lat: number, ang: number, sgn: number, raOnly = false): number {
   const k = R2D;
   const sa = Math.sin(ang / k);
   const eps = 24.0 / k;
@@ -359,14 +362,19 @@ function obliqueAscension(lat: number, ang: number, sgn: number): number {
   if (z === 1.0) ra = 360.0;
   else if (z === -1.0) ra = -360.0;
   else ra = Math.atan(z / Math.sqrt(1.0 - z * z)) * k * 4.0;
-  return ra + cd;
+  return raOnly ? ra : ra + cd;
 }
 
 const QUAD_SIGN = [-1, 1, 1, -1, -1];
 const QUAD_ADD = [true, false, true, false, true];
 
-/** FUN_004bfa50: rising time (minutes, 0..1440) of tropical longitude lon + ayan at latitude lat. */
-export function risingTime(lat: number, lon: number, ayan: number): number {
+/**
+ * FUN_004bfa50: rising time (minutes, 0..1440) of tropical longitude lon + ayan at latitude lat;
+ * raOnly = flag 1 (right ascension, used for the SSS MC). The quadrant sums come from a cache
+ * keyed on the latitude only (DAT_00586df8, DAT_00897088..); the lagna (flag 0) always fills
+ * it first, and the ascensional differences cancel in the sums anyway.
+ */
+export function risingTime(lat: number, lon: number, ayan: number, raOnly = false): number {
   const t = norm(lon + ayan);
   const s = obliqueAscension(lat, 90.0, -1) + obliqueAscension(lat, 90.0, 1);
   const base = [0, s, s, s + s, s + s];
@@ -379,7 +387,7 @@ export function risingTime(lat: number, lon: number, ayan: number): number {
     case 4: ang = t - 360.0; break;
     default: ang = t;
   }
-  const v = obliqueAscension(lat, ang, QUAD_SIGN[q]);
+  const v = obliqueAscension(lat, ang, QUAD_SIGN[q], raOnly);
   return norm((QUAD_ADD[q] ? v + base[q] : base[q] - v) * 0.25) * 4.0;
 }
 
@@ -395,16 +403,59 @@ function angularDistance(a: number, b: number): number {
 /**
  * FUN_004bfd60: SSS lagna (SSS sidereal zodiac). x = minutes of time since
  * sunrise (scaled to a 1440-minute sunrise-to-sunrise day), sunNow/sunRise =
- * true Sun now and at sunrise, ayan = SSS ayanamsa.
+ * true Sun now and at sunrise, ayan = SSS ayanamsa. FUN_004bfc00 is the same
+ * iteration with FUN_004bfa50's flag passed through (raOnly: the SSS "MC").
+ * Not normalised: norm(l) + sunNow - sunRise.
  */
-export function lagna(lat: number, sunNow: number, sunRise: number, ayan: number, x: number): number {
-  const k = risingTime(lat, sunRise, ayan) + x;
+export function lagna(lat: number, sunNow: number, sunRise: number, ayan: number, x: number, raOnly = false): number {
+  const k = risingTime(lat, sunRise, ayan, raOnly) + x;
   let l = norm(x * 0.25 + sunRise);
-  let r = risingTime(lat, l, ayan);
+  let r = risingTime(lat, l, ayan, raOnly);
   const k4 = k * 0.25;
   for (let iter = 0; iter < 1000 && angularDistance(r * 0.25, k4) > 0.00020833333333333335; iter++) {
     l = norm((k - r) * 0.25 + l);
-    r = risingTime(lat, l, ayan);
+    r = risingTime(lat, l, ayan, raOnly);
   }
   return norm(l) + sunNow - sunRise;
+}
+
+/** FUN_004bfc00(..., flag 1): the SSS midheaven; x = minutes since the SSS midday. */
+export function midheaven(lat: number, sunNow: number, sunRise: number, ayan: number, x: number): number {
+  return lagna(lat, sunNow, sunRise, ayan, x, true);
+}
+
+/**
+ * FUN_004bfec0(lat, t, dl, 180): length of the day in minutes of the 1440-minute
+ * sunrise-to-sunrise day (k = 34560 / that day's hours): the rising-time difference of the
+ * true Sun and the point 180 deg from it, the Sun taken at the estimated sunset. The sunrise
+ * of t's civil day (local apparent) is turned into mean time with the equation of time
+ * (FUN_004be460 three times with an unchanged mean Sun, i.e. once); the first estimate is
+ * sunrise + 720 minutes, and each pass moves the estimate halfway to the result until the two
+ * agree within 0.000208 (in quarter minutes, FUN_004ae590). FUN_004bfec0 also returns the
+ * Sun's longitude and that + 180, unused by the house cusps.
+ */
+export function dayLength(lat: number, t: number, dl: number): number {
+  const ang = 180.0;
+  const rise = sunriseHours(t, dl, lat);
+  const next = sunriseHours(t + 1.0, dl, lat);
+  const k = 34560.0 / ((next + 24.0) - rise);
+  const r0 = rise * 0.041666666666666664 + Math.trunc(t);
+  const s0 = meanState(r0, dl, 1);
+  const m0 = r0 - equationOfTime(s0.mean, s0.kendra, sssAyanamsa(r0));
+  // (a FUN_004bfa50 call on the Sun at m0 follows; its result is dropped)
+  const arc = (h: number) => {
+    const t1 = h / k + m0;
+    const ay = sssAyanamsa(t1);
+    const sun = trueLongitude(apparentAhargana(t1, dl, ay), dl, 1).lon;
+    let d = risingTime(lat, norm(sun + ang), ay) - risingTime(lat, norm(sun), ay);
+    if (d < 0.0) d += k;
+    return d;
+  };
+  let h = ang * 4.0;
+  let d = arc(h);
+  for (let iter = 0; iter < 1000 && angularDistance(d * 0.25, h * 0.25) > 0.00020833333333333335; iter++) {
+    h = (d - h) * 0.5 + h;
+    d = arc(h);
+  }
+  return d;
 }

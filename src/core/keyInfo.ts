@@ -8,12 +8,14 @@
 // * Number formats: HMS splitter FUN_004c1b00 + time formatter FUN_004c1f00,
 //   DMS splitter FUN_004c1830 (ayanamsa).
 //
-// Only the default options are ported (LunarYrDef=2 amanta months from the new
-// moon, KaalaInDayNightSeparate=1, WeekdayDefinition=0, WeekdayDefinitionKaala=1).
+// Options of FUN_004a1c50 (dialog 2030): WeekdayDefinition (DAT_00897064),
+// WeekdayDefinitionKaala (DAT_00585ef8) and KaalaInDayNightSeparate (DAT_005923db), see
+// horaInfo; LunarYrDef (DAT_005922c0) in lunarYearMonthAt.
 import type { Sweph } from '../sweph';
 import type { Chart } from './chart';
 import { castBirth } from './jhd';
-import { computePositions, siderealLongitude, norm360 } from './positions';
+import { ayanamsa, computePositions, siderealLongitude, norm360 } from './positions';
+import { jhoraDeltaT } from './deltat';
 import { calcSettingsFromIni, type Settings } from './settings';
 
 // ---- JHora's name tables (runtime-initialised CStrings, filled at 0x4f0e00-0x4f8a00) ----
@@ -160,8 +162,25 @@ function elongation(swe: Sweph, jd: number, s: Settings): { e: number; speed: nu
   return { e: norm360(moon.lon - sun.lon), speed: moon.speed - sun.speed, sun: sun.lon, moon: moon.lon };
 }
 
-/** The new moon before (dir -1) or after (dir +1) jd: Moon - Sun = 0, by Newton iteration. */
-export function newMoon(swe: Sweph, jd: number, dir: 1 | -1, s: Settings): { jd: number; sun: number; moon: number } {
+/**
+ * The new moon before (dir -1) or after (dir +1) jd: Moon - Sun = 0, by Newton iteration;
+ * phase 180: the full moon.
+ */
+export function newMoon(swe: Sweph, jd: number, dir: 1 | -1, s: Settings, phase = 0): { jd: number; sun: number; moon: number } {
+  if (phase) {
+    const shifted = (t: number) => { const x = elongation(swe, t, s); return { ...x, e: norm360(x.e - phase) }; };
+    let t = jd;
+    let x = shifted(t);
+    t = dir < 0 ? jd - x.e / x.speed : jd + (360 - x.e) / x.speed;
+    for (let k = 0; k < 30; k++) {
+      x = shifted(t);
+      const dt = -(x.e > 180 ? x.e - 360 : x.e) / x.speed;
+      t += dt;
+      if (Math.abs(dt) < 1e-9) break;
+    }
+    x = shifted(t);
+    return { jd: t, sun: x.sun, moon: x.moon };
+  }
   let { e, speed } = elongation(swe, jd, s);
   let t = dir < 0 ? jd - e / speed : jd + (360 - e) / speed;
   for (let k = 0; k < 30; k++) {
@@ -185,22 +204,38 @@ export interface LunarYearMonth {
   text: string;
 }
 
-/** FUN_004a4270 (LunarYrDef=2): amanta month of the previous new moon, adhika when no sankranti follows. */
+/** FUN_004a4270: lunar month (LunarYrDef, default 2 = amanta) and samvatsara of the chart. */
 export function lunarYearMonth(swe: Sweph, chart: Chart, s: Settings = calcSettingsFromIni(chart.ini)): LunarYearMonth {
   const b = castBirth(chart.birth);
-  return lunarYearMonthAt(swe, chart.positions.jdUt, b.year, b.month, s);
+  return lunarYearMonthAt(swe, chart.positions.jdUt, b.year, b.month, s, chart.ini.LunarYrDef);
 }
 
-/** lunarYearMonth for a moment (JD UT) whose record has the clock date `recYear`-`recMonth`. */
-export function lunarYearMonthAt(swe: Sweph, jdUt: number, recYear: number, recMonth: number, s: Settings): LunarYearMonth {
-  const nm = newMoon(swe, jdUt, -1, s);
-  const month = Math.floor(nm.sun / 30) % 12;
+/**
+ * lunarYearMonth for a moment (JD UT) whose record has the clock date `recYear`-`recMonth`.
+ * FUN_004a4270 searches the Moon-Sun conjunction (LunarYrDef 2..5) or opposition (0/1)
+ * backwards from the record (record A); the month (chart+0x12028, jump table 0x4a4aec) is
+ *   0/2: A's Sun sign (+0x118);  1/3: trunc(norm(Sun + ayanamsa(+0x1680) - 30) / 30) of A;
+ *   4: (the chart's own Sun sign + 11) % 12;  5: the tropical form of 1/3 on the chart itself.
+ * Adhika (+0x1202c) for every value: 2 when the next phase searched forward from A + 0.0035 has
+ * A's Moon sign (+0x148), else 1 when the previous one (from A - 0.0035) has.
+ */
+export function lunarYearMonthAt(swe: Sweph, jdUt: number, recYear: number, recMonth: number, s: Settings, lunarYrDef = 2): LunarYearMonth {
+  const def = lunarYrDef >= 0 && lunarYrDef <= 5 ? lunarYrDef : 2;
+  const phase = def <= 1 ? 180 : 0;
+  const nm = newMoon(swe, jdUt, -1, s, phase);
+  const tropical = (jd: number, sun: number) =>
+    trunc(norm360(sun + ayanamsa(swe, jd, jd + (jhoraDeltaT(jd) ?? swe.deltaT(jd)), s).mean - 30) * 0.03333333333333333);
+  let month: number;
+  if (def === 1 || def === 3) month = tropical(nm.jd, nm.sun);
+  else if (def === 4) month = (Math.floor(siderealLongitude(swe, jdUt, 'Sun', s).lon / 30) + 11) % 12;
+  else if (def === 5) month = tropical(jdUt, siderealLongitude(swe, jdUt, 'Sun', s).lon);
+  else month = Math.floor(nm.sun / 30) % 12;
   const moonSign = Math.floor(nm.moon / 30) % 12;
   let adhika: 0 | 1 | 2 = 0;
-  const next = newMoon(swe, nm.jd + 0.0035, 1, s);
+  const next = newMoon(swe, nm.jd + 0.0035, 1, s, phase);
   if (Math.floor(next.moon / 30) % 12 === moonSign) adhika = 2;
   else {
-    const prev = newMoon(swe, nm.jd - 0.0035, -1, s);
+    const prev = newMoon(swe, nm.jd - 0.0035, -1, s, phase);
     if (Math.floor(prev.moon / 30) % 12 === moonSign) adhika = 1;
   }
   let year = recYear;
@@ -289,21 +324,37 @@ export interface HoraInfo {
   mahakalaKaala: number;
 }
 
-/** FUN_004a1c50 with the default options. */
+/**
+ * FUN_004a1c50. The copy (FUN_004b1400) prints the weekday (chart+0x11fd4), the hora and its
+ * 5 min sign (0x11fe8 / 0x12014), the Mahakala hora (0x11fec / 0x12018), the kaala lord
+ * (0x11ffc) and the Mahakala kaala (0x1200c, always the 6:00 clock frame's).
+ * - WeekdayDefinition 0: weekday, hora and kaala of the sunrise frame; otherwise of the
+ *   6:00 LMT frame (0x4a2313).
+ * - WeekdayDefinitionKaala 2: the Mahakala hora from the 6:00 clock frame; otherwise from
+ *   the 6:00 LMT frame (0x4a2382).
+ * - KaalaInDayNightSeparate 0: the kaala part is trunc(16 g / (day + night)) of each frame
+ *   (0x4a1efd); 1: eighths of the day or of the night, and JHora reuses the sunrise
+ *   frame's day part for the 6:00 clock frame when the birth is by day.
+ */
 export function horaInfo(swe: Sweph, chart: Chart, frames = keyFrames(swe, chart)): HoraInfo {
   const { A, B, C } = frames;
-  // KaalaInDayNightSeparate=1: eighths of the day or of the night. JHora reuses the
-  // sunrise frame's day part for the 6:00 frame when the birth is by day.
+  const ini = chart.ini;
   const dayPart = (f: Frame) => trunc(f.g * 8 / f.dayLen);
   const nightPart = (f: Frame) => 8 - trunc(f.gn * -8 / f.nightLen);
-  const pA = A.isDay ? dayPart(A) : nightPart(A);
-  const pB = A.isDay ? dayPart(B) : nightPart(B);
-  const pC = A.isDay ? pA : nightPart(C);
+  const sixteenth = (f: Frame) => trunc(f.g * 16 / f.total);
+  let pA: number, pB: number, pC: number;
+  if (Number(ini.KaalaInDayNightSeparate ?? 1) === 0) [pA, pB, pC] = [sixteenth(A), sixteenth(B), sixteenth(C)];
+  else {
+    pA = A.isDay ? dayPart(A) : nightPart(A);
+    pB = A.isDay ? dayPart(B) : nightPart(B);
+    pC = A.isDay ? pA : nightPart(C);
+  }
   const a = frameLords(swe, chart, A, pA);
   const bl = frameLords(swe, chart, B, pB);
   const c = frameLords(swe, chart, C, pC);
-  // WeekdayDefinition=0 -> sunrise frame; WeekdayDefinitionKaala=1 -> Mahakala hora from the LMT frame.
-  return { weekday: a.weekday, hora: a, mahakalaHora: bl, kaala: a.kaala, mahakalaKaala: c.kaala };
+  const day = Number(ini.WeekdayDefinition ?? 0) === 0 ? a : bl;
+  const mahakala = Number(ini.WeekdayDefinitionKaala ?? 1) === 2 ? c : bl;
+  return { weekday: day.weekday, hora: day, mahakalaHora: mahakala, kaala: day.kaala, mahakalaKaala: c.kaala };
 }
 
 // ---- the text ----

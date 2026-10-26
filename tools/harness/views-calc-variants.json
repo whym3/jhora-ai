@@ -1,0 +1,31 @@
+{
+ "_comment": "Calculation options of dialogs 170/2027/2030/2080 that change the Key Info pane, the longitudes table and the monthly panchanga (tests/calcVariants.test.ts skips while the output is absent). One run per variant, each into golden/jhora-calc-variants/<variant>/ with capture.py --ini overrides: vyatipata1 (VyatipataMethod=1); weekday-lmt (WeekdayDefinition=1); mahakala-lst (WeekdayDefinitionKaala=2); kaala16 (KaalaInDayNightSeparate=0); lunar0 (LunarYrDef=0); lunar1 (LunarYrDef=1); lunar3 (LunarYrDef=3); lunar4 (LunarYrDef=4); lunar5 (LunarYrDef=5); sunrise1 (SunriseDefinition=1); sunrise2 (SunriseDefinition=2). Restore the copy's jhcore/jhora.ini (golden/jhora-defaults.ini) afterwards - JHora saves its options on exit.",
+ "tabs": [
+  {
+   "top": "Basics",
+   "sub": "Key Info",
+   "lists": true,
+   "copies": {
+    "key_info": 32974,
+    "table": 32975
+   },
+   "pane_copies": [
+    "key_info"
+   ],
+   "modes": [
+    [
+     "Longitudes & Basic Info",
+     32822
+    ]
+   ]
+  },
+  {
+   "top": "Miscellany",
+   "sub": "Panchanga",
+   "copies": {
+    "monthly": 33085
+   },
+   "copy_wait": 10
+  }
+ ]
+}

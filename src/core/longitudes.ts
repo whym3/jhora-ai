@@ -9,6 +9,7 @@
 // * UpagrahaDayDefinition (0x897068, FUN_004a27e0): 1 divides the 6:00 - 18:00 local
 //   mean time day and night (FUN_004a1350's second frame, chart+0xdba0) instead of
 //   sunrise - sunset; the weekday stays the sunrise one.
+// * VyatipataMethod (0x897020, FUN_004a2670): the Dhuma family, see sunUpagrahas.
 import type { Sweph } from '../sweph';
 import { dayFrame, type DayFrame, type Geo } from './day';
 import { computePositions, norm360, GRAHAS, type Positions } from './positions';
@@ -46,7 +47,7 @@ export function allBodies(swe: Sweph, p: Positions, geo: Geo, tzHours: number, s
   if (ini.GulikaInSaturnPortion === 0) times.gulika = eighth.start + point(m[5]) * (eighth.end - eighth.start);
   const at = (jd: number) => lagnaAt(swe, jd, geo, settings);
   const gulika = at(times.gulika), mandi = at(times.mandi);
-  const su = sunUpagrahas(p.grahas.Sun.lon);
+  const su = sunUpagrahas(p.grahas.Sun.lon, ini.VyatipataMethod);
   const sp = sphutas(p, gulika, mandi);
   const yg = yogiPoints(p);
   const out: NamedBody[] = [

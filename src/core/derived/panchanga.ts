@@ -38,11 +38,12 @@
 // mode 2 rounds them) plus "*" when the event's local day-of-month differs from
 // the row's day counter.
 //
-// Defaults assumed: SunriseDefinition 0, WeekdayDefinition 0, GulikaInSaturnPortion 1,
-// English name tables (0x8a2918 signs 'Ar'.., 0x8a4684 planets 'Sun'..).
+// Options: SunriseDefinition (the day frame, and the rise/set offset of FUN_004a1a00),
+// GulikaInSaturnPortion (Gulika kaala part); WeekdayDefinition 0 is assumed. English name tables (0x8a2918 signs 'Ar'.., 0x8a4684 planets 'Sun'..).
 import type { Sweph } from '../../sweph';
 import type { Chart } from '../chart';
-import { siderealLongitude, ayanamsa, norm360, type Graha } from '../positions';
+import { siderealLongitude, ayanamsa, calcFlags, norm360, type Graha } from '../positions';
+import { SE } from '../../sweph';
 import { calcSettingsFromIni, type Settings } from '../settings';
 import { dayFrame } from '../day';
 import { jhoraDeltaT } from '../deltat';
@@ -145,16 +146,33 @@ function track(c: Ctx, f: Fn, step: number, t0: number, max: number, nameIndex: 
   return { count, items };
 }
 
+/** FUN_004a1a00's stack table: radius in km by body index (Sun, Moon). */
+const RADIUS_KM: Partial<Record<Graha, number>> = { Sun: 695500.0, Moon: 1737.4 };
+
+/**
+ * FUN_004a1a00's offset (DAT_00897060 = SunriseDefinition): 0 for 0 and 3; for 1 the
+ * semi-diameter radius * 6.684578082767149e-09 (km -> AU) / distance * R2D, with the distance
+ * the sunrise chart holds (doc+0x14e0, swe_calc's at the record's moment); for 2 that +
+ * 0.5666666666666667 (refraction). Under SSS JHora stores no distance (0).
+ */
+function riseOffset(c: Ctx, body: Graha, at: number, def: number): number {
+  if (def === 0 || def === 3 || c.s.sss) return 0;
+  const jdEt = at + (jhoraDeltaT(at) ?? c.swe.deltaT(at));
+  const dist = c.swe.calcEt(jdEt, body === 'Sun' ? SE.SUN : SE.MOON, calcFlags(c.s)).dist;
+  const semi = ((RADIUS_KM[body] ?? 0) * 6.684578082767149e-09 / dist) * 57.29577951308232;
+  return def === 1 ? semi : semi + 0.5666666666666667;
+}
+
 /**
  * FUN_004a1a00(body, rise, set, backRise, backSet): the ecliptic rise/set - the moment the
- * ascendant minus the body's longitude reaches -offset (rise) or 180 + offset (set), where
- * offset = 0 for SunriseDefinition 0/3, the semi-diameter for 1, semi-diameter + 0.5667 for 2
- * (only 0 is ported). FUN_0049c0d0 -> FUN_0049c130 with the lagna involved: 1/12-day steps,
- * 1/15 s bracket, later end returned (tajaka/search.ts jhoraCrossing).
+ * ascendant minus the body's longitude reaches -offset (rise) or 180 + offset (set) (offset:
+ * riseOffset, taken at `from`, the sunrise chart). FUN_0049c0d0 -> FUN_0049c130 with the lagna
+ * involved: 1/12-day steps, 1/15 s bracket, later end returned (tajaka/search.ts jhoraCrossing).
  */
-function riseSet(c: Ctx, body: Graha, from: number, set: boolean, backward: boolean): Moment {
+function riseSet(c: Ctx, body: Graha, from: number, set: boolean, backward: boolean, def = 0): Moment {
   const lon = lonOf(c, body);
-  const t = jhoraCrossing((jd) => ascendantAt(c, jd) - lon(jd).lon, set ? 180 : 0, from, { step: backward ? -1 / 12 : 1 / 12, tol: 1 / (15 * 86400) });
+  const off = riseOffset(c, body, from, def);
+  const t = jhoraCrossing((jd) => ascendantAt(c, jd) - lon(jd).lon, set ? 180 + off : -off, from, { step: backward ? -1 / 12 : 1 / 12, tol: 1 / (15 * 86400) });
   return moment(c, t);
 }
 
@@ -172,7 +190,8 @@ export function panchangaDay(chart: Chart, swe: Sweph, jdNoon: number, counter: 
   const b = chart.birth;
   const c: Ctx = { swe, s, tz: b.tzHours, lat: b.lat, lon: b.lon };
   const geo = { lat: b.lat, lon: b.lon, alt: b.altitudeM };
-  const fr = dayFrame(swe, jdNoon, geo, s, chart.ini.SunriseDefinition);
+  const sdef = Number(chart.ini.SunriseDefinition ?? 0);
+  const fr = dayFrame(swe, jdNoon, geo, s, sdef);
   // FUN_00465c80 moves the chart to the frame's sunrise and then adds 0.01 hour (0x546ba0)
   // to its clock time: the record's day is [sunrise + 36 s, sunrise + 36 s + 1 day).
   const t0 = fr.sunrise;
@@ -228,8 +247,8 @@ export function panchangaDay(chart: Chart, swe: Sweph, jdNoon: number, counter: 
     counter, date: { year: sr.year, month: sr.month, day: sr.day }, dayStart: moment(c, t1), weekday,
     // FUN_00467af0: the Sun's rise searched backward and its set forward from the sunrise
     // chart (t1; the ecliptic rise can lie ~0.5 s after the frame sunrise t0)
-    sunrise: riseSet(c, 'Sun', t1, false, true), sunset: riseSet(c, 'Sun', t1, true, false),
-    moonrise: riseSet(c, 'Moon', t1, false, false), moonset: riseSet(c, 'Moon', t1, true, false),
+    sunrise: riseSet(c, 'Sun', t1, false, true, sdef), sunset: riseSet(c, 'Sun', t1, true, false, sdef),
+    moonrise: riseSet(c, 'Moon', t1, false, false, sdef), moonset: riseSet(c, 'Moon', t1, true, false, sdef),
     tithi, nakshatra, yoga, karana, moonSign,
     rahu: kaala(RAHU[weekday]), gulika: kaala(gulikaK), yama: kaala(YAMA[weekday]),
     varjya, durmuhurta, horas, choghadiyas,

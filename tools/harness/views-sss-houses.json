@@ -1,0 +1,31 @@
+{
+ "_comment": "SSS house system (HouseTypeWanted 11, menu 33388; src/core/sss sssHouseCusps, tests/calcVariants.test.ts skips while the output is absent). One run per variant, each into golden/jhora-sss-houses/<variant>/ with capture.py --ini overrides: middle (--ini Siddhanta=1 --ini HouseTypeWanted=11 --ini HouseCuspsInMiddle=1); start (--ini Siddhanta=1 --ini HouseTypeWanted=11 --ini HouseCuspsInMiddle=0); sss-ayanamsa (--ini Siddhanta=1 --ini HouseTypeWanted=11 --ini UserSelectedAyanamsa=18). Restore the copy's jhcore/jhora.ini (golden/jhora-defaults.ini) afterwards - JHora saves its options on exit (Siddhanta=0, HouseTypeWanted=1, HouseCuspsInMiddle=1, UserSelectedAyanamsa=17).",
+ "tabs": [
+  {
+   "top": "Basics",
+   "sub": "Houses",
+   "lists": true,
+   "copies": {
+    "table": 33010
+   }
+  },
+  {
+   "top": "Basics",
+   "sub": "Key Info",
+   "lists": true,
+   "copies": {
+    "key_info": 32974,
+    "table": 32975
+   },
+   "pane_copies": [
+    "key_info"
+   ],
+   "modes": [
+    [
+     "Longitudes & Basic Info",
+     32822
+    ]
+   ]
+  }
+ ]
+}

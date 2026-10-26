@@ -23,7 +23,7 @@
 //     iterates on oblique-ascension rising times (FUN_004bfa50) with the true Sun
 //     at sunrise and now. Shifted into the user's zodiac like the grahas. JHora
 //     never calls swe_houses here; the SSS house cusps (trisection between lagna
-//     and the FUN_004bfc00 MC) are not ported because Positions has no cusps.
+//     and the FUN_004bfc00 MC) are sssHouseCusps below.
 //  5. Uranus/Neptune/Pluto are not part of SSS: FUN_0049aaa0 computes them with
 //     swe_calc as in the drik path (with ayanamsa 18 they are reduced by the SSS
 //     ayanamsa + Delta instead).
@@ -41,7 +41,7 @@ import type { Settings } from '../settings';
 import { jhoraDeltaT } from '../deltat';
 import { computePositions, swissAyanamsa, type BodyPosition, type Graha, type OuterPlanet, type Positions } from '../positions';
 import {
-  apparentAhargana, lagna, norm, sssAyanamsa, sunriseHours, trueLongitude, UJJAIN_LON,
+  apparentAhargana, dayLength, lagna, midheaven, norm, sssAyanamsa, sunriseHours, trueLongitude, UJJAIN_LON,
 } from './model';
 
 export * from './model';
@@ -62,6 +62,8 @@ export interface SSSDetails {
   sunriseLocalJd: number;
   /** minutes since sunrise in a 1440-minute day */
   minutesSinceSunrise: number;
+  /** the lagna's other inputs, kept for the house cusps (FUN_0049aaa0 stack slots) */
+  lagnaInputs: { day: number; riseHours: number; tApp: number; sunNow: number; sunRise: number };
 }
 
 export interface PositionsSSS extends Positions {
@@ -149,7 +151,47 @@ export function computePositionsSSS(
       sssLagna: lg,
       sunriseLocalJd: riseJd,
       minutesSinceSunrise: x,
+      lagnaInputs: { day: n, riseHours: rise, tApp, sunNow, sunRise },
     },
   };
 }
 
+/**
+ * SSS house system (HouseTypeWanted 11, only with Siddhanta=1): sidereal cusps 1..12 as
+ * FUN_0049aaa0's lagna branch stores them at doc+0x1620 (0x49b2a2..0x49b614).
+ *  - D = FUN_004bfec0(lat, A', dl, 180), the length of the day in minutes of the lagna's
+ *    1440-minute day. Before midday (x < D/2, 0x49b2f6) the previous day is used: its
+ *    sunrise (FUN_004bf760(trunc(A') - 0.5)) and the stored one as the "next" sunrise give
+ *    x again, and D = FUN_004bfec0(A' - 1); the Sun at sunrise is not recomputed.
+ *  - MC = FUN_004bfc00(lat, Sun now, Sun at sunrise, sss ayanamsa, x - D/2, flag 1).
+ *  - c1 = lagna, c10 = MC, both + (doc+0x1688 - doc+0x1680) and not normalised; c4 = c10 + 180,
+ *    c2 / c3 trisect c1..c4, c5 = c4 + 2 (30 - (c4 - c1)/6), c6 = c5 + the same, and
+ *    c7..c9, c11, c12 = c1..c3, c5, c6 + 180 (each FUN_004ae800-normalised).
+ * doc+0x1690 (sidereal time) is set to 6.5 h; nothing here reads it.
+ */
+export function sssHouseCusps(p: PositionsSSS, lat: number): number[] {
+  const d = p.sss;
+  const L = d.lagnaInputs;
+  const dl = d.desantara;
+  let x = d.minutesSinceSunrise;
+  let day = dayLength(lat, d.aharganaApparent, dl);
+  if (day * 0.5 > x) {
+    const next = L.riseHours;
+    const rise = sunriseHours(L.day - 0.5, dl, lat);
+    const riseJd = Math.floor(L.tApp - 1.0 + 0.5) - 0.5 + rise / 24.0;
+    x = ((L.tApp - riseJd) * 34560.0) / ((next + 24.0) - rise);
+    day = dayLength(lat, d.aharganaApparent - 1.0, dl);
+  }
+  const mc = midheaven(lat, L.sunNow, L.sunRise, d.sssAyanamsa, x - day * 0.5);
+  const shift = d.sssAyanamsa - p.ayanamsaMean;
+  const c1 = shift + d.sssLagna;
+  const c10 = shift + mc;
+  const c4 = norm(c10 + 180.0);
+  const q = norm(c4 - c1);
+  const c2 = norm(q * 0.3333333333333333 + c1);
+  const c3 = norm(q * 0.3333333333333333 + c2);
+  const g = 30.0 - q * 0.16666666666666666;
+  const c5 = norm(g + g + c4);
+  const c6 = norm(g + g + c5);
+  return [norm(c1), c2, c3, c4, c5, c6, norm(c1 + 180.0), norm(c2 + 180.0), norm(c3 + 180.0), norm(c10), norm(c5 + 180.0), norm(c6 + 180.0)];
+}

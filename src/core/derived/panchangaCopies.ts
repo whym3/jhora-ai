@@ -77,11 +77,11 @@ const TITHI_SHORT = [0, 1].flatMap((p) => ['Pratipat', 'Dwitiya', 'Tritiya', 'Ch
 const trunc = Math.trunc;
 const pad2 = (n: number) => String(n).padStart(2, '0');
 
-interface Ctx { swe: Sweph; s: Settings; tz: number; lat: number; lon: number; sunriseDef: number }
+interface Ctx { swe: Sweph; s: Settings; tz: number; lat: number; lon: number; sunriseDef: number; lunarYrDef: number }
 
 function ctxOf(chart: Chart, swe: Sweph): Ctx {
   const b = chart.birth;
-  return { swe, s: calcSettingsFromIni(chart.ini), tz: b.tzHours, lat: b.lat, lon: b.lon, sunriseDef: chart.ini.SunriseDefinition };
+  return { swe, s: calcSettingsFromIni(chart.ini), tz: b.tzHours, lat: b.lat, lon: b.lon, sunriseDef: chart.ini.SunriseDefinition, lunarYrDef: chart.ini.LunarYrDef };
 }
 
 /** FUN_0049aaa0: longitude of JHora body b (0 lagna, 1 Sun .. 9 Ketu). */
@@ -265,7 +265,7 @@ function dpRow(c: Ctx, d: PanchangaDay): string {
   const t1 = d.dayStart;
   const sunSign = splitLongitude(bodyLon(c, 1, t1.jd)).sign;
   // FUN_004a4270 at C: lunar month and samvatsara (+0x12028 / +0x12030), tithi (+0x12034)
-  const ly = lunarYearMonthAt(c.swe, t1.jd, t1.year, t1.month, c.s);
+  const ly = lunarYearMonthAt(c.swe, t1.jd, t1.year, t1.month, c.s, c.lunarYrDef);
   const ti = d.tithi.items[0].index;
   let out = `\n${t1.day}-${pad2(t1.month)}-${String(t1.year).padStart(4, '0')}\t${String(t1.year).padStart(4, '0')}\t${MONTHS[t1.month - 1]}\t${t1.day}\t`;
   out += `${SAMVATSARAS[ly.samvatsara]}\t${sunSign >= 3 && sunSign < 9 ? 'Dakshinayana' : 'Uttarayana'}\t${RITUS[trunc(((ly.month + 1) % 12) / 2)]}\t`;
