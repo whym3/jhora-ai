@@ -1,8 +1,77 @@
 # Jagannatha Hora for the web
 
-A browser port of **Jagannatha Hora 8.0**, P.V.R. Narasimha Rao's Vedic astrology program, that reproduces its calculations exactly, with an **AI astrologer** that reads charts through those calculations, and an **MCP server** that gives the same tools to Claude, Gemini, Cursor and other AI apps.
+**A Vedic astrology consultation with an AI that calculates exactly like Jagannatha Hora.**
 
-Everything runs locally: the Swiss Ephemeris is compiled to WebAssembly and runs in the browser (or in Node for the MCP server). Nothing about a chart leaves your machine unless you use the AI features with your own API key.
+Ask Claude (or Gemini in Antigravity, or GPT in the web app) about your chart, and it works from real calculations, not guesses. It casts your chart with the same calculations as **Jagannatha Hora 8.0**, P.V.R. Narasimha Rao's astrology program, and checks the chart against your past events before it answers. It then gives you a reading that quotes the data behind each point.
+
+The project also includes the full Jagannatha Hora program as a web app that runs in your browser.
+
+## Get a reading in 10 minutes
+
+You need a Mac or a Windows PC. Nothing here costs money apart from your Claude plan.
+
+**1. Install the Claude desktop app** from [claude.ai/download](https://claude.ai/download), open it and sign in.
+
+**2. Install Node.js** from [nodejs.org](https://nodejs.org) (choose the **LTS** version and click through the installer). On a Mac with Homebrew, `brew install node` works too.
+
+**3. Download this project:** click [**Download ZIP**](https://github.com/whym3/jhora-ai/archive/refs/heads/master.zip) and unzip it somewhere you'll keep it, such as your Documents folder. (Or `git clone https://github.com/whym3/jhora-ai.git`.)
+
+**4. Run two commands.** Open a terminal in the unzipped folder:
+- **Mac:** open the **Terminal** app, type `cd ` (with a space), drag the folder onto the window, and press Return.
+- **Windows:** open the folder in File Explorer, right-click inside it, and choose **Open in Terminal**.
+
+Then run:
+
+```bash
+npm install
+npm run setup:claude
+```
+
+The first command downloads what the project needs (a minute or two). The second builds the astrologer and adds it to Claude's settings, keeping anything else you had there.
+
+**5. Restart Claude.** Quit it completely (on a Mac, **Claude → Quit Claude**; on Windows, right-click the icon in the taskbar's notification area and choose **Quit**), then open it again.
+
+**6. Start a new chat** and say:
+
+> I'd like a Vedic astrology consultation.
+
+### What happens in a consultation
+
+1. **Your chart.** Claude asks whose chart it is and for the birth date, time and place. It works out the place's coordinates and time zone, shows them for you to confirm, and saves the chart so it is there next time.
+2. **Your past events.** Before any prediction, it asks for a few dated events from your life: studies, jobs, marriage, children, moves, illnesses, losses. It checks them against the planetary periods (dasas) running at the time, to make sure the chart and birth time fit your life.
+3. **Your question.** Then ask anything: career, money, relationships, health, the year ahead. The answer draws on the dasas, transits, yogas, divisional charts and more, and says which data each point comes from.
+
+You can also ask directly, for example *"What dasa am I running now?"*, *"When does Saturn enter my 10th house?"* or *"Cast a prasna for the number 37."*
+
+### Best models for accurate readings
+
+The calculations are exact whatever model you use, but the reading is only as good as the model interpreting them. Readings are most accurate with a top model at **high thinking**:
+
+| App | Model | Setting |
+|---|---|---|
+| Claude desktop app | **Fable 5.1** | extended thinking on |
+| Antigravity (Gemini) | **Gemini Argon** | high thinking |
+| Web app's AI astrologer (OpenAI key) | **the latest GPT model** | reasoning effort high |
+
+Smaller or faster models can mix up chart details or skip steps of the method.
+
+**Privacy.** Every calculation runs on your computer. Your conversation goes to the AI's provider (Anthropic, Google or OpenAI) like any other chat with it. Saved charts stay in the project's `charts` folder.
+
+**If Claude doesn't offer the tools,** open **Settings → Developer** in Claude: "jhora" should be listed as running. If you moved or renamed the project folder, run `npm run setup:claude` again. On Windows, if the terminal says `npm` is not recognised, close it and open a new one after installing Node.js.
+
+### Gemini, ChatGPT and other apps
+
+- **ChatGPT:** the ChatGPT desktop app can't yet use a tool running on your own computer, only ones hosted on the internet. Use the AI astrologer built into the web app instead, with your OpenAI API key (see [The web app](#the-web-app) and [AI astrologer](#ai-astrologer)).
+- **Gemini, in Antigravity:** Google's [Antigravity](https://antigravity.google) app runs the astrologer with Gemini models. After steps 2–4 above (with `npm run setup:print` in place of `npm run setup:claude`), the terminal shows a block of settings with this computer's paths filled in. In Antigravity, open the **…** menu in the agent panel, choose **MCP Servers → Manage MCP Servers → View raw config**, and paste the `"jhora"` entry inside `"mcpServers"`. Save, refresh the server list, and start a new conversation with *"I'd like a Vedic astrology consultation."* (Gemini's own desktop app did not give the tools to its model in testing.)
+- **Claude Code, Cursor and other MCP apps:** see [MCP server](#mcp-server).
+
+---
+
+## About the project
+
+A browser port of **Jagannatha Hora 8.0** that reproduces its calculations exactly, with an **AI astrologer** that reads charts through those calculations, and an **MCP server** that gives the same tools to Claude and other AI apps.
+
+Everything runs locally: the Swiss Ephemeris is compiled to WebAssembly and runs in the browser (or in Node for the MCP server). Nothing about a chart leaves your machine unless you use the AI features.
 
 ## Features
 
@@ -17,13 +86,13 @@ Everything runs locally: the Swiss Ephemeris is compiled to WebAssembly and runs
 
 The port is tested against Jagannatha Hora's own output: **all 3690** comparisons match. The test data covers 18 charts and every tab, plus mundane, progression and prasna charts, marriage matching for every nakshatra and pada, and the chart styles. It was captured from the desktop program by [tools/harness](tools/harness/README.md). See [PARITY.md](PARITY.md) for the breakdown by area and the documented tolerances. Sixteen tests of option variants are skipped until JHora's output for those settings is captured.
 
-## Getting started
+## The web app
 
-You need Node.js 22 or newer.
+The full program, with JHora's tabs and charts, in your browser. You need Node.js 22 or newer.
 
 ```bash
 npm install
-npm run dev        # http://localhost:5173
+npm run dev        # then open http://localhost:5173
 ```
 
 **Ephemeris files.** The Swiss Ephemeris data files in `public/ephe` are included, and they are JHora 8.0's own copies. That matters: JHora ships an older build of these files, and only the same files reproduce its output exactly. Compared with JHora's results across the test suite:
@@ -68,11 +137,11 @@ Build it once (rebuild after code changes):
 npm run mcp:build          # -> dist-mcp/jhora-mcp.mjs (self-contained, no node_modules needed)
 ```
 
-The server needs the ephemeris files in `public/ephe` (see [Getting started](#getting-started)). It reads charts from `public/samples` and saves your own charts in `charts/`, which git ignores.
+The server needs the ephemeris files in `public/ephe` (see [The web app](#the-web-app)). It reads charts from `public/samples` and saves your own charts in `charts/`, which git ignores.
 
 ### Claude Desktop, Cursor and other local clients
 
-Let the client launch the server itself. For Claude Desktop, add this to `claude_desktop_config.json` (**Settings → Developer → Edit Config**), then restart Claude:
+Let the client launch the server itself. For Claude Desktop, `npm run setup:claude` builds the server and adds it to Claude's config (`--dry-run` shows the change without writing it; `--config <file>` picks the file). To do it by hand, add this to `claude_desktop_config.json` (**Settings → Developer → Edit Config**), then restart Claude:
 
 ```json
 {
@@ -145,6 +214,8 @@ This builds the server into a Node 22 image and publishes it on `127.0.0.1` only
 | `npm run build` | production build of the web app into `dist/` (works offline as a PWA) |
 | `npm run parity` | regenerate PARITY.md from the test results |
 | `npm run mcp:build` | build the MCP server |
+| `npm run setup:claude` | build the MCP server and register it with the Claude desktop app |
+| `npm run setup:print` | build the MCP server and print its config block for other apps (Antigravity, Cursor ...) |
 
 The tests compare the port with JHora's output in `golden/`. `JHORA_EPHE_DIR=/some/folder npm test` runs them against another set of ephemeris files.
 

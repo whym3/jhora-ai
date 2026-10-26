@@ -9,6 +9,8 @@
     "build": "tsc && vite build",
     "typecheck": "tsc",
     "mcp:build": "vite build -c vite.mcp.config.ts",
+    "setup:claude": "npm run mcp:build && node tools/setup-claude.mjs",
+    "setup:print": "npm run mcp:build && node tools/setup-claude.mjs --print",
     "mcp": "node dist-mcp/jhora-mcp.mjs",
     "mcp:http": "node dist-mcp/jhora-mcp.mjs --http",
     "mcp:https": "node dist-mcp/jhora-mcp.mjs --https",
