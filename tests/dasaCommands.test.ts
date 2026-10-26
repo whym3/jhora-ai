@@ -16,9 +16,12 @@ import { vimsottari } from '../src/core/dasas/vimsottari';
 import { NAKSHATRA_DASAS, nakshatraDasa, nakshatraSeedLon } from '../src/core/dasas/nakshatra';
 import { buildDasa } from '../src/core/dasas/build';
 import { tribhagi, tribhagiVimsottari, TRIBHAGI_SUFFIX } from '../src/core/dasas/tribhagi';
-import { datesOnlyLines, mahaDasaText } from '../src/core/dasas/format';
+import { canStepCycle, datesOnlyLines, mahaDasaText, periodLabel } from '../src/core/dasas/format';
 import { dasaClock } from '../src/core/dasas/time';
-import { DASA_ASYNC_JOBS, locateEvent, sumLongitudeText, sumOfLongitudes, withCycle } from '../src/core/dasas/dasaJobs';
+import { DASA_ASYNC_JOBS, dasaTransits, locateEvent, natalPaneDasa, nextSignTransit, shiftNote, sumLongitudeText, sumOfLongitudes, TRANSIT_PLANETS, withCycle } from '../src/core/dasas/dasaJobs';
+import { calcSettingsFromIni } from '../src/core/settings';
+import { siderealLongitude, type Graha } from '../src/core/positions';
+import { ORDINAL } from '../src/core/basics';
 import { DASA_DESCRIPTIONS, quickInfoCaption } from '../src/core/dasas/descriptions';
 import { NAKSHATRA_SLOTS, OTHER_SLOTS, RASI_SLOTS } from '../src/core/dasas/yearDefinition';
 import { OTHER_DASAS, RASI_DASAS } from '../src/core/dasas/registry';
@@ -97,6 +100,41 @@ describe('dasa pane features', async () => {
     expect(buildDasa(natal, 'dasas.nakshatra', 'Vimsottari', 1).title).toBe('Vimsottari Dasa');
   });
 
+  it('cycle buttons (FUN_0044bff0 / FUN_0044c0e0) stop at the years -5255 / 5255', () => {
+    const rows = (a: string, b: string) => [['Ar', a, 'x'], ['Ta', 'x', b]];
+    expect(canStepCycle(rows('-5254-01-01 (0:00:00)', '5254-01-01 (0:00:00)'), -1)).toBe(true);
+    expect(canStepCycle(rows('-5255-01-01 (0:00:00)', '5255-01-01 (0:00:00)'), -1)).toBe(false);
+    expect(canStepCycle(rows('-5254-01-01 (0:00:00)', '5254-12-31 (0:00:00)'), 1)).toBe(true);
+    expect(canStepCycle(rows('1900-01-01 (0:00:00)', '5255-01-01 (0:00:00)'), 1)).toBe(false);
+    expect(canStepCycle([], 1)).toBe(false);
+    const t = runTable(natal, 'dasas.nakshatra', { system: 'Vimsottari', path: [] }, swe);
+    expect([canStepCycle(t.rows, -1), canStepCycle(t.rows, 1)]).toEqual([true, true]);
+  });
+
+  it('Shift dasa dates (33196, FUN_00450e00 -> FUN_00401c20): the dasa start record moves by the shift', async () => {
+    const v = vimsottari(moon, 1);
+    // fixed-length years: every date moves by the shift
+    const mean = await computeChart(swe, birth, { YearDefinition: arr(DEFAULTS.YearDefinition, 0, 0) });
+    const a = natalPaneDasa(mean, 'dasas.nakshatra', { system: 'Vimsottari' }, swe);
+    const b = natalPaneDasa(mean, 'dasas.nakshatra', { system: 'Vimsottari', shift: 2.5 }, swe);
+    for (const p of v) expect(b.clock.toJd(p.end) - a.clock.toJd(p.end)).toBeCloseTo(2.5, 9);
+    expect(b.notes).toEqual(['Shift: 2 days 12 hrs (forward)']);
+    // true sidereal years (the default) are counted from the moved record's Sun
+    const c = natalPaneDasa(natal, 'dasas.nakshatra', { system: 'Vimsottari' }, swe);
+    const d = natalPaneDasa(natal, 'dasas.nakshatra', { system: 'Vimsottari', shift: -10 }, swe);
+    expect(d.clock.toJd(v[0].start) - c.clock.toJd(v[0].start)).toBeCloseTo(-10, 6);
+    for (const p of v) expect(Math.abs(d.clock.toJd(p.end) - c.clock.toJd(p.end) + 10)).toBeLessThan(1);
+    const s = calcSettingsFromIni(natal.ini);
+    const sun = (jd: number) => siderealLongitude(swe, jd, 'Sun', s).lon;
+    const drift = (sun(d.clock.toJd(v[3].end)) - sun(d.clock.toJd(v[0].start)) + 360) % 360;
+    expect(Math.min(drift, 360 - drift)).toBeLessThan(1e-4);
+    // the table shows the note; no shift: no note
+    const t = runTable(natal, 'dasas.nakshatra', { system: 'Vimsottari', shift: -(1 + 2 / 24 + 3 / 1440) }, swe);
+    expect(t.notes).toEqual(['Shift: 1 days 2 hrs 3 min (back)']);
+    expect(runTable(natal, 'dasas.nakshatra', { system: 'Vimsottari' }, swe).notes).toBeUndefined();
+    expect(shiftNote(0.5)).toBe('Shift: 12 hrs (forward)');
+  });
+
   it('cycles (DAT_0071fbbc): the maha dasas move by the sum of their years', () => {
     const v = vimsottari(moon, 2);
     const c = withCycle(v, 1);
@@ -156,9 +194,49 @@ describe('dasa pane features', async () => {
 
   it('Dasa-Transit Correlation (33269): Ju / Sa / Ra / Ke in the houses from the period sign', async () => {
     const t = await DASA_ASYNC_JOBS['dasas.transit'](natal, { table: 'dasas.rasi', system: 'Narayana', path: [], index: 0 }, swe);
-    expect(t.rows.length).toBeGreaterThan(4);
+    const first = runTable(natal, 'dasas.rasi', { system: 'Narayana' }, swe).rows[0][0];
+    expect(t.caption).toBe(`Transits from ${first} during ${first} MD`);
     expect(new Set(t.rows.map((r) => r[2]))).toEqual(new Set(['Jupiter', 'Saturn', 'Rahu', 'Ketu']));
-    expect(t.caption).toMatch(new RegExp(`^Transits from ${runTable(natal, 'dasas.rasi', { system: 'Narayana' }, swe).rows[0][0]} during`));
+    // every house lists the four planets, with stays or "None"
+    for (let h = 0; h < 12; h++) for (const g of TRANSIT_PLANETS) expect(t.rows.some((r) => r[0] === ORDINAL[h] && r[2] === g)).toBe(true);
+    expect(t.text![1]).toBe(`Transits in 1st house from ${first} during ${first} MD:`);
+    expect(t.text!.filter((l) => l.startsWith('Transits in '))).toHaveLength(12);
+    // a drill-down row: the labels joined by "-" with the level suffix; the parent period: no suffix;
+    // a dasa of planets: the lord's D-1 sign
+    const v = vimsottari(moon, 2);
+    const ad = await DASA_ASYNC_JOBS['dasas.transit'](natal, { table: 'dasas.nakshatra', system: 'Vimsottari', path: [2], index: 1 }, swe);
+    expect(ad.caption).toBe(`Transits from ${SIGNS[Math.floor(natal.positions.grahas[v[2].children![1].lord].lon / 30)]} during ${periodLabel(v[2])}-${periodLabel(v[2].children![1])} AD`);
+    const md = await DASA_ASYNC_JOBS['dasas.transit'](natal, { table: 'dasas.nakshatra', system: 'Vimsottari', path: [2] }, swe);
+    expect(md.caption).toBe(`Transits from ${SIGNS[Math.floor(natal.positions.grahas[v[2].lord].lon / 30)]} during ${periodLabel(v[2])}`);
+  });
+
+  it('FUN_0049eae0 / FUN_004492c0: stays found in 10-day steps refined to a second, Ketu as Rahu in the 7th', () => {
+    const clock = dasaClock(swe, natal);
+    const v = vimsottari(moon, 1);
+    const jd0 = clock.toJd(v[3].start), jd1 = clock.toJd(v[3].end);
+    const houses = dasaTransits(swe, natal, 0, jd0, jd1);
+    const s = calcSettingsFromIni(natal.ini);
+    const sg = (g: Graha) => (jd: number) => Math.floor(siderealLongitude(swe, jd, g, s).lon / 30);
+    houses.forEach((h, i) => {
+      expect(h.sign).toBe(i);
+      h.spans.forEach((list, k) => {
+        const at = sg(TRANSIT_PLANETS[k]);
+        for (const [a, b] of list) {
+          expect(a).toBeGreaterThanOrEqual(jd0); expect(b).toBeLessThanOrEqual(jd1); expect(b).toBeGreaterThan(a);
+          // in the sign just after the entry (or the period start), out of it just after an exit before the end
+          expect(at(a + 1e-6)).toBe(i);
+          if (b < jd1) expect(at(b + 2 / 86400)).not.toBe(i);
+        }
+      });
+      // Ketu's stays are Rahu's in the 7th sign
+      expect(h.spans[3]).toEqual(houses[(i + 6) % 12].spans[2]);
+    });
+    expect(houses.some((h) => h.spans[1].length > 0)).toBe(true);
+    // the search itself: inside the sign the entry is t0; the limit ends a search outside the sign
+    const sat = sg('Saturn');
+    const here = sat(jd0);
+    expect(nextSignTransit(sat, false, here, jd0)!.entry).toBe(jd0);
+    expect(nextSignTransit(sat, false, (here + 6) % 12, jd0, jd0 + 30)).toBeNull();
   });
 
   it('Quick Info (button 2): a description for every dasa and "Quick Info on <title up to Dasa>"', async () => {

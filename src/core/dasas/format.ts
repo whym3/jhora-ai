@@ -26,6 +26,17 @@ export const DASA_LEVEL = ['Maha Dasas', 'Antardasas', 'Pratyantardasas', 'Sooks
 
 export const periodLabel = (p: Period) => p.label ?? DASA_ABBR[p.lord];
 
+/**
+ * The cycle buttons (FUN_0044bff0 / FUN_0044c0e0) on the rows of a dasa table:
+ * `<` acts while the first period shown starts after the year -5255 (doc+0x9f150), `>` while the
+ * last one ends before 5255 (its end record's year).
+ */
+export function canStepCycle(rows: string[][], dir: -1 | 1): boolean {
+  if (!rows.length) return false;
+  const year = parseInt(dir < 0 ? rows[0][1] : rows[rows.length - 1][2], 10);
+  return dir < 0 ? year > -5255 : year < 5255;
+}
+
 const span = (p: Period, c: DasaTextCtx) => `${formatDasaTime(c.clock.toJd(p.start), c.tz, c.revjul)} - ${formatDasaTime(c.clock.toJd(p.end), c.tz, c.revjul)}`;
 /** "1869-08-17" of formatDasaTime. */
 const dateOnly = (jd: number, c: DasaTextCtx) => {

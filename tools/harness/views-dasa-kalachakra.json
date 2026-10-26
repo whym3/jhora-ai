@@ -1,0 +1,21 @@
+{
+ "_comment": "Kalachakra dasa calculation methods (KalachakraDasaCalculation, dialog 2057 combo 1004; tests/kalachakraOptions.test.ts reads golden/jhora-dasa-kalachakra/<variant>/). One tab: the Kalachakra maha dasas (full and dates-only copies) and the antardasas of the first three maha dasas. Method 5 is JHora's default (already in the default captures). Run once per variant and restore the copy's jhcore/jhora.ini afterwards:\n  python tools/harness/capture.py --jhora <copy> --views tools/harness/views-dasa-kalachakra.json --out golden/jhora-dasa-kalachakra/method0 --ini KalachakraDasaCalculation=0 golden/charts/*.jhd\n  ... --out golden/jhora-dasa-kalachakra/method1 --ini KalachakraDasaCalculation=1\n  ... --out golden/jhora-dasa-kalachakra/method2 --ini KalachakraDasaCalculation=2\n  ... --out golden/jhora-dasa-kalachakra/method3 --ini KalachakraDasaCalculation=3\n  ... --out golden/jhora-dasa-kalachakra/method4 --ini KalachakraDasaCalculation=4\n  ... --out golden/jhora-dasa-kalachakra/method6 --ini KalachakraDasaCalculation=6\n  ... --out golden/jhora-dasa-kalachakra/rohini4-cancer --ini KCDRohini4NavamsaInLeo=0",
+ "tabs": [
+  {
+   "top": "Dasas",
+   "sub": "Nakshatra dasas",
+   "copies": {
+    "dasa": 32972,
+    "dasa_dates": 33236
+   },
+   "modes": [
+    [
+     "Kalachakra",
+     32847
+    ]
+   ],
+   "dasa_levels": true,
+   "dasa_level_rows": 3
+  }
+ ]
+}

@@ -8,9 +8,13 @@
 //    clock). JHora keeps one value per dasa (FUN_00408d90 saves DAT_0071fbbc into
 //    DAT_00597d30[old slot] and loads the new slot's), for the whole session, and FUN_00401820
 //    (Locate an event, the other views' "current dasa") moves it until the moment falls inside a
-//    maha dasa - why a pane can show a later 120-year cycle;
+//    maha dasa - why a pane can show a later 120-year cycle. The buttons stop at the years
+//    -5255 / 5255 (format.ts canStepCycle);
 //  - tribhagi, nakVarga: the session settings of build.ts (Tribhagi 32971, dialog 2055's varga);
 //  - overrides: temporary rasi dasa strengths (overrides.ts);
+//  - shift: "Shift dasa dates" (33196) in days (shiftedClock), noted under the title;
+//  - narayanaKind, shoolaFromHouse, tithiSeed, rbvVarga: the Options dialogs' session globals
+//    (registry.ts DasaOptions);
 //  - datesOnly: the text of "Copy to clipboard (only dates)" (33236) instead of 32972's;
 //  - derived: the derived chart shown (Tajaka etc., see dasaOf).
 // Commands of the pane (ASYNC jobs, params as above plus `table`):
@@ -21,8 +25,10 @@
 //    opened as the "Period Entry" window 0x89); text[0] = JSON {birth, label, periodDays};
 //  - 'dasas.sumLongitudes' (33389, FUN_00451400): the sum of the longitudes of the lords of the
 //    periods down to the selected level;
-//  - 'dasas.transit' (33269 "Dasa-Transit Correlation", FUN_00451190 + view 0xa0 FUN_004492c0):
-//    the periods Jupiter, Saturn, Rahu and Ketu spend in each house from the period's sign;
+//  - 'dasas.transit' (33269 "Dasa-Transit Correlation", FUN_00451190 + CDasaSignTransitView 0xa0,
+//    FUN_004492c0 / draw FUN_00448a70 / copy FUN_00449b10): the stays of Jupiter, Saturn, Rahu and
+//    Ketu in each house from the period's sign (dasaTransits); rows house | sign | planet | from |
+//    to ("None" | "" for a planet without a stay), text = JHora's copy text;
 //  - 'dasas.quickInfo' (Quick Info button 2, FUN_0044be70): caption and description.
 import type { Sweph } from '../../sweph';
 import type { Chart } from '../chart';
@@ -47,8 +53,11 @@ import { withOverrides, type StrengthOverrides } from './overrides';
 import { JHORA_VARGAS } from './rasiCommon';
 import { DASA_DESCRIPTIONS, PARYAAYA_DESCRIPTIONS, quickInfoCaption } from './descriptions';
 import { paryaayaDasa } from './paryaaya';
-import { compressDasa, DERIVED_KIND_CODE, NAKSHATRA_SLOTS, slotClock, YEAR_DEFINITION_NAMES, type DasaTableId } from './yearDefinition';
+import { compressDasa, DERIVED_KIND_CODE, NAKSHATRA_SLOTS, slotClock, slotYear, yearClock, YEAR_DEFINITION_NAMES, type DasaTableId } from './yearDefinition';
 import type { DasaClock } from './time';
+import type { DasaOptions } from './registry';
+import type { NarayanaKind } from './narayana';
+import type { TithiSeedOptions } from './tithiAshtottari';
 
 type TableFn = (chart: Chart, params: Record<string, unknown>, swe?: Sweph) => Table;
 type AsyncTableFn = (chart: Chart, params: Record<string, unknown>, swe: Sweph) => Promise<Table>;
@@ -96,12 +105,59 @@ export function withCycle(periods: Period[], cycle: number): Period[] {
 
 const nakShiftOf = (swe: Sweph | undefined, c: Chart) => (swe ? nakshatraShift(swe, c.positions.jdUt, calcSettingsFromIni(c.ini)) : 0);
 
-function buildOpts(params: Record<string, unknown>, swe: Sweph | undefined, chart: Chart) {
+function buildOpts(params: Record<string, unknown>, swe: Sweph | undefined, chart: Chart): DasaOptions {
   return {
     tribhagi: !!params.tribhagi,
     nakVarga: Number(params.nakVarga ?? 0) || undefined,
     nakShift: nakShiftOf(swe, chart) || undefined,
+    // the session globals of the Options dialogs (registry.ts DasaOptions)
+    ...(params.narayanaKind ? { narayanaKind: Number(params.narayanaKind) as NarayanaKind } : {}),
+    ...(params.shoolaFromHouse ? { shoolaFromHouse: Number(params.shoolaFromHouse) } : {}),
+    ...(params.tithiSeed ? { tithiSeed: params.tithiSeed as TithiSeedOptions } : {}),
+    ...(params.rbvVarga ? { rbvVarga: Number(params.rbvVarga) } : {}),
   };
+}
+
+// ---------------------------------------------------------------- Shift dasa dates
+
+/**
+ * "Shift dasa dates" (33196, FUN_00450e00, dialog 2050 "Enter the dasa shift amount": combo 1003
+ * "No shift" / "Add" / "Subtract", Days / Hours / Minutes): per dasa slot DAT_008a1af0[slot] (on)
+ * and DAT_008a1898[slot] (days + (hours + minutes / 60) / 24, negative to subtract), session
+ * globals cleared for every slot when a chart is opened or recalculated (0x402bec, 0x4037d8).
+ * FUN_00401c20 moves the dasa start record (the birth moved back by the first dasa's balance)
+ * by that many days (FUN_0049e630, 0x401df7) before the cycle offset; every period is then
+ * counted in the slot's years from the moved record. Here: params.shift (days).
+ */
+export function shiftedClock(swe: Sweph, chart: Chart, def: number, len: number, clock: DasaClock, startYears: number, days: number): DasaClock {
+  if (!days) return clock;
+  // fixed-length years: every date moves by the shift
+  if (def !== 3 && def !== 4 && def !== 5 && def !== 7) return { toJd: (y) => clock.toJd(y) + days };
+  // the other years are found from the record's Sun / Moon (FUN_0049dae0 on the moved record)
+  const jd = clock.toJd(startYears) + days;
+  const s = calcSettingsFromIni(chart.ini);
+  const g = chart.positions.grahas;
+  const moved: Chart = {
+    ...chart,
+    positions: {
+      ...chart.positions, jdUt: jd,
+      grahas: { ...g, Sun: { ...g.Sun, lon: siderealLongitude(swe, jd, 'Sun', s).lon }, Moon: { ...g.Moon, lon: siderealLongitude(swe, jd, 'Moon', s).lon } },
+    },
+  };
+  const anchored = yearClock(swe, moved, def, len);
+  return { toJd: (y) => anchored.toJd(y - startYears) };
+}
+
+/** CDasaView's line under the title (0x44a867): "Shift:" " %d days" " %d hrs" " %d min" " (back)" / " (forward)". */
+export function shiftNote(days: number): string {
+  const a = Math.abs(days);
+  const d = Math.trunc(a);
+  // FUN_004c1b00 on the hours: whole hours and minutes, a minute within 0.0001" of the next rounded up
+  const hours = (a - d) * 24;
+  let h = Math.trunc(hours);
+  let m = Math.trunc((hours - h) * 60);
+  if (60 - ((hours - h) * 60 - m) * 60 < 0.0001) { m += 1; if (m === 60) { m = 0; h += 1; } }
+  return `Shift:${d ? ` ${d} days` : ''}${h ? ` ${h} hrs` : ''}${m ? ` ${m} min` : ''}${days < 0 ? ' (back)' : ' (forward)'}`;
 }
 
 /** The dasa of a chart whose dasas are not compressed (natal, progressed): YearDefinition[slot] years. */
@@ -109,7 +165,13 @@ export function natalPaneDasa(chart: Chart, table: DasaTableId, params: Record<s
   const path = (params.path as number[] | undefined) ?? [];
   const c = withOverrides(chart, params.overrides as StrengthOverrides | undefined);
   const d = buildDasa(c, table, dasaSystem(table, params), path.length + 1, buildOpts(params, swe, chart));
-  return { slot: d.slot, title: d.title, periods: withCycle(d.periods, Number(params.cycle ?? 0)), drill: d.drill, clock: slotClock(swe, chart, d.slot), chart };
+  const shift = Number(params.shift ?? 0);
+  const { def, len } = slotYear(chart.ini, d.slot);
+  const clock = shiftedClock(swe, chart, def, len, slotClock(swe, chart, d.slot), d.periods[0]?.start ?? 0, shift);
+  return {
+    slot: d.slot, title: d.title, periods: withCycle(d.periods, Number(params.cycle ?? 0)), drill: d.drill, clock, chart,
+    ...(shift ? { notes: [shiftNote(shift)] } : {}),
+  };
 }
 
 /**
@@ -147,11 +209,19 @@ export async function paneDasa(natal: Chart, table: DasaTableId, params: Record<
   const c = withOverrides(chart, params.overrides as StrengthOverrides | undefined);
   const b = buildDasa(c, table, system, path.length + 1, { compressed, tajaka, ...buildOpts(params, swe, chart), natalNakShift: tajaka ? nakShiftOf(swe, natal) || undefined : undefined });
   const cycle = Number(params.cycle ?? 0);
-  if (!compressed) return { slot: b.slot, title: b.title, periods: withCycle(b.periods, cycle), drill: b.drill, clock: slotClock(swe, chart, b.slot), chart };
+  const shift = Number(params.shift ?? 0);
+  const shiftNotes = shift ? [shiftNote(shift)] : [];
+  if (!compressed) {
+    const { def, len } = slotYear(chart.ini, b.slot);
+    const clock = shiftedClock(swe, chart, def, len, slotClock(swe, chart, b.slot), b.periods[0]?.start ?? 0, shift);
+    return { slot: b.slot, title: b.title, periods: withCycle(b.periods, cycle), drill: b.drill, clock, chart, ...(shift ? { notes: shiftNotes } : {}) };
+  }
   const z = compressDasa(swe, chart, b.slot, b.periods, { periodDays, kindCode: DERIVED_KIND_CODE[d.kind], label: d.label, years });
+  // (a shifted compressed dasa: the dates move by the shift, as with fixed-length years)
+  const zClock: DasaClock = shift ? { toJd: (y) => z.clock.toJd(y) + shift } : z.clock;
   return {
-    slot: b.slot, title: b.title, periods: withCycle(z.periods, cycle), drill: b.drill, clock: z.clock, chart,
-    notes: [`${d.label}: compressed into ${periodDays.toFixed(2)} days = ${z.F.toFixed(4)} years (${YEAR_DEFINITION_NAMES[z.def] ?? z.def}), maha dasa years x ${z.F.toFixed(4)} / ${z.total}`],
+    slot: b.slot, title: b.title, periods: withCycle(z.periods, cycle), drill: b.drill, clock: zClock, chart,
+    notes: [`${d.label}: compressed into ${periodDays.toFixed(2)} days = ${z.F.toFixed(4)} years (${YEAR_DEFINITION_NAMES[z.def] ?? z.def}), maha dasa years x ${z.F.toFixed(4)} / ${z.total}`, ...shiftNotes],
   };
 }
 
@@ -293,7 +363,11 @@ export function sumOfLongitudes(chart: Chart, lords: Graha[], nakVarga = 0): num
 
 export const SUM_UNAVAILABLE = 'Available only in dasas of planets, such as Vimsottari dasa, Ashtottari dasa, Yogini dasa etc.';
 
-/** The sign a period stands for (FUN_00451190): its rasi, or its lord's D-1 sign. */
+/**
+ * The sign a period stands for (FUN_00451190): the period record's sign (+0x9f128 = 0, +0x9f12c),
+ * or for a planet (+0x9f128 = 1) its D-1 sign (chart+0x17d7 + 0x1d * body); with custom owner
+ * names (obj+0x76d48, Tribhagi Vimsottari) FUN_00451000 reads the label's first word instead.
+ */
 export function periodSign(chart: Chart, p: Period): number {
   const label = p.label ?? '';
   const first = label.split(' ')[0];
@@ -302,28 +376,83 @@ export function periodSign(chart: Chart, p: Period): number {
   return signOf(chart.positions.grahas[p.lord].lon);
 }
 
-const TRANSIT_PLANETS: Graha[] = ['Jupiter', 'Saturn', 'Rahu', 'Ketu'];
+/** The planets of FUN_004492c0's table (JHora bodies 5, 7, 8, 9; the second half 1, 3, 4, 6 is unused). */
+export const TRANSIT_PLANETS: Graha[] = ['Jupiter', 'Saturn', 'Rahu', 'Ketu'];
+/** House names (the CString table 0x8a2718). */
 const ORD = ['1st', '2nd', '3rd', '4th', '5th', '6th', '7th', '8th', '9th', '10th', '11th', '12th'];
+/** The level suffixes FUN_0044ed00 appends to the right-clicked row's label (0x5743ac.. 0x574390). */
+const LEVEL_SUFFIX = [' MD', ' AD', ' PD', ' SD', ' PAD', ' DAD'];
+const SECOND = 1 / 86400;
+/** 1/1440 day (0x54a238): FUN_004492c0 restarts the search a minute after an exit. */
+const MINUTE = 1 / 1440;
 
-/** Sign changes of a body within [jd0, jd1]: daily steps refined to a minute. */
-function signIntervals(swe: Sweph, chart: Chart, body: Graha, jd0: number, jd1: number): { sign: number; from: number; to: number }[] {
-  const s = calcSettingsFromIni(chart.ini);
-  const sg = (jd: number) => Math.floor(siderealLongitude(swe, jd, body, s).lon / 30);
-  const out: { sign: number; from: number; to: number }[] = [];
-  let a = jd0, cur = sg(jd0), start = jd0;
-  for (let jd = jd0 + 1; ; jd = Math.min(jd + 1, jd1)) {
-    const now = sg(jd);
-    if (now !== cur) {
-      let lo = a, hi = jd;
-      while (hi - lo > 1 / 1440) { const mid = (lo + hi) / 2; if (sg(mid) === cur) lo = mid; else hi = mid; }
-      out.push({ sign: cur, from: start, to: hi });
-      cur = now; start = hi;
-    }
-    a = jd;
-    if (jd >= jd1) break;
+/**
+ * FUN_0049eae0(body, sign, backward = 0, &entry, &exit): from the moment t0 the next entry of a
+ * body into a sign and its exit from it. The body's sign (FUN_0049aaa0 without the Ketu flip,
+ * so Ketu searches Rahu in the 7th sign; FUN_004c1980's sign is floor(longitude / 30)) is
+ * tested in steps of 10 days (1/12 day for the lagna, 3 days for the Moon) until it is the sign,
+ * then the step is halved down to a second (the entry is t0 itself when the body is there
+ * already); the exit is found the same way from the entry. `limit`: the entry search stops (with
+ * no result) once a stepped moment outside the sign lies beyond it - JHora searches on, but then
+ * finds an entry FUN_004492c0 discards.
+ */
+export function nextSignTransit(sg: (jd: number) => number, ketu: boolean, sign: number, t0: number, limit = Infinity): { entry: number; exit: number } | null {
+  const target = ketu ? (sign + 6) % 12 : sign;
+  const STEP = 10;
+  let t = t0, prev = t0 - SECOND;
+  while (sg(t) !== target) {
+    if (t > limit) return null;
+    prev = t; t += STEP;
   }
-  out.push({ sign: cur, from: start, to: jd1 });
-  return out;
+  while (Math.abs(t - prev) > SECOND) {
+    const mid = (prev + t) * 0.5;
+    if (sg(mid) === target) t = mid; else prev = mid;
+  }
+  const entry = t;
+  while (sg(t) === target) { prev = t; t += STEP; }
+  while (Math.abs(t - prev) > SECOND) {
+    const mid = (prev + t) * 0.5;
+    if (sg(mid) !== target) t = mid; else prev = mid;
+  }
+  return { entry, exit: t };
+}
+
+export interface DasaTransitHouse {
+  sign: number;
+  /** per TRANSIT_PLANETS: the [entry, exit] moments (UT JD) */
+  spans: [number, number][][];
+}
+
+/**
+ * FUN_004492c0 (run by the view's first OnDraw, FUN_00448a70, under " W A I T "): for the
+ * houses 1..12 counted from `sign` (DAT_0071fac8) and Jupiter, Saturn, Rahu, Ketu, the stays
+ * found by FUN_0049eae0 from the period start on: each search starts a minute after the
+ * previous exit, an entry after the period end ends the list and an exit after it is cut to
+ * the period end (an entry before the period start is the start itself). Tables DAT_0065c968 /
+ * DAT_00664b68 hold the entry / exit dates (0x68-byte records from FUN_0049d250, 40 per planet),
+ * DAT_0065c940 the counts.
+ */
+export function dasaTransits(swe: Sweph, chart: Chart, sign: number, jd0: number, jd1: number): DasaTransitHouse[] {
+  const s = calcSettingsFromIni(chart.ini);
+  const rahu = (jd: number) => Math.floor(siderealLongitude(swe, jd, 'Rahu', s).lon / 30);
+  const sgOf = (g: Graha) => (g === 'Ketu' ? rahu : (jd: number) => Math.floor(siderealLongitude(swe, jd, g, s).lon / 30));
+  return Array.from({ length: 12 }, (_, h) => {
+    const house = (sign + h) % 12;
+    const spans = TRANSIT_PLANETS.map((g) => {
+      const sg = sgOf(g);
+      const out: [number, number][] = [];
+      let t = jd0;
+      for (;;) {
+        const r = nextSignTransit(sg, g === 'Ketu', house, t, jd1);
+        if (!r || r.entry > jd1) break;
+        const exit = Math.min(r.exit, jd1);
+        out.push([r.entry, exit]);
+        t = exit + MINUTE;
+      }
+      return out;
+    });
+    return { sign: house, spans };
+  });
 }
 
 function ymd(swe: Sweph, jd: number, tz: number) {
@@ -375,22 +504,30 @@ export const DASA_ASYNC_JOBS: Record<string, AsyncTableFn> = {
     const d = await paneDasa(natal, tableOf(params), params, swe);
     const { period, chain } = selected(d, (params.path as number[]) ?? [], params.index as number | undefined);
     const jd0 = d.clock.toJd(period.start), jd1 = d.clock.toJd(period.end);
-    await swe.ensureEphemeris(jd0); await swe.ensureEphemeris(jd1);
+    // (an exit search runs past the period end: Saturn can stay 2.5 years)
+    for (const jd of [jd0, jd1, jd1 + 1000]) await swe.ensureEphemeris(jd);
     const sign = periodSign(d.chart, period);
     const tz = d.chart.birth.tzHours;
-    const label = chain.map(periodLabel).join('/');
-    const spans = TRANSIT_PLANETS.map((g) => signIntervals(swe, d.chart, g, jd0, jd1));
+    // FUN_0044ed00: the drill-down labels joined by "-", then the clicked row's with its level suffix
+    const path = (params.path as number[]) ?? [];
+    const label = chain.map(periodLabel).join('-') + (chain.length > path.length ? LEVEL_SUFFIX[path.length] ?? '' : '');
+    const houses = dasaTransits(swe, d.chart, sign, jd0, jd1);
     const rows: string[][] = [];
-    for (let h = 0; h < 12; h++) {
-      const s = (sign + h) % 12;
+    // FUN_00449b10 (the view's copy text): per house "\nTransits in %s house from %s during %s:\n",
+    // per planet "\n  %s\n" and "    From %04d-%02d-%02d to %04d-%02d-%02d\n" or "    None\n"
+    const text: string[] = [];
+    houses.forEach((h, i) => {
+      text.push('', `Transits in ${ORD[i]} house from ${SIGNS[sign]} during ${label}:`);
       TRANSIT_PLANETS.forEach((g, k) => {
-        for (const iv of spans[k].filter((x) => x.sign === s)) rows.push([ORD[h], SIGNS[s], g, ymd(swe, iv.from, tz), ymd(swe, iv.to, tz)]);
+        text.push('', `  ${g}`);
+        for (const [a, b] of h.spans[k]) {
+          rows.push([ORD[i], SIGNS[h.sign], g, ymd(swe, a, tz), ymd(swe, b, tz)]);
+          text.push(`    From ${ymd(swe, a, tz)} to ${ymd(swe, b, tz)}`);
+        }
+        if (!h.spans[k].length) { rows.push([ORD[i], SIGNS[h.sign], g, 'None', '']); text.push('    None'); }
       });
-    }
-    return {
-      caption: `Transits from ${SIGNS[sign]} during ${label}: From ${ymd(swe, jd0, tz)} to ${ymd(swe, jd1, tz)}`,
-      headers: ['House', 'Sign', 'Planet', 'From', 'To'], rows,
-    };
+    });
+    return { caption: `Transits from ${SIGNS[sign]} during ${label}`, headers: ['House', 'Sign', 'Planet', 'From', 'To'], rows, text };
   },
 
   'dasas.quickInfo': async (natal, params, swe) => {

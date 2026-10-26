@@ -1,0 +1,25 @@
+{
+ "_comment": "Rasi dasa options that live in jhora.ini (tests/rasiDasaOptions.test.ts reads golden/jhora-dasa-rasi-options/<variant>/): SudasaADOption (dialog 2049 'How to calculate antardasas in Sudasa', CalculationPreferences, default 4) and ShoolaDasaAntardasaStart (dialog 2007 'Where do antardasas start?', default 1). The level-2 copy captures the antardasas of the first maha dasa. Run once per variant and restore the copy's jhcore/jhora.ini afterwards:\n  python tools/harness/capture.py --jhora <copy> --views tools/harness/views-dasa-rasi-options.json --out golden/jhora-dasa-rasi-options/default golden/charts/*.jhd\n  ... --out golden/jhora-dasa-rasi-options/sudasa-ad0 --ini SudasaADOption=0\n  ... --out golden/jhora-dasa-rasi-options/sudasa-ad1 --ini SudasaADOption=1\n  ... --out golden/jhora-dasa-rasi-options/sudasa-ad2 --ini SudasaADOption=2\n  ... --out golden/jhora-dasa-rasi-options/sudasa-ad3 --ini SudasaADOption=3\n  ... --out golden/jhora-dasa-rasi-options/shoola-ad0 --ini ShoolaDasaAntardasaStart=0\n  ... --out golden/jhora-dasa-rasi-options/shoola-ad2 --ini ShoolaDasaAntardasaStart=2\nNot capturable this way (session globals set only through the modal Options dialogs, which capture.py cannot drive yet): dialog 2006's Paka / Sama / Ayur Narayana Dasa (DAT_00597eec/ed/ee), dialog 2007's Shoola start house (DAT_00597ed0) and the temporary strengths (overrides.ts).",
+ "tabs": [
+  {
+   "top": "Dasas",
+   "sub": "Rasi dasas",
+   "copies": {
+    "dasa": 32972,
+    "dasa_dates": 33236
+   },
+   "modes": [
+    [
+     "Sudasa",
+     32850
+    ],
+    [
+     "Shoola",
+     32876
+    ]
+   ],
+   "dasa_levels": true,
+   "dasa_level_rows": 1
+  }
+ ]
+}

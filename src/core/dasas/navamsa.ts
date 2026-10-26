@@ -9,6 +9,7 @@ import type { Chart } from '../chart';
 import type { Period } from './vimsottari';
 import type { VargaCtx } from '../signStrength';
 import { buildRasiDasa, rasiCtx, run, strong7 } from './rasiCommon';
+import { startOverride } from './overrides';
 
 export const NAVAMSA_TITLE = 'Navamsa dasa (death)';
 /** The builder's local table (only the odd indices = even signs are used). */
@@ -21,6 +22,7 @@ const startOf = (s: number, ctx: VargaCtx) => {
 
 export function navamsaDasa(chart: Chart, levels = 2): Period[] {
   const ctx = rasiCtx(chart, 0);
-  const seq = run(startOf(ctx.lagna, ctx), 1);
+  // "Start dasas from" (chart+0x17eb4[44], 0x407c36) replaces the mapped start
+  const seq = run(startOverride(ctx) ?? startOf(ctx.lagna, ctx), 1);
   return buildRasiDasa(seq, seq.map(() => 9), (s) => run(startOf(s, ctx), 1), levels, false);
 }

@@ -178,6 +178,7 @@ describe('AI tools', async () => {
     ['get_chakra', { chakra: 'tripataki' }, /\n1 \| Sg \| As Su\n/],
     ['get_dasa_period_chart', { system: 'Vimsottari', path: [2, 1] }, /^Period Entry: Rah\/Jup\nPeriod \| Start \| End\nRah\/Jup \| 1877-02-19 \(5:46:14\)[\s\S]*Date: +February 19, 1877\s+Time: +5:46:14[\s\S]*LONGITUDES/],
     ['get_dasa_transits', { system: 'Narayana', path: [2] }, /\n1st \| Ar \| Saturn \| 1881-01-11 \| 1882-06-30\n/],
+    ['get_dasa_transits', { system: 'Narayana', path: [2] }, /\n\d+(st|nd|rd|th) \| \w\w \| Rahu \| None \|/],
     ['get_transit_correlation', { date: { year: 1890, month: 6, day: 1 } }, /\nJupiter \| 19 Cp 51' 25.71"[^\n]*Lagna in D-9/],
     ['get_month_ephemeris', { year: 1890, month: 6 }, /\nEntry of planets into signs \| Sun \| enters \| Gemini \| 13 \| 16:17:50\n/],
     ['get_month_ephemeris', { year: 1890, month: 6, kind: 'panchanga' }, /Monthly Panchanga: 1890-6/],

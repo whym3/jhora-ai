@@ -168,8 +168,11 @@ export function bodySign(chart: Chart, name: string): number {
  * stronger), 0 = neither.
  */
 export function skFlag(s: number, ctx: VargaCtx): 0 | 1 | 2 {
-  const o = skOverride(s, ctx);
-  if (o !== undefined) return o;
+  return skOverride(s, ctx, (x) => skFlagComputed(x, ctx)) ?? skFlagComputed(s, ctx);
+}
+
+/** SK[s] without the temporary strengths. */
+function skFlagComputed(s: number, ctx: VargaCtx): 0 | 1 | 2 {
   const sat = ctx.sign('Saturn') === s, ketu = ctx.sign('Ketu') === s;
   if (sat && ketu) return strongerByDignity('Saturn', 'Ketu', ctx) === 'Ketu' ? 2 : 1;
   return sat ? 1 : ketu ? 2 : 0;

@@ -24,8 +24,8 @@ import { DEFAULTS } from '../../settings/generated';
 import { dasaLord, JHORA_VARGAS, mod12, rasiCtx, withDasaSeed } from './rasiCommon';
 import { attachOverrides, vargaLabel, type StrengthOverrides } from './overrides';
 import { nakshatraSeedLon } from './nakshatra';
-import { narayanaDasa } from './narayana';
-import { SUDASA_TITLE, sudasa } from './sudasa';
+import { narayanaDasa, type NarayanaKind } from './narayana';
+import { SUDASA_TITLE, sudasa, type SudasaADOption } from './sudasa';
 import { LAGNAMSAKA_TITLE, lagnamsakaDasa } from './lagnamsaka';
 import { PADANATHAMSA_TITLE, padanathamsaDasa } from './padanathamsa';
 import { DRIGDASA_TITLE, drigDasa } from './drigdasa';
@@ -37,7 +37,7 @@ import { CHARA_KN_RAO_TITLE, charaKNRaoDasa } from './charaKNRao';
 import { CHARA_IRANGANTI_TITLE, charaIrangantiDasa } from './charaIranganti';
 import { YOGARDHA_TITLE, yogardhaDasa } from './yogardha';
 import { paryaayaDasa } from './paryaaya';
-import { SHOOLA_TITLE, shoolaDasa } from './shoola';
+import { shoolaDasa, shoolaTitle } from './shoola';
 import { NIRYAANA_SHOOLA_TITLE, niryaanaShoolaDasa } from './niryaanaShoola';
 import { BRAHMA_TITLE, brahmaDasa } from './brahma';
 import { STHIRA_TITLE, sthiraDasa } from './sthira';
@@ -54,9 +54,9 @@ import { AK_KENDRADI_GRAHA_TITLE, akKendradiGrahaDasa } from './akKendradiGraha'
 import { PATYAYINI_TITLE, patyayiniDasa } from './patyayini';
 import { SUDARSANA_CHAKRA_TITLE, sudarsanaChakraDasa } from './sudarsanaChakra';
 import { BUDDHI_GATI_TITLE, buddhiGatiDasa } from './buddhiGati';
-import { RASI_BHUKTA_MUDDA_TITLE, RASI_BHUKTA_VIMSOTTARI_TITLE, rasiBhuktaVimsottariDasa } from './rasiBhuktaVimsottari';
+import { rasiBhuktaMuddaTitle, rasiBhuktaVimsottariDasa, rasiBhuktaVimsottariTitle } from './rasiBhuktaVimsottari';
 import { KARAKA_TITLE, karakaDasa } from './karaka';
-import { TITHI_ASHTOTTARI_TITLE, tithiAshtottariDasa } from './tithiAshtottari';
+import { tithiAshtottariDasa, tithiAshtottariTitle, type TithiSeedOptions } from './tithiAshtottari';
 import { YOGA_VIMSOTTARI_TITLE, yogaVimsottariDasa } from './yogaVimsottari';
 import { KARANA_CHATURASEETI_TITLE, karanaChaturaseetiDasa } from './karanaChaturaseeti';
 import { TITHI_YOGINI_TITLE, tithiYoginiDasa } from './tithiYogini';
@@ -85,6 +85,14 @@ export interface DasaOptions {
   natalNakShift?: number;
   /** temporary rasi dasa strengths of the "Options" dialogs (overrides.ts) */
   overrides?: StrengthOverrides;
+  /** dialog 2006's Normal / Paka / Sama / Ayur Narayana Dasa (session globals DAT_00597eec..ee; narayana.ts) */
+  narayanaKind?: NarayanaKind;
+  /** dialog 2007's "Which house should Shoola dasa start from?" (session global DAT_00597ed0, 0 = 1st) */
+  shoolaFromHouse?: number;
+  /** Tithi Ashtottari options (dialog 2034, session globals; tithiAshtottari.ts TithiSeedOptions) */
+  tithiSeed?: TithiSeedOptions;
+  /** DAT_008a4b90: varga index of the Rasi-Bhukta Vimsottari antardasa signs (dialog 2044, session) */
+  rbvVarga?: number;
 }
 export type DasaBuilder = (chart: Chart, levels: number, opts?: DasaOptions) => BuiltDasa;
 
@@ -99,13 +107,14 @@ export const VARGA_DIVISIONS = [1, 9, 2, 3, 4, 5, 6, 7, 8, 10, 11, 12, 16, 20, 2
  * another D-n the sign the dasa lord (FUN_004ad3f0 in D-n) of the n-th house from the D-1 lagna
  * occupies in D-n (0x4141f5..0x41422f); then the D-n chart's strengths and signs throughout.
  */
-function narayanaOf(c: Chart, levels: number): BuiltDasa {
+function narayanaOf(c: Chart, levels: number, opts?: DasaOptions): BuiltDasa {
   const v = c.ini.NarayanaDasaChart ?? 0;
+  const kind = opts?.narayanaKind ?? 0;
   const lagna0 = rasiCtx(c, 0).lagna;
-  if (!v || !JHORA_VARGAS[v]) return narayanaDasa(lagna0, d1(c), 'D-1', levels);
+  if (!v || !JHORA_VARGAS[v]) return narayanaDasa(lagna0, d1(c), 'D-1', levels, kind);
   const ctx = rasiCtx(c, v);
   const lagna = ctx.sign(dasaLord(mod12(lagna0 + VARGA_DIVISIONS[v] - 1), ctx));
-  return narayanaDasa(lagna, ctx, vargaLabel(v, c.ini), levels);
+  return narayanaDasa(lagna, ctx, vargaLabel(v, c.ini), levels, kind);
 }
 
 /** The Moola dasa options of the chart's ini (dialog 2008). */
@@ -138,7 +147,8 @@ export const RASI_DASAS: Record<string, DasaBuilder> = {
   Padanaathaamsa: plain(PADANATHAMSA_TITLE, (c, l) => padanathamsaDasa(c, l)),
   Sudasa: (c, levels) => {
     const ctx = { ...d1(c), lagnaSign: signOf(c.positions.ascendant), lagnaDegree: c.positions.ascendant % 30 };
-    return { title: SUDASA_TITLE, periods: sudasa(c.longitudes.find((x) => x.name === 'Sree Lagna')!.lon, ctx, levels) };
+    const ad = (c.ini.SudasaADOption ?? 4) as SudasaADOption;
+    return { title: SUDASA_TITLE, periods: sudasa(c.longitudes.find((x) => x.name === 'Sree Lagna')!.lon, ctx, levels, ad) };
   },
   Drigdasa: seededPlain(29, DRIGDASA_TITLE, (c, l) => drigDasa(c, l)),
   'Lagna Kendradi': seededPlain(30, LAGNA_KENDRADI_TITLE, (c, l) => lagnaKendradiDasa(c, l)),
@@ -149,7 +159,7 @@ export const RASI_DASAS: Record<string, DasaBuilder> = {
   'Chara (Rangacharya)': seededPlain(35, CHARA_IRANGANTI_TITLE, (c, l) => charaIrangantiDasa(c, l)),
   Yogardha: seededPlain(36, YOGARDHA_TITLE, (c, l) => yogardhaDasa(c, l)),
   Paryaaya: munthaSeeded(37, (c, levels) => { const p = paryaayaDasa(c, levels, c.ini.ParyaayaDasaChart ?? 6); return { title: p.title, periods: p.periods }; }),
-  Shoola: seededPlain(38, SHOOLA_TITLE, (c, l) => shoolaDasa(c, l)),
+  Shoola: munthaSeeded(38, (c, l, opts) => { const h = opts?.shoolaFromHouse ?? 0; return { title: shoolaTitle(h), periods: shoolaDasa(c, l, h) }; }),
   'Niryaana Shoola': seededPlain(39, NIRYAANA_SHOOLA_TITLE, niryaanaShoolaDasa),
   Brahma: seededPlain(40, BRAHMA_TITLE, brahmaDasa),
   Sthira: seededPlain(41, STHIRA_TITLE, sthiraDasa),
@@ -183,12 +193,16 @@ export const OTHER_DASAS: Record<string, DasaBuilder> = {
     // seed NakshatraDasaStartPoint[0] (DAT_008a1670), like Vimsottari
     const point = c.ini.NakshatraDasaStartPoint?.[0] ?? DEFAULTS.NakshatraDasaStartPoint[0] ?? 0;
     const s = tajakaSeed(c, 0, opts);
-    if (s.chart === c) return { title: RASI_BHUKTA_VIMSOTTARI_TITLE, periods: rasiBhuktaVimsottariDasa(c, l, 0, nakshatraSeedLon(c, point, { shift: opts?.nakShift })) };
+    const v = opts?.rbvVarga ?? 0;
+    if (s.chart === c) return { title: rasiBhuktaVimsottariTitle(v), periods: rasiBhuktaVimsottariDasa(c, l, v, nakshatraSeedLon(c, point, { shift: opts?.nakShift })) };
     const seed = nakshatraSeedLon(s.chart, point, { shift: opts?.natalNakShift }) + (s.n ?? 0) * NAK;
-    return { title: RASI_BHUKTA_MUDDA_TITLE, periods: rasiBhuktaVimsottariDasa(s.chart, l, 0, ((seed % 360) + 360) % 360) };
+    return { title: rasiBhuktaMuddaTitle(v), periods: rasiBhuktaVimsottariDasa(s.chart, l, v, ((seed % 360) + 360) % 360) };
   },
   Karaka: plain(KARAKA_TITLE, karakaDasa),
-  'Tithi Ashtottari': (c, l, opts) => { const s = tajakaSeed(c, 69, opts); return { title: TITHI_ASHTOTTARI_TITLE, periods: tithiAshtottariDasa(s.chart, l, 0, s.n) }; },
+  'Tithi Ashtottari': (c, l, opts) => {
+    const s = tajakaSeed(c, 69, opts), t = opts?.tithiSeed ?? {};
+    return { title: tithiAshtottariTitle(t.harmonic ?? 0, t.varga ?? 0), periods: tithiAshtottariDasa(s.chart, l, t.harmonic ?? 0, s.n, t) };
+  },
   'Yoga Vimsottari': (c, l, opts) => { const s = tajakaSeed(c, 70, opts); return { title: YOGA_VIMSOTTARI_TITLE, periods: yogaVimsottariDasa(s.chart, l, s.n) }; },
   'Karana Chaturaseeti': (c, l, opts) => {
     const s = tajakaSeed(c, 7, opts);

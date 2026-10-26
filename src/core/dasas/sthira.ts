@@ -12,12 +12,15 @@ import type { Period } from './vimsottari';
 import { sequenceDirection } from './narayana';
 import { brahmaSign } from './brahma';
 import { buildRasiDasa, lordOfStrong7Run, rasiCtx, run, sthiraYears } from './rasiCommon';
+import { narayanaStartOverride } from './overrides';
 
 export const STHIRA_TITLE = 'Sthira dasa (an ayur dasa that shows death)';
 
 export function sthiraDasa(chart: Chart, levels = 2): Period[] {
   const ctx = rasiCtx(chart, 0);
-  const start = brahmaSign(chart);
+  // FUN_00408580 0x40860f reads Narayana dasa's D-1 "Start dasas from" (chart+0x17ce0[0]),
+  // not the 2022 dialog's chart+0x17eb4[41]
+  const start = narayanaStartOverride(ctx) ?? brahmaSign(chart);
   const seq = run(start, sequenceDirection(start, ctx));
   return buildRasiDasa(seq, seq.map(sthiraYears), (s) => lordOfStrong7Run(s, ctx), levels, false);
 }

@@ -15,6 +15,7 @@ import { DEBILITATION, EXALTATION, signLordJaimini, type VargaCtx } from '../sig
 import { brahmaRudraMaheswara } from '../deities';
 import { charaKarakas } from '../basics';
 import { buildRasiDasa, dasaLord, dasaSeedOf, mod12, rasiCtx, run, seedShift } from './rasiCommon';
+import { startOverride } from './overrides';
 
 export const BRAHMA_TITLE = 'Brahma dasa (cycle of life, death and life)';
 
@@ -45,6 +46,7 @@ export function brahmaDasa(chart: Chart, levels = 2): Period[] {
   const ctx = rasiCtx(chart, 0);
   let start = brahmaSign(chart);
   if (start % 2 === 1) start = mod12(start + 6);
+  start = startOverride(ctx) ?? start; // "Start dasas from" (chart+0x17eb4[40], 0x408395)
   const seq = run(start, 1);
   const subs = (s: number) => run(ctx.sign(dasaLord(s, ctx)), 1);
   return buildRasiDasa(seq, seq.map((s) => brahmaYears(s, ctx)), subs, levels, true);

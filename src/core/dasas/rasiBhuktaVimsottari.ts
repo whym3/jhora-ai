@@ -1,5 +1,7 @@
 // Rasi-Bhukta Vimsottari dasa (FUN_00411e20), natal chart, default seed Moon
-// (DAT_008a1670 = 0) and chart D-1 (DAT_008a4b90 = 0):
+// (DAT_008a1670 = 0) and chart D-1 (DAT_008a4b90 = 0; dialog 2044's "RBV dasa based on
+// which varga?", FUN_0044d930, a session global: only the antardasa signs, the byte
+// chart+0x17d7 + lord*0x1d + varga, and the title's varga name change):
 //  - maha dasas: Vimsottari's nine from the seed's nakshatra lord with its
 //    balance (chart+0x121f8 / +0x122f8), i.e. the regular Vimsottari dasas;
 //  - antardasas: twelve signs zodiacally from the sign occupied by the dasa
@@ -25,7 +27,8 @@ import { bodyPeriod, mod12 } from './otherCommon';
 
 export const rasiBhuktaVimsottariTitle = (vargaIndex = 0) => `Rasi-Bhukta Vimsottari Dasa (of ${JHORA_VARGA_NAMES[vargaIndex]} chart, )`;
 export const RASI_BHUKTA_VIMSOTTARI_TITLE = rasiBhuktaVimsottariTitle();
-export const RASI_BHUKTA_MUDDA_TITLE = 'Rasi-Bhukta Mudda/Vimsottari Dasa (of D-1 chart, )';
+export const rasiBhuktaMuddaTitle = (vargaIndex = 0) => `Rasi-Bhukta Mudda/Vimsottari Dasa (of ${JHORA_VARGA_NAMES[vargaIndex]} chart, )`;
+export const RASI_BHUKTA_MUDDA_TITLE = rasiBhuktaMuddaTitle();
 
 const KAKSHYA = [7, 5, 3, 1, 6, 4, 2, 0];
 

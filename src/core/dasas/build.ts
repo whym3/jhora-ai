@@ -27,7 +27,7 @@
 //    Vimsottari "reverse", then "using <varga name 0x8a2874>", then "shift of <n> stars" joined
 //    by ", " (FUN_0040beb0 0x40c235..0x40c2e9); the other nakshatra dasas the last two (e.g.
 //    FUN_0040e150 0x40e380..); Kalachakra "From <seed name> of <varga>, ..." (FUN_0040c540
-//    0x40dbf6, kalachakra.ts);
+//    0x40dbf6, kalachakra.ts); Kalachakra's method is the ini's KalachakraDasaCalculation;
 //  - Saptarshi (FUN_00410420) reads NakshatraDasaShift[12] for the title only: the star list
 //    always starts at the seed star (0x410535 .. 0x410651).
 import type { Chart } from '../chart';
@@ -91,7 +91,7 @@ export function buildDasa(chart: Chart, table: DasaTableId, system: string, leve
     const tri = !!opts.tribhagi && !TRIBHAGI_EXCLUDED.has(slot);
     if (system === 'Kalachakra') {
       const kc = kalachakraDasa(nakshatraSeedLon(chart, o.point, { varga, shift: opts.nakShift }), 9, chart.ini.KCDRohini4NavamsaInLeo !== 0, levels,
-        { seed: SEED_TITLE_NAMES[o.point] ?? 'Moon', varga: vargaLabel(varga, chart.ini) });
+        { seed: SEED_TITLE_NAMES[o.point] ?? 'Moon', varga: vargaLabel(varga, chart.ini) }, chart.ini.KalachakraDasaCalculation ?? 5);
       ({ title, periods } = kc);
       drill = levels < 3;
     } else if (system === 'Saptarshi nakshatra') {

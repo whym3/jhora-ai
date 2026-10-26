@@ -682,7 +682,7 @@ export const AI_TOOLS: AiTool[] = [
   },
   {
     name: 'get_dasa_transits',
-    description: 'Dasa-transit correlation (JHora\'s command 33269): over a dasa period picked by `path` (as in get_dasa), when Jupiter, Saturn, Rahu and Ketu transit each house counted from the period\'s sign (for rasi dasas the dasa sign, otherwise the lord\'s sign). Rows "house | sign | planet | from | to". Use it to time events inside a period.',
+    description: 'Dasa-transit correlation (JHora\'s command 33269): over a dasa period picked by `path` (as in get_dasa), when Jupiter, Saturn, Rahu and Ketu transit each house counted from the period\'s sign (for rasi dasas the dasa sign, otherwise the lord\'s sign). Rows "house | sign | planet | from | to" (dates of entering and leaving the sign, cut to the period; "None |" when the planet is not there during the period), as JHora lists them per house. Use it to time events inside a period.',
     parameters: obj({
       system: { type: 'string', enum: ALL_DASAS },
       path: { type: 'array', items: { type: 'integer', minimum: 0 }, maxItems: 5, description: '0-based row indices down to the period (at least one)' },

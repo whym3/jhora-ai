@@ -1,7 +1,7 @@
 // The Dasas tab: JHora's CDasaView (FUN_0044a330) with its buttons (`<` `|` `>`, Quick Info,
 // Options) and the commands of its context menu 108 (src/core/dasas/dasaJobs.ts has the jobs):
 // Entry chart of this period (32892), Locate an event (33125, dialog 2041), Dasa-Transit
-// Correlation (33269), Definition of year in dasas, Dasa seed settings for Tajaka (33019), Use dasa
+// Correlation (33269), Shift dasa dates (33196, dialog 2050), Definition of year in dasas, Dasa seed settings for Tajaka (33019), Use dasa
 // sesham in compressed mundane dasas (33043), Use Tribhagi variation (32971), Copy to clipboard
 // (only dates) (33236) and Sum of longitudes of planets upto this level (33389). JHora runs the
 // period commands on the right-clicked period; here on the period chosen in "Period" (else the
@@ -13,7 +13,7 @@ import { TableView } from '../widgets/TableView';
 import { OTHER_DASAS, RASI_DASAS } from '../../core/dasas/registry';
 import { setIni, useActiveDoc, useStore, type DerivedChart } from '../state/store';
 import { applyYearDefinition, dasaSlot, YEAR_DEFINITION_NAMES, YEAR_MENU } from '../../core/dasas/yearDefinition';
-import { DASA_LEVEL, datesOnlyLines } from '../../core/dasas/format';
+import { canStepCycle, DASA_LEVEL, datesOnlyLines } from '../../core/dasas/format';
 import { overridesKey, setCycle, setDasaSession, useDasaSession } from './dasaSession';
 import { DasaOptionsDialog, hasDasaOptions, TajakaSeedDialog } from './DasaOptions';
 import { EntryChartWindow } from './EntryChart';
@@ -67,7 +67,7 @@ export function dasaJob(spec: ChartSpec, natalBirth: ChartSpec['birth'] | undefi
   };
 }
 
-type Dialog = null | 'options' | 'tajakaSeed' | 'locate';
+type Dialog = null | 'options' | 'tajakaSeed' | 'locate' | 'shift';
 type Command = null | { job: string; extra?: Record<string, unknown> };
 
 function DasaPane({ spec, table, systems }: { spec: ChartSpec; table: DasaTable; systems: readonly string[] }) {
@@ -85,12 +85,21 @@ function DasaPane({ spec, table, systems }: { spec: ChartSpec; table: DasaTable;
   const [entry, setEntry] = useState<{ birth: DerivedChart['birth']; label: string; periodDays: number } | null>(null);
   const slot = dasaSlot(table, system);
   const shown = doc?.derived?.birth ?? doc?.birth ?? spec.birth;
-  const ov = session.overrides[overridesKey(shown, slot)];
+  let ov = session.overrides[overridesKey(shown, slot)];
+  // Sthira dasa reads Narayana dasa's D-1 start (0x40860f): slot 25's "Start dasas from" when its chart is D-1
+  const narStart = session.overrides[overridesKey(shown, 25)]?.start;
+  if (slot === 41 && narStart !== undefined && !(ini.NarayanaDasaChart ?? 0)) ov = { ...ov, narayanaStart: narStart };
+  const shift = session.shifts[overridesKey(shown, slot)] ?? 0;
   const extra: Record<string, unknown> = {
     cycle: session.cycles[slot] ?? 0,
     ...(table === 'dasas.nakshatra' && session.tribhagi ? { tribhagi: true } : {}),
     ...(session.nakVarga ? { nakVarga: session.nakVarga } : {}),
     ...(ov && Object.keys(ov).length ? { overrides: ov } : {}),
+    ...(shift ? { shift } : {}),
+    ...(slot === 25 && session.narayanaKind ? { narayanaKind: session.narayanaKind } : {}),
+    ...(slot === 38 && session.shoolaFromHouse ? { shoolaFromHouse: session.shoolaFromHouse } : {}),
+    ...(slot === 68 && session.rbvVarga ? { rbvVarga: session.rbvVarga } : {}),
+    ...(slot === 69 && Object.keys(session.tithiSeed).length ? { tithiSeed: session.tithiSeed } : {}),
   };
   const job = useJob(dasaJob(spec, doc?.birth, doc?.derived, table, system, path, extra));
   const cmdJob = useJob(command ? dasaJob(spec, doc?.birth, doc?.derived, command.job, system, path, { ...extra, table, index: row ?? undefined, ...command.extra }) : null);
@@ -141,9 +150,9 @@ function DasaPane({ spec, table, systems }: { spec: ChartSpec; table: DasaTable;
         </select>
         <button onClick={() => setPath((p) => p.slice(0, -1))} disabled={!path.length}>Up</button>
         <span className="dasa-cycle">
-          <button title="Previous dasa cycle" onClick={() => setCycle(slot, cycle - 1)}>&lt;</button>
+          <button title="Previous dasa cycle" disabled={!canStepCycle(rows, -1)} onClick={() => setCycle(slot, cycle - 1)}>&lt;</button>
           <button title="The dasa cycle that starts at birth" onClick={() => setCycle(slot, 0)}>|</button>
-          <button title="Next dasa cycle" onClick={() => setCycle(slot, cycle + 1)}>&gt;</button>
+          <button title="Next dasa cycle" disabled={!canStepCycle(rows, 1)} onClick={() => setCycle(slot, cycle + 1)}>&gt;</button>
           {cycle !== 0 && <span className="status"> cycle {cycle > 0 ? `+${cycle}` : cycle}</span>}
         </span>
         <button onClick={() => run('dasas.quickInfo')}>Quick Info</button>
@@ -158,6 +167,7 @@ function DasaPane({ spec, table, systems }: { spec: ChartSpec; table: DasaTable;
         </select></label>
         <button onClick={() => run('dasas.entry')} disabled={!periodChosen}>Entry chart of this period</button>
         <button onClick={() => setDialog('locate')}>Locate an event</button>
+        <button onClick={() => setDialog('shift')}>Shift dasa dates…</button>
         <button onClick={() => setTransit({ job: 'dasas.transit' })} disabled={!periodChosen}>Dasa-Transit Correlation</button>
         <button onClick={() => run('dasas.sumLongitudes')} disabled={!periodChosen}>Sum of longitudes</button>
         <button onClick={copyDates} disabled={!job.data}>Copy (only dates)</button>
@@ -172,6 +182,8 @@ function DasaPane({ spec, table, systems }: { spec: ChartSpec; table: DasaTable;
       {dialog === 'tajakaSeed' && <TajakaSeedDialog slot={slot} category={category} onClose={() => setDialog(null)} />}
       {dialog === 'locate' && <LocateDialog tz={shown.tzHours} onCancel={() => setDialog(null)}
         onOk={(at) => { setDialog(null); run('dasas.locate', { at }); }} />}
+      {dialog === 'shift' && <ShiftDialog days={shift} onCancel={() => setDialog(null)}
+        onOk={(days) => { setDialog(null); setDasaSession((s) => ({ shifts: { ...s.shifts, [overridesKey(shown, slot)]: days } })); }} />}
       {command && <p className="status">Calculating…</p>}
       {message && (
         <div className="dasa-message" role="status">
@@ -182,7 +194,9 @@ function DasaPane({ spec, table, systems }: { spec: ChartSpec; table: DasaTable;
       <TableView job={job} onRowClick={path.length < MAX_DEPTH - 1 && job.data?.drill !== false ? (i) => setPath((p) => [...p, i]) : undefined} />
       {transit && (
         <>
-          <div className="subview-bar"><strong>Dasa-Transit Correlation</strong><button onClick={() => setTransit(null)}>Close</button></div>
+          <div className="subview-bar"><strong>Dasa-Transit Correlation</strong>
+            <button disabled={!transitJob.data?.text} onClick={() => navigator.clipboard?.writeText((transitJob.data?.text ?? []).join(CRLF) + CRLF)}>Copy</button>
+            <button onClick={() => setTransit(null)}>Close</button></div>
           <TableView job={transitJob} />
         </>
       )}
@@ -211,6 +225,37 @@ function LocateDialog({ tz, onOk, onCancel }: { tz: number; onOk: (at: Record<st
       <label>Identify the periods and sub-periods running at the above time by going upto the following level <select value={level} onChange={(e) => setLevel(Number(e.target.value))}>
         {DASA_LEVEL.map((l, i) => <option key={l} value={i}>{l}</option>)}
       </select></label>
+      <div><button onClick={ok}>OK</button> <button onClick={onCancel}>Cancel</button></div>
+    </div>
+  );
+}
+
+/**
+ * Dialog 2050 "Enter the dasa shift amount" (33196 "Shift dasa dates", FUN_00450e00): combo 1003
+ * No shift / Add / Subtract and Days / Hours / Minutes, for the dasa shown (dasaJobs.ts shiftedClock).
+ */
+function ShiftDialog({ days, onOk, onCancel }: { days: number; onOk: (days: number) => void; onCancel: () => void }) {
+  const a = Math.abs(days);
+  const [mode, setMode] = useState(days > 0 ? 1 : days < 0 ? 2 : 0);
+  const [d, setD] = useState(Math.trunc(a));
+  const [h, setH] = useState(Math.trunc((a % 1) * 24));
+  const [m, setM] = useState(Math.round((((a % 1) * 24) % 1) * 60) % 60);
+  const ok = () => {
+    const v = d + (h + m / 60) / 24;
+    onOk(mode === 1 ? v : mode === 2 ? -v : 0);
+  };
+  return (
+    <div className="dasa-options" role="dialog" aria-label="Enter the dasa shift amount">
+      <strong>Enter the dasa shift amount</strong>
+      <p className="status">Errors in birthdata, ayanamsa and other uncertainties can cause errors in the dasa dates. You can shift the dasa dates to get the dates right.
+        This is a lot easier than individualizing birthtime errors, ayanamsa errors and other errors and rectifying all.</p>
+      <p>Please enter the dasa shift amount for this dasa.</p>
+      <select aria-label="Shift" value={mode} onChange={(e) => setMode(Number(e.target.value))}>
+        <option value={0}>No shift</option><option value={1}>Add</option><option value={2}>Subtract</option>
+      </select>
+      <label><input type="number" min={0} value={d} onChange={(e) => setD(Math.max(0, Math.trunc(Number(e.target.value))))} style={{ width: '6em' }} /> Days</label>
+      <label><input type="number" min={0} value={h} onChange={(e) => setH(Math.max(0, Math.trunc(Number(e.target.value))))} style={{ width: '4em' }} /> Hours</label>
+      <label><input type="number" min={0} value={m} onChange={(e) => setM(Math.max(0, Math.trunc(Number(e.target.value))))} style={{ width: '4em' }} /> Minutes</label>
       <div><button onClick={ok}>OK</button> <button onClick={onCancel}>Cancel</button></div>
     </div>
   );

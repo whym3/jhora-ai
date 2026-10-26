@@ -15,6 +15,7 @@ import type { Period } from './vimsottari';
 import { charaKarakas } from '../basics';
 import { sortByStrength, strongerSignDignityFirst } from '../signStrength';
 import { buildRasiDasa, dasaSeedOf, JHORA_VARGA_NAMES, JHORA_VARGAS, lordOfStrong7Run, mod12, narayanaYearsWithLord, rasiCtx, seedShift, strong7 } from './rasiCommon';
+import { startOverride } from './overrides';
 
 export const akKendradiTitle = (vargaIndex = 0) => `Atma Karaka Kendradi Rasi Dasa of ${JHORA_VARGA_NAMES[vargaIndex]} (experiences of soul)`;
 export const AK_KENDRADI_TITLE = akKendradiTitle();
@@ -27,7 +28,7 @@ export function akKendradiDasa(chart: Chart, levels = 2, vargaIndex = 0): Period
   const akSign = seed
     ? seedShift(seed, rasiCtx(seed.natal, vargaIndex).sign(charaKarakas(seed.natal.positions, 8)[0].planet), JHORA_VARGAS[vargaIndex]!)
     : ctx.sign(charaKarakas(chart.positions, 8)[0].planet);
-  const start = strong7(akSign, ctx);
+  const start = startOverride(ctx) ?? strong7(akSign, ctx); // chart+0x17eb4[31] (0x415fb2)
   const signs = Array.from({ length: 12 }, (_, i) => mod12(start + 3 * (i % 4) + Math.floor(i / 4)));
   const stronger = (a: number, b: number) => strongerSignDignityFirst(a, b, ctx);
   const seq = [0, 4, 8].flatMap((i) => sortByStrength(signs.slice(i, i + 4), stronger));

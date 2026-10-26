@@ -11,12 +11,14 @@ import type { Chart } from '../chart';
 import type { Period } from './vimsottari';
 import { sequenceDirection } from './narayana';
 import { buildRasiDasa, lordOfStrong7Run, mod12, rasiCtx, run, sthiraYears, strong7 } from './rasiCommon';
+import { startOverride } from './overrides';
 
 export const NIRYAANA_SHOOLA_TITLE = 'Niryana Shoola Dasa (death)';
 
 export function niryaanaShoolaDasa(chart: Chart, levels = 2): Period[] {
   const ctx = rasiCtx(chart, 0);
-  const start = strong7(mod12(ctx.lagna + 7), ctx);
+  // "Start dasas from" (chart+0x17eb4[39], 0x4080a3)
+  const start = startOverride(ctx) ?? strong7(mod12(ctx.lagna + 7), ctx);
   const seq = run(start, sequenceDirection(start, ctx));
   return buildRasiDasa(seq, seq.map(sthiraYears), (s) => lordOfStrong7Run(s, ctx), levels, false);
 }

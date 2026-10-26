@@ -17,13 +17,15 @@ import type { Chart } from '../chart';
 import type { Period } from './vimsottari';
 import { DEBILITATION, EXALTATION, signLordByModality, type VargaCtx } from '../signStrength';
 import { buildRasiDasa, JHORA_VARGA_NAMES, mod12, parasaraAntardasas, rasiCtx, run } from './rasiCommon';
+import { lordOverride, startOverride } from './overrides';
 
 export const charaParasaraTitle = (vargaIndex = 0) => `Chara dasa of ${JHORA_VARGA_NAMES[vargaIndex]} (a popular phalita rasi dasa)`;
 export const CHARA_PARASARA_TITLE = charaParasaraTitle();
 
 /** FUN_004acce0. */
 export function charaParasaraYears(sign: number, ctx: VargaCtx, exaltationException = true): number {
-  const lord = signLordByModality(sign, ctx);
+  // the FUN_004ad470 table (chart+0x17a28/0x17bf8): dialog 2022's co-lords for this dasa
+  const lord = lordOverride(sign, ctx) ?? signLordByModality(sign, ctx);
   const p = ctx.sign(lord);
   const d = Math.floor(sign / 3) % 2 === 0 ? p - sign : sign - p;
   let y = mod12(d) === 0 ? 12 : mod12(d);
@@ -41,7 +43,7 @@ export function charaParasaraYears(sign: number, ctx: VargaCtx, exaltationExcept
 export function charaParasaraDasa(chart: Chart, levels = 2, vargaIndex = 0,
   exaltationException: boolean = (chart.ini.CharaDasaExaltationException ?? 1) !== 0): Period[] {
   const ctx = rasiCtx(chart, vargaIndex);
-  const start = ctx.lagna;
+  const start = startOverride(ctx) ?? ctx.lagna; // chart+0x17eb4[33] (0x41734d)
   const seq = run(start, Math.floor((start + 8) / 3) % 2 === 0 ? 1 : -1);
   return buildRasiDasa(seq, seq.map((s) => charaParasaraYears(s, ctx, exaltationException)), (s) => parasaraAntardasas(s, ctx), levels, true);
 }

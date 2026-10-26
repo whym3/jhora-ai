@@ -15,6 +15,7 @@ import type { Chart } from '../chart';
 import type { Period } from './vimsottari';
 import { sequenceDirection } from './narayana';
 import { buildRasiDasa, JHORA_VARGA_NAMES, lordOfStrong7Run, narayanaYearsWithLord, rasiCtx, run, sthiraYears, strong7 } from './rasiCommon';
+import { startOverride } from './overrides';
 
 export const yogardhaTitle = (vargaIndex = 0) => `Yogardha dasa of ${JHORA_VARGA_NAMES[vargaIndex]} (a rasi dasa based on chara and sthira dasas)`;
 export const YOGARDHA_TITLE = yogardhaTitle(0);
@@ -22,7 +23,7 @@ export const YOGARDHA_TITLE = yogardhaTitle(0);
 /** @param vargaIndex JHora varga index of the dasa chart (0 = D-1, the default). */
 export function yogardhaDasa(chart: Chart, levels = 2, vargaIndex = 0): Period[] {
   const ctx = rasiCtx(chart, vargaIndex);
-  const start = strong7(ctx.lagna, ctx);
+  const start = startOverride(ctx) ?? strong7(ctx.lagna, ctx); // chart+0x17eb4[36] (0x4177e9)
   const seq = run(start, sequenceDirection(start, ctx));
   const years = seq.map((s) => (narayanaYearsWithLord(s, ctx) + sthiraYears(s)) / 2);
   return buildRasiDasa(seq, years, (s) => lordOfStrong7Run(s, ctx), levels, true);
