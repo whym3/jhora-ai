@@ -8,7 +8,7 @@ import { DEFAULTS } from '../settings/generated';
 import { ayanamsaLabel, calcSettingsFromIni, type AyanamsaId } from '../core/settings';
 import { HOUSE_SYSTEMS } from '../core/kpHouses';
 import { YEAR_DEFINITIONS } from '../core/dasas/time';
-import { SIGN_NAMES as ZODIAC_SIGN_NAMES } from '../core/zodiac';
+import { NAKSHATRA_NAMES as ZODIAC_NAKSHATRA_NAMES, SIGN_NAMES as ZODIAC_SIGN_NAMES } from '../core/zodiac';
 import { SAHAMAS } from '../core/sahamas';
 import { NATAL_REFS as TRANSIT_REFS, VARGA_ORDER, transitBirth, type TransitDate } from '../core/transits/common';
 import { NATAL_SEARCH_BODIES as SEARCH_BODIES, type SpecialSearch } from '../core/transits/search';
@@ -56,6 +56,27 @@ export const SAHAMA_NAMES = SAHAMAS.map((s) => s.name);
 export const NATAL_SEARCH_BODIES: string[] = [...SEARCH_BODIES];
 export const NATAL_REFS: string[] = [...TRANSIT_REFS];
 export const CALENDAR_ITEMS: string[] = [...TRANSIT_CALENDAR_ITEMS];
+export const NAKSHATRA_NAMES: string[] = [...ZODIAC_NAKSHATRA_NAMES];
+/** Progressions tab: combo 1007 (vargas; JHora's last entry "D-108" divides by 81) and combo 1014 (nakshatra dasas). */
+export const PROGRESSION_VARGAS = ['Rasi', 'Navamsa', 'D-2', 'D-3', 'D-4', 'D-5', 'D-6', 'D-7', 'D-8', 'D-10', 'D-11', 'D-12', 'D-16', 'D-20',
+  'D-24', 'D-27', 'D-30', 'D-40', 'D-45', 'D-60', 'D-108'];
+export const PROGRESSION_DASAS = ['Vimsottari', 'Ashtottari', 'Kalachakra', 'Yogini', 'Dwisaptati sama', 'Shattrimsa sama', 'Dwadasottati',
+  'Chaturaseeti sama', 'Satabdika', 'Shodasottari', 'Panchottari', 'Shashtisama'];
+const PROGRESSION_METHODS: Record<string, string> = { solar: 'solar', bhrigu: 'bhrigu', sudarsana_chakra: 'scd', nakshatra_dasa: 'nakshatra' };
+/** Mundane tab: transit divisions (combo 1004), aspects (combo 1036), eclipse types (combo 1032). */
+export const MUNDANE_DIVISIONS = ['Rasi', 'Nakshatra', 'Navamsa', 'D-2', 'D-3', 'D-4', 'D-5', 'D-6', 'D-7', 'D-8', 'D-10', 'D-11', 'D-12', 'D-16',
+  'D-20', 'D-24', 'D-27', 'D-30', 'D-40', 'D-45', 'D-60', 'D-108', 'D-144'];
+export const MUNDANE_ASPECTS = ['Conjunction (yuti)', 'Opposition (samasaptaka)', 'Trine (5th)', 'Trine (9th)', 'Quadrant (4th)', 'Quadrant (10th)',
+  '2nd', '3rd', '6th', '8th', '11th', '12th'];
+export const ECLIPSE_TYPES = ['Lunar', 'Global Solar', 'Local Solar'];
+export const STATIONARY_PLANETS = ['Mars', 'Mercury', 'Jupiter', 'Venus', 'Saturn', 'Rahu', 'Ketu'];
+/** Mundane events -> the mundane.find mode (the calendar events take only { next }). */
+const MUNDANE_EVENTS: Record<string, string> = {
+  sign_or_division_change: 'transit', aspect: 'conjunction', station: 'stationary', eclipse: 'eclipse',
+  solar_new_year: 'solarYear', solar_new_month: 'solarMonth', lunar_new_year: 'lunarYear', lunar_new_month: 'lunarMonth',
+  new_lunar_day: 'lunarDay', fortnight: 'fortnight', ardra_pravesha: 'ardra',
+};
+export const PRASNA_LIMITS: Record<string, number> = { '108': 108, '249': 249, nadi: 1800 };
 
 /** Strength and special-point tables by name -> engine job. */
 const STRENGTHS: Record<string, string> = {
@@ -89,6 +110,16 @@ export function tableText(t: Table): string {
 const table = async (ctx: ToolContext, name: string, params: Json = {}, spec = ctx.spec) =>
   (await ctx.request({ kind: 'table', chart: spec, table: name, params })) as Table;
 const keyInfo = async (ctx: ToolContext, spec = ctx.spec) => (await ctx.request({ kind: 'text', chart: spec, cmd: 32974 })) as string;
+
+/** A derived chart found by a `*.find` job (text[0] = JSON { birth, label }): the search result, Key Info and longitudes. */
+async function derivedChartText(ctx: ToolContext, found: Table): Promise<string> {
+  const { birth, label } = JSON.parse(found.text![0]) as { birth: ChartSpec['birth']; label: string };
+  const spec = { birth, ini: ctx.spec.ini };
+  const [info, lons] = await Promise.all([keyInfo(ctx, spec), table(ctx, 'basics.longitudes', {}, spec)]);
+  // the Key Info copy is titled "Natal Chart" (the chart record's name): name the derived chart instead
+  const named = info.replace(/^(\s*)Natal Chart(\r?\n)/, `$1${label}$2`);
+  return [...(found.caption ? [] : [label]), tableText({ ...found, text: undefined }), '', named, '', 'LONGITUDES', tableText(lons)].join('\n');
+}
 
 // ---------------------------------------------------------------------------
 // Schemas
@@ -491,6 +522,114 @@ export const AI_TOOLS: AiTool[] = [
       const path = (i.dasa_path as number[] | undefined) ?? [];
       const [info, lons, dasa] = await Promise.all([keyInfo(ctx, spec), table(ctx, 'basics.longitudes', {}, spec), table(ctx, 'tithiPravesha.dasa', { birth, label, periodDays, path })]);
       return [label, tableText(found), '', info, '', 'LONGITUDES', tableText(lons), '', 'COMPRESSED VIMSOTTARI (unverified against JHora)', tableText(dasa)].join('\n');
+    },
+  },
+  {
+    name: 'get_progressed_chart',
+    description: 'Progressed chart on a date (default today), as JHora\'s Progressions tab casts it: "solar" (the natal chart moved forward one sign per year of life in the chosen varga, i.e. 30/n degrees of solar arc a year), "bhrigu" (the chart of the date with Sun..Saturn progressed at their Bhrigu rates: one revolution in 19, 45, 14, 46, 83, 27 and 30 years), "sudarsana_chakra" (every body moved one sign a year, a 12-year cycle) or "nakshatra_dasa" (every body moved by the arc the seed body\'s dasa progression has covered in the chosen varga). Returns its Key Info and the longitudes of all bodies. For "sudarsana_chakra" and "nakshatra_dasa" the shift is applied in the chosen varga, so the D-1 longitudes listed are exact only when varga is "Rasi".',
+    parameters: obj({
+      method: { type: 'string', enum: Object.keys(PROGRESSION_METHODS) },
+      date: dateSchema('the progression date, default today'),
+      varga: { type: 'string', enum: PROGRESSION_VARGAS, description: 'divisional chart the progression runs in, default Rasi' },
+      seed_body: { type: 'string', enum: BODIES, description: 'nakshatra_dasa: seed body of the dasa, default Moon' },
+      dasa: { type: 'string', enum: PROGRESSION_DASAS, description: 'nakshatra_dasa: the dasa followed, default Vimsottari' },
+    }, ['method']),
+    examples: [{ method: 'solar' }, { method: 'nakshatra_dasa', date: { year: 2027, month: 1, day: 1 }, seed_body: 'Moon', dasa: 'Vimsottari' }],
+    run: async (ctx, i) => {
+      const d = transitDate(i.date as DateInput | undefined);
+      const found = await table(ctx, 'progression.find', {
+        kind: PROGRESSION_METHODS[String(i.method)], varga: Math.max(0, PROGRESSION_VARGAS.indexOf(String(i.varga ?? 'Rasi'))),
+        body: BODIES.indexOf(String(i.seed_body ?? 'Moon')), dasa: Math.max(0, PROGRESSION_DASAS.indexOf(String(i.dasa ?? 'Vimsottari'))), ...d,
+      });
+      return derivedChartText(ctx, found);
+    },
+  },
+  {
+    name: 'get_prasna_chart',
+    description: 'Prasna (horary) chart from a number the querent gives: system "108" (1-108 fixes the rasi and navamsa of the Prasna Lagna), "249" (KP, 1-249 fixes its rasi, nakshatra and sub) or "nadi" (1-1800 fixes its rasi and nadiamsa). The chart is cast for the moment and place of the open chart, so open a chart of the question\'s moment first (open_chart with birth details) rather than the native\'s birth chart. With replace_lagna the Prasna Lagna becomes the lagna; otherwise it is listed as a separate body ("Prasna Lagna", last row).',
+    parameters: obj({
+      system: { type: 'string', enum: Object.keys(PRASNA_LIMITS) },
+      number: { type: 'integer', minimum: 1, maximum: 1800, description: 'the number given by the querent, within the system\'s range' },
+      replace_lagna: { type: 'boolean', description: 'replace the lagna with the Prasna Lagna, default per the chart settings (no)' },
+    }, ['system', 'number']),
+    examples: [{ system: '249', number: 100 }, { system: '108', number: 37, replace_lagna: true }],
+    run: async (ctx, i) => {
+      const system = String(i.system), n = Number(i.number);
+      if (n > PRASNA_LIMITS[system]) throw new Error(`number must be 1-${PRASNA_LIMITS[system]} for system "${system}"`);
+      const found = await table(ctx, 'prasna.find', { mode: system, n, ...(i.replace_lagna === undefined ? {} : { replace: Boolean(i.replace_lagna) }) });
+      return derivedChartText(ctx, found);
+    },
+  },
+  {
+    name: 'get_mundane_chart',
+    description: 'Mundane (event) chart, found by JHora\'s exact search from `date` (default the chart\'s own moment) at the chart\'s place: a body entering the next sign, nakshatra or varga division (sign_or_division_change), two bodies forming an aspect (aspect), a planet turning retrograde or direct (station), an eclipse, a solar or lunar new year or month, a new lunar day (tithi), a fortnight or Ardra Pravesha (Sun entering Ardra). Returns the moment found, the period the chart rules, its Key Info and longitudes. Use it for the exact moment of an event, then read the chart for the period it rules.',
+    parameters: obj({
+      event: { type: 'string', enum: Object.keys(MUNDANE_EVENTS) },
+      date: dateSchema('search start, default the open chart\'s moment'),
+      direction: { type: 'string', enum: ['after', 'before'], description: 'search forward (default) or backward' },
+      body: { type: 'string', enum: BODIES, description: 'sign_or_division_change: the moving body, default Sun; aspect: the first body' },
+      division: { type: 'string', enum: MUNDANE_DIVISIONS, description: 'sign_or_division_change: what it enters, default Rasi (a sign)' },
+      body2: { type: 'string', enum: BODIES, description: 'aspect: the second body' },
+      aspect: { type: 'string', enum: MUNDANE_ASPECTS, description: 'aspect: the angle of the second body from the first, default conjunction' },
+      planet: { type: 'string', enum: STATIONARY_PLANETS, description: 'station: the planet (Rahu/Ketu need true nodes)' },
+      eclipse_type: { type: 'string', enum: ECLIPSE_TYPES, description: 'eclipse: default Lunar; "Local Solar" is for the chart\'s place' },
+      eclipse_maximum: { type: 'boolean', description: 'eclipse: cast the chart for the maximum instead of the start, default false' },
+    }, ['event']),
+    examples: [{ event: 'eclipse', eclipse_type: 'Lunar', date: { year: 2027, month: 1, day: 1 } }, { event: 'aspect', body: 'Jupiter', body2: 'Saturn', aspect: 'Conjunction (yuti)', direction: 'before' }],
+    run: async (ctx, i) => {
+      const event = String(i.event), mode = MUNDANE_EVENTS[event];
+      const after = (i.direction ?? 'after') === 'after';
+      const params: Json = { mode, after, next: after };
+      // every search starts from the chart's moment: move the chart to `date` (place and zone kept)
+      const spec = i.date ? { ...ctx.spec, birth: transitBirth(ctx.spec.birth, transitDate(i.date as DateInput)) } : ctx.spec;
+      if (mode === 'transit') Object.assign(params, { body: BODIES.indexOf(String(i.body ?? 'Sun')), division: Math.max(0, MUNDANE_DIVISIONS.indexOf(String(i.division ?? 'Rasi'))) });
+      if (mode === 'conjunction') {
+        if (!i.body || !i.body2) throw new Error('`aspect` needs `body` and `body2`');
+        if (i.body === i.body2) throw new Error('`body` and `body2` must differ');
+        Object.assign(params, { body1: BODIES.indexOf(String(i.body)), body2: BODIES.indexOf(String(i.body2)), aspect: Math.max(0, MUNDANE_ASPECTS.indexOf(String(i.aspect ?? MUNDANE_ASPECTS[0]))) });
+      }
+      if (mode === 'stationary') {
+        if (!i.planet) throw new Error('`station` needs `planet`');
+        params.body = STATIONARY_PLANETS.indexOf(String(i.planet));
+      }
+      if (mode === 'eclipse') Object.assign(params, { type: Math.max(0, ECLIPSE_TYPES.indexOf(String(i.eclipse_type ?? 'Lunar'))), maximum: Boolean(i.eclipse_maximum) });
+      return derivedChartText(ctx, await table(ctx, 'mundane.find', params, spec));
+    },
+  },
+  {
+    name: 'get_angular_return',
+    description: 'Angular return: the next (or previous) moment after `date` (default today) when the angle from `body` to `body2` is again what it was at birth (e.g. Sun-Moon: a tithi return), with the period until the following return, the chart\'s Key Info and longitudes.',
+    parameters: obj({
+      body: { type: 'string', enum: BODIES },
+      body2: { type: 'string', enum: BODIES },
+      date: dateSchema('search start, default today'),
+      direction: { type: 'string', enum: ['after', 'before'], description: 'default after' },
+    }, ['body', 'body2']),
+    examples: [{ body: 'Sun', body2: 'Moon' }],
+    run: async (ctx, i) => {
+      if (i.body === i.body2) throw new Error('`body` and `body2` must differ');
+      const found = await table(ctx, 'angularReturn.find', {
+        a: BODIES.indexOf(String(i.body)), b: BODIES.indexOf(String(i.body2)), before: i.direction === 'before',
+        ...transitDate(i.date as DateInput | undefined), tzHours: ctx.spec.birth.tzHours,
+      });
+      return derivedChartText(ctx, found);
+    },
+  },
+  {
+    name: 'get_marriage_match',
+    description: 'Ashta koota (Gunanka) marriage matching of the open chart\'s Moon nakshatra and pada with another person\'s, as JHora computes it: the score out of 36 and the level of match. A coarse indicator only; also compare the two charts themselves.',
+    parameters: obj({
+      other_nakshatra: { type: 'string', enum: NAKSHATRA_NAMES, description: 'the other person\'s Moon nakshatra' },
+      other_pada: { type: 'integer', minimum: 1, maximum: 4, description: 'its pada (quarter), 1-4' },
+      other_is: { type: 'string', enum: ['bride', 'groom'], description: 'the other person\'s role, default from the chart\'s gender (the opposite of the native)' },
+    }, ['other_nakshatra', 'other_pada']),
+    examples: [{ other_nakshatra: 'Rohini', other_pada: 2 }],
+    run: async (ctx, i) => {
+      const t = await table(ctx, 'matching.result', {
+        otherNak: NAKSHATRA_NAMES.indexOf(String(i.other_nakshatra)), otherPada: Number(i.other_pada) - 1,
+        ...(i.other_is === undefined ? {} : { otherIsGroom: i.other_is === 'groom' }),
+      });
+      return [t.caption ?? '', ...(t.text ?? [])].join('\n').trim();
     },
   },
   {

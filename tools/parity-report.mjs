@@ -32,6 +32,19 @@ const GOLDEN = {
   'transitsGolden.test.ts': 'Basic Transit Results (9 modes) and Longitude Correlation',
   'sssGolden.test.ts': 'Sri Surya Siddhanta model (Siddhanta=1): lagna and planet longitudes',
   'kpMatching.test.ts': 'Houses view and all KP modes (matching itself: table checks only)',
+  'aspectsGolden.test.ts': 'Planetary Aspect Evaluation list view',
+  'ayanamsaGolden.test.ts': 'longitudes under each ayanamsa choice',
+  'calcsText.test.ts': 'Copy basic / complete calculations text',
+  'chakrasGolden.test.ts': 'chakras as JHora draws them',
+  'chartStylesGolden.test.ts': 'North and East Indian chart geometry',
+  'chartText.test.ts': 'Copy chart as text (all three styles)',
+  'chartViewsGolden.test.ts': 'chart diagram views (menu 103) and chart styles',
+  'copyText.test.ts': 'Copy to clipboard of the list panes',
+  'derivedDasas.test.ts': 'Dasas tab with a derived chart shown',
+  'matchingGolden.test.ts': 'horoscope matching: every nakshatra and pada, as bride and as groom',
+  'miscGolden.test.ts': 'mundane, angular return, progression and prasna charts: moment, Key Info, all 56 longitudes',
+  'userPointsGolden.test.ts': 'user-defined special point and planetary special lagnas',
+  'vargaVariantsGolden.test.ts': 'divisional-chart variants (All Divisional Longitudes)',
 };
 const rows = report.testResults.map((f) => {
   const name = basename(f.name);
@@ -40,9 +53,10 @@ const rows = report.testResults.map((f) => {
   const tests = f.assertionResults;
   const pass = tests.filter((t) => t.status === 'passed').length;
   const fail = tests.filter((t) => t.status === 'failed').length;
+  // skipped tests wait for a golden capture of an option variant: not counted
   // first comment line of the file as its description
   const desc = GOLDEN[name] ?? (src.match(/^\/\/ (.+)$/m)?.[1] ?? '').slice(0, 110);
-  return { name, golden, pass, fail, total: tests.length, desc };
+  return { name, golden, pass, fail, skipped: tests.length - pass - fail, total: pass + fail, desc };
 }).sort((a, b) => Number(b.golden) - Number(a.golden) || a.name.localeCompare(b.name));
 
 const sum = (xs, k) => xs.reduce((a, x) => a + x[k], 0);
@@ -55,9 +69,11 @@ const md = [
   '',
   `Comparisons against JHora's own output: **${sum(g, 'pass')} / ${sum(g, 'total')}** pass;`,
   `self-consistency and unit checks: ${sum(s, 'pass')} / ${sum(s, 'total')}.`,
+  `${sum(rows, 'skipped')} tests are skipped until JHora's output for their option variant is captured.`,
   '',
   'Golden data: `golden/jhora` and `golden/jhora-v3` (18 charts, all tabs captured by `tools/harness`),',
-  '`golden/jhora-dasas` (every rasi/other dasa), `golden/jhora-tajaka*` (Tajaka charts), `golden/calcs` (complete calculations).',
+  '`golden/jhora-dasas` (every rasi/other dasa), `golden/jhora-tajaka*` (Tajaka charts), `golden/calcs` (complete calculations),',
+  '`golden/jhora-misc*` (mundane, progression and prasna charts), `golden/jhora-matching` (marriage matching) and the option variants.',
   'Tolerances are documented in each test (e.g. Kaala dasa within 2 h because of a millisecond sunrise residual).',
   '',
   '## Compared with JHora output',

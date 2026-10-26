@@ -15,7 +15,7 @@ Everything runs locally: the Swiss Ephemeris is compiled to WebAssembly and runs
 
 ## Accuracy
 
-The port is tested against Jagannatha Hora's own output: **1955 of 1957** comparisons match. The test data covers 18 charts and every tab, captured from the desktop program by [tools/harness](tools/harness/README.md). See [PARITY.md](PARITY.md) for the breakdown by area and the documented tolerances.
+The port is tested against Jagannatha Hora's own output: **all 3690** comparisons match. The test data covers 18 charts and every tab, plus mundane, progression and prasna charts, marriage matching for every nakshatra and pada, and the chart styles. It was captured from the desktop program by [tools/harness](tools/harness/README.md). See [PARITY.md](PARITY.md) for the breakdown by area and the documented tolerances. Sixteen tests of option variants are skipped until JHora's output for those settings is captured.
 
 ## Getting started
 
@@ -42,11 +42,21 @@ To refresh them from an installation, run `JHORA_DIR="/path/to/Jagannatha Hora" 
 
 The **AI Astrologer** button opens a chat about the chart on screen, using Claude or OpenAI with your own API key. Keys are stored only in your browser and sent only to the provider you choose.
 
-The model doesn't guess positions or dates: it reads the chart through 20 tools that run the app's calculations. These cover positions, divisional charts, houses and KP, dasas, strengths, yogas, aspects, transits, exact ingress and conjunction moments, Tajaka and Tithi Pravesha charts, and panchanga. Its readings work through three layers (Parashari with Jaimini, KP, and Bhrigu Nandi Nadi) and quote the data behind each statement. The prompt and tools are in [src/ai](src/ai).
+The model doesn't guess positions or dates: it reads the chart through 25 tools that run the app's calculations. These cover:
+- positions, divisional charts, and houses and KP
+- dasas, strengths, yogas and aspects
+- transits, and exact ingress and conjunction moments
+- Tajaka, Tithi Pravesha and angular-return charts
+- progressed charts (solar, Bhrigu, Sudarsana chakra, nakshatra dasa)
+- prasna (108, KP 249, Nadi)
+- mundane event charts (ingresses, aspects, stations, eclipses, solar and lunar new years and months, Ardra Pravesha)
+- marriage matching and panchanga
+
+Its readings work through three layers (Parashari with Jaimini, KP, and Bhrigu Nandi Nadi) and quote the data behind each statement. The prompt and tools are in [src/ai](src/ai).
 
 ## MCP server
 
-The same tools are available to any [Model Context Protocol](https://modelcontextprotocol.io) client. Each conversation runs as a consultation:
+The same 25 tools are available to any [Model Context Protocol](https://modelcontextprotocol.io) client, alongside the server's own chart and consultation tools. Each conversation runs as a consultation:
 
 1. **The chart.** The assistant offers your saved charts, or takes birth details and saves them for next time.
 2. **Past events.** It asks for a few dated events from your life and checks them against the dasas running at the time, to test the chart and birth time.

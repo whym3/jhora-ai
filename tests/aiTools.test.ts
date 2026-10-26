@@ -17,8 +17,12 @@ import { AV_MODES as UI_AV_MODES } from '../src/ui/shell/tabs';
 import { SAHAMAS } from '../src/core/sahamas';
 import { SIGNS } from '../src/core/zodiac';
 import { VARGA_ORDER } from '../src/core/transits/common';
+import { PROG_DASAS, PROG_VARGA_LABELS } from '../src/core/derived/progression';
+import { ASPECTS, ECLIPSE_TYPES as MUNDANE_ECLIPSES, MUNDANE_BODIES, TRANSIT_DIVISIONS } from '../src/core/derived/mundane';
+import { PRASNA_LIMIT } from '../src/core/derived/prasna';
 import {
-  AI_TOOLS, AV_MODES, NAKSHATRA_DASA_SYSTEMS, OTHER_DASA_SYSTEMS, RASI_DASA_SYSTEMS, SAHAMA_NAMES, SIGN_NAMES, TRANSIT_MODES, VARGAS, YOGA_CATEGORIES,
+  AI_TOOLS, AV_MODES, ECLIPSE_TYPES, MUNDANE_ASPECTS, MUNDANE_DIVISIONS, NAKSHATRA_DASA_SYSTEMS, PRASNA_LIMITS, PROGRESSION_DASAS, PROGRESSION_VARGAS,
+  STATIONARY_PLANETS, OTHER_DASA_SYSTEMS, RASI_DASA_SYSTEMS, SAHAMA_NAMES, SIGN_NAMES, TRANSIT_MODES, VARGAS, YOGA_CATEGORIES,
   anthropicStrictSchema, localDateString, openaiStrictSchema, runTool, stripNulls, validateInput, type ToolContext,
 } from '../src/ai/tools';
 import { SYSTEM_PROMPT, chartContext } from '../src/ai/systemPrompt';
@@ -61,6 +65,13 @@ describe('AI tools', async () => {
     expect(SAHAMA_NAMES).toEqual(SAHAMAS.map((s) => s.name));
     expect(SIGN_NAMES).toHaveLength(SIGNS.length);
     expect([...VARGAS].sort()).toEqual([...VARGA_ORDER].sort());
+    expect(PROGRESSION_VARGAS).toEqual(PROG_VARGA_LABELS);
+    expect(PROGRESSION_DASAS).toEqual(PROG_DASAS.map((d) => d[0]));
+    expect(MUNDANE_DIVISIONS).toEqual(TRANSIT_DIVISIONS);
+    expect(MUNDANE_ASPECTS).toEqual(ASPECTS.map((a) => a[0]));
+    expect(ECLIPSE_TYPES).toEqual(MUNDANE_ECLIPSES);
+    expect(STATIONARY_PLANETS).toEqual(MUNDANE_BODIES.slice(3));
+    expect(PRASNA_LIMITS).toEqual(PRASNA_LIMIT);
   });
 
   it('the system prompt names every tool', () => {
@@ -141,6 +152,16 @@ describe('AI tools', async () => {
     ['get_annual_chart', { year: 1890, variant: 'sunrise', dasa_path: [0] }, /\(sunrise\)[\s\S]*MUDDA DASA\n\w+[^\n]*: /],
     ['get_tithi_pravesha', { year: 1890 }, /Annual TP[\s\S]*COMPRESSED VIMSOTTARI/],
     ['get_panchanga', { date: { year: 1890, month: 6, day: 1 } }, /\w/],
+    // the derived charts: JHora 8.0's own results for this chart (golden/jhora-misc)
+    ['get_progressed_chart', { method: 'nakshatra_dasa', date: { year: 2010, month: 6, day: 15 } }, /^Prog \(NaksDasa\)[\s\S]*LONGITUDES\n[^\n]*\nLagna \| 26 Cp 09' 43.07"[\s\S]*Avayoga Sphuta \| 27 Ar 03' 35.91"/],
+    ['get_progressed_chart', { method: 'solar', date: { year: 2010, month: 6, day: 15 }, varga: 'D-10' }, /Progressed \(3 deg\)[\s\S]*Date: +April 3, 1864\s+Time: +9:27:44/],
+    ['get_prasna_chart', { system: '249', number: 100, replace_lagna: true }, /^Prasna-249 \(100\)[\s\S]*\nLagna \| 24 Le 00' 00.00"[\s\S]*Avayoga Sphuta \| 26 Pi 53' 54.35"/],
+    ['get_prasna_chart', { system: '108', number: 37 }, /\nPrasna Lagna \| 1 Le 40' 00.00" \| Magh \| 1 \| Le \| Ar$/],
+    ['get_mundane_chart', { event: 'aspect', body: 'Jupiter', body2: 'Saturn', direction: 'before' }, /^Ju-Sa Conj[\s\S]*Date: +October 21, 1861\s+Time: +18:10:59/],
+    ['get_mundane_chart', { event: 'eclipse', eclipse_type: 'Lunar' }, /^Tot Lun Ecli[\s\S]*Date: +June 2, 1863\s+Time: +2:43:37/],
+    ['get_mundane_chart', { event: 'solar_new_year', date: { year: 2026, month: 1, day: 1 } }, /Date: +April 1\d, 2026/],
+    ['get_angular_return', { body: 'Sun', body2: 'Moon', date: { year: 2001, month: 3, day: 15 } }, /^Ang Ret Su-Mo[\s\S]*Date: +March 16, 2001\s+Time: +1:16:36/],
+    ['get_marriage_match', { other_nakshatra: 'Rohini', other_pada: 2 }, /Gunanka score[^\n]*= \d+ \(out of 36\)/],
   ];
   for (const [name, input, want] of cases) {
     it(`${name} ${JSON.stringify(input)}`, async () => {
@@ -159,6 +180,9 @@ describe('AI tools', async () => {
     expect((await runTool(ctx, 'get_transit_search', { planet: 'Saturn' })).text).toMatch(/exactly one/);
     expect((await runTool(ctx, 'get_longitudes', { bodies: ['Nobody'] })).text).toMatch(/no row matches/);
     expect((await runTool(ctx, 'get_tithi_pravesha', { year: 1890, day: 3 })).text).toMatch(/needs `month`/);
+    expect((await runTool(ctx, 'get_prasna_chart', { system: '108', number: 200 })).text).toMatch(/1-108/);
+    expect((await runTool(ctx, 'get_mundane_chart', { event: 'aspect', body: 'Sun' })).text).toMatch(/needs `body` and `body2`/);
+    expect((await runTool(ctx, 'get_angular_return', { body: 'Sun', body2: 'Sun' })).text).toMatch(/must differ/);
   });
 
   it('the range tool refuses rather than truncates', async () => {

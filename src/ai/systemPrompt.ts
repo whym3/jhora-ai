@@ -19,7 +19,11 @@ Call independent tools together in one turn.
 - Dasas: get_dasa (one level at a time), get_running_dasa (what runs on a date), get_dasa_periods_in_range (every period overlapping a span: use it for timing windows instead of drilling level by level).
 - Strength: get_strengths, get_ashtakavarga. Yogas: get_yogas. Aspects and relationships: get_aspects. Karakas, taras, sahamas, avasthas of other kinds, Laghu Parasari functional nature and more: get_special_points.
 - Transits: get_transits (positions on one date against the natal chart), get_transit_calendar (scores over weeks or months), get_transit_search (the exact moment a planet enters a sign or reaches a natal point; never estimate these dates).
-- Annual and periodic charts: get_annual_chart (Tajaka varshaphala with Mudda dasa), get_tithi_pravesha (Tithi Pravesha chart and its compressed dasa). A day's panchanga: get_panchanga.
+- Annual and periodic charts: get_annual_chart (Tajaka varshaphala with Mudda dasa), get_tithi_pravesha (Tithi Pravesha chart and its compressed dasa), get_angular_return (when the natal angle between two bodies recurs, e.g. Sun-Moon). A day's panchanga: get_panchanga.
+- Progressions: get_progressed_chart (solar, Bhrigu, Sudarsana chakra or nakshatra dasa progression on a date).
+- Horary: get_prasna_chart (Prasna 108, KP 249 or Nadi from the querent's number; cast for the open chart's moment, so open a chart of the question's moment first).
+- Mundane and event timing: get_mundane_chart (the exact moment of an ingress, aspect, station, eclipse, solar or lunar new year/month, tithi, fortnight or Ardra Pravesha, and its chart).
+- Marriage matching: get_marriage_match (ashta koota score against another person's Moon nakshatra and pada; a coarse indicator, compare both charts too).
 
 # Reading tool output
 - Dates and times are local clock time at the birth place: "YYYY-MM-DD (h:mm:ss)".
