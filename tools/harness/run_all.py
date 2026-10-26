@@ -143,6 +143,33 @@ BHAVA = {
     "rahu-forward": kv("BhavaChartRef=8", "HouseCuspsInMiddle=0", "HousesFromNodesReversed=0"),
 }
 
+# views-sss-houses.json, views-calc-variants.json, views-plane-ayanamsa.json (tests/calcVariants.test.ts)
+SSS_HOUSES = {
+    "middle": kv("Siddhanta=1", "HouseTypeWanted=11", "HouseCuspsInMiddle=1"),
+    "start": kv("Siddhanta=1", "HouseTypeWanted=11", "HouseCuspsInMiddle=0"),
+    "sss-ayanamsa": kv("Siddhanta=1", "HouseTypeWanted=11", "UserSelectedAyanamsa=18"),
+}
+CALC_VARIANTS = {
+    "vyatipata1": kv("VyatipataMethod=1"), "weekday-lmt": kv("WeekdayDefinition=1"),
+    "mahakala-lst": kv("WeekdayDefinitionKaala=2"), "kaala16": kv("KaalaInDayNightSeparate=0"),
+    **{f"lunar{n}": kv(f"LunarYrDef={n}") for n in (0, 1, 3, 4, 5)},
+    "sunrise1": kv("SunriseDefinition=1"), "sunrise2": kv("SunriseDefinition=2"),
+}
+# views-dasa-rasi-options.json, views-dasa-kalachakra.json (tests/rasiDasaOptions.test.ts, kalachakraOptions.test.ts)
+DASA_RASI_OPTIONS = {
+    "default": {}, **{f"sudasa-ad{n}": kv(f"SudasaADOption={n}") for n in (0, 1, 2, 3)},
+    "shoola-ad0": kv("ShoolaDasaAntardasaStart=0"), "shoola-ad2": kv("ShoolaDasaAntardasaStart=2"),
+}
+DASA_KALACHAKRA = {
+    **{f"method{n}": kv(f"KalachakraDasaCalculation={n}") for n in (0, 1, 2, 3, 4, 6)},
+    "rohini4-cancer": kv("KCDRohini4NavamsaInLeo=0"),
+}
+PLANE_BASE = {"DeltaFromUserSelectedAyanamsa": "0.000000", "CustomStarCode": ",alVir", "CustomStarLongitude": "180.000000"}
+PLANE_AYANAMSA = {
+    "jagannatha": {**PLANE_BASE, "UserSelectedAyanamsa": "1", "FixedPlaneInCustomStarAyanamsa": "0"},
+    "custom-plane": {**PLANE_BASE, "UserSelectedAyanamsa": "19", "FixedPlaneInCustomStarAyanamsa": "1"},
+}
+
 
 def all_runs():
     R = []
@@ -160,6 +187,9 @@ def all_runs():
     for n in (2, 3, 4):
         R.append(run(f"chartstyles/{n}", f"golden/jhora-chartstyle{n}", "views-chartstyles.json", kv(f"ChartStyle={n}")))
     R += [run(f"bhava/{k}", f"golden/jhora-bhava/{k}", "views-bhava.json", v) for k, v in BHAVA.items()]
+    R.append(run("bhava-text", "golden/jhora-bhava-text", "views-bhava-text.json"))
+    R.append(run("ashtakavarga", "golden/jhora-av", "views-ashtakavarga.json", kv("ChartStyle=0")))
+    R += json_runs("views-ampm.json", "ampm")
     # calculations
     R += ayanamsa_runs()
     R += varga_runs()
@@ -168,6 +198,9 @@ def all_runs():
     R.append(run("basics/bodies", "golden/jhora-bodies", "views-basics-options.json",
                  kv("BodyTypeOuterPlanet=1", "BodyTypeUpagraha=0", "BodyTypeVarnadas=0", "BodyTypeGrahaArudha=0")))
     R += json_runs("views-userpoints.json", "userpoints")
+    R += [run(f"sss-houses/{k}", f"golden/jhora-sss-houses/{k}", "views-sss-houses.json", v) for k, v in SSS_HOUSES.items()]
+    R += [run(f"calc-variants/{k}", f"golden/jhora-calc-variants/{k}", "views-calc-variants.json", v) for k, v in CALC_VARIANTS.items()]
+    R += [run(f"plane-ayanamsa/{k}", f"golden/jhora-plane-ayanamsa/{k}", "views-plane-ayanamsa.json", v, AYA3) for k, v in PLANE_AYANAMSA.items()]
     # dasas
     R.append(run("dasas/tajaka", "golden/jhora-dasas-tajaka", "views-dasas-tajaka.json", charts=DEF6))
     R.append(run("dasas/tp", "golden/jhora-dasas-tp", "views-dasas-tp.json", charts=DEF6))
@@ -175,6 +208,8 @@ def all_runs():
     R += [run(f"dasa-commands/{k}", f"golden/jhora-dasa-commands/{k}", "views-dasa-commands.json", v) for k, v in DASA_COMMANDS.items()]
     R += [run(f"dasa-years/{k}", f"golden/jhora-dasa-years/{k}", "views-dasa-years.json", v) for k, v in DASA_YEARS.items()]
     R += [run(f"dasa-options/{k}", f"golden/jhora-dasa-options/{k}", "views-dasa-options.json", v) for k, v in DASA_OPTIONS.items()]
+    R += [run(f"dasa-rasi-options/{k}", f"golden/jhora-dasa-rasi-options/{k}", "views-dasa-rasi-options.json", v) for k, v in DASA_RASI_OPTIONS.items()]
+    R += [run(f"dasa-kalachakra/{k}", f"golden/jhora-dasa-kalachakra/{k}", "views-dasa-kalachakra.json", v) for k, v in DASA_KALACHAKRA.items()]
     return R
 
 
